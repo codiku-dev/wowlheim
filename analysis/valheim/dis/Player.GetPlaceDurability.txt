@@ -1,0 +1,28 @@
+== Player::GetPlaceDurability(class:3744) -> r4  il_size=63 sha=558148ef6255
+   locals_sig=0x11000013
+   0 ldarg.1      
+   1 ldfld        ItemDrop+ItemData::m_shared
+   6 ldfld        ItemDrop+ItemData+SharedData::m_useDurabilityDrain
+  11 stloc.0      
+  12 ldarg.1      
+  13 ldfld        ItemDrop+ItemData::m_shared
+  18 ldfld        ItemDrop+ItemData+SharedData::m_placementDurabilitySkill
+  23 brfalse.s    61
+  25 ldarg.0      
+  26 ldarg.1      
+  27 ldfld        ItemDrop+ItemData::m_shared
+  32 ldfld        ItemDrop+ItemData+SharedData::m_placementDurabilitySkill
+  37 callvirt     Character::GetSkillFactor(valuetype:2932)
+  42 stloc.1      
+  43 ldloc.0      
+  44 ldloc.0      
+  45 ldarg.1      
+  46 ldfld        ItemDrop+ItemData::m_shared
+  51 ldfld        ItemDrop+ItemData+SharedData::m_placementDurabilityMax
+  56 mul          
+  57 ldloc.1      
+  58 mul          
+  59 sub          
+  60 stloc.0      
+  61 ldloc.0      
+  62 ret          

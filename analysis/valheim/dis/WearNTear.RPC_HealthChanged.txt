@@ -1,0 +1,21 @@
+== WearNTear::RPC_HealthChanged(i8, r4) -> void  il_size=43 sha=aa3f5959278a
+   locals_sig=0x11000016
+   0 ldarg.2      
+   1 ldarg.0      
+   2 ldfld        WearNTear::m_health
+   7 div          
+   8 stloc.0      
+   9 ldarg.0      
+  10 ldarg.2      
+  11 ldarg.0      
+  12 ldfld        WearNTear::m_health
+  17 div          
+  18 call         UnityEngine.Mathf::Clamp01
+  23 stfld        WearNTear::m_healthPercentage
+  28 ldarg.0      
+  29 call         WearNTear::ClearCachedSupport()
+  34 ldarg.0      
+  35 ldloc.0      
+  36 ldc.i4.1     
+  37 call         WearNTear::SetHealthVisual(r4,bool)
+  42 ret          

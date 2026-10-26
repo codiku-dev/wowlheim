@@ -1,0 +1,17 @@
+== Recipe::GetRequiredStation(i4) -> class:1048  il_size=33 sha=cdd6018c5724
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Recipe::m_craftingStation
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    20
+  13 ldarg.0      
+  14 ldfld        Recipe::m_craftingStation
+  19 ret          
+  20 ldarg.1      
+  21 ldc.i4.1     
+  22 ble.s        31
+  24 ldarg.0      
+  25 ldfld        Recipe::m_repairStation
+  30 ret          
+  31 ldnull       
+  32 ret          

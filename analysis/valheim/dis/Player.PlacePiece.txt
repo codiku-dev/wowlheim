@@ -1,0 +1,215 @@
+== Player::PlacePiece(class:2264, valuetype:81, valuetype:137, bool, bool) -> void  il_size=662 sha=77448b986869
+   locals_sig=0x110000ab
+   0 ldarg.1      
+   1 callvirt     UnityEngine.Component::get_gameObject
+   6 ldc.i4.1     
+   7 call         TerrainModifier::SetTriggerOnPlaced(bool)
+  12 ldarg.2      
+  13 ldarg.3      
+  14 call         UnityEngine.Object::Instantiate<T>
+  19 stloc.0      
+  20 ldc.i4.0     
+  21 call         TerrainModifier::SetTriggerOnPlaced(bool)
+  26 ldloc.0      
+  27 callvirt     UnityEngine.GameObject::GetComponentInChildren<T>
+  32 stloc.1      
+  33 ldloc.1      
+  34 call         UnityEngine.Object::op_Implicit
+  39 brfalse.s    48
+  41 ldarg.0      
+  42 ldloc.1      
+  43 call         Player::AddKnownStation(class:1048)
+  48 ldloc.0      
+  49 callvirt     UnityEngine.GameObject::GetComponent<T>
+  54 stloc.2      
+  55 ldloc.2      
+  56 call         UnityEngine.Object::op_Implicit
+  61 brfalse.s    90
+  63 ldloc.2      
+  64 ldarg.0      
+  65 call         Player::GetPlayerID()
+  70 call         Splatform.PlatformManager::get_DistributionPlatform
+  75 callvirt     Splatform.IDistributionPlatform::get_LocalUser
+  80 callvirt     Splatform.IUser::get_PlatformUserID
+  85 callvirt     Piece::SetCreator(i8,valuetype:389)
+  90 ldloc.0      
+  91 callvirt     UnityEngine.GameObject::GetComponent<T>
+  96 stloc.3      
+  97 ldloc.3      
+  98 brfalse.s    121
+ 100 ldloc.3      
+ 101 call         Game::get_instance()
+ 106 callvirt     Game::GetPlayerProfile()
+ 111 callvirt     PlayerProfile::GetName()
+ 116 callvirt     PrivateArea::Setup(string)
+ 121 ldloc.0      
+ 122 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 127 stloc.s      4
+ 129 ldloc.s      4
+ 131 brfalse.s    140
+ 133 ldloc.s      4
+ 135 callvirt     WearNTear::OnPlaced()
+ 140 ldarg.s      4
+ 142 brfalse.s    190
+ 144 ldarg.0      
+ 145 call         Humanoid::GetRightItem()
+ 150 stloc.s      5
+ 152 ldloc.s      5
+ 154 brfalse.s    190
+ 156 ldarg.0      
+ 157 call         Player::FaceLookDirection()
+ 162 ldarg.0      
+ 163 ldfld        Character::m_zanim
+ 168 ldloc.s      5
+ 170 ldfld        ItemDrop+ItemData::m_shared
+ 175 ldfld        ItemDrop+ItemData+SharedData::m_attack
+ 180 ldfld        Attack::m_attackAnimation
+ 185 callvirt     ZSyncAnimation::SetTrigger(string)
+ 190 ldarg.1      
+ 191 ldfld        Piece::m_randomInitBuildRotation
+ 196 brfalse.s    212
+ 198 ldarg.0      
+ 199 ldc.i4.0     
+ 200 ldc.i4.s     16
+ 202 call         UnityEngine.Random::Range
+ 207 stfld        Player::m_placeRotation
+ 212 ldloc.0      
+ 213 callvirt     UnityEngine.GameObject::get_gameObject
+ 218 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 223 stloc.s      6
+ 225 ldloc.s      6
+ 227 brfalse.s    237
+ 229 ldloc.s      6
+ 231 ldc.i4.1     
+ 232 callvirt     ItemDrop::MakePiece(bool)
+ 237 ldsfld       Player::m_placed
+ 242 callvirt     System.Collections.Generic.List`1::Clear
+ 247 ldloc.0      
+ 248 ldsfld       Player::m_placed
+ 253 callvirt     UnityEngine.GameObject::GetComponents<T>
+ 258 ldsfld       Player::m_placed
+ 263 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 268 stloc.s      8
+ 270 br.s         284
+ 272 ldloca.s     8
+ 274 call         Enumerator::get_Current
+ 279 callvirt     IPlaced::OnPlaced()
+ 284 ldloca.s     8
+ 286 call         Enumerator::MoveNext
+ 291 brtrue.s     272
+ 293 leave.s      309
+ 295 ldloca.s     8
+ 297 constrained. 0x1b000089
+ 303 callvirt     System.IDisposable::Dispose
+ 308 endfinally   
+ 309 ldarg.1      
+ 310 ldfld        Piece::m_placeEffect
+ 315 ldarg.2      
+ 316 ldarg.3      
+ 317 ldloc.0      
+ 318 callvirt     UnityEngine.GameObject::get_transform
+ 323 ldc.r4       1
+ 328 ldc.i4.m1    
+ 329 ldarg.0      
+ 330 call         Character::GetZDOID()
+ 335 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 340 pop          
+ 341 ldarg.2      
+ 342 call         UnityEngine.Vector3::get_down
+ 347 ldloca.s     7
+ 349 ldc.r4       200
+ 354 ldarg.0      
+ 355 ldfld        Player::m_terrainMask
+ 360 call         UnityEngine.Physics::Raycast
+ 365 brfalse.s    475
+ 367 ldloc.0      
+ 368 callvirt     UnityEngine.Object::get_name
+ 373 ldstr        " placed at height "
+ 378 ldloca.s     7
+ 380 call         UnityEngine.RaycastHit::get_distance
+ 385 stloc.s      10
+ 387 ldloca.s     10
+ 389 call         System.Single::ToString
+ 394 call         System.String::Concat
+ 399 call         ZLog::Log
+ 404 call         Game::get_instance()
+ 409 callvirt     Game::GetPlayerProfile()
+ 414 ldc.i4       130
+ 419 callvirt     PlayerProfile::GetStat(valuetype:1636)
+ 424 stloc.s      9
+ 426 ldloca.s     7
+ 428 call         UnityEngine.RaycastHit::get_distance
+ 433 ldloc.s      9
+ 435 ble.un.s     475
+ 437 ldarg.0      
+ 438 ldarg.2      
+ 439 call         Player::IsBuiltOnMyFoundation(valuetype:81)
+ 444 brfalse.s    475
+ 446 call         Game::get_instance()
+ 451 callvirt     Game::GetPlayerProfile()
+ 456 ldc.i4       130
+ 461 ldloca.s     7
+ 463 call         UnityEngine.RaycastHit::get_distance
+ 468 ldarg.s      5
+ 470 callvirt     PlayerProfile::SetStat(valuetype:1636,r4,bool)
+ 475 ldloc.0      
+ 476 callvirt     UnityEngine.Object::get_name
+ 481 ldstr        " placed at world height "
+ 486 ldarga.s     2
+ 488 ldflda       UnityEngine.Vector3::y
+ 493 call         System.Single::ToString
+ 498 call         System.String::Concat
+ 503 call         ZLog::Log
+ 508 ldarg.2      
+ 509 call         Character::InInterior(valuetype:81)
+ 514 brtrue.s     585
+ 516 call         Game::get_instance()
+ 521 callvirt     Game::GetPlayerProfile()
+ 526 ldc.i4       131
+ 531 callvirt     PlayerProfile::GetStat(valuetype:1636)
+ 536 stloc.s      11
+ 538 ldarg.2      
+ 539 ldfld        UnityEngine.Vector3::y
+ 544 ldloc.s      11
+ 546 ble.un.s     585
+ 548 ldarg.0      
+ 549 ldarg.2      
+ 550 call         Player::IsBuiltOnMyFoundation(valuetype:81)
+ 555 brfalse.s    585
+ 557 call         Game::get_instance()
+ 562 callvirt     Game::GetPlayerProfile()
+ 567 ldc.i4       131
+ 572 ldarg.2      
+ 573 ldfld        UnityEngine.Vector3::y
+ 578 ldarg.s      5
+ 580 callvirt     PlayerProfile::SetStat(valuetype:1636,r4,bool)
+ 585 ldarg.s      5
+ 587 brfalse.s    614
+ 589 ldloc.0      
+ 590 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 595 stloc.s      12
+ 597 ldloc.s      12
+ 599 brfalse.s    614
+ 601 ldloc.s      12
+ 603 callvirt     ZNetView::GetZDO()
+ 608 ldc.i4.1     
+ 609 call         CheatUtils::SetCheated(class:1164,bool)
+ 614 ldarg.0      
+ 615 ldc.r4       50
+ 620 call         Character::AddNoise(r4)
+ 625 ldarg.0      
+ 626 ldarg.0      
+ 627 ldfld        Player::m_clusterStatCheck
+ 632 stloc.s      13
+ 634 ldloc.s      13
+ 636 ldc.i4.1     
+ 637 sub          
+ 638 stfld        Player::m_clusterStatCheck
+ 643 ldloc.s      13
+ 645 ldc.i4.0     
+ 646 bgt.s        661
+ 648 call         Piece::CheckClusteredBuildPieceStats()
+ 653 ldarg.0      
+ 654 ldc.i4.s     20
+ 656 stfld        Player::m_clusterStatCheck
+ 661 ret          

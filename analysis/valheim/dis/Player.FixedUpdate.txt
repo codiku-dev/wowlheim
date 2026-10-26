@@ -1,0 +1,116 @@
+== Player::FixedUpdate() -> void  il_size=326 sha=bed6d4f621c6
+   locals_sig=0x11000016
+   0 call         UnityEngine.Time::get_fixedDeltaTime
+   5 stloc.0      
+   6 ldarg.0      
+   7 ldloc.0      
+   8 call         Player::UpdateAwake(r4)
+  13 ldarg.0      
+  14 ldfld        Character::m_nview
+  19 callvirt     ZNetView::GetZDO()
+  24 brtrue.s     27
+  26 ret          
+  27 ldarg.0      
+  28 ldloc.0      
+  29 call         Player::UpdateTargeted(r4)
+  34 ldarg.0      
+  35 ldloc.0      
+  36 call         Player::UpdateBreathParticles(r4)
+  41 ldarg.0      
+  42 ldfld        Character::m_nview
+  47 callvirt     ZNetView::IsOwner()
+  52 brfalse      325
+  57 ldsfld       Player::m_localPlayer
+  62 ldarg.0      
+  63 call         UnityEngine.Object::op_Inequality
+  68 brfalse.s    97
+  70 ldstr        "Destroying old local player"
+  75 call         ZLog::Log
+  80 call         ZNetScene::get_instance()
+  85 ldarg.0      
+  86 call         UnityEngine.Component::get_gameObject
+  91 callvirt     ZNetScene::Destroy(class:133)
+  96 ret          
+  97 ldarg.0      
+  98 callvirt     Character::IsDead()
+ 103 brfalse.s    106
+ 105 ret          
+ 106 ldarg.0      
+ 107 ldloc.0      
+ 108 call         Player::UpdateActionQueue(r4)
+ 113 ldarg.0      
+ 114 ldloc.0      
+ 115 call         Player::PlayerAttackInput(r4)
+ 120 ldarg.0      
+ 121 call         Player::UpdateAttach()
+ 126 ldarg.0      
+ 127 ldloc.0      
+ 128 call         Player::UpdateDoodadControls(r4)
+ 133 ldarg.0      
+ 134 ldloc.0      
+ 135 call         Player::UpdateCrouch(r4)
+ 140 ldarg.0      
+ 141 ldloc.0      
+ 142 call         Player::UpdateDodge(r4)
+ 147 ldarg.0      
+ 148 ldloc.0      
+ 149 call         Player::UpdateCover(r4)
+ 154 ldarg.0      
+ 155 ldloc.0      
+ 156 call         Player::UpdateStations(r4)
+ 161 ldarg.0      
+ 162 ldloc.0      
+ 163 call         Player::UpdateGuardianPower(r4)
+ 168 ldarg.0      
+ 169 ldloc.0      
+ 170 call         Player::UpdateBaseValue(r4)
+ 175 ldarg.0      
+ 176 ldloc.0      
+ 177 call         Player::UpdateStats(r4)
+ 182 ldarg.0      
+ 183 ldloc.0      
+ 184 call         Player::UpdateTeleport(r4)
+ 189 ldarg.0      
+ 190 ldloc.0      
+ 191 call         Player::AutoPickup(r4)
+ 196 ldarg.0      
+ 197 ldloc.0      
+ 198 call         Player::EdgeOfWorldKill(r4)
+ 203 ldarg.0      
+ 204 ldloc.0      
+ 205 call         Player::UpdateBiome(r4)
+ 210 ldarg.0      
+ 211 ldloc.0      
+ 212 call         Player::UpdateStealth(r4)
+ 217 call         GameCamera::get_instance()
+ 222 call         UnityEngine.Object::op_Implicit
+ 227 brfalse.s    288
+ 229 ldarg.0      
+ 230 ldfld        Player::m_attachPointCamera
+ 235 ldnull       
+ 236 call         UnityEngine.Object::op_Equality
+ 241 brfalse.s    288
+ 243 call         GameCamera::get_instance()
+ 248 callvirt     UnityEngine.Component::get_transform
+ 253 callvirt     UnityEngine.Transform::get_position
+ 258 ldarg.0      
+ 259 call         UnityEngine.Component::get_transform
+ 264 callvirt     UnityEngine.Transform::get_position
+ 269 call         UnityEngine.Vector3::Distance
+ 274 ldc.r4       2
+ 279 bge.un.s     288
+ 281 ldarg.0      
+ 282 ldc.i4.0     
+ 283 call         Character::SetVisible(bool)
+ 288 call         AudioMan::get_instance()
+ 293 ldarg.0      
+ 294 call         Player::InShelter()
+ 299 brtrue.s     319
+ 301 ldarg.0      
+ 302 call         UnityEngine.Component::get_transform
+ 307 callvirt     UnityEngine.Transform::get_position
+ 312 call         ShieldGenerator::IsInsideShield(valuetype:81)
+ 317 br.s         320
+ 319 ldc.i4.1     
+ 320 callvirt     AudioMan::SetIndoor(bool)
+ 325 ret          

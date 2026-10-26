@@ -1,0 +1,405 @@
+== Player::Save(class:1268) -> void  il_size=1262 sha=983986126266
+   locals_sig=0x110000c0
+   0 ldarg.1      
+   1 ldc.i4.s     34
+   3 callvirt     ZPackage::Write(i4)
+   8 ldarg.1      
+   9 ldarg.0      
+  10 call         Character::GetMaxHealth()
+  15 callvirt     ZPackage::Write(r4)
+  20 ldarg.1      
+  21 ldarg.0      
+  22 call         Character::GetHealth()
+  27 callvirt     ZPackage::Write(r4)
+  32 ldarg.1      
+  33 ldarg.0      
+  34 callvirt     Character::GetMaxStamina()
+  39 callvirt     ZPackage::Write(r4)
+  44 ldarg.1      
+  45 ldarg.0      
+  46 ldfld        Player::m_timeSinceDeath
+  51 callvirt     ZPackage::Write(r4)
+  56 ldarg.1      
+  57 ldarg.0      
+  58 ldfld        Player::m_guardianPower
+  63 callvirt     ZPackage::Write(string)
+  68 ldarg.1      
+  69 ldarg.0      
+  70 ldfld        Player::m_guardianPowerCooldown
+  75 callvirt     ZPackage::Write(r4)
+  80 ldarg.0      
+  81 ldfld        Humanoid::m_inventory
+  86 ldarg.1      
+  87 callvirt     Inventory::Save(class:1268)
+  92 ldarg.1      
+  93 ldarg.0      
+  94 ldfld        Player::m_knownRecipes
+  99 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 104 callvirt     ZPackage::Write(i4)
+ 109 ldarg.0      
+ 110 ldfld        Player::m_knownRecipes
+ 115 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 120 stloc.0      
+ 121 br.s         138
+ 123 ldloca.s     0
+ 125 call         Enumerator::get_Current
+ 130 stloc.1      
+ 131 ldarg.1      
+ 132 ldloc.1      
+ 133 callvirt     ZPackage::Write(string)
+ 138 ldloca.s     0
+ 140 call         Enumerator::MoveNext
+ 145 brtrue.s     123
+ 147 leave.s      163
+ 149 ldloca.s     0
+ 151 constrained. 0x1b000090
+ 157 callvirt     System.IDisposable::Dispose
+ 162 endfinally   
+ 163 ldarg.1      
+ 164 ldarg.0      
+ 165 ldfld        Player::m_knownStations
+ 170 callvirt     System.Collections.Generic.Dictionary`2::get_Count
+ 175 callvirt     ZPackage::Write(i4)
+ 180 ldarg.0      
+ 181 ldfld        Player::m_knownStations
+ 186 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+ 191 stloc.2      
+ 192 br.s         228
+ 194 ldloca.s     2
+ 196 call         Enumerator::get_Current
+ 201 stloc.3      
+ 202 ldarg.1      
+ 203 ldloca.s     3
+ 205 call         System.Collections.Generic.KeyValuePair`2::get_Key
+ 210 callvirt     ZPackage::Write(string)
+ 215 ldarg.1      
+ 216 ldloca.s     3
+ 218 call         System.Collections.Generic.KeyValuePair`2::get_Value
+ 223 callvirt     ZPackage::Write(i4)
+ 228 ldloca.s     2
+ 230 call         Enumerator::MoveNext
+ 235 brtrue.s     194
+ 237 leave.s      253
+ 239 ldloca.s     2
+ 241 constrained. 0x1b000091
+ 247 callvirt     System.IDisposable::Dispose
+ 252 endfinally   
+ 253 ldarg.1      
+ 254 ldarg.0      
+ 255 ldfld        Player::m_knownMaterial
+ 260 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 265 callvirt     ZPackage::Write(i4)
+ 270 ldarg.0      
+ 271 ldfld        Player::m_knownMaterial
+ 276 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 281 stloc.0      
+ 282 br.s         301
+ 284 ldloca.s     0
+ 286 call         Enumerator::get_Current
+ 291 stloc.s      4
+ 293 ldarg.1      
+ 294 ldloc.s      4
+ 296 callvirt     ZPackage::Write(string)
+ 301 ldloca.s     0
+ 303 call         Enumerator::MoveNext
+ 308 brtrue.s     284
+ 310 leave.s      326
+ 312 ldloca.s     0
+ 314 constrained. 0x1b000090
+ 320 callvirt     System.IDisposable::Dispose
+ 325 endfinally   
+ 326 ldarg.1      
+ 327 ldarg.0      
+ 328 ldfld        Player::m_shownTutorials
+ 333 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 338 callvirt     ZPackage::Write(i4)
+ 343 ldarg.0      
+ 344 ldfld        Player::m_shownTutorials
+ 349 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 354 stloc.0      
+ 355 br.s         374
+ 357 ldloca.s     0
+ 359 call         Enumerator::get_Current
+ 364 stloc.s      5
+ 366 ldarg.1      
+ 367 ldloc.s      5
+ 369 callvirt     ZPackage::Write(string)
+ 374 ldloca.s     0
+ 376 call         Enumerator::MoveNext
+ 381 brtrue.s     357
+ 383 leave.s      399
+ 385 ldloca.s     0
+ 387 constrained. 0x1b000090
+ 393 callvirt     System.IDisposable::Dispose
+ 398 endfinally   
+ 399 ldarg.1      
+ 400 ldarg.0      
+ 401 ldfld        Player::m_uniques
+ 406 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 411 callvirt     ZPackage::Write(i4)
+ 416 ldarg.0      
+ 417 ldfld        Player::m_uniques
+ 422 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 427 stloc.0      
+ 428 br.s         447
+ 430 ldloca.s     0
+ 432 call         Enumerator::get_Current
+ 437 stloc.s      6
+ 439 ldarg.1      
+ 440 ldloc.s      6
+ 442 callvirt     ZPackage::Write(string)
+ 447 ldloca.s     0
+ 449 call         Enumerator::MoveNext
+ 454 brtrue.s     430
+ 456 leave.s      472
+ 458 ldloca.s     0
+ 460 constrained. 0x1b000090
+ 466 callvirt     System.IDisposable::Dispose
+ 471 endfinally   
+ 472 ldarg.1      
+ 473 ldarg.0      
+ 474 ldfld        Player::m_trophies
+ 479 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 484 callvirt     ZPackage::Write(i4)
+ 489 ldarg.0      
+ 490 ldfld        Player::m_trophies
+ 495 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 500 stloc.0      
+ 501 br.s         520
+ 503 ldloca.s     0
+ 505 call         Enumerator::get_Current
+ 510 stloc.s      7
+ 512 ldarg.1      
+ 513 ldloc.s      7
+ 515 callvirt     ZPackage::Write(string)
+ 520 ldloca.s     0
+ 522 call         Enumerator::MoveNext
+ 527 brtrue.s     503
+ 529 leave.s      545
+ 531 ldloca.s     0
+ 533 constrained. 0x1b000090
+ 539 callvirt     System.IDisposable::Dispose
+ 544 endfinally   
+ 545 ldarg.1      
+ 546 ldarg.0      
+ 547 ldfld        Player::m_knownBiome
+ 552 callvirt     System.Collections.Generic.HashSet`1::get_Count
+ 557 callvirt     ZPackage::Write(i4)
+ 562 ldarg.0      
+ 563 ldfld        Player::m_knownBiome
+ 568 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+ 573 stloc.0      
+ 574 br.s         593
+ 576 ldloca.s     0
+ 578 call         Enumerator::get_Current
+ 583 stloc.s      8
+ 585 ldarg.1      
+ 586 ldloc.s      8
+ 588 callvirt     ZPackage::Write(string)
+ 593 ldloca.s     0
+ 595 call         Enumerator::MoveNext
+ 600 brtrue.s     576
+ 602 leave.s      618
+ 604 ldloca.s     0
+ 606 constrained. 0x1b000090
+ 612 callvirt     System.IDisposable::Dispose
+ 617 endfinally   
+ 618 ldarg.1      
+ 619 ldarg.0      
+ 620 ldfld        Player::m_knownTexts
+ 625 callvirt     System.Collections.Generic.Dictionary`2::get_Count
+ 630 callvirt     ZPackage::Write(i4)
+ 635 ldarg.0      
+ 636 ldfld        Player::m_knownTexts
+ 641 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+ 646 stloc.s      9
+ 648 br.s         715
+ 650 ldloca.s     9
+ 652 call         Enumerator::get_Current
+ 657 stloc.s      10
+ 659 ldarg.1      
+ 660 ldloca.s     10
+ 662 call         System.Collections.Generic.KeyValuePair`2::get_Key
+ 667 ldstr        "\u0016"
+ 672 ldstr        ""
+ 677 callvirt     System.String::Replace
+ 682 callvirt     ZPackage::Write(string)
+ 687 ldarg.1      
+ 688 ldloca.s     10
+ 690 call         System.Collections.Generic.KeyValuePair`2::get_Value
+ 695 ldstr        "\u0016"
+ 700 ldstr        ""
+ 705 callvirt     System.String::Replace
+ 710 callvirt     ZPackage::Write(string)
+ 715 ldloca.s     9
+ 717 call         Enumerator::MoveNext
+ 722 brtrue.s     650
+ 724 leave.s      740
+ 726 ldloca.s     9
+ 728 constrained. 0x1b000093
+ 734 callvirt     System.IDisposable::Dispose
+ 739 endfinally   
+ 740 ldarg.1      
+ 741 ldarg.0      
+ 742 ldfld        Humanoid::m_beardItem
+ 747 callvirt     ZPackage::Write(string)
+ 752 ldarg.1      
+ 753 ldarg.0      
+ 754 ldfld        Humanoid::m_hairItem
+ 759 callvirt     ZPackage::Write(string)
+ 764 ldarg.1      
+ 765 ldarg.0      
+ 766 ldfld        Player::m_skinColor
+ 771 callvirt     ZPackage::Write(valuetype:81)
+ 776 ldarg.1      
+ 777 ldarg.0      
+ 778 ldfld        Player::m_hairColor
+ 783 callvirt     ZPackage::Write(valuetype:81)
+ 788 ldarg.1      
+ 789 ldarg.0      
+ 790 ldfld        Player::m_modelIndex
+ 795 callvirt     ZPackage::Write(i4)
+ 800 ldarg.1      
+ 801 ldarg.0      
+ 802 ldfld        Player::m_foods
+ 807 callvirt     System.Collections.Generic.List`1::get_Count
+ 812 callvirt     ZPackage::Write(i4)
+ 817 ldarg.0      
+ 818 ldfld        Player::m_foods
+ 823 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 828 stloc.s      11
+ 830 br.s         867
+ 832 ldloca.s     11
+ 834 call         Enumerator::get_Current
+ 839 stloc.s      12
+ 841 ldarg.1      
+ 842 ldloc.s      12
+ 844 ldfld        Player+Food::m_name
+ 849 callvirt     ZPackage::Write(string)
+ 854 ldarg.1      
+ 855 ldloc.s      12
+ 857 ldfld        Player+Food::m_time
+ 862 callvirt     ZPackage::Write(r4)
+ 867 ldloca.s     11
+ 869 call         Enumerator::MoveNext
+ 874 brtrue.s     832
+ 876 leave.s      892
+ 878 ldloca.s     11
+ 880 constrained. 0x1b000084
+ 886 callvirt     System.IDisposable::Dispose
+ 891 endfinally   
+ 892 ldarg.0      
+ 893 ldfld        Player::m_skills
+ 898 ldarg.1      
+ 899 callvirt     Skills::Save(class:1268)
+ 904 ldarg.1      
+ 905 ldarg.0      
+ 906 ldfld        Player::m_customData
+ 911 callvirt     System.Collections.Generic.Dictionary`2::get_Count
+ 916 callvirt     ZPackage::Write(i4)
+ 921 ldarg.0      
+ 922 ldfld        Player::m_customData
+ 927 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+ 932 stloc.s      9
+ 934 br.s         971
+ 936 ldloca.s     9
+ 938 call         Enumerator::get_Current
+ 943 stloc.s      13
+ 945 ldarg.1      
+ 946 ldloca.s     13
+ 948 call         System.Collections.Generic.KeyValuePair`2::get_Key
+ 953 callvirt     ZPackage::Write(string)
+ 958 ldarg.1      
+ 959 ldloca.s     13
+ 961 call         System.Collections.Generic.KeyValuePair`2::get_Value
+ 966 callvirt     ZPackage::Write(string)
+ 971 ldloca.s     9
+ 973 call         Enumerator::MoveNext
+ 978 brtrue.s     936
+ 980 leave.s      996
+ 982 ldloca.s     9
+ 984 constrained. 0x1b000093
+ 990 callvirt     System.IDisposable::Dispose
+ 995 endfinally   
+ 996 ldarg.1      
+ 997 ldarg.0      
+ 998 call         Player::GetStamina()
+1003 callvirt     ZPackage::Write(r4)
+1008 ldarg.1      
+1009 ldarg.0      
+1010 callvirt     Character::GetMaxEitr()
+1015 callvirt     ZPackage::Write(r4)
+1020 ldarg.1      
+1021 ldarg.0      
+1022 call         Player::GetEitr()
+1027 callvirt     ZPackage::Write(r4)
+1032 call         Hud::get_instance()
+1037 call         UnityEngine.Object::op_Implicit
+1042 brfalse.s    1067
+1044 ldarg.1      
+1045 call         Hud::get_instance()
+1050 ldfld        Hud::m_buildUi
+1055 callvirt     BuildUi::SaveToBinary()
+1060 callvirt     ZPackage::Write(u1[])
+1065 br.s         1079
+1067 ldarg.1      
+1068 ldc.i4.0     
+1069 newarr       0x010001ea
+1074 callvirt     ZPackage::Write(u1[])
+1079 ldarg.1      
+1080 ldsfld       CharacterDrop::s_pseudoCounter
+1085 callvirt     System.Collections.Generic.Dictionary`2::get_Count
+1090 callvirt     ZPackage::Write(i4)
+1095 ldsfld       CharacterDrop::s_pseudoCounter
+1100 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+1105 stloc.s      14
+1107 br.s         1144
+1109 ldloca.s     14
+1111 call         Enumerator::get_Current
+1116 stloc.s      15
+1118 ldarg.1      
+1119 ldloca.s     15
+1121 call         System.Collections.Generic.KeyValuePair`2::get_Key
+1126 callvirt     ZPackage::Write(i4)
+1131 ldarg.1      
+1132 ldloca.s     15
+1134 call         System.Collections.Generic.KeyValuePair`2::get_Value
+1139 callvirt     ZPackage::Write(i4)
+1144 ldloca.s     14
+1146 call         Enumerator::MoveNext
+1151 brtrue.s     1109
+1153 leave.s      1169
+1155 ldloca.s     14
+1157 constrained. 0x1b000095
+1163 callvirt     System.IDisposable::Dispose
+1168 endfinally   
+1169 ldarg.1      
+1170 ldarg.0      
+1171 ldfld        Player::m_itemUpgradeSeeds
+1176 callvirt     System.Collections.Generic.Dictionary`2::get_Count
+1181 callvirt     ZPackage::Write(i4)
+1186 ldarg.0      
+1187 ldfld        Player::m_itemUpgradeSeeds
+1192 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+1197 stloc.s      14
+1199 br.s         1236
+1201 ldloca.s     14
+1203 call         Enumerator::get_Current
+1208 stloc.s      16
+1210 ldarg.1      
+1211 ldloca.s     16
+1213 call         System.Collections.Generic.KeyValuePair`2::get_Key
+1218 callvirt     ZPackage::Write(i4)
+1223 ldarg.1      
+1224 ldloca.s     16
+1226 call         System.Collections.Generic.KeyValuePair`2::get_Value
+1231 callvirt     ZPackage::Write(i4)
+1236 ldloca.s     14
+1238 call         Enumerator::MoveNext
+1243 brtrue.s     1201
+1245 leave.s      1261
+1247 ldloca.s     14
+1249 constrained. 0x1b000095
+1255 callvirt     System.IDisposable::Dispose
+1260 endfinally   
+1261 ret          

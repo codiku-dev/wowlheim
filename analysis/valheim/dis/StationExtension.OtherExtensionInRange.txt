@@ -1,0 +1,37 @@
+== StationExtension::OtherExtensionInRange(r4) -> bool  il_size=93 sha=a66fea4c173e
+   locals_sig=0x110007a7
+   0 ldsfld       StationExtension::m_allExtensions
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         64
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldarg.0      
+  23 call         UnityEngine.Object::op_Equality
+  28 brtrue.s     64
+  30 ldloc.1      
+  31 callvirt     UnityEngine.Component::get_transform
+  36 callvirt     UnityEngine.Transform::get_position
+  41 ldarg.0      
+  42 call         UnityEngine.Component::get_transform
+  47 callvirt     UnityEngine.Transform::get_position
+  52 call         UnityEngine.Vector3::Distance
+  57 ldarg.1      
+  58 bge.un.s     64
+  60 ldc.i4.1     
+  61 stloc.2      
+  62 leave.s      91
+  64 ldloca.s     0
+  66 call         Enumerator::MoveNext
+  71 brtrue.s     13
+  73 leave.s      89
+  75 ldloca.s     0
+  77 constrained. 0x1b0001fe
+  83 callvirt     System.IDisposable::Dispose
+  88 endfinally   
+  89 ldc.i4.0     
+  90 ret          
+  91 ldloc.2      
+  92 ret          

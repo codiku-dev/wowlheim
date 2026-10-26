@@ -1,0 +1,61 @@
+== Piece+Requirement::GetAmount(i4) -> i4  il_size=81 sha=e770b7477964
+   locals_sig=0x11000016
+   0 ldarg.1      
+   1 ldc.i4.1     
+   2 bgt.s        11
+   4 ldarg.0      
+   5 ldfld        Piece+Requirement::m_amount
+  10 ret          
+  11 ldc.r4       0
+  16 stloc.0      
+  17 ldarg.1      
+  18 ldc.i4.4     
+  19 bge.s        28
+  21 ldarg.1      
+  22 ldc.i4.1     
+  23 sub          
+  24 conv.r4      
+  25 stloc.0      
+  26 br.s         45
+  28 ldc.r4       4
+  33 ldarg.1      
+  34 ldc.i4.4     
+  35 sub          
+  36 conv.r4      
+  37 ldc.r4       2
+  42 div          
+  43 add          
+  44 stloc.0      
+  45 ldloc.0      
+  46 ldarg.0      
+  47 ldfld        Piece+Requirement::m_amountPerLevel
+  52 conv.r4      
+  53 mul          
+  54 ldarg.0      
+  55 ldfld        Piece+Requirement::m_upgraderResource
+  60 brtrue.s     65
+  62 ldc.i4.0     
+  63 br.s         71
+  65 ldarg.0      
+  66 ldfld        Piece+Requirement::m_amount
+  71 conv.r4      
+  72 add          
+  73 conv.r8      
+  74 call         System.Math::Floor
+  79 conv.i4      
+  80 ret          
+
+== Piece+Requirement::.ctor() -> void  il_size=28 sha=f5b9dc035467
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        Piece+Requirement::m_amount
+   7 ldarg.0      
+   8 ldc.i4.1     
+   9 stfld        Piece+Requirement::m_amountPerLevel
+  14 ldarg.0      
+  15 ldc.i4.1     
+  16 stfld        Piece+Requirement::m_recover
+  21 ldarg.0      
+  22 call         System.Object::.ctor
+  27 ret          

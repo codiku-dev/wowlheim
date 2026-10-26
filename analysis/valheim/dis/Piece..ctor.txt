@@ -1,0 +1,44 @@
+== Piece::.ctor() -> void  il_size=126 sha=3bea54dd18b0
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        Piece::m_targetNonPlayerBuilt
+   7 ldarg.0      
+   8 ldstr        ""
+  13 stfld        Piece::m_name
+  18 ldarg.0      
+  19 ldstr        ""
+  24 stfld        Piece::m_description
+  29 ldarg.0      
+  30 ldc.i4.1     
+  31 stfld        Piece::m_enabled
+  36 ldarg.0      
+  37 ldc.i4.1     
+  38 stfld        Piece::m_canRotate
+  43 ldarg.0      
+  44 ldc.i4.1     
+  45 stfld        Piece::m_canBeRemoved
+  50 ldarg.0      
+  51 newobj       System.Collections.Generic.List`1::.ctor
+  56 stfld        Piece::m_blockingPieces
+  61 ldarg.0      
+  62 newobj       EffectList::.ctor()
+  67 stfld        Piece::m_placeEffect
+  72 ldarg.0      
+  73 ldstr        ""
+  78 stfld        Piece::m_dlc
+  83 ldarg.0      
+  84 ldc.r4       1
+  89 stfld        Piece::m_returnResourceHeightOffset
+  94 ldarg.0      
+  95 call         System.Array::Empty<T>
+ 100 stfld        Piece::m_resources
+ 105 ldarg.0      
+ 106 ldc.i4.m1    
+ 107 stfld        Piece::m_creatorPlatformUserIDIndex
+ 112 ldarg.0      
+ 113 ldc.i4.m1    
+ 114 stfld        Piece::m_myListIndex
+ 119 ldarg.0      
+ 120 call         StaticTarget::.ctor()
+ 125 ret          

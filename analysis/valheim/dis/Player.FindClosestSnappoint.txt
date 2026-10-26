@@ -1,0 +1,46 @@
+== Player::FindClosestSnappoint(valuetype:81, class:165<class:73>, r4, class:73&, r4&) -> bool  il_size=95 sha=a606007a372e
+   locals_sig=0x110000b8
+   0 ldarg.s      4
+   2 ldnull       
+   3 stind.ref    
+   4 ldarg.s      5
+   6 ldc.r4       999999
+  11 stind.r4     
+  12 ldarg.2      
+  13 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  18 stloc.0      
+  19 br.s         60
+  21 ldloca.s     0
+  23 call         Enumerator::get_Current
+  28 stloc.1      
+  29 ldloc.1      
+  30 callvirt     UnityEngine.Transform::get_position
+  35 ldarg.1      
+  36 call         UnityEngine.Vector3::Distance
+  41 stloc.2      
+  42 ldloc.2      
+  43 ldarg.3      
+  44 bgt.s        60
+  46 ldloc.2      
+  47 ldarg.s      5
+  49 ldind.r4     
+  50 bge.un.s     60
+  52 ldarg.s      4
+  54 ldloc.1      
+  55 stind.ref    
+  56 ldarg.s      5
+  58 ldloc.2      
+  59 stind.r4     
+  60 ldloca.s     0
+  62 call         Enumerator::MoveNext
+  67 brtrue.s     21
+  69 leave.s      85
+  71 ldloca.s     0
+  73 constrained. 0x1b00008d
+  79 callvirt     System.IDisposable::Dispose
+  84 endfinally   
+  85 ldarg.s      4
+  87 ldind.ref    
+  88 ldnull       
+  89 call         UnityEngine.Object::op_Inequality
+  94 ret          

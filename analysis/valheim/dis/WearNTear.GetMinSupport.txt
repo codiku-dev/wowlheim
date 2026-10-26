@@ -1,0 +1,9 @@
+== WearNTear::GetMinSupport il_size=16 sha=e3cf9121a62a
+   0 ldarg.0      
+   1 ldloca.s     0
+   3 ldloca.s     1
+   5 ldloca.s     2
+   7 ldloca.s     3
+   9 call         WearNTear::GetMaterialProperties
+  14 ldloc.1      
+  15 ret          

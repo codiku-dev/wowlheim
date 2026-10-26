@@ -1,0 +1,15 @@
+== Player::ResetCharacterKnownItems() -> void  il_size=45 sha=7d80cd2da91a
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_knownRecipes
+   6 callvirt     System.Collections.Generic.HashSet`1::Clear
+  11 ldarg.0      
+  12 ldfld        Player::m_knownStations
+  17 callvirt     System.Collections.Generic.Dictionary`2::Clear
+  22 ldarg.0      
+  23 ldfld        Player::m_knownMaterial
+  28 callvirt     System.Collections.Generic.HashSet`1::Clear
+  33 ldarg.0      
+  34 ldfld        Player::m_trophies
+  39 callvirt     System.Collections.Generic.HashSet`1::Clear
+  44 ret          

@@ -1,0 +1,101 @@
+== Player::GetFirstRequiredItem(class:1056, class:1080, i4, i4&, i4&, i4) -> class:3744  il_size=242 sha=d0f0b7d56581
+   locals_sig=0x110000a5
+   0 ldarg.0      
+   1 call         Player::GetCurrentCraftingStation()
+   6 stloc.0      
+   7 ldarg.2      
+   8 ldfld        Recipe::m_resources
+  13 stloc.1      
+  14 ldc.i4.0     
+  15 stloc.2      
+  16 br           223
+  21 ldloc.1      
+  22 ldloc.2      
+  23 ldelem.ref   
+  24 stloc.3      
+  25 ldloc.0      
+  26 ldnull       
+  27 call         UnityEngine.Object::op_Inequality
+  32 brfalse.s    51
+  34 ldloc.0      
+  35 ldfld        CraftingStation::m_upgrader
+  40 ldloc.3      
+  41 ldfld        Piece+Requirement::m_upgraderResource
+  46 bne.un       219
+  51 ldloc.0      
+  52 ldnull       
+  53 call         UnityEngine.Object::op_Equality
+  58 brfalse.s    71
+  60 ldloc.3      
+  61 ldfld        Piece+Requirement::m_upgraderResource
+  66 brtrue       219
+  71 ldloc.3      
+  72 ldfld        Piece+Requirement::m_resItem
+  77 call         UnityEngine.Object::op_Implicit
+  82 brfalse      219
+  87 ldloc.3      
+  88 ldarg.3      
+  89 callvirt     Piece+Requirement::GetAmount(i4)
+  94 ldarg.s      6
+  96 mul          
+  97 stloc.s      4
+  99 ldc.i4.0     
+ 100 stloc.s      5
+ 102 br.s         194
+ 104 ldarg.0      
+ 105 ldfld        Humanoid::m_inventory
+ 110 ldloc.3      
+ 111 ldfld        Piece+Requirement::m_resItem
+ 116 ldfld        ItemDrop::m_itemData
+ 121 ldfld        ItemDrop+ItemData::m_shared
+ 126 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 131 ldloc.s      5
+ 133 ldc.i4.1     
+ 134 callvirt     Inventory::CountItems(string,i4,bool)
+ 139 ldloc.s      4
+ 141 blt.s        188
+ 143 ldarg.s      4
+ 145 ldloc.s      4
+ 147 stind.i4     
+ 148 ldarg.s      5
+ 150 ldloc.3      
+ 151 ldfld        Piece+Requirement::m_extraAmountOnlyOneIngredient
+ 156 stind.i4     
+ 157 ldarg.1      
+ 158 ldloc.3      
+ 159 ldfld        Piece+Requirement::m_resItem
+ 164 ldfld        ItemDrop::m_itemData
+ 169 ldfld        ItemDrop+ItemData::m_shared
+ 174 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 179 ldloc.s      5
+ 181 ldc.i4.0     
+ 182 callvirt     Inventory::GetItem(string,i4,bool)
+ 187 ret          
+ 188 ldloc.s      5
+ 190 ldc.i4.1     
+ 191 add          
+ 192 stloc.s      5
+ 194 ldloc.s      5
+ 196 ldloc.3      
+ 197 ldfld        Piece+Requirement::m_resItem
+ 202 ldfld        ItemDrop::m_itemData
+ 207 ldfld        ItemDrop+ItemData::m_shared
+ 212 ldfld        ItemDrop+ItemData+SharedData::m_maxQuality
+ 217 ble.s        104
+ 219 ldloc.2      
+ 220 ldc.i4.1     
+ 221 add          
+ 222 stloc.2      
+ 223 ldloc.2      
+ 224 ldloc.1      
+ 225 ldlen        
+ 226 conv.i4      
+ 227 blt          21
+ 232 ldarg.s      4
+ 234 ldc.i4.0     
+ 235 stind.i4     
+ 236 ldarg.s      5
+ 238 ldc.i4.0     
+ 239 stind.i4     
+ 240 ldnull       
+ 241 ret          

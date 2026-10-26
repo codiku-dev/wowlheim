@@ -1,0 +1,33 @@
+== CraftingStation::UpdateKnownStationsInRange(class:144) -> void  il_size=91 sha=869d7ae0cced
+   locals_sig=0x1100036d
+   0 ldarg.0      
+   1 callvirt     UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 stloc.0      
+  12 ldsfld       CraftingStation::m_allStations
+  17 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  22 stloc.1      
+  23 br.s         65
+  25 ldloca.s     1
+  27 call         Enumerator::get_Current
+  32 stloc.2      
+  33 ldloc.2      
+  34 callvirt     UnityEngine.Component::get_transform
+  39 callvirt     UnityEngine.Transform::get_position
+  44 ldloc.0      
+  45 call         UnityEngine.Vector3::Distance
+  50 ldloc.2      
+  51 ldfld        CraftingStation::m_discoverRange
+  56 bge.un.s     65
+  58 ldarg.0      
+  59 ldloc.2      
+  60 callvirt     Player::AddKnownStation(class:1048)
+  65 ldloca.s     1
+  67 call         Enumerator::MoveNext
+  72 brtrue.s     25
+  74 leave.s      90
+  76 ldloca.s     1
+  78 constrained. 0x1b0001fc
+  84 callvirt     System.IDisposable::Dispose
+  89 endfinally   
+  90 ret          

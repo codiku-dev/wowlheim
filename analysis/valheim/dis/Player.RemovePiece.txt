@@ -1,0 +1,196 @@
+== Player::RemovePiece() -> bool  il_size=576 sha=43786caed681
+   locals_sig=0x110000a9
+   0 call         GameCamera::get_instance()
+   5 callvirt     UnityEngine.Component::get_transform
+  10 callvirt     UnityEngine.Transform::get_position
+  15 call         GameCamera::get_instance()
+  20 callvirt     UnityEngine.Component::get_transform
+  25 callvirt     UnityEngine.Transform::get_forward
+  30 ldloca.s     0
+  32 ldc.r4       50
+  37 ldarg.0      
+  38 ldfld        Player::m_removeRayMask
+  43 call         UnityEngine.Physics::Raycast
+  48 brfalse      574
+  53 ldloca.s     0
+  55 call         UnityEngine.RaycastHit::get_point
+  60 ldarg.0      
+  61 ldfld        Character::m_eye
+  66 callvirt     UnityEngine.Transform::get_position
+  71 call         UnityEngine.Vector3::Distance
+  76 ldarg.0      
+  77 ldfld        Player::m_maxPlaceDistance
+  82 bge.un       574
+  87 ldloca.s     0
+  89 call         UnityEngine.RaycastHit::get_collider
+  94 callvirt     UnityEngine.Component::GetComponentInParent<T>
+  99 stloc.1      
+ 100 ldloc.1      
+ 101 ldnull       
+ 102 call         UnityEngine.Object::op_Equality
+ 107 brfalse.s    146
+ 109 ldloca.s     0
+ 111 call         UnityEngine.RaycastHit::get_collider
+ 116 callvirt     UnityEngine.Component::GetComponent<T>
+ 121 call         UnityEngine.Object::op_Implicit
+ 126 brfalse.s    146
+ 128 ldloca.s     0
+ 130 call         UnityEngine.RaycastHit::get_point
+ 135 ldc.r4       2.5
+ 140 call         TerrainModifier::FindClosestModifierPieceInRange(valuetype:81,r4)
+ 145 stloc.1      
+ 146 ldloc.1      
+ 147 call         UnityEngine.Object::op_Implicit
+ 152 brfalse      574
+ 157 ldloc.1      
+ 158 ldfld        Piece::m_canBeRemoved
+ 163 brtrue.s     167
+ 165 ldc.i4.0     
+ 166 ret          
+ 167 ldloc.1      
+ 168 callvirt     UnityEngine.Component::get_transform
+ 173 callvirt     UnityEngine.Transform::get_position
+ 178 call         Location::IsInsideNoBuildLocation(valuetype:81)
+ 183 brfalse.s    202
+ 185 ldarg.0      
+ 186 ldc.i4.2     
+ 187 ldstr        "$msg_nobuildzone"
+ 192 ldc.i4.0     
+ 193 ldnull       
+ 194 ldc.i4.0     
+ 195 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 200 ldc.i4.0     
+ 201 ret          
+ 202 ldloc.1      
+ 203 callvirt     UnityEngine.Component::get_transform
+ 208 callvirt     UnityEngine.Transform::get_position
+ 213 ldc.r4       0
+ 218 ldc.i4.1     
+ 219 ldc.i4.0     
+ 220 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+ 225 brtrue.s     244
+ 227 ldarg.0      
+ 228 ldc.i4.2     
+ 229 ldstr        "$msg_privatezone"
+ 234 ldc.i4.0     
+ 235 ldnull       
+ 236 ldc.i4.0     
+ 237 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 242 ldc.i4.0     
+ 243 ret          
+ 244 ldarg.0      
+ 245 ldloc.1      
+ 246 call         Player::CheckCanRemovePiece(class:2264)
+ 251 brtrue.s     255
+ 253 ldc.i4.0     
+ 254 ret          
+ 255 ldloc.1      
+ 256 callvirt     UnityEngine.Component::GetComponent<T>
+ 261 stloc.2      
+ 262 ldloc.2      
+ 263 ldnull       
+ 264 call         UnityEngine.Object::op_Equality
+ 269 brfalse.s    273
+ 271 ldc.i4.0     
+ 272 ret          
+ 273 ldloc.1      
+ 274 callvirt     Piece::CanBeRemoved()
+ 279 brtrue.s     298
+ 281 ldarg.0      
+ 282 ldc.i4.2     
+ 283 ldstr        "$msg_cantremovenow"
+ 288 ldc.i4.0     
+ 289 ldnull       
+ 290 ldc.i4.0     
+ 291 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 296 ldc.i4.0     
+ 297 ret          
+ 298 ldloc.1      
+ 299 callvirt     UnityEngine.Component::GetComponent<T>
+ 304 stloc.3      
+ 305 ldloc.3      
+ 306 brfalse.s    314
+ 308 ldloc.3      
+ 309 callvirt     IRemoved::OnRemoved()
+ 314 ldloc.1      
+ 315 callvirt     UnityEngine.Component::GetComponent<T>
+ 320 stloc.s      4
+ 322 ldloc.s      4
+ 324 call         UnityEngine.Object::op_Implicit
+ 329 brfalse.s    344
+ 331 ldloc.s      4
+ 333 ldc.i4.0     
+ 334 callvirt     WearNTear::Remove(bool)
+ 339 br           526
+ 344 ldloc.1      
+ 345 callvirt     UnityEngine.Component::GetComponent<T>
+ 350 stloc.s      6
+ 352 ldloc.s      6
+ 354 brfalse.s    378
+ 356 ldloc.s      6
+ 358 ldc.r4       10000000000
+ 363 newobj       HitData::.ctor(r4)
+ 368 callvirt     Character::Damage(class:2140)
+ 373 br           526
+ 378 ldstr        "Removing non WNT object with hammer "
+ 383 ldloc.1      
+ 384 callvirt     UnityEngine.Object::get_name
+ 389 call         System.String::Concat
+ 394 call         ZLog::Log
+ 399 ldloc.2      
+ 400 callvirt     ZNetView::ClaimOwnership()
+ 405 ldloc.1      
+ 406 ldnull       
+ 407 callvirt     Piece::DropResources(class:2140)
+ 412 ldloc.1      
+ 413 ldfld        Piece::m_placeEffect
+ 418 ldloc.1      
+ 419 callvirt     UnityEngine.Component::get_transform
+ 424 callvirt     UnityEngine.Transform::get_position
+ 429 ldloc.1      
+ 430 callvirt     UnityEngine.Component::get_transform
+ 435 callvirt     UnityEngine.Transform::get_rotation
+ 440 ldloc.1      
+ 441 callvirt     UnityEngine.Component::get_gameObject
+ 446 callvirt     UnityEngine.GameObject::get_transform
+ 451 ldc.r4       1
+ 456 ldc.i4.m1    
+ 457 ldarg.0      
+ 458 call         Character::GetZDOID()
+ 463 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 468 pop          
+ 469 ldarg.0      
+ 470 ldfld        Player::m_removeEffects
+ 475 ldloc.1      
+ 476 callvirt     UnityEngine.Component::get_transform
+ 481 callvirt     UnityEngine.Transform::get_position
+ 486 call         UnityEngine.Quaternion::get_identity
+ 491 ldnull       
+ 492 ldc.r4       1
+ 497 ldc.i4.m1    
+ 498 ldarg.0      
+ 499 call         Character::GetZDOID()
+ 504 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 509 pop          
+ 510 call         ZNetScene::get_instance()
+ 515 ldloc.1      
+ 516 callvirt     UnityEngine.Component::get_gameObject
+ 521 callvirt     ZNetScene::Destroy(class:133)
+ 526 ldarg.0      
+ 527 call         Humanoid::GetRightItem()
+ 532 stloc.s      5
+ 534 ldloc.s      5
+ 536 brfalse.s    572
+ 538 ldarg.0      
+ 539 call         Player::FaceLookDirection()
+ 544 ldarg.0      
+ 545 ldfld        Character::m_zanim
+ 550 ldloc.s      5
+ 552 ldfld        ItemDrop+ItemData::m_shared
+ 557 ldfld        ItemDrop+ItemData+SharedData::m_attack
+ 562 ldfld        Attack::m_attackAnimation
+ 567 callvirt     ZSyncAnimation::SetTrigger(string)
+ 572 ldc.i4.1     
+ 573 ret          
+ 574 ldc.i4.0     
+ 575 ret          

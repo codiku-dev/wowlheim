@@ -1,0 +1,32 @@
+== WearNTear::RPC_Repair(i8) -> void  il_size=96 sha=88fb3cfb0bf2
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brfalse.s    26
+  13 ldarg.0      
+  14 ldfld        WearNTear::m_nview
+  19 callvirt     ZNetView::IsOwner()
+  24 brtrue.s     27
+  26 ret          
+  27 ldarg.0      
+  28 ldfld        WearNTear::m_nview
+  33 callvirt     ZNetView::GetZDO()
+  38 ldsfld       ZDOVars::s_health
+  43 ldarg.0      
+  44 ldfld        WearNTear::m_health
+  49 callvirt     ZDO::Set(i4,r4)
+  54 ldarg.0      
+  55 ldfld        WearNTear::m_nview
+  60 ldsfld       ZNetView::Everybody
+  65 ldstr        "RPC_HealthChanged"
+  70 ldc.i4.1     
+  71 newarr       0x01000007
+  76 dup          
+  77 ldc.i4.0     
+  78 ldarg.0      
+  79 ldfld        WearNTear::m_health
+  84 box          0x010001ed
+  89 stelem.ref   
+  90 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+  95 ret          

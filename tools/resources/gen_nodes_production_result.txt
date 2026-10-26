@@ -1,0 +1,83 @@
+creatures cartes 0/1 : 53763 | ecartees (premier motif) : {'PNJ/civil/garde': 4921, 'rang != 0': 5334, 'critter/totem': 2797, 'patrouille (waypoints)': 1231, "assistant invisible / cible d'entrainement (niveau <= 1, type 9/10)": 1182, 'pas de deplacement au sol (eau seule)': 449, 'vol': 25}
+points d'exclusion : 104 (010, rayon 100 m) + 5599 creatures a drapeaux PNJ/civiles/gardes (rayon 50 m)
+candidats retenus : 28148
+rejets : {"proche d'un PNJ (50 m)": 2129, 'eau a moins de 6 m': 2383, "rayon d'exclusion 010 (100 m)": 335, 'aire interieure (nom)': 1271, 'z creature hors terrain statique (-1/+1,5 m)': 3364, '(info) palier de zone par defaut (peu de creatures voisines)': 4, "ville/capitale/arene (drapeaux d'aire)": 120, 'sans zone': 38, "palier local ambigu (bloc 600 m et disque 300 m a plus d'un palier d'ecart)": 21, 'zone sans palier (< 30 apparitions)': 15}
+   (info) region non autorisee : map 0 zone Blasted Lands palier 5 (palier de zone 4) : 22 candidats
+   (info) region non autorisee : map 0 zone Wetlands palier 3 (palier de zone 2) : 14 candidats
+   (info) region non autorisee : map 0 zone Elwynn Forest palier 2 (palier de zone 1) : 6 candidats
+   (info) region non autorisee : map 0 zone Westfall palier 3 (palier de zone 1) : 5 candidats
+   (info) region non autorisee : map 0 zone Burning Steppes palier 2 (palier de zone 5) : 5 candidats
+regions retenues : 54 / 60 (dont 2 petites regions ajoutees pour la couverture)
+   COUVERTURE IMPOSSIBLE (aucune region admissible supplementaire) : carte 0 faction H palier 1 : 2 zone(s) ['Silverpine Forest', 'Tirisfal Glades']
+regions (zone, palier) : 54 dont 21 poches ; surface couverte totale 154.5 km2
+densite moyenne visee : 29.77 noeuds/km2 (plafond region 30) ; quotas totaux avant tirage : 4664
+noeuds tires : 4664 (plafond 6000)
+
+couverture par type de noeud x continent x faction (>= 3 zones comptant >= 4 noeuds) : 3 combinaisons insuffisantes sur 92
+   INSUFFISANT : carte 0 faction H type 9101001 (Arbre de la prairie) : 2 zone(s)
+   INSUFFISANT : carte 0 faction H type 9101011 (Rocher de la prairie) : 2 zone(s)
+   INSUFFISANT : carte 0 faction H type 9101041 (Ossements de cerf) : 2 zone(s)
+
+noeuds par continent : {0: 1833, 1: 2831}
+noeuds par palier : {1: 1125, 2: 1080, 3: 732, 4: 984, 5: 743}
+noeuds par type : {9101001: 515, 9101002: 317, 9101003: 216, 9101004: 205, 9101005: 176, 9101011: 515, 9101012: 234, 9101013: 173, 9101014: 145, 9101015: 132, 9101021: 223, 9101022: 223, 9101023: 286, 9101024: 273, 9101025: 207, 9101026: 145, 9101027: 145, 9101031: 176, 9101041: 95, 9101042: 83, 9101043: 57, 9101044: 71, 9101045: 52}
+grilles serveur (533 m) occupees : 636 ; max 23 noeuds / grille ; moyenne 7.3
+blocs de 1 km2 occupes : 244 ; max 45 / bloc ; moyenne 19.1
+
+map  zone                   pal.  type   candidats  surface  noeuds noeuds/km2
+0    Dun Morogh             T1    zone        780     3.56     106     29.75
+0    Badlands               T3    zone        311     1.62      51     31.38
+0    Badlands               T4    poche       116     0.94      34     36.27
+0    Swamp of Sorrows       T3    poche       150     1.12      36     32.00
+0    Swamp of Sorrows       T4    zone        137     1.44      44     30.61
+0    Duskwood               T2    zone        434     2.38      72     30.32
+0    Wetlands               T2    zone        709     3.56     105     29.47
+0    Elwynn Forest          T1    zone        822     2.94      87     29.62
+0    Western Plaguelands    T5    zone        490     2.00      61     30.50
+0    Stranglethorn Vale     T3    zone        739     2.81      83     29.51
+0    Stranglethorn Vale     T4    poche       309     2.50      75     30.00
+0    Alterac Mountains      T2    poche        49     0.62      26     41.60
+0    Alterac Mountains      T3    zone        263     1.81      56     30.90
+0    Loch Modan             T1    zone        285     2.00      59     29.50
+0    Loch Modan             T2    poche       137     0.88      29     33.14
+0    Westfall               T1    zone        591     2.00      59     29.50
+0    Westfall               T2    poche       263     1.00      33     33.00
+0    Redridge Mountains     T2    zone        409     1.88      58     30.93
+0    Arathi Highlands       T3    zone        702     3.31      99     29.89
+0    Burning Steppes        T5    zone        179     1.62      52     32.00
+0    The Hinterlands        T4    zone        483     2.38      73     30.74
+0    Searing Gorge          T4    zone        142     1.19      37     31.16
+0    Tirisfal Glades        T1    zone       1167     4.12     122     29.58
+0    Silverpine Forest      T1    zone        350     1.75      53     30.29
+0    Silverpine Forest      T2    poche       287     1.69      53     31.41
+0    Eastern Plaguelands    T5    zone        943     5.38     160     29.77
+0    Hillsbrad Foothills    T2    zone        434     2.62      77     29.33
+0    Hillsbrad Foothills    T3    poche        86     1.00      33     33.00
+1    Durotar                T1    zone        871     4.25     126     29.65
+1    Dustwallow Marsh       T3    zone        315     2.50      75     30.00
+1    Dustwallow Marsh       T4    poche       246     2.12      63     29.65
+1    Azshara                T4    zone        539     3.12      94     30.08
+1    Azshara                T5    poche       396     3.25      96     29.54
+1    The Barrens            T1    poche      1252     6.25     187     29.92
+1    The Barrens            T2    zone       1120     6.19     185     29.90
+1    Teldrassil             T1    zone        661     3.31      98     29.58
+1    Darkshore              T1    zone        612     2.25      67     29.78
+1    Darkshore              T2    poche       365     2.19      67     30.63
+1    Mulgore                T1    zone       1096     4.88     146     29.95
+1    Ashenvale              T2    zone       1173     7.69     229     29.79
+1    Ashenvale              T3    poche       138     1.44      45     31.30
+1    Feralas                T4    zone        893     6.06     181     29.86
+1    Felwood                T4    zone        374     2.56      75     29.27
+1    Felwood                T5    poche       196     1.50      48     32.00
+1    Thousand Needles       T2    poche       118     1.06      35     32.94
+1    Thousand Needles       T3    zone        352     2.50      75     30.00
+1    Desolace               T3    zone       1086     6.00     179     29.83
+1    Stonetalon Mountains   T1    poche        59     0.25      15     60.00
+1    Stonetalon Mountains   T2    zone        583     3.75     111     29.60
+1    Tanaris                T4    zone       1259     7.81     233     29.82
+1    Un'Goro Crater         T4    zone        420     2.50      75     30.00
+1    Un'Goro Crater         T5    poche       273     2.12      64     30.12
+1    Winterspring           T5    zone        733     5.06     150     29.63
+1    Silithus               T5    zone        749     3.75     112     29.87
+guid 9510001 - 9514664
+ecrit C:\Users\rlebh.RLEBHAR.000\Documents\GitHub\wowlheim\server\sql\world\008_node_spawns_production.sql 434163 octets

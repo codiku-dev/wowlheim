@@ -1,0 +1,92 @@
+== InventoryGui::CanRepair(class:3744) -> bool  il_size=235 sha=973267a7443f
+   locals_sig=0x11000298
+   0 ldsfld       Player::m_localPlayer
+   5 ldnull       
+   6 call         UnityEngine.Object::op_Equality
+  11 brfalse.s    15
+  13 ldc.i4.0     
+  14 ret          
+  15 ldarg.1      
+  16 ldfld        ItemDrop+ItemData::m_shared
+  21 ldfld        ItemDrop+ItemData+SharedData::m_canBeReparied
+  26 brtrue.s     30
+  28 ldc.i4.0     
+  29 ret          
+  30 ldsfld       Player::m_localPlayer
+  35 callvirt     Player::NoCostCheat()
+  40 brfalse.s    44
+  42 ldc.i4.1     
+  43 ret          
+  44 ldsfld       Player::m_localPlayer
+  49 callvirt     Player::GetCurrentCraftingStation()
+  54 stloc.0      
+  55 ldloc.0      
+  56 ldnull       
+  57 call         UnityEngine.Object::op_Equality
+  62 brfalse.s    66
+  64 ldc.i4.0     
+  65 ret          
+  66 call         ObjectDB::get_instance()
+  71 ldarg.1      
+  72 callvirt     ObjectDB::GetRecipe(class:3744)
+  77 stloc.1      
+  78 ldloc.1      
+  79 ldnull       
+  80 call         UnityEngine.Object::op_Equality
+  85 brfalse.s    89
+  87 ldc.i4.0     
+  88 ret          
+  89 ldloc.1      
+  90 ldfld        Recipe::m_craftingStation
+  95 ldnull       
+  96 call         UnityEngine.Object::op_Equality
+ 101 brfalse.s    119
+ 103 ldloc.1      
+ 104 ldfld        Recipe::m_repairStation
+ 109 ldnull       
+ 110 call         UnityEngine.Object::op_Equality
+ 115 brfalse.s    119
+ 117 ldc.i4.0     
+ 118 ret          
+ 119 ldloc.1      
+ 120 ldfld        Recipe::m_repairStation
+ 125 ldnull       
+ 126 call         UnityEngine.Object::op_Inequality
+ 131 brfalse.s    157
+ 133 ldloc.1      
+ 134 ldfld        Recipe::m_repairStation
+ 139 ldfld        CraftingStation::m_name
+ 144 ldloc.0      
+ 145 ldfld        CraftingStation::m_name
+ 150 call         System.String::op_Equality
+ 155 brtrue.s     208
+ 157 ldloc.1      
+ 158 ldfld        Recipe::m_craftingStation
+ 163 ldnull       
+ 164 call         UnityEngine.Object::op_Inequality
+ 169 brfalse.s    195
+ 171 ldloc.1      
+ 172 ldfld        Recipe::m_craftingStation
+ 177 ldfld        CraftingStation::m_name
+ 182 ldloc.0      
+ 183 ldfld        CraftingStation::m_name
+ 188 call         System.String::op_Equality
+ 193 brtrue.s     208
+ 195 ldarg.1      
+ 196 ldfld        ItemDrop+ItemData::m_worldLevel
+ 201 ldsfld       Game::m_worldLevel
+ 206 bge.s        233
+ 208 ldloc.0      
+ 209 ldc.i4.1     
+ 210 callvirt     CraftingStation::GetLevel(bool)
+ 215 ldc.i4.4     
+ 216 call         UnityEngine.Mathf::Min
+ 221 ldloc.1      
+ 222 ldfld        Recipe::m_minStationLevel
+ 227 bge.s        231
+ 229 ldc.i4.0     
+ 230 ret          
+ 231 ldc.i4.1     
+ 232 ret          
+ 233 ldc.i4.0     
+ 234 ret          

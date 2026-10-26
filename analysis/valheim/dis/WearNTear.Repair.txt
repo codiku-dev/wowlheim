@@ -1,0 +1,38 @@
+== WearNTear::Repair() -> bool  il_size=107 sha=28f52a22790a
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     15
+  13 ldc.i4.0     
+  14 ret          
+  15 ldarg.0      
+  16 ldfld        WearNTear::m_nview
+  21 callvirt     ZNetView::GetZDO()
+  26 ldsfld       ZDOVars::s_health
+  31 ldarg.0      
+  32 ldfld        WearNTear::m_health
+  37 callvirt     ZDO::GetFloat(i4,r4)
+  42 ldarg.0      
+  43 ldfld        WearNTear::m_health
+  48 blt.un.s     52
+  50 ldc.i4.0     
+  51 ret          
+  52 call         UnityEngine.Time::get_time
+  57 ldarg.0      
+  58 ldfld        WearNTear::m_lastRepair
+  63 sub          
+  64 ldc.r4       1
+  69 bge.un.s     73
+  71 ldc.i4.0     
+  72 ret          
+  73 ldarg.0      
+  74 call         UnityEngine.Time::get_time
+  79 stfld        WearNTear::m_lastRepair
+  84 ldarg.0      
+  85 ldfld        WearNTear::m_nview
+  90 ldstr        "RPC_Repair"
+  95 call         System.Array::Empty<T>
+ 100 callvirt     ZNetView::InvokeRPC(string,object[])
+ 105 ldc.i4.1     
+ 106 ret          

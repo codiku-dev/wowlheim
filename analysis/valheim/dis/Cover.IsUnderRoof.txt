@@ -1,0 +1,34 @@
+== Cover::IsUnderRoof il_size=89 sha=822fdb853343
+   0 call         Cover::Setup
+   5 ldarg.0      
+   6 ldc.r4       0.10000000149011612
+  11 call         UnityEngine.Vector3::get_up
+  16 ldsfld       Cover::m_raycastHits
+  21 ldc.r4       100
+  26 ldsfld       Cover::m_coverRayMask
+  31 call         UnityEngine.Physics::SphereCastNonAlloc
+  36 stloc.0      
+  37 ldc.i4.0     
+  38 stloc.1      
+  39 br.s         83
+  41 ldsfld       Cover::m_raycastHits
+  46 ldloc.1      
+  47 ldelem       0x0100002b
+  52 stloc.2      
+  53 ldloca.s     2
+  55 call         UnityEngine.RaycastHit::get_collider
+  60 callvirt     UnityEngine.Component::get_gameObject
+  65 ldstr        "leaky"
+  70 callvirt     UnityEngine.GameObject::CompareTag
+  75 brtrue.s     79
+  77 ldc.i4.1     
+  78 ret          
+  79 ldloc.1      
+  80 ldc.i4.1     
+  81 add          
+  82 stloc.1      
+  83 ldloc.1      
+  84 ldloc.0      
+  85 blt.s        41
+  87 ldc.i4.0     
+  88 ret          

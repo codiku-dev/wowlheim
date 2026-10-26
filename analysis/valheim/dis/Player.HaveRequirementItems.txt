@@ -1,0 +1,137 @@
+== Player::HaveRequirementItems(class:1080, bool, i4, i4) -> bool  il_size=337 sha=bd7e2d5d8528
+   locals_sig=0x110000a4
+   0 ldarg.0      
+   1 call         Player::GetCurrentCraftingStation()
+   6 stloc.0      
+   7 ldarg.1      
+   8 ldfld        Recipe::m_resources
+  13 stloc.1      
+  14 ldc.i4.0     
+  15 stloc.2      
+  16 br           316
+  21 ldloc.1      
+  22 ldloc.2      
+  23 ldelem.ref   
+  24 stloc.3      
+  25 ldarg.2      
+  26 brtrue.s     54
+  28 ldloc.0      
+  29 ldnull       
+  30 call         UnityEngine.Object::op_Inequality
+  35 brfalse.s    54
+  37 ldloc.0      
+  38 ldfld        CraftingStation::m_upgrader
+  43 ldloc.3      
+  44 ldfld        Piece+Requirement::m_upgraderResource
+  49 bne.un       312
+  54 ldloc.0      
+  55 ldnull       
+  56 call         UnityEngine.Object::op_Equality
+  61 brfalse.s    74
+  63 ldloc.3      
+  64 ldfld        Piece+Requirement::m_upgraderResource
+  69 brtrue       312
+  74 ldloc.3      
+  75 ldfld        Piece+Requirement::m_resItem
+  80 call         UnityEngine.Object::op_Implicit
+  85 brfalse      312
+  90 ldarg.2      
+  91 brfalse.s    188
+  93 ldloc.3      
+  94 ldfld        Piece+Requirement::m_amount
+  99 ldc.i4.0     
+ 100 ble          312
+ 105 ldarg.1      
+ 106 ldfld        Recipe::m_requireOnlyOneIngredient
+ 111 brfalse.s    152
+ 113 ldarg.0      
+ 114 ldfld        Player::m_knownMaterial
+ 119 ldloc.3      
+ 120 ldfld        Piece+Requirement::m_resItem
+ 125 ldfld        ItemDrop::m_itemData
+ 130 ldfld        ItemDrop+ItemData::m_shared
+ 135 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 140 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 145 brfalse      312
+ 150 ldc.i4.1     
+ 151 ret          
+ 152 ldarg.0      
+ 153 ldfld        Player::m_knownMaterial
+ 158 ldloc.3      
+ 159 ldfld        Piece+Requirement::m_resItem
+ 164 ldfld        ItemDrop::m_itemData
+ 169 ldfld        ItemDrop+ItemData::m_shared
+ 174 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 179 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 184 brtrue.s     312
+ 186 ldc.i4.0     
+ 187 ret          
+ 188 ldloc.3      
+ 189 ldarg.3      
+ 190 callvirt     Piece+Requirement::GetAmount(i4)
+ 195 ldarg.s      4
+ 197 mul          
+ 198 stloc.s      4
+ 200 ldc.i4.0     
+ 201 stloc.s      5
+ 203 ldc.i4.1     
+ 204 stloc.s      6
+ 206 br.s         261
+ 208 ldarg.0      
+ 209 ldfld        Humanoid::m_inventory
+ 214 ldloc.3      
+ 215 ldfld        Piece+Requirement::m_resItem
+ 220 ldfld        ItemDrop::m_itemData
+ 225 ldfld        ItemDrop+ItemData::m_shared
+ 230 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 235 ldloc.s      6
+ 237 ldc.i4.1     
+ 238 callvirt     Inventory::CountItems(string,i4,bool)
+ 243 stloc.s      7
+ 245 ldloc.s      7
+ 247 ldloc.s      5
+ 249 ble.s        255
+ 251 ldloc.s      7
+ 253 stloc.s      5
+ 255 ldloc.s      6
+ 257 ldc.i4.1     
+ 258 add          
+ 259 stloc.s      6
+ 261 ldloc.s      6
+ 263 ldloc.3      
+ 264 ldfld        Piece+Requirement::m_resItem
+ 269 ldfld        ItemDrop::m_itemData
+ 274 ldfld        ItemDrop+ItemData::m_shared
+ 279 ldfld        ItemDrop+ItemData+SharedData::m_maxQuality
+ 284 ldc.i4.1     
+ 285 add          
+ 286 blt.s        208
+ 288 ldarg.1      
+ 289 ldfld        Recipe::m_requireOnlyOneIngredient
+ 294 brfalse.s    304
+ 296 ldloc.s      5
+ 298 ldloc.s      4
+ 300 blt.s        312
+ 302 ldc.i4.1     
+ 303 ret          
+ 304 ldloc.s      5
+ 306 ldloc.s      4
+ 308 bge.s        312
+ 310 ldc.i4.0     
+ 311 ret          
+ 312 ldloc.2      
+ 313 ldc.i4.1     
+ 314 add          
+ 315 stloc.2      
+ 316 ldloc.2      
+ 317 ldloc.1      
+ 318 ldlen        
+ 319 conv.i4      
+ 320 blt          21
+ 325 ldarg.1      
+ 326 ldfld        Recipe::m_requireOnlyOneIngredient
+ 331 brfalse.s    335
+ 333 ldc.i4.0     
+ 334 ret          
+ 335 ldc.i4.1     
+ 336 ret          

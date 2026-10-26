@@ -1,0 +1,497 @@
+== WearNTear::UpdateSupport() -> void  il_size=1453 sha=527a0f1ea4e6
+   locals_sig=0x11000801
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_supportColliders
+   6 callvirt     System.Collections.Generic.List`1::get_Count
+  11 stloc.0      
+  12 ldloc.0      
+  13 ldc.i4.0     
+  14 ble          228
+  19 ldc.i4.0     
+  20 stloc.s      9
+  22 ldc.r4       0
+  27 stloc.s      10
+  29 ldc.i4.0     
+  30 stloc.s      11
+  32 br           188
+  37 ldarg.0      
+  38 ldfld        WearNTear::m_supportColliders
+  43 ldloc.s      11
+  45 callvirt     System.Collections.Generic.List`1::get_Item
+  50 stloc.s      12
+  52 ldloc.s      12
+  54 ldnull       
+  55 call         UnityEngine.Object::op_Equality
+  60 brtrue       196
+  65 ldloc.s      12
+  67 callvirt     UnityEngine.Component::GetComponentInParent<T>
+  72 stloc.s      13
+  74 ldloc.s      13
+  76 ldnull       
+  77 call         UnityEngine.Object::op_Equality
+  82 brtrue.s     196
+  84 ldloc.s      13
+  86 ldfld        WearNTear::m_supports
+  91 brfalse.s    196
+  93 ldloc.s      12
+  95 ldnull       
+  96 call         UnityEngine.Object::op_Inequality
+ 101 brfalse.s    182
+ 103 ldloc.s      12
+ 105 callvirt     UnityEngine.Component::get_transform
+ 110 callvirt     UnityEngine.Transform::get_position
+ 115 ldarg.0      
+ 116 ldfld        WearNTear::m_supportPositions
+ 121 ldloc.s      11
+ 123 callvirt     System.Collections.Generic.List`1::get_Item
+ 128 call         UnityEngine.Vector3::op_Equality
+ 133 brfalse.s    182
+ 135 ldloc.s      13
+ 137 callvirt     WearNTear::GetSupport()
+ 142 stloc.s      14
+ 144 ldloc.s      14
+ 146 ldloc.s      10
+ 148 ble.un.s     154
+ 150 ldloc.s      14
+ 152 stloc.s      10
+ 154 ldloca.s     14
+ 156 ldarg.0      
+ 157 ldfld        WearNTear::m_supportValue
+ 162 ldloc.s      11
+ 164 callvirt     System.Collections.Generic.List`1::get_Item
+ 169 call         System.Single::Equals
+ 174 brfalse.s    182
+ 176 ldloc.s      9
+ 178 ldc.i4.1     
+ 179 add          
+ 180 stloc.s      9
+ 182 ldloc.s      11
+ 184 ldc.i4.1     
+ 185 add          
+ 186 stloc.s      11
+ 188 ldloc.s      11
+ 190 ldloc.0      
+ 191 blt          37
+ 196 ldloc.s      9
+ 198 ldarg.0      
+ 199 ldfld        WearNTear::m_supportPositions
+ 204 callvirt     System.Collections.Generic.List`1::get_Count
+ 209 bne.un.s     222
+ 211 ldloc.s      10
+ 213 ldarg.0      
+ 214 ldfld        WearNTear::m_support
+ 219 ble.un.s     222
+ 221 ret          
+ 222 ldarg.0      
+ 223 call         WearNTear::ClearCachedSupport()
+ 228 ldarg.0      
+ 229 ldfld        WearNTear::m_colliders
+ 234 brtrue.s     242
+ 236 ldarg.0      
+ 237 call         WearNTear::SetupColliders()
+ 242 ldarg.0      
+ 243 ldloca.s     1
+ 245 ldloca.s     2
+ 247 ldloca.s     3
+ 249 ldloca.s     4
+ 251 call         WearNTear::GetMaterialProperties(r4&,r4&,r4&,r4&)
+ 256 ldsfld       WearNTear::s_tempSupportPoints
+ 261 callvirt     System.Collections.Generic.List`1::Clear
+ 266 ldsfld       WearNTear::s_tempSupportPointValues
+ 271 callvirt     System.Collections.Generic.List`1::Clear
+ 276 ldarg.0      
+ 277 call         WearNTear::GetCOM()
+ 282 stloc.s      5
+ 284 ldc.i4.0     
+ 285 stloc.s      6
+ 287 ldc.r4       0
+ 292 stloc.s      7
+ 294 ldarg.0      
+ 295 ldfld        WearNTear::m_bounds
+ 300 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 305 stloc.s      15
+ 307 br           1089
+ 312 ldloca.s     15
+ 314 call         Enumerator::get_Current
+ 319 stloc.s      16
+ 321 ldloc.s      16
+ 323 ldfld        WearNTear+BoundData::m_pos
+ 328 ldloc.s      16
+ 330 ldfld        WearNTear+BoundData::m_size
+ 335 ldsfld       WearNTear::s_tempColliders
+ 340 ldloc.s      16
+ 342 ldfld        WearNTear+BoundData::m_rot
+ 347 ldsfld       WearNTear::s_rayMask
+ 352 call         UnityEngine.Physics::OverlapBoxNonAlloc
+ 357 stloc.s      17
+ 359 ldarg.0      
+ 360 ldfld        WearNTear::m_clearCachedSupport
+ 365 brfalse      544
+ 370 ldc.i4.0     
+ 371 stloc.s      18
+ 373 br           528
+ 378 ldsfld       WearNTear::s_tempColliders
+ 383 ldloc.s      18
+ 385 ldelem.ref   
+ 386 stloc.s      19
+ 388 ldloc.s      19
+ 390 callvirt     UnityEngine.Collider::get_attachedRigidbody
+ 395 ldnull       
+ 396 call         UnityEngine.Object::op_Inequality
+ 401 brtrue.s     522
+ 403 ldloc.s      19
+ 405 callvirt     UnityEngine.Collider::get_isTrigger
+ 410 brtrue.s     522
+ 412 ldarg.0      
+ 413 ldfld        WearNTear::m_colliders
+ 418 ldloc.s      19
+ 420 call         System.Linq.Enumerable::Contains<T>
+ 425 brtrue.s     522
+ 427 ldloc.s      19
+ 429 callvirt     UnityEngine.Component::GetComponentInParent<T>
+ 434 stloc.s      20
+ 436 ldloc.s      20
+ 438 ldnull       
+ 439 call         UnityEngine.Object::op_Equality
+ 444 brtrue.s     522
+ 446 ldloc.s      20
+ 448 ldfld        WearNTear::m_nview
+ 453 callvirt     ZNetView::IsOwner()
+ 458 brfalse.s    469
+ 460 ldloc.s      20
+ 462 callvirt     WearNTear::ClearCachedSupport()
+ 467 br.s         522
+ 469 ldloc.s      20
+ 471 ldfld        WearNTear::m_nview
+ 476 callvirt     ZNetView::IsValid()
+ 481 brfalse.s    522
+ 483 ldloc.s      20
+ 485 ldfld        WearNTear::m_nview
+ 490 ldloc.s      20
+ 492 ldfld        WearNTear::m_nview
+ 497 callvirt     ZNetView::GetZDO()
+ 502 callvirt     ZDO::GetOwner()
+ 507 ldstr        "RPC_ClearCachedSupport"
+ 512 call         System.Array::Empty<T>
+ 517 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 522 ldloc.s      18
+ 524 ldc.i4.1     
+ 525 add          
+ 526 stloc.s      18
+ 528 ldloc.s      18
+ 530 ldloc.s      17
+ 532 blt          378
+ 537 ldarg.0      
+ 538 ldc.i4.0     
+ 539 stfld        WearNTear::m_clearCachedSupport
+ 544 ldc.i4.0     
+ 545 stloc.s      21
+ 547 br           1080
+ 552 ldsfld       WearNTear::s_tempColliders
+ 557 ldloc.s      21
+ 559 ldelem.ref   
+ 560 stloc.s      22
+ 562 ldloc.s      22
+ 564 callvirt     UnityEngine.Collider::get_attachedRigidbody
+ 569 ldnull       
+ 570 call         UnityEngine.Object::op_Inequality
+ 575 brtrue       1074
+ 580 ldloc.s      22
+ 582 callvirt     UnityEngine.Collider::get_isTrigger
+ 587 brtrue       1074
+ 592 ldarg.0      
+ 593 ldfld        WearNTear::m_colliders
+ 598 ldloc.s      22
+ 600 call         System.Linq.Enumerable::Contains<T>
+ 605 brtrue       1074
+ 610 ldloc.s      22
+ 612 callvirt     UnityEngine.Component::get_gameObject
+ 617 callvirt     UnityEngine.GameObject::get_layer
+ 622 ldsfld       WearNTear::s_terrainLayer
+ 627 stloc.s      28
+ 629 ldloca.s     28
+ 631 call         System.Nullable`1::GetValueOrDefault
+ 636 ceq          
+ 638 ldloca.s     28
+ 640 call         System.Nullable`1::get_HasValue
+ 645 and          
+ 646 brfalse.s    656
+ 648 ldc.i4.1     
+ 649 stloc.s      6
+ 651 br           1074
+ 656 ldloc.s      22
+ 658 callvirt     UnityEngine.Component::GetComponentInParent<T>
+ 663 stloc.s      23
+ 665 ldloc.s      23
+ 667 ldnull       
+ 668 call         UnityEngine.Object::op_Equality
+ 673 brfalse.s    737
+ 675 ldarg.0      
+ 676 ldflda       WearNTear::m_support
+ 681 ldloc.1      
+ 682 call         System.Single::Equals
+ 687 ldc.i4.0     
+ 688 ceq          
+ 690 ldarg.0      
+ 691 ldloc.1      
+ 692 stfld        WearNTear::m_support
+ 697 ldarg.0      
+ 698 call         WearNTear::ClearCachedSupport()
+ 703 brfalse.s    732
+ 705 ldarg.0      
+ 706 ldfld        WearNTear::m_nview
+ 711 callvirt     ZNetView::GetZDO()
+ 716 ldsfld       ZDOVars::s_support
+ 721 ldarg.0      
+ 722 ldfld        WearNTear::m_support
+ 727 callvirt     ZDO::Set(i4,r4)
+ 732 leave        1452
+ 737 ldloc.s      23
+ 739 ldfld        WearNTear::m_supports
+ 744 brfalse      1074
+ 749 ldloc.s      5
+ 751 ldloc.s      23
+ 753 callvirt     WearNTear::GetCOM()
+ 758 call         UnityEngine.Vector3::Distance
+ 763 ldc.r4       0.10000000149011612
+ 768 add          
+ 769 stloc.s      24
+ 771 ldloc.s      5
+ 773 ldloc.s      23
+ 775 callvirt     UnityEngine.Component::get_transform
+ 780 callvirt     UnityEngine.Transform::get_position
+ 785 call         UnityEngine.Vector3::Distance
+ 790 ldc.r4       0.10000000149011612
+ 795 add          
+ 796 stloc.s      25
+ 798 ldloc.s      25
+ 800 ldloc.s      24
+ 802 bge.un.s     816
+ 804 ldarg.0      
+ 805 ldfld        WearNTear::m_forceCorrectCOMCalculation
+ 810 brtrue.s     816
+ 812 ldloc.s      25
+ 814 stloc.s      24
+ 816 ldloc.s      23
+ 818 callvirt     WearNTear::GetSupport()
+ 823 stloc.s      26
+ 825 ldloc.s      7
+ 827 ldloc.s      26
+ 829 ldloc.3      
+ 830 ldloc.s      24
+ 832 mul          
+ 833 ldloc.s      26
+ 835 mul          
+ 836 sub          
+ 837 call         UnityEngine.Mathf::Max
+ 842 stloc.s      7
+ 844 ldloc.s      5
+ 846 ldloc.s      23
+ 848 ldloc.s      22
+ 850 call         WearNTear::FindSupportPoint(valuetype:81,class:2520,class:77)
+ 855 stloc.s      27
+ 857 ldloc.s      27
+ 859 ldfld        UnityEngine.Vector3::y
+ 864 ldloc.s      5
+ 866 ldfld        UnityEngine.Vector3::y
+ 871 ldc.r4       0.05000000074505806
+ 876 add          
+ 877 bge.un       1074
+ 882 ldloc.s      27
+ 884 ldloc.s      5
+ 886 call         UnityEngine.Vector3::op_Subtraction
+ 891 stloc.s      31
+ 893 ldloca.s     31
+ 895 call         UnityEngine.Vector3::get_normalized
+ 900 stloc.s      29
+ 902 ldloc.s      29
+ 904 ldfld        UnityEngine.Vector3::y
+ 909 ldc.r4       0
+ 914 bge.un.s     983
+ 916 ldc.r4       1
+ 921 ldloc.s      29
+ 923 ldfld        UnityEngine.Vector3::y
+ 928 call         UnityEngine.Mathf::Abs
+ 933 sub          
+ 934 call         UnityEngine.Mathf::Acos
+ 939 ldc.r4       1.5707963705062866
+ 944 div          
+ 945 stloc.s      32
+ 947 ldloc.3      
+ 948 ldloc.s      4
+ 950 ldloc.s      32
+ 952 call         UnityEngine.Mathf::Lerp
+ 957 stloc.s      33
+ 959 ldloc.s      26
+ 961 ldloc.s      33
+ 963 ldloc.s      24
+ 965 mul          
+ 966 ldloc.s      26
+ 968 mul          
+ 969 sub          
+ 970 stloc.s      34
+ 972 ldloc.s      7
+ 974 ldloc.s      34
+ 976 call         UnityEngine.Mathf::Max
+ 981 stloc.s      7
+ 983 ldloc.s      26
+ 985 ldloc.s      4
+ 987 ldloc.s      24
+ 989 mul          
+ 990 ldloc.s      26
+ 992 mul          
+ 993 sub          
+ 994 stloc.s      30
+ 996 ldsfld       WearNTear::s_tempSupportPoints
+1001 ldloc.s      27
+1003 callvirt     System.Collections.Generic.List`1::Add
+1008 ldsfld       WearNTear::s_tempSupportPointValues
+1013 ldloc.s      30
+1015 callvirt     System.Collections.Generic.List`1::Add
+1020 ldarg.0      
+1021 ldfld        WearNTear::m_supportColliders
+1026 ldloc.s      22
+1028 callvirt     System.Collections.Generic.List`1::Add
+1033 ldarg.0      
+1034 ldfld        WearNTear::m_supportPositions
+1039 ldloc.s      22
+1041 callvirt     UnityEngine.Component::get_transform
+1046 callvirt     UnityEngine.Transform::get_position
+1051 callvirt     System.Collections.Generic.List`1::Add
+1056 ldarg.0      
+1057 ldfld        WearNTear::m_supportValue
+1062 ldloc.s      23
+1064 callvirt     WearNTear::GetSupport()
+1069 callvirt     System.Collections.Generic.List`1::Add
+1074 ldloc.s      21
+1076 ldc.i4.1     
+1077 add          
+1078 stloc.s      21
+1080 ldloc.s      21
+1082 ldloc.s      17
+1084 blt          552
+1089 ldloca.s     15
+1091 call         Enumerator::MoveNext
+1096 brtrue       312
+1101 leave.s      1117
+1103 ldloca.s     15
+1105 constrained. 0x1b00046e
+1111 callvirt     System.IDisposable::Dispose
+1116 endfinally   
+1117 ldloc.s      6
+1119 brfalse.s    1173
+1121 ldarg.0      
+1122 ldflda       WearNTear::m_support
+1127 ldloc.1      
+1128 call         System.Single::Equals
+1133 ldc.i4.0     
+1134 ceq          
+1136 ldarg.0      
+1137 ldloc.1      
+1138 stfld        WearNTear::m_support
+1143 brfalse.s    1172
+1145 ldarg.0      
+1146 ldfld        WearNTear::m_nview
+1151 callvirt     ZNetView::GetZDO()
+1156 ldsfld       ZDOVars::s_support
+1161 ldarg.0      
+1162 ldfld        WearNTear::m_support
+1167 callvirt     ZDO::Set(i4,r4)
+1172 ret          
+1173 ldsfld       WearNTear::s_tempSupportPoints
+1178 callvirt     System.Collections.Generic.List`1::get_Count
+1183 ldc.i4.0     
+1184 ble          1371
+1189 ldsfld       WearNTear::s_tempSupportPoints
+1194 callvirt     System.Collections.Generic.List`1::get_Count
+1199 stloc.s      35
+1201 ldc.i4.0     
+1202 stloc.s      36
+1204 br           1360
+1209 ldsfld       WearNTear::s_tempSupportPoints
+1214 ldloc.s      36
+1216 callvirt     System.Collections.Generic.List`1::get_Item
+1221 ldloc.s      5
+1223 call         UnityEngine.Vector3::op_Subtraction
+1228 stloc.s      37
+1230 ldloca.s     37
+1232 ldc.r4       0
+1237 stfld        UnityEngine.Vector3::y
+1242 ldloc.s      36
+1244 ldc.i4.1     
+1245 add          
+1246 stloc.s      38
+1248 br.s         1348
+1250 ldsfld       WearNTear::s_tempSupportPointValues
+1255 ldloc.s      36
+1257 callvirt     System.Collections.Generic.List`1::get_Item
+1262 ldsfld       WearNTear::s_tempSupportPointValues
+1267 ldloc.s      38
+1269 callvirt     System.Collections.Generic.List`1::get_Item
+1274 add          
+1275 ldc.r4       0.5
+1280 mul          
+1281 stloc.s      39
+1283 ldloc.s      39
+1285 ldloc.s      7
+1287 ble.s        1342
+1289 ldsfld       WearNTear::s_tempSupportPoints
+1294 ldloc.s      38
+1296 callvirt     System.Collections.Generic.List`1::get_Item
+1301 ldloc.s      5
+1303 call         UnityEngine.Vector3::op_Subtraction
+1308 stloc.s      40
+1310 ldloca.s     40
+1312 ldc.r4       0
+1317 stfld        UnityEngine.Vector3::y
+1322 ldloc.s      37
+1324 ldloc.s      40
+1326 call         UnityEngine.Vector3::Angle
+1331 ldc.r4       100
+1336 blt.un.s     1342
+1338 ldloc.s      39
+1340 stloc.s      7
+1342 ldloc.s      38
+1344 ldc.i4.1     
+1345 add          
+1346 stloc.s      38
+1348 ldloc.s      38
+1350 ldloc.s      35
+1352 blt.s        1250
+1354 ldloc.s      36
+1356 ldc.i4.1     
+1357 add          
+1358 stloc.s      36
+1360 ldloc.s      36
+1362 ldloc.s      35
+1364 ldc.i4.1     
+1365 sub          
+1366 blt          1209
+1371 ldarg.0      
+1372 ldfld        WearNTear::m_support
+1377 stloc.s      8
+1379 ldarg.0      
+1380 ldloc.s      7
+1382 ldloc.1      
+1383 call         UnityEngine.Mathf::Min
+1388 stfld        WearNTear::m_support
+1393 ldarg.0      
+1394 ldflda       WearNTear::m_support
+1399 ldloc.s      8
+1401 call         System.Single::Equals
+1406 ldc.i4.0     
+1407 ceq          
+1409 brfalse.s    1438
+1411 ldarg.0      
+1412 ldfld        WearNTear::m_nview
+1417 callvirt     ZNetView::GetZDO()
+1422 ldsfld       ZDOVars::s_support
+1427 ldarg.0      
+1428 ldfld        WearNTear::m_support
+1433 callvirt     ZDO::Set(i4,r4)
+1438 ldarg.0      
+1439 call         WearNTear::HaveSupport()
+1444 brtrue.s     1452
+1446 ldarg.0      
+1447 call         WearNTear::ClearCachedSupport()
+1452 ret          

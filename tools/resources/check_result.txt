@@ -1,0 +1,125 @@
+
+====================================================================================================
+1. VALIDATIONS DE FORME (base : wl_scratch)
+====================================================================================================
+objets 9200001-9299999 : 39 (materiaux 29, outils 10), tous description=Wowlheim, aucune competence requise : OK
+references : 74 entrees, 260 lignes ; lignes creature_loot_template ajoutees : 2292 ; erreurs de forme jusqu'ici : 0
+verification SQL independante : lignes sur rang hors 0/1, PNJ, critters, totems : 0 ; LootId ayant une creature hors continents : 0
+LootId modifies partages entre plusieurs modeles : 0
+lignes hors plage Wowlheim identiques a classicmangos : creature_loot_template     151800 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : reference_loot_template    32972 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : item_template              17718 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : gameobject_template        10750 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : gameobject_loot_template   12547 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : npc_vendor                 11694 lignes (OK)
+lignes hors plage Wowlheim identiques a classicmangos : gameobject                 47370 lignes (OK)
+noeuds : 23 modeles (type 3, data0=0 sans verrou, displayId present dans GameObjectDisplayInfo.dbc : verifie)
+
+====================================================================================================
+2. SOURCES PAR RESSOURCE (donnees reelles de la base wl_scratch ; zone = fichiers .map ; seuil 10 apparitions)
+====================================================================================================
+Legende : « types de sources » = parmi B/N/V combien existent ; « sources independantes » = familles de creatures distinctes + noeud + vendeur. B=butin de famille (categories/modeles/familles distinctes) N=noeud (modeles; apparitions en base) V=vendeur (lignes) C=conversion (PROPOSEE, non implementee : n'est PAS comptee)
+ressource          pal B cat/modeles/familles     N modeles/spawns   V lignes  C prop.   types de sources / sources independantes
+Bois               T1   5 cat /  561 mod /  2 fam    1 mod /  44     10       0        types 3/3, independantes 4 
+Pierre             T1   6 cat /  562 mod /  3 fam    5 mod /  40     10       0        types 3/3, independantes 5 
+Silex              T1   5 cat /  553 mod /  2 fam    2 mod /  34     10       1        types 3/3, independantes 4 (+1 conv. proposee)
+Résine             T1   6 cat /  597 mod /  3 fam    4 mod /  50     10       0        types 3/3, independantes 5 
+Peau de cerf       T1   3 cat /  237 mod / 16 fam    0 mod /   0     10       0        types 2/3, independantes 17 
+Chutes de cuir     T1   6 cat /  731 mod /  8 fam    0 mod /   0     10       1        types 2/3, independantes 9 (+1 conv. proposee)
+Andouiller         T1   6 cat /  345 mod / 15 fam    1 mod /   2      0       0        types 2/3, independantes 16 
+Bois fin           T2   6 cat /  651 mod /  3 fam    1 mod /   2      7       1        types 3/3, independantes 5 (+1 conv. proposee)
+Bois de cœur       T2   6 cat /  651 mod /  3 fam    4 mod /   8      7       1        types 3/3, independantes 5 (+1 conv. proposee)
+Cuivre             T2   6 cat /  654 mod /  3 fam    1 mod /   2      7       0        types 3/3, independantes 5 
+Étain              T2   6 cat /  654 mod /  3 fam    1 mod /   2      7       0        types 3/3, independantes 5 
+Bronze             T2   0 cat /    0 mod /  0 fam    0 mod /   0      0       1        types 0/3, independantes 0 (+1 conv. proposee)
+Peau de troll      T2   3 cat /  117 mod /  9 fam    0 mod /   0      7       0        types 2/3, independantes 10 
+Œil de gréling     T2   6 cat /  353 mod /  3 fam    1 mod /   2      0       0        types 2/3, independantes 4 
+Fer                T3   7 cat /  563 mod /  4 fam    1 mod /   2      6       0        types 3/3, independantes 6 
+Écorce ancienne    T3   7 cat /  599 mod /  4 fam    1 mod /   2      6       0        types 3/3, independantes 6 
+Fragments d'os     T3   9 cat /  797 mod / 17 fam    0 mod /   0      6       0        types 2/3, independantes 18 
+Entrailles         T3   5 cat /  269 mod / 16 fam    0 mod /   0      6       0        types 2/3, independantes 17 
+Noyau de Surtling  T3   4 cat /   60 mod /  3 fam    1 mod /   2      0       0        types 2/3, independantes 4 
+Argent             T4   7 cat /  461 mod /  4 fam    1 mod /   2      7       0        types 3/3, independantes 6 
+Obsidienne         T4   5 cat /  155 mod /  5 fam    1 mod /   2      7       0        types 3/3, independantes 7 
+Fourrure de loup   T4   1 cat /   58 mod /  7 fam    0 mod /   0      7       0        types 2/3, independantes 8 
+Cristal            T4   5 cat /  147 mod /  4 fam    1 mod /   2      7       0        types 3/3, independantes 6 
+Glande de gel      T4   3 cat /   81 mod /  8 fam    1 mod /   2      0       0        types 2/3, independantes 9 
+Métal noir         T5   7 cat /  207 mod /  4 fam    1 mod /   2      3       0        types 3/3, independantes 6 
+Lin                T5   6 cat /  227 mod /  3 fam    1 mod /   2      3       0        types 3/3, independantes 5 
+Fil de lin         T5   6 cat /  227 mod /  3 fam    0 mod /   0      3       1        types 2/3, independantes 4 (+1 conv. proposee)
+Peau de lox        T5   2 cat /   63 mod / 10 fam    0 mod /   0      3       0        types 2/3, independantes 11 
+Noyau noir         T5   4 cat /  152 mod /  4 fam    1 mod /   2      0       0        types 2/3, independantes 5 
+
+====================================================================================================
+3. ZONES PAR CONTINENT ET PAR FACTION (butin de mobs de PALIER NATIF uniquement ; retour en arriere exclu)
+====================================================================================================
+zones = zones comptant >= 10 apparitions de creatures dont le butin contient la ressource. A/H = zones accessibles a l'Alliance/Horde (zones contestees comptees pour les deux ; classification manuelle rules.ZONE_FACTION).
+ressource          pal | Royaumes de l'Est (zones, A, H) | Kalimdor (zones, A, H)     | constat
+Bois               T1  |  7 zones (A  5, H  2)      |  6 zones (A  3, H  4)      | ok
+Pierre             T1  |  7 zones (A  5, H  2)      |  6 zones (A  3, H  4)      | ok
+Silex              T1  |  7 zones (A  5, H  2)      |  6 zones (A  3, H  4)      | ok
+Résine             T1  |  7 zones (A  5, H  2)      |  6 zones (A  3, H  4)      | ok
+Peau de cerf       T1  |  6 zones (A  4, H  2)      |  6 zones (A  2, H  4)      | ok
+Chutes de cuir     T1  |  7 zones (A  5, H  2)      |  6 zones (A  3, H  4)      | ok
+Andouiller         T1  |  7 zones (A  5, H  2)      |  7 zones (A  3, H  5)      | ok
+Bois fin           T2  |  8 zones (A  7, H  2)      |  5 zones (A  4, H  4)      | ok
+Bois de cœur       T2  |  8 zones (A  7, H  2)      |  5 zones (A  4, H  4)      | ok
+Cuivre             T2  |  8 zones (A  7, H  2)      |  5 zones (A  4, H  4)      | ok
+Étain              T2  |  8 zones (A  7, H  2)      |  5 zones (A  4, H  4)      | ok
+Peau de troll      T2  |  8 zones (A  7, H  3)      |  5 zones (A  4, H  4)      | ok
+Œil de gréling     T2  |  9 zones (A  8, H  3)      |  5 zones (A  4, H  4)      | ok
+Fer                T3  | 10 zones (A  9, H  7)      |  5 zones (A  4, H  5)      | ok
+Écorce ancienne    T3  | 10 zones (A  9, H  7)      |  5 zones (A  4, H  5)      | ok
+Fragments d'os     T3  | 10 zones (A  9, H  7)      |  5 zones (A  4, H  5)      | ok
+Entrailles         T3  |  7 zones (A  7, H  6)      |  5 zones (A  4, H  5)      | ok
+Noyau de Surtling  T3  |  6 zones (A  6, H  5)      |  4 zones (A  3, H  4)      | ok
+Argent             T4  |  9 zones (A  9, H  9)      |  5 zones (A  5, H  5)      | ok
+Obsidienne         T4  |  6 zones (A  6, H  6)      |  5 zones (A  5, H  5)      | ok
+Fourrure de loup   T4  |  4 zones (A  4, H  4)      |  4 zones (A  4, H  4)      | ok
+Cristal            T4  |  5 zones (A  5, H  5)      |  7 zones (A  7, H  7)      | ok
+Glande de gel      T4  |  7 zones (A  7, H  7)      |  7 zones (A  7, H  7)      | ok
+Métal noir         T5  |  8 zones (A  8, H  7)      |  8 zones (A  8, H  6)      | ok
+Lin                T5  |  9 zones (A  9, H  8)      |  8 zones (A  8, H  6)      | ok
+Fil de lin         T5  |  9 zones (A  9, H  8)      |  8 zones (A  8, H  6)      | ok
+Peau de lox        T5  |  4 zones (A  4, H  4)      |  6 zones (A  6, H  6)      | ok
+Noyau noir         T5  |  8 zones (A  8, H  7)      |  6 zones (A  6, H  6)      | ok
+
+====================================================================================================
+4. COUVERTURE PAR PALIER (toutes ressources du palier confondues, butin de mobs natif)
+====================================================================================================
+palier 1 (Prairie) : EK 7 zones ['Dun Morogh', 'Elwynn Forest', 'Loch Modan', 'Redridge Mountains', 'Silverpine Forest', 'Tirisfal Glades', 'Westfall'] | Kalimdor 7 zones ['Darkshore', 'Durotar', 'Mulgore', 'Stonetalon Mountains', 'Teldrassil', 'The Barrens', 'Thunder Bluff']
+palier 2 (Foret noire) : EK 9 zones ['Alterac Mountains', 'Dun Morogh', 'Duskwood', 'Hillsbrad Foothills', 'Loch Modan', 'Redridge Mountains', 'Silverpine Forest', 'Westfall', 'Wetlands'] | Kalimdor 5 zones ['Ashenvale', 'Darkshore', 'Stonetalon Mountains', 'The Barrens', 'Thousand Needles']
+palier 3 (Marais) : EK 10 zones ['Alterac Mountains', 'Arathi Highlands', 'Badlands', 'Duskwood', 'Hillsbrad Foothills', 'Loch Modan', 'Stranglethorn Vale', 'Swamp of Sorrows', 'Tirisfal Glades', 'Wetlands'] | Kalimdor 5 zones ['Ashenvale', 'Desolace', 'Dustwallow Marsh', 'The Barrens', 'Thousand Needles']
+palier 4 (Montagne) : EK 10 zones ['Alterac Mountains', 'Arathi Highlands', 'Badlands', 'Blasted Lands', 'Burning Steppes', 'Searing Gorge', 'Stranglethorn Vale', 'Swamp of Sorrows', 'The Hinterlands', 'Western Plaguelands'] | Kalimdor 7 zones ['Azshara', 'Desolace', 'Dustwallow Marsh', 'Felwood', 'Feralas', 'Tanaris', "Un'Goro Crater"]
+palier 5 (Plaines) : EK 9 zones ['Blasted Lands', 'Burning Steppes', 'Deadwind Pass', 'Dun Morogh', 'Eastern Plaguelands', 'Hillsbrad Foothills', 'Stranglethorn Vale', 'Swamp of Sorrows', 'Western Plaguelands'] | Kalimdor 9 zones ['Azshara', 'Darkshore', 'Dustwallow Marsh', 'Felwood', 'Feralas', 'Silithus', 'Teldrassil', "Un'Goro Crater", 'Winterspring']
+
+====================================================================================================
+5. CE QUI NE PEUT PAS ETRE SATISFAIT AVEC LES DONNEES DU JEU (ou n'est pas verifie)
+====================================================================================================
+[MANQUE] Bois : seulement 2 famille(s)/type(s) de creatures distincts en butin (cahier : pas de goulot unique)
+[MANQUE] Silex : seulement 2 famille(s)/type(s) de creatures distincts en butin (cahier : pas de goulot unique)
+[LIMITE] Peau de cerf (T1) : 2/3 sources verifiees en base (manque : noeud) ; 16 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Chutes de cuir (T1) : 2/3 sources verifiees en base (manque : noeud) ; conversion proposee x1 (non implementee) ; 8 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Bronze : materiau fabrique, aucune source de butin/noeud/vendeur par conception ; sa source = conversion cuivre+etain (proposee, a coder). Compte 0 source(s) verifiee(s).
+[LIMITE] Peau de troll (T2) : 2/3 sources verifiees en base (manque : noeud) ; 9 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Fragments d'os (T3) : 2/3 sources verifiees en base (manque : noeud) ; 17 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Entrailles (T3) : 2/3 sources verifiees en base (manque : noeud) ; 16 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Fourrure de loup (T4) : 2/3 sources verifiees en base (manque : noeud) ; 7 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Fil de lin (T5) : 2/3 sources verifiees en base (manque : noeud) ; conversion proposee x1 (non implementee) ; 3 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Peau de lox (T5) : 2/3 sources verifiees en base (manque : noeud) ; 10 familles distinctes de creatures ; proposition : noeud de carcasse/depouille (gameobject) ou conversion serveur
+[LIMITE] Vendeur de secours palier 4 sur Royaumes de l'Est : 2 zone(s) seulement (Swamp of Sorrows, The Hinterlands) : il manque des vendeurs « General/Trade » dans des zones de ce palier.
+[LIMITE] Vendeur de secours palier 5 sur Royaumes de l'Est : 1 zone(s) seulement (Eastern Plaguelands) : il manque des vendeurs « General/Trade » dans des zones de ce palier.
+[LIMITE] Vendeur de secours palier 5 sur Kalimdor : 2 zone(s) seulement (Silithus, Winterspring) : il manque des vendeurs « General/Trade » dans des zones de ce palier.
+[NON VERIFIE] Accessibilite reelle des zones (mmaps absentes), faction des zones (classification manuelle), aucun test en jeu : loot jamais tire par le serveur reel.
+[NON VERIFIE] Verrouillage des noeuds : data0=0 -> sans code serveur un noeud est recoltable a la main (decision du cahier : controle de l'outil dans le code serveur).
+[NON VERIFIE] Apparitions de noeuds : seule la validation (Elwynn/Durotar/Dun Morogh) est generee ; les zones de production des paliers 2-5 n'ont pas de noeuds.
+[NON VERIFIE] Sol sous les noeuds : z lu sur des creatures terrestres, jamais verifie contre le terrain.
+
+====================================================================================================
+RESULTAT
+====================================================================================================
+Validations de forme : TOUTES OK (18 constats de couverture listes ci-dessus ; ce ne sont pas des erreurs de forme).
+passe 1 : 5 scripts appliques sans erreur
+passe 2 : 5 scripts appliques sans erreur
+check.py code retour : 0
+wl_scratch supprimee

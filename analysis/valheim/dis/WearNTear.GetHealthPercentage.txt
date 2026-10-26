@@ -1,0 +1,11 @@
+== WearNTear::GetHealthPercentage() -> r4  il_size=26 sha=ac4db244d499
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     19
+  13 ldc.r4       1
+  18 ret          
+  19 ldarg.0      
+  20 ldfld        WearNTear::m_healthPercentage
+  25 ret          

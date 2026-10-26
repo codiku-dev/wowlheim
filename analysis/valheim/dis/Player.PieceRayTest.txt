@@ -1,0 +1,109 @@
+== Player::PieceRayTest(valuetype:81&, valuetype:81&, class:2264&, class:2124&, class:77&, bool) -> bool  il_size=313 sha=4be0157c6e07
+   locals_sig=0x110000bb
+   0 ldarg.0      
+   1 ldfld        Player::m_placeRayMask
+   6 stloc.0      
+   7 ldarg.s      6
+   9 brfalse.s    18
+  11 ldarg.0      
+  12 ldfld        Player::m_placeWaterRayMask
+  17 stloc.0      
+  18 call         GameCamera::get_instance()
+  23 callvirt     UnityEngine.Component::get_transform
+  28 callvirt     UnityEngine.Transform::get_position
+  33 call         GameCamera::get_instance()
+  38 callvirt     UnityEngine.Component::get_transform
+  43 callvirt     UnityEngine.Transform::get_forward
+  48 ldloca.s     1
+  50 ldc.r4       50
+  55 ldloc.0      
+  56 call         UnityEngine.Physics::Raycast
+  61 brfalse      278
+  66 ldarg.0      
+  67 ldfld        Player::m_maxPlaceDistance
+  72 stloc.2      
+  73 ldarg.0      
+  74 ldfld        Player::m_placementGhost
+  79 call         UnityEngine.Object::op_Implicit
+  84 brfalse.s    111
+  86 ldarg.0      
+  87 ldfld        Player::m_placementGhost
+  92 callvirt     UnityEngine.GameObject::GetComponent<T>
+  97 stloc.3      
+  98 ldloc.3      
+  99 brfalse.s    111
+ 101 ldloc.2      
+ 102 ldloc.3      
+ 103 ldfld        Piece::m_extraPlacementDistance
+ 108 conv.r4      
+ 109 add          
+ 110 stloc.2      
+ 111 ldloca.s     1
+ 113 call         UnityEngine.RaycastHit::get_collider
+ 118 call         UnityEngine.Object::op_Implicit
+ 123 brfalse      278
+ 128 ldloca.s     1
+ 130 call         UnityEngine.RaycastHit::get_collider
+ 135 callvirt     UnityEngine.Collider::get_attachedRigidbody
+ 140 call         UnityEngine.Object::op_Implicit
+ 145 brtrue       278
+ 150 ldarg.0      
+ 151 ldfld        Character::m_eye
+ 156 callvirt     UnityEngine.Transform::get_position
+ 161 ldloca.s     1
+ 163 call         UnityEngine.RaycastHit::get_point
+ 168 call         UnityEngine.Vector3::Distance
+ 173 ldloc.2      
+ 174 bge.un.s     278
+ 176 ldarg.1      
+ 177 ldloca.s     1
+ 179 call         UnityEngine.RaycastHit::get_point
+ 184 stobj        0x01000014
+ 189 ldarg.2      
+ 190 ldloca.s     1
+ 192 call         UnityEngine.RaycastHit::get_normal
+ 197 stobj        0x01000014
+ 202 ldarg.3      
+ 203 ldloca.s     1
+ 205 call         UnityEngine.RaycastHit::get_collider
+ 210 callvirt     UnityEngine.Component::GetComponentInParent<T>
+ 215 stind.ref    
+ 216 ldarg.s      4
+ 218 ldloca.s     1
+ 220 call         UnityEngine.RaycastHit::get_collider
+ 225 callvirt     UnityEngine.Component::GetComponent<T>
+ 230 stind.ref    
+ 231 ldloca.s     1
+ 233 call         UnityEngine.RaycastHit::get_collider
+ 238 callvirt     UnityEngine.Component::get_gameObject
+ 243 callvirt     UnityEngine.GameObject::get_layer
+ 248 ldstr        "Water"
+ 253 call         UnityEngine.LayerMask::NameToLayer
+ 258 bne.un.s     272
+ 260 ldarg.s      5
+ 262 ldloca.s     1
+ 264 call         UnityEngine.RaycastHit::get_collider
+ 269 stind.ref    
+ 270 br.s         276
+ 272 ldarg.s      5
+ 274 ldnull       
+ 275 stind.ref    
+ 276 ldc.i4.1     
+ 277 ret          
+ 278 ldarg.1      
+ 279 call         UnityEngine.Vector3::get_zero
+ 284 stobj        0x01000014
+ 289 ldarg.2      
+ 290 call         UnityEngine.Vector3::get_zero
+ 295 stobj        0x01000014
+ 300 ldarg.3      
+ 301 ldnull       
+ 302 stind.ref    
+ 303 ldarg.s      4
+ 305 ldnull       
+ 306 stind.ref    
+ 307 ldarg.s      5
+ 309 ldnull       
+ 310 stind.ref    
+ 311 ldc.i4.0     
+ 312 ret          

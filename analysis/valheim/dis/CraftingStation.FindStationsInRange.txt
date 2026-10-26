@@ -1,0 +1,33 @@
+== CraftingStation::FindStationsInRange(string, valuetype:81, r4, class:165<class:1048>) -> void  il_size=88 sha=105f1dd67813
+   locals_sig=0x11000370
+   0 ldsfld       CraftingStation::m_allStations
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         62
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldfld        CraftingStation::m_name
+  27 ldarg.0      
+  28 call         System.String::op_Inequality
+  33 brtrue.s     62
+  35 ldloc.1      
+  36 callvirt     UnityEngine.Component::get_transform
+  41 callvirt     UnityEngine.Transform::get_position
+  46 ldarg.1      
+  47 call         UnityEngine.Vector3::Distance
+  52 ldarg.2      
+  53 bge.un.s     62
+  55 ldarg.3      
+  56 ldloc.1      
+  57 callvirt     System.Collections.Generic.List`1::Add
+  62 ldloca.s     0
+  64 call         Enumerator::MoveNext
+  69 brtrue.s     13
+  71 leave.s      87
+  73 ldloca.s     0
+  75 constrained. 0x1b0001fc
+  81 callvirt     System.IDisposable::Dispose
+  86 endfinally   
+  87 ret          

@@ -1,0 +1,8 @@
+== CraftingStation::GetStationBuildRange() -> r4  il_size=14 sha=3b8da15f4a34
+   locals_sig=null
+   0 ldarg.0      
+   1 call         CraftingStation::GetExtensions()
+   6 pop          
+   7 ldarg.0      
+   8 ldfld        CraftingStation::m_buildRange
+  13 ret          

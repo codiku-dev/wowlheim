@@ -1,0 +1,6 @@
+## Interface: 11200
+## Title: Wowlheim
+## Notes: Exemple minimal de client de construction (envoie .build place <id>, affiche la reponse serveur).
+## Author: projet Wowlheim
+## Version: 0.1-example
+Wowlheim.lua

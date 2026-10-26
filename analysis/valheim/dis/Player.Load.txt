@@ -1,0 +1,641 @@
+== Player::Load(class:1268) -> void  il_size=1557 sha=acf856698c98
+   locals_sig=0x110000c1
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        Player::m_isLoading
+   7 ldarg.0      
+   8 call         Humanoid::UnequipAllItems()
+  13 ldarg.1      
+  14 callvirt     ZPackage::ReadInt()
+  19 stloc.0      
+  20 ldloc.0      
+  21 ldc.i4.7     
+  22 blt.s        37
+  24 ldarg.0      
+  25 ldarg.1      
+  26 callvirt     ZPackage::ReadSingle()
+  31 ldc.i4.0     
+  32 call         Player::SetMaxHealth(r4,bool)
+  37 ldarg.1      
+  38 callvirt     ZPackage::ReadSingle()
+  43 stloc.1      
+  44 ldarg.0      
+  45 call         Character::GetMaxHealth()
+  50 stloc.2      
+  51 ldloc.1      
+  52 ldc.r4       0
+  57 ble.s        71
+  59 ldloc.1      
+  60 ldloc.2      
+  61 bgt.s        71
+  63 ldloc.1      
+  64 call         System.Single::IsNaN
+  69 brfalse.s    73
+  71 ldloc.2      
+  72 stloc.1      
+  73 ldarg.0      
+  74 ldloc.1      
+  75 call         Character::SetHealth(r4)
+  80 ldloc.0      
+  81 ldc.i4.s     10
+  83 blt.s        110
+  85 ldarg.1      
+  86 callvirt     ZPackage::ReadSingle()
+  91 stloc.s      5
+  93 ldarg.0      
+  94 ldloc.s      5
+  96 ldc.i4.0     
+  97 call         Player::SetMaxStamina(r4,bool)
+ 102 ldarg.0      
+ 103 ldloc.s      5
+ 105 stfld        Player::m_stamina
+ 110 ldloc.0      
+ 111 ldc.i4.8     
+ 112 blt.s        126
+ 114 ldloc.0      
+ 115 ldc.i4.s     28
+ 117 bge.s        126
+ 119 ldarg.1      
+ 120 callvirt     ZPackage::ReadBool()
+ 125 pop          
+ 126 ldloc.0      
+ 127 ldc.i4.s     20
+ 129 blt.s        143
+ 131 ldarg.0      
+ 132 ldarg.1      
+ 133 callvirt     ZPackage::ReadSingle()
+ 138 stfld        Player::m_timeSinceDeath
+ 143 ldloc.0      
+ 144 ldc.i4.s     23
+ 146 blt.s        164
+ 148 ldarg.1      
+ 149 callvirt     ZPackage::ReadString()
+ 154 stloc.s      6
+ 156 ldarg.0      
+ 157 ldloc.s      6
+ 159 call         Player::SetGuardianPower(string)
+ 164 ldloc.0      
+ 165 ldc.i4.s     24
+ 167 blt.s        181
+ 169 ldarg.0      
+ 170 ldarg.1      
+ 171 callvirt     ZPackage::ReadSingle()
+ 176 stfld        Player::m_guardianPowerCooldown
+ 181 ldloc.0      
+ 182 ldc.i4.2     
+ 183 bne.un.s     192
+ 185 ldarg.1      
+ 186 callvirt     ZPackage::ReadZDOID()
+ 191 pop          
+ 192 ldarg.0      
+ 193 ldfld        Humanoid::m_inventory
+ 198 ldarg.1      
+ 199 callvirt     Inventory::Load(class:1268)
+ 204 ldarg.1      
+ 205 callvirt     ZPackage::ReadInt()
+ 210 stloc.3      
+ 211 ldc.i4.0     
+ 212 stloc.s      7
+ 214 br.s         244
+ 216 ldarg.1      
+ 217 callvirt     ZPackage::ReadString()
+ 222 stloc.s      8
+ 224 ldarg.0      
+ 225 ldfld        Player::m_knownRecipes
+ 230 ldloc.s      8
+ 232 callvirt     System.Collections.Generic.HashSet`1::Add
+ 237 pop          
+ 238 ldloc.s      7
+ 240 ldc.i4.1     
+ 241 add          
+ 242 stloc.s      7
+ 244 ldloc.s      7
+ 246 ldloc.3      
+ 247 blt.s        216
+ 249 ldloc.0      
+ 250 ldc.i4.s     15
+ 252 bge.s        288
+ 254 ldarg.1      
+ 255 callvirt     ZPackage::ReadInt()
+ 260 stloc.s      9
+ 262 ldc.i4.0     
+ 263 stloc.s      10
+ 265 br.s         280
+ 267 ldarg.1      
+ 268 callvirt     ZPackage::ReadString()
+ 273 pop          
+ 274 ldloc.s      10
+ 276 ldc.i4.1     
+ 277 add          
+ 278 stloc.s      10
+ 280 ldloc.s      10
+ 282 ldloc.s      9
+ 284 blt.s        267
+ 286 br.s         344
+ 288 ldarg.1      
+ 289 callvirt     ZPackage::ReadInt()
+ 294 stloc.s      11
+ 296 ldc.i4.0     
+ 297 stloc.s      12
+ 299 br.s         338
+ 301 ldarg.1      
+ 302 callvirt     ZPackage::ReadString()
+ 307 stloc.s      13
+ 309 ldarg.1      
+ 310 callvirt     ZPackage::ReadInt()
+ 315 stloc.s      14
+ 317 ldarg.0      
+ 318 ldfld        Player::m_knownStations
+ 323 ldloc.s      13
+ 325 ldloc.s      14
+ 327 callvirt     System.Collections.Generic.Dictionary`2::Add
+ 332 ldloc.s      12
+ 334 ldc.i4.1     
+ 335 add          
+ 336 stloc.s      12
+ 338 ldloc.s      12
+ 340 ldloc.s      11
+ 342 blt.s        301
+ 344 ldarg.1      
+ 345 callvirt     ZPackage::ReadInt()
+ 350 stloc.s      4
+ 352 ldc.i4.0     
+ 353 stloc.s      15
+ 355 br.s         385
+ 357 ldarg.1      
+ 358 callvirt     ZPackage::ReadString()
+ 363 stloc.s      16
+ 365 ldarg.0      
+ 366 ldfld        Player::m_knownMaterial
+ 371 ldloc.s      16
+ 373 callvirt     System.Collections.Generic.HashSet`1::Add
+ 378 pop          
+ 379 ldloc.s      15
+ 381 ldc.i4.1     
+ 382 add          
+ 383 stloc.s      15
+ 385 ldloc.s      15
+ 387 ldloc.s      4
+ 389 blt.s        357
+ 391 ldloc.0      
+ 392 ldc.i4.s     19
+ 394 blt.s        401
+ 396 ldloc.0      
+ 397 ldc.i4.s     21
+ 399 blt.s        448
+ 401 ldarg.1      
+ 402 callvirt     ZPackage::ReadInt()
+ 407 stloc.s      17
+ 409 ldc.i4.0     
+ 410 stloc.s      18
+ 412 br.s         442
+ 414 ldarg.1      
+ 415 callvirt     ZPackage::ReadString()
+ 420 stloc.s      19
+ 422 ldarg.0      
+ 423 ldfld        Player::m_shownTutorials
+ 428 ldloc.s      19
+ 430 callvirt     System.Collections.Generic.HashSet`1::Add
+ 435 pop          
+ 436 ldloc.s      18
+ 438 ldc.i4.1     
+ 439 add          
+ 440 stloc.s      18
+ 442 ldloc.s      18
+ 444 ldloc.s      17
+ 446 blt.s        414
+ 448 ldloc.0      
+ 449 ldc.i4.6     
+ 450 blt.s        499
+ 452 ldarg.1      
+ 453 callvirt     ZPackage::ReadInt()
+ 458 stloc.s      20
+ 460 ldc.i4.0     
+ 461 stloc.s      21
+ 463 br.s         493
+ 465 ldarg.1      
+ 466 callvirt     ZPackage::ReadString()
+ 471 stloc.s      22
+ 473 ldarg.0      
+ 474 ldfld        Player::m_uniques
+ 479 ldloc.s      22
+ 481 callvirt     System.Collections.Generic.HashSet`1::Add
+ 486 pop          
+ 487 ldloc.s      21
+ 489 ldc.i4.1     
+ 490 add          
+ 491 stloc.s      21
+ 493 ldloc.s      21
+ 495 ldloc.s      20
+ 497 blt.s        465
+ 499 ldloc.0      
+ 500 ldc.i4.s     9
+ 502 blt.s        551
+ 504 ldarg.1      
+ 505 callvirt     ZPackage::ReadInt()
+ 510 stloc.s      23
+ 512 ldc.i4.0     
+ 513 stloc.s      24
+ 515 br.s         545
+ 517 ldarg.1      
+ 518 callvirt     ZPackage::ReadString()
+ 523 stloc.s      25
+ 525 ldarg.0      
+ 526 ldfld        Player::m_trophies
+ 531 ldloc.s      25
+ 533 callvirt     System.Collections.Generic.HashSet`1::Add
+ 538 pop          
+ 539 ldloc.s      24
+ 541 ldc.i4.1     
+ 542 add          
+ 543 stloc.s      24
+ 545 ldloc.s      24
+ 547 ldloc.s      23
+ 549 blt.s        517
+ 551 ldloc.0      
+ 552 ldc.i4.s     33
+ 554 bge.s        561
+ 556 ldloc.0      
+ 557 ldc.i4.s     31
+ 559 bne.un.s     610
+ 561 ldarg.1      
+ 562 callvirt     ZPackage::ReadInt()
+ 567 stloc.s      26
+ 569 ldc.i4.0     
+ 570 stloc.s      27
+ 572 br.s         602
+ 574 ldarg.1      
+ 575 callvirt     ZPackage::ReadString()
+ 580 stloc.s      28
+ 582 ldarg.0      
+ 583 ldfld        Player::m_knownBiome
+ 588 ldloc.s      28
+ 590 callvirt     System.Collections.Generic.HashSet`1::Add
+ 595 pop          
+ 596 ldloc.s      27
+ 598 ldc.i4.1     
+ 599 add          
+ 600 stloc.s      27
+ 602 ldloc.s      27
+ 604 ldloc.s      26
+ 606 blt.s        574
+ 608 br.s         667
+ 610 ldloc.0      
+ 611 ldc.i4.s     18
+ 613 blt.s        667
+ 615 ldarg.1      
+ 616 callvirt     ZPackage::ReadInt()
+ 621 stloc.s      29
+ 623 ldc.i4.0     
+ 624 stloc.s      30
+ 626 br.s         661
+ 628 ldarg.1      
+ 629 callvirt     ZPackage::ReadInt()
+ 634 stloc.s      31
+ 636 ldarg.0      
+ 637 ldfld        Player::m_knownBiome
+ 642 ldloc.s      31
+ 644 call         BiomeSector::GetBiomeName(valuetype:4592)
+ 649 callvirt     System.Collections.Generic.HashSet`1::Add
+ 654 pop          
+ 655 ldloc.s      30
+ 657 ldc.i4.1     
+ 658 add          
+ 659 stloc.s      30
+ 661 ldloc.s      30
+ 663 ldloc.s      29
+ 665 blt.s        628
+ 667 ldloc.0      
+ 668 ldc.i4.s     22
+ 670 blt.s        728
+ 672 ldarg.1      
+ 673 callvirt     ZPackage::ReadInt()
+ 678 stloc.s      32
+ 680 ldc.i4.0     
+ 681 stloc.s      33
+ 683 br.s         722
+ 685 ldarg.1      
+ 686 callvirt     ZPackage::ReadString()
+ 691 stloc.s      34
+ 693 ldarg.1      
+ 694 callvirt     ZPackage::ReadString()
+ 699 stloc.s      35
+ 701 ldarg.0      
+ 702 ldfld        Player::m_knownTexts
+ 707 ldloc.s      34
+ 709 ldloc.s      35
+ 711 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+ 716 ldloc.s      33
+ 718 ldc.i4.1     
+ 719 add          
+ 720 stloc.s      33
+ 722 ldloc.s      33
+ 724 ldloc.s      32
+ 726 blt.s        685
+ 728 ldloc.0      
+ 729 ldc.i4.4     
+ 730 blt.s        764
+ 732 ldarg.1      
+ 733 callvirt     ZPackage::ReadString()
+ 738 stloc.s      36
+ 740 ldarg.1      
+ 741 callvirt     ZPackage::ReadString()
+ 746 stloc.s      37
+ 748 ldarg.0      
+ 749 ldloc.s      36
+ 751 call         Humanoid::SetBeard(string)
+ 756 ldarg.0      
+ 757 ldloc.s      37
+ 759 call         Humanoid::SetHair(string)
+ 764 ldloc.0      
+ 765 ldc.i4.5     
+ 766 blt.s        800
+ 768 ldarg.1      
+ 769 callvirt     ZPackage::ReadVector3()
+ 774 stloc.s      38
+ 776 ldarg.1      
+ 777 callvirt     ZPackage::ReadVector3()
+ 782 stloc.s      39
+ 784 ldarg.0      
+ 785 ldloc.s      38
+ 787 call         Player::SetSkinColor(valuetype:81)
+ 792 ldarg.0      
+ 793 ldloc.s      39
+ 795 call         Player::SetHairColor(valuetype:81)
+ 800 ldloc.0      
+ 801 ldc.i4.s     11
+ 803 blt.s        821
+ 805 ldarg.1      
+ 806 callvirt     ZPackage::ReadInt()
+ 811 stloc.s      40
+ 813 ldarg.0      
+ 814 ldloc.s      40
+ 816 call         Player::SetPlayerModel(i4)
+ 821 ldloc.0      
+ 822 ldc.i4.s     12
+ 824 blt          1098
+ 829 ldarg.0      
+ 830 ldfld        Player::m_foods
+ 835 callvirt     System.Collections.Generic.List`1::Clear
+ 840 ldarg.1      
+ 841 callvirt     ZPackage::ReadInt()
+ 846 stloc.s      41
+ 848 ldc.i4.0     
+ 849 stloc.s      42
+ 851 br           1089
+ 856 ldloc.0      
+ 857 ldc.i4.s     14
+ 859 blt          1022
+ 864 newobj       Player+Food::.ctor()
+ 869 stloc.s      43
+ 871 ldloc.s      43
+ 873 ldarg.1      
+ 874 callvirt     ZPackage::ReadString()
+ 879 stfld        Player+Food::m_name
+ 884 ldloc.0      
+ 885 ldc.i4.s     25
+ 887 blt.s        904
+ 889 ldloc.s      43
+ 891 ldarg.1      
+ 892 callvirt     ZPackage::ReadSingle()
+ 897 stfld        Player+Food::m_time
+ 902 br.s         935
+ 904 ldloc.s      43
+ 906 ldarg.1      
+ 907 callvirt     ZPackage::ReadSingle()
+ 912 stfld        Player+Food::m_health
+ 917 ldloc.0      
+ 918 ldc.i4.s     16
+ 920 blt.s        935
+ 922 ldloc.s      43
+ 924 ldarg.1      
+ 925 callvirt     ZPackage::ReadSingle()
+ 930 stfld        Player+Food::m_stamina
+ 935 call         ObjectDB::get_instance()
+ 940 ldloc.s      43
+ 942 ldfld        Player+Food::m_name
+ 947 callvirt     ObjectDB::GetItemPrefab(string)
+ 952 stloc.s      44
+ 954 ldloc.s      44
+ 956 ldnull       
+ 957 call         UnityEngine.Object::op_Equality
+ 962 brfalse.s    988
+ 964 ldstr        "Failed to find food item "
+ 969 ldloc.s      43
+ 971 ldfld        Player+Food::m_name
+ 976 call         System.String::Concat
+ 981 call         ZLog::LogWarning
+ 986 br.s         1083
+ 988 ldloc.s      43
+ 990 ldloc.s      44
+ 992 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 997 ldfld        ItemDrop::m_itemData
+1002 stfld        Player+Food::m_item
+1007 ldarg.0      
+1008 ldfld        Player::m_foods
+1013 ldloc.s      43
+1015 callvirt     System.Collections.Generic.List`1::Add
+1020 br.s         1083
+1022 ldarg.1      
+1023 callvirt     ZPackage::ReadString()
+1028 pop          
+1029 ldarg.1      
+1030 callvirt     ZPackage::ReadSingle()
+1035 pop          
+1036 ldarg.1      
+1037 callvirt     ZPackage::ReadSingle()
+1042 pop          
+1043 ldarg.1      
+1044 callvirt     ZPackage::ReadSingle()
+1049 pop          
+1050 ldarg.1      
+1051 callvirt     ZPackage::ReadSingle()
+1056 pop          
+1057 ldarg.1      
+1058 callvirt     ZPackage::ReadSingle()
+1063 pop          
+1064 ldarg.1      
+1065 callvirt     ZPackage::ReadSingle()
+1070 pop          
+1071 ldloc.0      
+1072 ldc.i4.s     13
+1074 blt.s        1083
+1076 ldarg.1      
+1077 callvirt     ZPackage::ReadSingle()
+1082 pop          
+1083 ldloc.s      42
+1085 ldc.i4.1     
+1086 add          
+1087 stloc.s      42
+1089 ldloc.s      42
+1091 ldloc.s      41
+1093 blt          856
+1098 ldloc.0      
+1099 ldc.i4.s     17
+1101 blt.s        1115
+1103 ldarg.0      
+1104 ldfld        Player::m_skills
+1109 ldarg.1      
+1110 callvirt     Skills::Load(class:1268)
+1115 ldloc.0      
+1116 ldc.i4.s     26
+1118 blt.s        1245
+1120 ldarg.1      
+1121 callvirt     ZPackage::ReadInt()
+1126 stloc.s      45
+1128 ldc.i4.0     
+1129 stloc.s      46
+1131 br.s         1170
+1133 ldarg.1      
+1134 callvirt     ZPackage::ReadString()
+1139 stloc.s      47
+1141 ldarg.1      
+1142 callvirt     ZPackage::ReadString()
+1147 stloc.s      48
+1149 ldarg.0      
+1150 ldfld        Player::m_customData
+1155 ldloc.s      47
+1157 ldloc.s      48
+1159 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+1164 ldloc.s      46
+1166 ldc.i4.1     
+1167 add          
+1168 stloc.s      46
+1170 ldloc.s      46
+1172 ldloc.s      45
+1174 blt.s        1133
+1176 ldarg.0      
+1177 ldarg.1      
+1178 callvirt     ZPackage::ReadSingle()
+1183 ldc.r4       0
+1188 ldarg.0      
+1189 ldfld        Player::m_maxStamina
+1194 call         UnityEngine.Mathf::Clamp
+1199 stfld        Player::m_stamina
+1204 ldarg.0      
+1205 ldarg.1      
+1206 callvirt     ZPackage::ReadSingle()
+1211 ldc.i4.0     
+1212 call         Player::SetMaxEitr(r4,bool)
+1217 ldarg.0      
+1218 ldarg.1      
+1219 callvirt     ZPackage::ReadSingle()
+1224 ldc.r4       0
+1229 ldarg.0      
+1230 ldfld        Player::m_maxEitr
+1235 call         UnityEngine.Mathf::Clamp
+1240 stfld        Player::m_eitr
+1245 ldloc.0      
+1246 ldc.i4.s     27
+1248 bge.s        1374
+1250 ldarg.0      
+1251 ldfld        Player::m_knownMaterial
+1256 ldstr        "$item_flametal"
+1261 callvirt     System.Collections.Generic.HashSet`1::Contains
+1266 brfalse.s    1312
+1268 ldstr        "Pre ashlands character loaded, replacing flametal with ancient as known material."
+1273 call         ZLog::DevLog
+1278 ldarg.0      
+1279 ldfld        Player::m_knownMaterial
+1284 ldstr        "$item_flametal"
+1289 callvirt     System.Collections.Generic.HashSet`1::Remove
+1294 pop          
+1295 ldarg.0      
+1296 ldfld        Player::m_knownMaterial
+1301 ldstr        "$item_flametal_old"
+1306 callvirt     System.Collections.Generic.HashSet`1::Add
+1311 pop          
+1312 ldarg.0      
+1313 ldfld        Player::m_knownMaterial
+1318 ldstr        "$item_flametalore"
+1323 callvirt     System.Collections.Generic.HashSet`1::Contains
+1328 brfalse.s    1374
+1330 ldstr        "Pre ashlands character loaded, replacing flametal ore with ancient as known material."
+1335 call         ZLog::DevLog
+1340 ldarg.0      
+1341 ldfld        Player::m_knownMaterial
+1346 ldstr        "$item_flametalore"
+1351 callvirt     System.Collections.Generic.HashSet`1::Remove
+1356 pop          
+1357 ldarg.0      
+1358 ldfld        Player::m_knownMaterial
+1363 ldstr        "$item_flametalore_old"
+1368 callvirt     System.Collections.Generic.HashSet`1::Add
+1373 pop          
+1374 ldloc.0      
+1375 ldc.i4.s     33
+1377 bge.s        1384
+1379 ldloc.0      
+1380 ldc.i4.s     31
+1382 bne.un.s     1415
+1384 ldarg.1      
+1385 callvirt     ZPackage::ReadByteArray()
+1390 stloc.s      49
+1392 call         Hud::get_instance()
+1397 dup          
+1398 brtrue.s     1403
+1400 pop          
+1401 br.s         1415
+1403 ldfld        Hud::m_buildUi
+1408 ldloc.s      49
+1410 callvirt     BuildUi::LoadFromBinary(u1[])
+1415 ldloc.0      
+1416 ldc.i4.s     34
+1418 blt.s        1531
+1420 ldarg.1      
+1421 callvirt     ZPackage::ReadInt()
+1426 stloc.s      50
+1428 ldc.i4.0     
+1429 stloc.s      51
+1431 br.s         1469
+1433 ldarg.1      
+1434 callvirt     ZPackage::ReadInt()
+1439 stloc.s      52
+1441 ldarg.1      
+1442 callvirt     ZPackage::ReadInt()
+1447 stloc.s      53
+1449 ldsfld       CharacterDrop::s_pseudoCounter
+1454 ldloc.s      52
+1456 ldloc.s      53
+1458 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+1463 ldloc.s      51
+1465 ldc.i4.1     
+1466 add          
+1467 stloc.s      51
+1469 ldloc.s      51
+1471 ldloc.s      50
+1473 blt.s        1433
+1475 ldarg.1      
+1476 callvirt     ZPackage::ReadInt()
+1481 stloc.s      50
+1483 ldc.i4.0     
+1484 stloc.s      54
+1486 br.s         1525
+1488 ldarg.1      
+1489 callvirt     ZPackage::ReadInt()
+1494 stloc.s      55
+1496 ldarg.1      
+1497 callvirt     ZPackage::ReadInt()
+1502 stloc.s      56
+1504 ldarg.0      
+1505 ldfld        Player::m_itemUpgradeSeeds
+1510 ldloc.s      55
+1512 ldloc.s      56
+1514 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+1519 ldloc.s      54
+1521 ldc.i4.1     
+1522 add          
+1523 stloc.s      54
+1525 ldloc.s      54
+1527 ldloc.s      50
+1529 blt.s        1488
+1531 ldarg.0      
+1532 ldc.i4.0     
+1533 stfld        Player::m_isLoading
+1538 ldarg.0      
+1539 call         Player::UpdateAvailablePiecesList()
+1544 ldarg.0      
+1545 call         Player::EquipInventoryItems()
+1550 ldarg.0      
+1551 call         Player::UpdateEvents()
+1556 ret          

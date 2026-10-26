@@ -1,0 +1,64 @@
+== Player::ConsumeResources(class:4720[], i4, i4, i4) -> void  il_size=134 sha=1ac11cb56b25
+   locals_sig=0x110000a7
+   0 ldarg.0      
+   1 call         Player::GetCurrentCraftingStation()
+   6 stloc.0      
+   7 ldarg.1      
+   8 stloc.1      
+   9 ldc.i4.0     
+  10 stloc.2      
+  11 br.s         127
+  13 ldloc.1      
+  14 ldloc.2      
+  15 ldelem.ref   
+  16 stloc.3      
+  17 ldloc.0      
+  18 ldnull       
+  19 call         UnityEngine.Object::op_Inequality
+  24 brfalse.s    40
+  26 ldloc.0      
+  27 ldfld        CraftingStation::m_upgrader
+  32 ldloc.3      
+  33 ldfld        Piece+Requirement::m_upgraderResource
+  38 bne.un.s     123
+  40 ldloc.0      
+  41 ldnull       
+  42 call         UnityEngine.Object::op_Equality
+  47 brfalse.s    57
+  49 ldloc.3      
+  50 ldfld        Piece+Requirement::m_upgraderResource
+  55 brtrue.s     123
+  57 ldloc.3      
+  58 ldfld        Piece+Requirement::m_resItem
+  63 call         UnityEngine.Object::op_Implicit
+  68 brfalse.s    123
+  70 ldloc.3      
+  71 ldarg.2      
+  72 callvirt     Piece+Requirement::GetAmount(i4)
+  77 ldarg.s      4
+  79 mul          
+  80 stloc.s      4
+  82 ldloc.s      4
+  84 ldc.i4.0     
+  85 ble.s        123
+  87 ldarg.0      
+  88 ldfld        Humanoid::m_inventory
+  93 ldloc.3      
+  94 ldfld        Piece+Requirement::m_resItem
+  99 ldfld        ItemDrop::m_itemData
+ 104 ldfld        ItemDrop+ItemData::m_shared
+ 109 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 114 ldloc.s      4
+ 116 ldarg.3      
+ 117 ldc.i4.1     
+ 118 callvirt     Inventory::RemoveItem(string,i4,i4,bool)
+ 123 ldloc.2      
+ 124 ldc.i4.1     
+ 125 add          
+ 126 stloc.2      
+ 127 ldloc.2      
+ 128 ldloc.1      
+ 129 ldlen        
+ 130 conv.i4      
+ 131 blt.s        13
+ 133 ret          

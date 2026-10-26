@@ -1,0 +1,117 @@
+== Player::Repair(class:3744, class:2264) -> void  il_size=321 sha=37b980916d7b
+   locals_sig=0x110000b3
+   0 ldarg.0      
+   1 callvirt     Character::InPlaceMode()
+   6 brtrue.s     9
+   8 ret          
+   9 ldarg.0      
+  10 call         Player::GetHoveringPiece()
+  15 stloc.0      
+  16 ldloc.0      
+  17 call         UnityEngine.Object::op_Implicit
+  22 brfalse      320
+  27 ldarg.0      
+  28 ldloc.0      
+  29 call         Player::CheckCanRemovePiece(class:2264)
+  34 brtrue.s     37
+  36 ret          
+  37 ldloc.0      
+  38 callvirt     UnityEngine.Component::get_transform
+  43 callvirt     UnityEngine.Transform::get_position
+  48 ldc.r4       0
+  53 ldc.i4.1     
+  54 ldc.i4.0     
+  55 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  60 brtrue.s     63
+  62 ret          
+  63 ldc.i4.0     
+  64 stloc.1      
+  65 ldloc.0      
+  66 callvirt     UnityEngine.Component::GetComponent<T>
+  71 stloc.2      
+  72 ldloc.2      
+  73 call         UnityEngine.Object::op_Implicit
+  78 brfalse.s    90
+  80 ldloc.2      
+  81 callvirt     WearNTear::Repair()
+  86 brfalse.s    90
+  88 ldc.i4.1     
+  89 stloc.1      
+  90 ldloc.1      
+  91 brfalse      294
+  96 ldarg.0      
+  97 call         Player::FaceLookDirection()
+ 102 ldarg.0      
+ 103 ldfld        Character::m_zanim
+ 108 ldarg.1      
+ 109 ldfld        ItemDrop+ItemData::m_shared
+ 114 ldfld        ItemDrop+ItemData+SharedData::m_attack
+ 119 ldfld        Attack::m_attackAnimation
+ 124 callvirt     ZSyncAnimation::SetTrigger(string)
+ 129 ldloc.0      
+ 130 ldfld        Piece::m_placeEffect
+ 135 ldloc.0      
+ 136 callvirt     UnityEngine.Component::get_transform
+ 141 callvirt     UnityEngine.Transform::get_position
+ 146 ldloc.0      
+ 147 callvirt     UnityEngine.Component::get_transform
+ 152 callvirt     UnityEngine.Transform::get_rotation
+ 157 ldnull       
+ 158 ldc.r4       1
+ 163 ldc.i4.m1    
+ 164 ldarg.0      
+ 165 call         Character::GetZDOID()
+ 170 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 175 pop          
+ 176 ldarg.0      
+ 177 ldc.i4.1     
+ 178 call         Localization::get_instance
+ 183 ldstr        "$msg_repaired"
+ 188 ldc.i4.1     
+ 189 newarr       0x010001e8
+ 194 dup          
+ 195 ldc.i4.0     
+ 196 ldloc.0      
+ 197 ldfld        Piece::m_name
+ 202 stelem.ref   
+ 203 callvirt     Localization::Localize
+ 208 ldc.i4.0     
+ 209 ldnull       
+ 210 ldc.i4.0     
+ 211 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 216 ldarg.0      
+ 217 ldarg.0      
+ 218 call         Player::GetBuildStamina()
+ 223 callvirt     Character::UseStamina(r4)
+ 228 ldarg.0      
+ 229 ldarg.1      
+ 230 ldfld        ItemDrop+ItemData::m_shared
+ 235 ldfld        ItemDrop+ItemData+SharedData::m_attack
+ 240 ldfld        Attack::m_attackEitr
+ 245 callvirt     Character::UseEitr(r4)
+ 250 ldarg.1      
+ 251 ldfld        ItemDrop+ItemData::m_shared
+ 256 ldfld        ItemDrop+ItemData+SharedData::m_useDurability
+ 261 brfalse.s    320
+ 263 ldarg.1      
+ 264 dup          
+ 265 ldfld        ItemDrop+ItemData::m_durability
+ 270 ldarg.1      
+ 271 ldfld        ItemDrop+ItemData::m_shared
+ 276 ldfld        ItemDrop+ItemData+SharedData::m_useDurabilityDrain
+ 281 ldsfld       Game::m_durabilityRate
+ 286 mul          
+ 287 sub          
+ 288 stfld        ItemDrop+ItemData::m_durability
+ 293 ret          
+ 294 ldarg.0      
+ 295 ldc.i4.1     
+ 296 ldloc.0      
+ 297 ldfld        Piece::m_name
+ 302 ldstr        " $msg_doesnotneedrepair"
+ 307 call         System.String::Concat
+ 312 ldc.i4.0     
+ 313 ldnull       
+ 314 ldc.i4.0     
+ 315 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 320 ret          

@@ -1,0 +1,1109 @@
+== Piece::Awake() -> void  il_size=328 sha=7274e89cf7f0
+   locals_sig=0x1100073a
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        Piece::m_nview
+  12 ldsfld       Piece::s_allPieces
+  17 ldarg.0      
+  18 callvirt     System.Collections.Generic.List`1::Add
+  23 ldarg.0      
+  24 ldsfld       Piece::s_allPieces
+  29 callvirt     System.Collections.Generic.List`1::get_Count
+  34 ldc.i4.1     
+  35 sub          
+  36 stfld        Piece::m_myListIndex
+  41 ldarg.0      
+  42 ldfld        Piece::m_comfort
+  47 ldc.i4.0     
+  48 ble.s        62
+  50 ldsfld       Piece::s_allComfortPieces
+  55 ldarg.0      
+  56 callvirt     System.Collections.Generic.HashSet`1::Add
+  61 pop          
+  62 ldarg.0      
+  63 ldfld        Piece::m_nview
+  68 call         UnityEngine.Object::op_Implicit
+  73 brfalse.s    145
+  75 ldarg.0      
+  76 ldfld        Piece::m_nview
+  81 callvirt     ZNetView::IsValid()
+  86 brfalse.s    145
+  88 ldarg.0      
+  89 ldarg.0      
+  90 ldfld        Piece::m_nview
+  95 callvirt     ZNetView::GetZDO()
+ 100 ldsfld       ZDOVars::s_creator
+ 105 ldc.i4.0     
+ 106 conv.i8      
+ 107 callvirt     ZDO::GetLong(i4,i8)
+ 112 stfld        Piece::m_creator
+ 117 ldarg.0      
+ 118 ldarg.0      
+ 119 ldfld        Piece::m_nview
+ 124 callvirt     ZNetView::GetZDO()
+ 129 ldsfld       ZDOVars::s_creatorIndex
+ 134 ldc.i4.m1    
+ 135 callvirt     ZDO::GetInt(i4,i4)
+ 140 stfld        Piece::m_creatorPlatformUserIDIndex
+ 145 ldsfld       Piece::s_ghostLayer
+ 150 brtrue.s     167
+ 152 ldstr        "ghost"
+ 157 call         UnityEngine.LayerMask::NameToLayer
+ 162 stsfld       Piece::s_ghostLayer
+ 167 ldsfld       Piece::s_pieceRayMask
+ 172 brtrue.s     206
+ 174 ldc.i4.2     
+ 175 newarr       0x010001e8
+ 180 dup          
+ 181 ldc.i4.0     
+ 182 ldstr        "piece"
+ 187 stelem.ref   
+ 188 dup          
+ 189 ldc.i4.1     
+ 190 ldstr        "piece_nonsolid"
+ 195 stelem.ref   
+ 196 call         UnityEngine.LayerMask::GetMask
+ 201 stsfld       Piece::s_pieceRayMask
+ 206 ldsfld       Piece::s_harvestRayMask
+ 211 brtrue.s     253
+ 213 ldc.i4.3     
+ 214 newarr       0x010001e8
+ 219 dup          
+ 220 ldc.i4.0     
+ 221 ldstr        "piece"
+ 226 stelem.ref   
+ 227 dup          
+ 228 ldc.i4.1     
+ 229 ldstr        "piece_nonsolid"
+ 234 stelem.ref   
+ 235 dup          
+ 236 ldc.i4.2     
+ 237 ldstr        "item"
+ 242 stelem.ref   
+ 243 call         UnityEngine.LayerMask::GetMask
+ 248 stsfld       Piece::s_harvestRayMask
+ 253 ldarg.0      
+ 254 ldfld        Piece::m_harvest
+ 259 brfalse.s    327
+ 261 ldarg.0      
+ 262 call         UnityEngine.Component::get_transform
+ 267 ldstr        "_GhostOnly"
+ 272 callvirt     UnityEngine.Transform::Find
+ 277 stloc.0      
+ 278 ldloc.0      
+ 279 brfalse.s    327
+ 281 ldsfld       Player::m_localPlayer
+ 286 ldc.i4.s     106
+ 288 callvirt     Character::GetSkillFactor(valuetype:2932)
+ 293 stloc.1      
+ 294 ldarg.0      
+ 295 ldfld        Piece::m_harvestRadius
+ 300 ldarg.0      
+ 301 ldfld        Piece::m_harvestRadiusMaxLevel
+ 306 ldloc.1      
+ 307 call         UnityEngine.Mathf::Lerp
+ 312 stloc.2      
+ 313 ldloc.0      
+ 314 ldloc.2      
+ 315 ldloc.2      
+ 316 ldloc.2      
+ 317 newobj       UnityEngine.Vector3::.ctor
+ 322 callvirt     UnityEngine.Transform::set_localScale
+ 327 ret          
+
+== Piece::OnPlaced() -> void  il_size=156 sha=edc91178aba5
+   locals_sig=0x1100073b
+   0 ldarg.0      
+   1 ldfld        Piece::m_harvest
+   6 brfalse      155
+  11 ldsfld       Player::m_localPlayer
+  16 ldc.i4.s     106
+  18 callvirt     Character::GetSkillFactor(valuetype:2932)
+  23 stloc.0      
+  24 ldarg.0      
+  25 ldfld        Piece::m_harvestRadius
+  30 ldarg.0      
+  31 ldfld        Piece::m_harvestRadiusMaxLevel
+  36 ldloc.0      
+  37 call         UnityEngine.Mathf::Lerp
+  42 stloc.1      
+  43 ldarg.0      
+  44 call         UnityEngine.Component::get_transform
+  49 callvirt     UnityEngine.Transform::get_position
+  54 ldloc.1      
+  55 ldsfld       Piece::s_pieceColliders
+  60 ldsfld       Piece::s_harvestRayMask
+  65 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  70 stloc.2      
+  71 ldc.i4.0     
+  72 stloc.3      
+  73 br.s         135
+  75 ldsfld       Piece::s_pieceColliders
+  80 ldloc.3      
+  81 ldelem.ref   
+  82 callvirt     UnityEngine.Component::get_gameObject
+  87 callvirt     UnityEngine.GameObject::GetComponent<T>
+  92 stloc.s      4
+  94 ldloc.s      4
+  96 brfalse.s    131
+  98 ldloc.s      4
+ 100 ldfld        Pickable::m_harvestable
+ 105 brfalse.s    131
+ 107 ldloc.s      4
+ 109 callvirt     Pickable::CanBePicked()
+ 114 brfalse.s    131
+ 116 ldloc.s      4
+ 118 ldsfld       Player::m_localPlayer
+ 123 ldc.i4.0     
+ 124 ldc.i4.0     
+ 125 callvirt     Pickable::Interact(class:108,bool,bool)
+ 130 pop          
+ 131 ldloc.3      
+ 132 ldc.i4.1     
+ 133 add          
+ 134 stloc.3      
+ 135 ldloc.3      
+ 136 ldloc.2      
+ 137 blt.s        75
+ 139 call         ZNetScene::get_instance()
+ 144 ldarg.0      
+ 145 call         UnityEngine.Component::get_gameObject
+ 150 callvirt     ZNetScene::Destroy(class:133)
+ 155 ret          
+
+== Piece::OnDestroy() -> void  il_size=125 sha=e843a80bf846
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Piece::m_myListIndex
+   6 ldc.i4.0     
+   7 blt.s        103
+   9 ldsfld       Piece::s_allPieces
+  14 ldarg.0      
+  15 ldfld        Piece::m_myListIndex
+  20 ldsfld       Piece::s_allPieces
+  25 ldsfld       Piece::s_allPieces
+  30 callvirt     System.Collections.Generic.List`1::get_Count
+  35 ldc.i4.1     
+  36 sub          
+  37 callvirt     System.Collections.Generic.List`1::get_Item
+  42 callvirt     System.Collections.Generic.List`1::set_Item
+  47 ldsfld       Piece::s_allPieces
+  52 ldarg.0      
+  53 ldfld        Piece::m_myListIndex
+  58 callvirt     System.Collections.Generic.List`1::get_Item
+  63 ldarg.0      
+  64 ldfld        Piece::m_myListIndex
+  69 stfld        Piece::m_myListIndex
+  74 ldsfld       Piece::s_allPieces
+  79 ldsfld       Piece::s_allPieces
+  84 callvirt     System.Collections.Generic.List`1::get_Count
+  89 ldc.i4.1     
+  90 sub          
+  91 callvirt     System.Collections.Generic.List`1::RemoveAt
+  96 ldarg.0      
+  97 ldc.i4.m1    
+  98 stfld        Piece::m_myListIndex
+ 103 ldarg.0      
+ 104 ldfld        Piece::m_comfort
+ 109 ldc.i4.0     
+ 110 ble.s        124
+ 112 ldsfld       Piece::s_allComfortPieces
+ 117 ldarg.0      
+ 118 callvirt     System.Collections.Generic.HashSet`1::Remove
+ 123 pop          
+ 124 ret          
+
+== Piece::CanBeRemoved() -> bool  il_size=48 sha=18902370086e
+   locals_sig=0x1100073c
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponentInChildren<T>
+   6 stloc.0      
+   7 ldloc.0      
+   8 ldnull       
+   9 call         UnityEngine.Object::op_Inequality
+  14 brfalse.s    23
+  16 ldloc.0      
+  17 callvirt     Container::CanBeRemoved()
+  22 ret          
+  23 ldarg.0      
+  24 call         UnityEngine.Component::GetComponentInChildren<T>
+  29 stloc.1      
+  30 ldloc.1      
+  31 ldnull       
+  32 call         UnityEngine.Object::op_Inequality
+  37 brfalse.s    46
+  39 ldloc.1      
+  40 callvirt     Ship::CanBeRemoved()
+  45 ret          
+  46 ldc.i4.1     
+  47 ret          
+
+== Piece::DropResources(class:2140) -> void  il_size=589 sha=d1b7fdb2e53a
+   locals_sig=0x1100073d
+   0 call         ZoneSystem::get_instance()
+   5 ldarg.0      
+   6 call         Piece::FreeBuildKey()
+  11 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+  16 brfalse.s    19
+  18 ret          
+  19 ldnull       
+  20 stloc.0      
+  21 ldarg.0      
+  22 call         UnityEngine.Component::get_gameObject
+  27 callvirt     UnityEngine.GameObject::GetComponent<T>
+  32 stloc.1      
+  33 ldarg.0      
+  34 ldfld        Piece::m_resources
+  39 stloc.2      
+  40 ldc.i4.0     
+  41 stloc.3      
+  42 br           579
+  47 ldloc.2      
+  48 ldloc.3      
+  49 ldelem.ref   
+  50 stloc.s      4
+  52 ldloc.s      4
+  54 ldfld        Piece+Requirement::m_resItem
+  59 ldnull       
+  60 call         UnityEngine.Object::op_Equality
+  65 brtrue       575
+  70 ldloc.s      4
+  72 ldfld        Piece+Requirement::m_recover
+  77 brfalse      575
+  82 call         ObjectDB::get_instance()
+  87 ldloc.s      4
+  89 ldfld        Piece+Requirement::m_resItem
+  94 callvirt     UnityEngine.Object::get_name
+  99 call         Utils::GetPrefabName
+ 104 callvirt     ObjectDB::GetItemPrefab(string)
+ 109 stloc.s      5
+ 111 ldloc.s      4
+ 113 ldfld        Piece+Requirement::m_amount
+ 118 stloc.s      6
+ 120 ldloc.1      
+ 121 call         UnityEngine.Object::op_Implicit
+ 126 brfalse.s    147
+ 128 ldloc.s      6
+ 130 conv.r4      
+ 131 ldloc.1      
+ 132 callvirt     Feast::GetStackPercentige()
+ 137 mul          
+ 138 conv.r8      
+ 139 call         System.Math::Floor
+ 144 conv.i4      
+ 145 stloc.s      6
+ 147 ldloc.s      6
+ 149 ldc.i4.0     
+ 150 ble          575
+ 155 call         Game::get_instance()
+ 160 ldarg.1      
+ 161 ldloc.s      4
+ 163 ldfld        Piece+Requirement::m_resItem
+ 168 ldloc.s      5
+ 170 ldloca.s     6
+ 172 callvirt     Game::CheckDropConversion(class:2140,class:1060,class:133,i4&)
+ 177 stloc.s      5
+ 179 ldarg.0      
+ 180 call         Piece::IsPlacedByPlayer()
+ 185 brtrue.s     199
+ 187 ldc.i4.1     
+ 188 ldloc.s      6
+ 190 ldc.i4.3     
+ 191 div          
+ 192 call         UnityEngine.Mathf::Max
+ 197 stloc.s      6
+ 199 ldarg.0      
+ 200 ldfld        Piece::m_destroyedLootPrefab
+ 205 call         UnityEngine.Object::op_Implicit
+ 210 brfalse      567
+ 215 br           409
+ 220 ldloc.s      5
+ 222 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 227 ldfld        ItemDrop::m_itemData
+ 232 callvirt     ItemDrop+ItemData::Clone()
+ 237 stloc.s      7
+ 239 ldloc.s      7
+ 241 ldloc.s      5
+ 243 stfld        ItemDrop+ItemData::m_dropPrefab
+ 248 ldloc.s      7
+ 250 ldloc.s      6
+ 252 ldloc.s      7
+ 254 ldfld        ItemDrop+ItemData::m_shared
+ 259 ldfld        ItemDrop+ItemData+SharedData::m_maxStackSize
+ 264 call         UnityEngine.Mathf::Min
+ 269 stfld        ItemDrop+ItemData::m_stack
+ 274 ldloc.s      6
+ 276 ldloc.s      7
+ 278 ldfld        ItemDrop+ItemData::m_stack
+ 283 sub          
+ 284 stloc.s      6
+ 286 ldloc.0      
+ 287 ldnull       
+ 288 call         UnityEngine.Object::op_Equality
+ 293 brtrue.s     308
+ 295 ldloc.0      
+ 296 callvirt     Container::GetInventory()
+ 301 callvirt     Inventory::HaveEmptySlot()
+ 306 brtrue.s     362
+ 308 ldarg.0      
+ 309 ldfld        Piece::m_destroyedLootPrefab
+ 314 ldarg.0      
+ 315 call         UnityEngine.Component::get_transform
+ 320 callvirt     UnityEngine.Transform::get_position
+ 325 call         UnityEngine.Vector3::get_up
+ 330 ldarg.0      
+ 331 ldfld        Piece::m_returnResourceHeightOffset
+ 336 call         UnityEngine.Vector3::op_Multiply
+ 341 call         UnityEngine.Vector3::op_Addition
+ 346 call         UnityEngine.Quaternion::get_identity
+ 351 call         UnityEngine.Object::Instantiate<T>
+ 356 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 361 stloc.0      
+ 362 ldarg.0      
+ 363 ldfld        Piece::m_nview
+ 368 callvirt     ZNetView::GetZDO()
+ 373 call         CheatUtils::IsCheated(class:1164)
+ 378 brfalse.s    395
+ 380 call         PlayerProfile::get_s_bypassCheatChecks()
+ 385 brtrue.s     395
+ 387 ldloc.s      7
+ 389 ldc.i4.1     
+ 390 stfld        ItemDrop+ItemData::m_cheated
+ 395 ldloc.0      
+ 396 callvirt     Container::GetInventory()
+ 401 ldloc.s      7
+ 403 callvirt     Inventory::AddItem(class:3744)
+ 408 pop          
+ 409 ldloc.s      6
+ 411 ldc.i4.0     
+ 412 bgt          220
+ 417 br           575
+ 422 ldloc.s      5
+ 424 ldarg.0      
+ 425 call         UnityEngine.Component::get_transform
+ 430 callvirt     UnityEngine.Transform::get_position
+ 435 call         UnityEngine.Vector3::get_up
+ 440 ldarg.0      
+ 441 ldfld        Piece::m_returnResourceHeightOffset
+ 446 call         UnityEngine.Vector3::op_Multiply
+ 451 call         UnityEngine.Vector3::op_Addition
+ 456 call         UnityEngine.Quaternion::get_identity
+ 461 call         UnityEngine.Object::Instantiate<T>
+ 466 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 471 stloc.s      8
+ 473 ldloc.s      8
+ 475 ldloc.s      6
+ 477 ldloc.s      8
+ 479 ldfld        ItemDrop::m_itemData
+ 484 ldfld        ItemDrop+ItemData::m_shared
+ 489 ldfld        ItemDrop+ItemData+SharedData::m_maxStackSize
+ 494 call         UnityEngine.Mathf::Min
+ 499 callvirt     ItemDrop::SetStack(i4)
+ 504 ldloc.s      8
+ 506 ldc.i4.0     
+ 507 call         ItemDrop::OnCreateNew(class:1060,bool)
+ 512 ldarg.0      
+ 513 ldfld        Piece::m_nview
+ 518 callvirt     ZNetView::GetZDO()
+ 523 call         CheatUtils::IsCheated(class:1164)
+ 528 brfalse.s    550
+ 530 call         PlayerProfile::get_s_bypassCheatChecks()
+ 535 brtrue.s     550
+ 537 ldloc.s      8
+ 539 ldfld        ItemDrop::m_itemData
+ 544 ldc.i4.1     
+ 545 stfld        ItemDrop+ItemData::m_cheated
+ 550 ldloc.s      6
+ 552 ldloc.s      8
+ 554 ldfld        ItemDrop::m_itemData
+ 559 ldfld        ItemDrop+ItemData::m_stack
+ 564 sub          
+ 565 stloc.s      6
+ 567 ldloc.s      6
+ 569 ldc.i4.0     
+ 570 bgt          422
+ 575 ldloc.3      
+ 576 ldc.i4.1     
+ 577 add          
+ 578 stloc.3      
+ 579 ldloc.3      
+ 580 ldloc.2      
+ 581 ldlen        
+ 582 conv.i4      
+ 583 blt          47
+ 588 ret          
+
+== Piece::IsPriorityTarget() -> bool  il_size=27 sha=b34e1fbe0b6d
+   locals_sig=null
+   0 ldarg.0      
+   1 call         StaticTarget::IsPriorityTarget()
+   6 brtrue.s     10
+   8 ldc.i4.0     
+   9 ret          
+  10 ldarg.0      
+  11 ldfld        Piece::m_targetNonPlayerBuilt
+  16 brtrue.s     25
+  18 ldarg.0      
+  19 call         Piece::IsPlacedByPlayer()
+  24 ret          
+  25 ldc.i4.1     
+  26 ret          
+
+== Piece::IsRandomTarget() -> bool  il_size=27 sha=c8d7789299ac
+   locals_sig=null
+   0 ldarg.0      
+   1 call         StaticTarget::IsRandomTarget()
+   6 brtrue.s     10
+   8 ldc.i4.0     
+   9 ret          
+  10 ldarg.0      
+  11 ldfld        Piece::m_targetNonPlayerBuilt
+  16 brtrue.s     25
+  18 ldarg.0      
+  19 call         Piece::IsPlacedByPlayer()
+  24 ret          
+  25 ldc.i4.1     
+  26 ret          
+
+== Piece::SetCreator(i8, valuetype:389) -> void  il_size=138 sha=b9655aabc97a
+   locals_sig=0x1100073e
+   0 newobj       Piece+<>c__DisplayClass8_0::.ctor()
+   5 stloc.0      
+   6 ldloc.0      
+   7 ldarg.2      
+   8 stfld        Piece+<>c__DisplayClass8_0::platformUserID
+  13 ldarg.0      
+  14 ldfld        Piece::m_nview
+  19 ldnull       
+  20 call         UnityEngine.Object::op_Equality
+  25 brfalse.s    28
+  27 ret          
+  28 ldarg.0      
+  29 ldfld        Piece::m_nview
+  34 callvirt     ZNetView::IsOwner()
+  39 brfalse.s    137
+  41 ldarg.0      
+  42 call         Piece::GetCreator()
+  47 brfalse.s    50
+  49 ret          
+  50 ldarg.0      
+  51 ldarg.1      
+  52 stfld        Piece::m_creator
+  57 ldarg.0      
+  58 ldfld        Piece::m_nview
+  63 callvirt     ZNetView::GetZDO()
+  68 ldsfld       ZDOVars::s_creator
+  73 ldarg.1      
+  74 callvirt     ZDO::Set(i4,i8)
+  79 call         ZNet::get_World()
+  84 ldfld        World::m_playerHistory
+  89 ldloc.0      
+  90 ldftn        Piece+<>c__DisplayClass8_0::<SetCreator>b__0(valuetype:3816)
+  96 newobj       System.Predicate`1::.ctor
+ 101 callvirt     System.Collections.Generic.List`1::FindIndex
+ 106 stloc.1      
+ 107 ldarg.0      
+ 108 ldloc.1      
+ 109 stfld        Piece::m_creatorPlatformUserIDIndex
+ 114 ldarg.0      
+ 115 ldfld        Piece::m_nview
+ 120 callvirt     ZNetView::GetZDO()
+ 125 ldsfld       ZDOVars::s_creatorIndex
+ 130 ldloc.1      
+ 131 ldc.i4.0     
+ 132 callvirt     ZDO::Set(i4,i4,bool)
+ 137 ret          
+
+== Piece::GetCreator() -> i8  il_size=7 sha=367207579b7c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Piece::m_creator
+   6 ret          
+
+== Piece::GetCreatorPlatformUserIdIndex() -> i4  il_size=7 sha=e7b30ddbd7b6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Piece::m_creatorPlatformUserIDIndex
+   6 ret          
+
+== Piece::IsCreator() -> bool  il_size=26 sha=331a2ebe43a7
+   locals_sig=0x11000118
+   0 ldarg.0      
+   1 call         Piece::GetCreator()
+   6 call         Game::get_instance()
+  11 callvirt     Game::GetPlayerProfile()
+  16 callvirt     PlayerProfile::GetPlayerID()
+  21 stloc.0      
+  22 ldloc.0      
+  23 ceq          
+  25 ret          
+
+== Piece::IsPlacedByPlayer() -> bool  il_size=11 sha=831623c9066e
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Piece::GetCreator()
+   6 ldc.i4.0     
+   7 conv.i8      
+   8 cgt.un       
+  10 ret          
+
+== Piece::SetInvalidPlacementHeightlight(bool) -> void  il_size=111 sha=c5bd84fe3ac2
+   locals_sig=null
+   0 ldarg.1      
+   1 brfalse.s    68
+   3 call         MaterialMan::get_instance()
+   8 ldarg.0      
+   9 call         UnityEngine.Component::get_gameObject
+  14 ldsfld       ShaderProps::_Color
+  19 call         UnityEngine.Color::get_red
+  24 ldc.i4.0     
+  25 callvirt     MaterialMan::SetValue<T>
+  30 call         MaterialMan::get_instance()
+  35 ldarg.0      
+  36 call         UnityEngine.Component::get_gameObject
+  41 ldsfld       ShaderProps::_EmissionColor
+  46 call         UnityEngine.Color::get_red
+  51 ldc.r4       0.699999988079071
+  56 call         UnityEngine.Color::op_Multiply
+  61 ldc.i4.0     
+  62 callvirt     MaterialMan::SetValue<T>
+  67 ret          
+  68 call         MaterialMan::get_instance()
+  73 ldarg.0      
+  74 call         UnityEngine.Component::get_gameObject
+  79 ldsfld       ShaderProps::_Color
+  84 callvirt     MaterialMan::ResetValue(class:133,i4)
+  89 call         MaterialMan::get_instance()
+  94 ldarg.0      
+  95 call         UnityEngine.Component::get_gameObject
+ 100 ldsfld       ShaderProps::_EmissionColor
+ 105 callvirt     MaterialMan::ResetValue(class:133,i4)
+ 110 ret          
+
+== Piece::GetSnapPoints(valuetype:81, r4, class:165<class:73>, class:165<class:2264>) -> void  il_size=67 sha=483aec823b22
+   locals_sig=0x1100073f
+   0 ldarg.0      
+   1 ldarg.1      
+   2 ldsfld       Piece::s_pieceColliders
+   7 ldsfld       Piece::s_pieceRayMask
+  12 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  17 stloc.0      
+  18 ldc.i4.0     
+  19 stloc.1      
+  20 br.s         62
+  22 ldsfld       Piece::s_pieceColliders
+  27 ldloc.1      
+  28 ldelem.ref   
+  29 callvirt     UnityEngine.Component::GetComponentInParent<T>
+  34 stloc.2      
+  35 ldloc.2      
+  36 ldnull       
+  37 call         UnityEngine.Object::op_Inequality
+  42 brfalse.s    58
+  44 ldloc.2      
+  45 ldarg.2      
+  46 callvirt     Piece::GetSnapPoints(class:165<class:73>)
+  51 ldarg.3      
+  52 ldloc.2      
+  53 callvirt     System.Collections.Generic.List`1::Add
+  58 ldloc.1      
+  59 ldc.i4.1     
+  60 add          
+  61 stloc.1      
+  62 ldloc.1      
+  63 ldloc.0      
+  64 blt.s        22
+  66 ret          
+
+== Piece::GetAllPiecesInRadius(valuetype:81, r4, class:165<class:2264>) -> void  il_size=92 sha=3517142544df
+   locals_sig=0x11000740
+   0 ldsfld       Piece::s_allPieces
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         66
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 callvirt     UnityEngine.Component::get_gameObject
+  27 callvirt     UnityEngine.GameObject::get_layer
+  32 ldsfld       Piece::s_ghostLayer
+  37 beq.s        66
+  39 ldarg.0      
+  40 ldloc.1      
+  41 callvirt     UnityEngine.Component::get_transform
+  46 callvirt     UnityEngine.Transform::get_position
+  51 call         UnityEngine.Vector3::Distance
+  56 ldarg.1      
+  57 bge.un.s     66
+  59 ldarg.2      
+  60 ldloc.1      
+  61 callvirt     System.Collections.Generic.List`1::Add
+  66 ldloca.s     0
+  68 call         Enumerator::MoveNext
+  73 brtrue.s     13
+  75 leave.s      91
+  77 ldloca.s     0
+  79 constrained. 0x1b00008c
+  85 callvirt     System.IDisposable::Dispose
+  90 endfinally   
+  91 ret          
+
+== Piece::GetAllComfortPiecesInRadius(valuetype:81, r4, class:165<class:2264>) -> void  il_size=92 sha=4ef944dd5f30
+   locals_sig=0x11000224
+   0 ldsfld       Piece::s_allComfortPieces
+   5 callvirt     System.Collections.Generic.HashSet`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         66
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 callvirt     UnityEngine.Component::get_gameObject
+  27 callvirt     UnityEngine.GameObject::get_layer
+  32 ldsfld       Piece::s_ghostLayer
+  37 beq.s        66
+  39 ldarg.0      
+  40 ldloc.1      
+  41 callvirt     UnityEngine.Component::get_transform
+  46 callvirt     UnityEngine.Transform::get_position
+  51 call         UnityEngine.Vector3::Distance
+  56 ldarg.1      
+  57 bge.un.s     66
+  59 ldarg.2      
+  60 ldloc.1      
+  61 callvirt     System.Collections.Generic.List`1::Add
+  66 ldloca.s     0
+  68 call         Enumerator::MoveNext
+  73 brtrue.s     13
+  75 leave.s      91
+  77 ldloca.s     0
+  79 constrained. 0x1b00013b
+  85 callvirt     System.IDisposable::Dispose
+  90 endfinally   
+  91 ret          
+
+== Piece::CheckClusteredBuildPieceStats() -> void  il_size=283 sha=2ec1770e2805
+   locals_sig=0x11000741
+   0 ldsfld       Player::m_localPlayer
+   5 callvirt     Player::GetPlayerID()
+  10 stloc.0      
+  11 ldsfld       Piece::m_tagStats
+  16 brtrue.s     32
+  18 ldc.i4.s     20
+  20 newarr       0x010001f3
+  25 stsfld       Piece::m_tagStats
+  30 br.s         58
+  32 ldc.i4.0     
+  33 stloc.3      
+  34 br.s         48
+  36 ldsfld       Piece::m_tagStats
+  41 ldloc.3      
+  42 ldc.i4.0     
+  43 stelem.i4    
+  44 ldloc.3      
+  45 ldc.i4.1     
+  46 add          
+  47 stloc.3      
+  48 ldloc.3      
+  49 ldsfld       Piece::m_tagStats
+  54 ldlen        
+  55 conv.i4      
+  56 blt.s        36
+  58 ldtoken      Piece+UsageTagFlags
+  63 call         System.Type::GetTypeFromHandle
+  68 call         System.Enum::GetValues
+  73 castclass    0x1b000141
+  78 stloc.1      
+  79 ldsfld       Piece::s_allPieces
+  84 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  89 stloc.s      4
+  91 br.s         165
+  93 ldloca.s     4
+  95 call         Enumerator::get_Current
+ 100 stloc.s      5
+ 102 ldloc.s      5
+ 104 callvirt     Piece::GetCreator()
+ 109 ldloc.0      
+ 110 bne.un.s     165
+ 112 ldloc.s      5
+ 114 ldfld        Piece::m_usage
+ 119 stloc.s      6
+ 121 ldc.i4.0     
+ 122 stloc.s      7
+ 124 br.s         158
+ 126 ldloc.s      6
+ 128 ldloc.1      
+ 129 ldloc.s      7
+ 131 ldelem.i4    
+ 132 and          
+ 133 brfalse.s    152
+ 135 ldsfld       Piece::m_tagStats
+ 140 ldloc.s      7
+ 142 ldelema      0x010001f3
+ 147 dup          
+ 148 ldind.i4     
+ 149 ldc.i4.1     
+ 150 add          
+ 151 stind.i4     
+ 152 ldloc.s      7
+ 154 ldc.i4.1     
+ 155 add          
+ 156 stloc.s      7
+ 158 ldloc.s      7
+ 160 ldloc.1      
+ 161 ldlen        
+ 162 conv.i4      
+ 163 blt.s        126
+ 165 ldloca.s     4
+ 167 call         Enumerator::MoveNext
+ 172 brtrue.s     93
+ 174 leave.s      190
+ 176 ldloca.s     4
+ 178 constrained. 0x1b00008c
+ 184 callvirt     System.IDisposable::Dispose
+ 189 endfinally   
+ 190 call         Game::get_instance()
+ 195 callvirt     Game::GetPlayerProfile()
+ 200 stloc.2      
+ 201 ldc.i4.0     
+ 202 stloc.s      8
+ 204 br.s         266
+ 206 ldsfld       Piece::m_tagStats
+ 211 ldloc.s      8
+ 213 ldelem.i4    
+ 214 stloc.s      9
+ 216 ldloc.s      9
+ 218 ldc.i4.0     
+ 219 ble.s        260
+ 221 ldc.i4       171
+ 226 ldloc.s      8
+ 228 add          
+ 229 stloc.s      10
+ 231 ldloc.2      
+ 232 ldloc.s      10
+ 234 callvirt     PlayerProfile::GetStat(valuetype:1636)
+ 239 stloc.s      11
+ 241 ldloc.s      9
+ 243 conv.r4      
+ 244 ldloc.s      11
+ 246 ble.un.s     260
+ 248 ldloc.2      
+ 249 ldloc.s      10
+ 251 ldloc.s      9
+ 253 conv.r4      
+ 254 ldc.i4.0     
+ 255 callvirt     PlayerProfile::SetStat(valuetype:1636,r4,bool)
+ 260 ldloc.s      8
+ 262 ldc.i4.1     
+ 263 add          
+ 264 stloc.s      8
+ 266 ldloc.s      8
+ 268 ldsfld       Piece::m_tagStats
+ 273 ldlen        
+ 274 conv.i4      
+ 275 blt.s        206
+ 277 call         Piece::CheckBuildLeniencyUnlocks()
+ 282 ret          
+
+== Piece::CheckBuildLeniencyUnlocks() -> void  il_size=121 sha=8a33f6033353
+   locals_sig=0x110001ef
+   0 ldsfld       Achievements::m_instance
+   5 ldfld        Achievements::m_achievementLists
+  10 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  15 stloc.0      
+  16 br.s         95
+  18 ldloca.s     0
+  20 call         Enumerator::get_Current
+  25 ldfld        AchievementList::m_achievements
+  30 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  35 stloc.1      
+  36 br.s         70
+  38 ldloca.s     1
+  40 call         Enumerator::get_Current
+  45 stloc.2      
+  46 ldloc.2      
+  47 ldfld        Achievement::m_lenientBuildAchievement
+  52 brfalse.s    70
+  54 ldloc.2      
+  55 ldfld        Achievement::m_unlocked
+  60 brtrue.s     70
+  62 ldloc.2      
+  63 ldc.i4.1     
+  64 ldc.i4.1     
+  65 call         Piece::CheckLenientBuildAchUnlocked(class:516,bool,bool)
+  70 ldloca.s     1
+  72 call         Enumerator::MoveNext
+  77 brtrue.s     38
+  79 leave.s      95
+  81 ldloca.s     1
+  83 constrained. 0x1b00010c
+  89 callvirt     System.IDisposable::Dispose
+  94 endfinally   
+  95 ldloca.s     0
+  97 call         Enumerator::MoveNext
+ 102 brtrue.s     18
+ 104 leave.s      120
+ 106 ldloca.s     0
+ 108 constrained. 0x1b000112
+ 114 callvirt     System.IDisposable::Dispose
+ 119 endfinally   
+ 120 ret          
+
+== Piece::CheckLenientBuildAchUnlocked(class:516, bool, bool) -> void  il_size=303 sha=5ed7115f9306
+   locals_sig=0x11000742
+   0 ldc.r4       0
+   5 stloc.0      
+   6 ldc.i4.s     20
+   8 newarr       0x010001ed
+  13 stloc.1      
+  14 ldarg.0      
+  15 ldfld        Achievement::m_statTrigger
+  20 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  25 stloc.s      5
+  27 br.s         70
+  29 ldloca.s     5
+  31 call         Enumerator::get_Current
+  36 stloc.s      6
+  38 ldloc.1      
+  39 ldloc.s      6
+  41 ldfld        Achievement+PlayerStatRequirement::m_stat
+  46 ldc.i4       171
+  51 sub          
+  52 ldloc.s      6
+  54 ldfld        Achievement+PlayerStatRequirement::m_amountAboveEquals
+  59 stelem.r4    
+  60 ldloc.0      
+  61 ldloc.s      6
+  63 ldfld        Achievement+PlayerStatRequirement::m_amountAboveEquals
+  68 add          
+  69 stloc.0      
+  70 ldloca.s     5
+  72 call         Enumerator::MoveNext
+  77 brtrue.s     29
+  79 leave.s      95
+  81 ldloca.s     5
+  83 constrained. 0x1b000106
+  89 callvirt     System.IDisposable::Dispose
+  94 endfinally   
+  95 ldc.r4       0
+ 100 stloc.2      
+ 101 ldc.r4       1.149999976158142
+ 106 stloc.3      
+ 107 ldarg.2      
+ 108 brfalse.s    165
+ 110 ldc.i4.0     
+ 111 stloc.s      7
+ 113 br.s         152
+ 115 ldsfld       Piece::m_tagStats
+ 120 ldloc.s      7
+ 122 ldelem.i4    
+ 123 ldloc.1      
+ 124 ldloc.s      7
+ 126 ldelem.r4    
+ 127 stloc.s      8
+ 129 conv.r4      
+ 130 ldloc.s      8
+ 132 ldloc.3      
+ 133 mul          
+ 134 call         UnityEngine.Mathf::Min
+ 139 stloc.s      9
+ 141 ldloc.2      
+ 142 ldloc.s      9
+ 144 add          
+ 145 stloc.2      
+ 146 ldloc.s      7
+ 148 ldc.i4.1     
+ 149 add          
+ 150 stloc.s      7
+ 152 ldloc.s      7
+ 154 ldsfld       Piece::m_tagStats
+ 159 ldlen        
+ 160 conv.i4      
+ 161 blt.s        115
+ 163 br.s         264
+ 165 ldarg.0      
+ 166 ldfld        Achievement::m_statTrigger
+ 171 stloc.s      10
+ 173 call         Game::get_instance()
+ 178 callvirt     Game::GetPlayerProfile()
+ 183 stloc.s      11
+ 185 ldc.i4.0     
+ 186 stloc.s      12
+ 188 br.s         253
+ 190 ldloc.s      10
+ 192 ldloc.s      12
+ 194 callvirt     System.Collections.Generic.List`1::get_Item
+ 199 stloc.s      13
+ 201 ldloc.s      11
+ 203 ldloc.s      13
+ 205 ldfld        Achievement+PlayerStatRequirement::m_stat
+ 210 callvirt     PlayerProfile::GetStat(valuetype:1636)
+ 215 ldloc.s      10
+ 217 ldloc.s      12
+ 219 callvirt     System.Collections.Generic.List`1::get_Item
+ 224 ldfld        Achievement+PlayerStatRequirement::m_amountAboveEquals
+ 229 stloc.s      14
+ 231 ldloc.s      14
+ 233 ldloc.3      
+ 234 mul          
+ 235 call         UnityEngine.Mathf::Min
+ 240 stloc.s      15
+ 242 ldloc.2      
+ 243 ldloc.s      15
+ 245 add          
+ 246 stloc.2      
+ 247 ldloc.s      12
+ 249 ldc.i4.1     
+ 250 add          
+ 251 stloc.s      12
+ 253 ldloc.s      12
+ 255 ldloc.s      10
+ 257 callvirt     System.Collections.Generic.List`1::get_Count
+ 262 blt.s        190
+ 264 ldc.i4.1     
+ 265 stloc.s      4
+ 267 ldarg.1      
+ 268 brfalse.s    278
+ 270 ldc.i4.0     
+ 271 call         Achievements::CanGetAchievements(bool)
+ 276 stloc.s      4
+ 278 ldloc.2      
+ 279 ldloc.0      
+ 280 cgt          
+ 282 ldloc.s      4
+ 284 and          
+ 285 brfalse.s    302
+ 287 ldarg.0      
+ 288 ldc.i4.1     
+ 289 stfld        Achievement::m_unlocked
+ 294 ldarg.0      
+ 295 ldc.i4.1     
+ 296 ldarg.1      
+ 297 call         Achievements::AchievementEvent(class:516,bool,bool)
+ 302 ret          
+
+== Piece::GetSnapPoints(class:165<class:73>) -> void  il_size=56 sha=c83698cc103d
+   locals_sig=0x110001b3
+   0 ldc.i4.0     
+   1 stloc.0      
+   2 br.s         41
+   4 ldarg.0      
+   5 call         UnityEngine.Component::get_transform
+  10 ldloc.0      
+  11 callvirt     UnityEngine.Transform::GetChild
+  16 stloc.1      
+  17 ldloc.1      
+  18 ldstr        "snappoint"
+  23 callvirt     UnityEngine.Component::CompareTag
+  28 brfalse.s    37
+  30 ldarg.1      
+  31 ldloc.1      
+  32 callvirt     System.Collections.Generic.List`1::Add
+  37 ldloc.0      
+  38 ldc.i4.1     
+  39 add          
+  40 stloc.0      
+  41 ldloc.0      
+  42 ldarg.0      
+  43 call         UnityEngine.Component::get_transform
+  48 callvirt     UnityEngine.Transform::get_childCount
+  53 blt.s        4
+  55 ret          
+
+== Piece::FreeBuildKey() -> valuetype:1552  il_size=34 sha=8160b760c267
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponent<T>
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brtrue.s     28
+  14 ldarg.0      
+  15 call         UnityEngine.Component::GetComponent<T>
+  20 ldnull       
+  21 call         UnityEngine.Object::op_Inequality
+  26 brfalse.s    31
+  28 ldc.i4.s     25
+  30 ret          
+  31 ldc.i4.s     24
+  33 ret          
+
+== Piece::GetComfort() -> i4  il_size=36 sha=1ad7fffb84f3
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Piece::m_comfortObject
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brfalse.s    29
+  14 ldarg.0      
+  15 ldfld        Piece::m_comfortObject
+  20 callvirt     UnityEngine.GameObject::get_activeInHierarchy
+  25 brtrue.s     29
+  27 ldc.i4.0     
+  28 ret          
+  29 ldarg.0      
+  30 ldfld        Piece::m_comfort
+  35 ret          
+
+== Piece::.ctor() -> void  il_size=126 sha=3bea54dd18b0
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        Piece::m_targetNonPlayerBuilt
+   7 ldarg.0      
+   8 ldstr        ""
+  13 stfld        Piece::m_name
+  18 ldarg.0      
+  19 ldstr        ""
+  24 stfld        Piece::m_description
+  29 ldarg.0      
+  30 ldc.i4.1     
+  31 stfld        Piece::m_enabled
+  36 ldarg.0      
+  37 ldc.i4.1     
+  38 stfld        Piece::m_canRotate
+  43 ldarg.0      
+  44 ldc.i4.1     
+  45 stfld        Piece::m_canBeRemoved
+  50 ldarg.0      
+  51 newobj       System.Collections.Generic.List`1::.ctor
+  56 stfld        Piece::m_blockingPieces
+  61 ldarg.0      
+  62 newobj       EffectList::.ctor()
+  67 stfld        Piece::m_placeEffect
+  72 ldarg.0      
+  73 ldstr        ""
+  78 stfld        Piece::m_dlc
+  83 ldarg.0      
+  84 ldc.r4       1
+  89 stfld        Piece::m_returnResourceHeightOffset
+  94 ldarg.0      
+  95 call         System.Array::Empty<T>
+ 100 stfld        Piece::m_resources
+ 105 ldarg.0      
+ 106 ldc.i4.m1    
+ 107 stfld        Piece::m_creatorPlatformUserIDIndex
+ 112 ldarg.0      
+ 113 ldc.i4.m1    
+ 114 stfld        Piece::m_myListIndex
+ 119 ldarg.0      
+ 120 call         StaticTarget::.ctor()
+ 125 ret          
+
+== Piece::.cctor() -> void  il_size=54 sha=e1425d4c6276
+   locals_sig=null
+   0 ldc.i4.0     
+   1 stsfld       Piece::s_ghostLayer
+   6 ldc.i4.0     
+   7 stsfld       Piece::s_pieceRayMask
+  12 ldc.i4.0     
+  13 stsfld       Piece::s_harvestRayMask
+  18 ldc.i4       2000
+  23 newarr       0x01000013
+  28 stsfld       Piece::s_pieceColliders
+  33 newobj       System.Collections.Generic.List`1::.ctor
+  38 stsfld       Piece::s_allPieces
+  43 newobj       System.Collections.Generic.HashSet`1::.ctor
+  48 stsfld       Piece::s_allComfortPieces
+  53 ret          

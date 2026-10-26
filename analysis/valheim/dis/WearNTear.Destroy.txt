@@ -1,0 +1,122 @@
+== WearNTear::Destroy(class:2140, bool) -> void  il_size=386 sha=1349d17bcfdd
+   locals_sig=0x11000805
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponent<T>
+   6 stloc.0      
+   7 ldloc.0      
+   8 ldnull       
+   9 call         UnityEngine.Object::op_Inequality
+  14 brfalse.s    58
+  16 ldarg.0      
+  17 ldfld        WearNTear::m_nview
+  22 callvirt     ZNetView::IsOwner()
+  27 brfalse.s    58
+  29 call         Game::get_instance()
+  34 ldnull       
+  35 call         UnityEngine.Object::op_Inequality
+  40 brfalse.s    58
+  42 call         Game::get_instance()
+  47 ldloc.0      
+  48 callvirt     Bed::GetSpawnPoint()
+  53 callvirt     Game::RemoveCustomSpawnPoint(valuetype:81)
+  58 ldarg.0      
+  59 ldfld        WearNTear::m_nview
+  64 callvirt     ZNetView::GetZDO()
+  69 ldsfld       ZDOVars::s_health
+  74 ldc.r4       0
+  79 callvirt     ZDO::Set(i4,r4)
+  84 ldarg.0      
+  85 ldfld        WearNTear::m_nview
+  90 callvirt     ZNetView::GetZDO()
+  95 ldsfld       ZDOVars::s_support
+ 100 ldc.r4       0
+ 105 callvirt     ZDO::Set(i4,r4)
+ 110 ldarg.0      
+ 111 ldc.r4       0
+ 116 stfld        WearNTear::m_support
+ 121 ldarg.0      
+ 122 ldc.r4       0
+ 127 stfld        WearNTear::m_health
+ 132 ldarg.0      
+ 133 call         WearNTear::ClearCachedSupport()
+ 138 ldarg.0      
+ 139 ldfld        WearNTear::m_piece
+ 144 call         UnityEngine.Object::op_Implicit
+ 149 brfalse.s    166
+ 151 ldarg.2      
+ 152 brtrue.s     166
+ 154 ldarg.0      
+ 155 ldfld        WearNTear::m_piece
+ 160 ldarg.1      
+ 161 callvirt     Piece::DropResources(class:2140)
+ 166 ldarg.0      
+ 167 ldfld        WearNTear::m_onDestroyed
+ 172 brfalse.s    185
+ 174 ldarg.0      
+ 175 ldfld        WearNTear::m_onDestroyed
+ 180 callvirt     System.Action::Invoke
+ 185 ldarg.0      
+ 186 ldfld        WearNTear::m_destroyNoise
+ 191 ldc.r4       0
+ 196 ble.un.s     253
+ 198 ldarg.1      
+ 199 brfalse.s    211
+ 201 ldarg.1      
+ 202 ldfld        HitData::m_hitType
+ 207 ldc.i4.s     20
+ 209 beq.s        253
+ 211 ldarg.0      
+ 212 call         UnityEngine.Component::get_transform
+ 217 callvirt     UnityEngine.Transform::get_position
+ 222 ldc.r4       10
+ 227 call         Player::GetClosestPlayer(valuetype:81,r4)
+ 232 stloc.2      
+ 233 ldloc.2      
+ 234 call         UnityEngine.Object::op_Implicit
+ 239 brfalse.s    253
+ 241 ldloc.2      
+ 242 ldarg.0      
+ 243 ldfld        WearNTear::m_destroyNoise
+ 248 callvirt     Character::AddNoise(r4)
+ 253 ldsfld       ZDOID::None
+ 258 stloc.1      
+ 259 ldarg.1      
+ 260 brfalse.s    288
+ 262 ldarg.1      
+ 263 callvirt     HitData::GetAttacker()
+ 268 ldnull       
+ 269 call         UnityEngine.Object::op_Inequality
+ 274 brfalse.s    288
+ 276 ldarg.1      
+ 277 callvirt     HitData::GetAttacker()
+ 282 callvirt     Character::GetZDOID()
+ 287 stloc.1      
+ 288 ldarg.0      
+ 289 ldfld        WearNTear::m_destroyedEffect
+ 294 ldarg.0      
+ 295 call         UnityEngine.Component::get_transform
+ 300 callvirt     UnityEngine.Transform::get_position
+ 305 ldarg.0      
+ 306 call         UnityEngine.Component::get_transform
+ 311 callvirt     UnityEngine.Transform::get_rotation
+ 316 ldarg.0      
+ 317 call         UnityEngine.Component::get_transform
+ 322 ldc.r4       1
+ 327 ldc.i4.m1    
+ 328 ldloc.1      
+ 329 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 334 pop          
+ 335 ldarg.0      
+ 336 ldfld        WearNTear::m_autoCreateFragments
+ 341 brfalse.s    369
+ 343 ldarg.0      
+ 344 ldfld        WearNTear::m_nview
+ 349 ldsfld       ZNetView::Everybody
+ 354 ldstr        "RPC_CreateFragments"
+ 359 call         System.Array::Empty<T>
+ 364 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 369 call         ZNetScene::get_instance()
+ 374 ldarg.0      
+ 375 call         UnityEngine.Component::get_gameObject
+ 380 callvirt     ZNetScene::Destroy(class:133)
+ 385 ret          

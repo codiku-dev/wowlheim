@@ -1,0 +1,20 @@
+== WearNTear::Start() -> void  il_size=60 sha=3c25b0ee2af4
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::get_transform
+   7 callvirt     UnityEngine.Transform::get_position
+  12 call         Heightmap::FindHeightmap(valuetype:81)
+  17 stfld        WearNTear::m_connectedHeightMap
+  22 ldarg.0      
+  23 ldfld        WearNTear::m_connectedHeightMap
+  28 ldnull       
+  29 call         UnityEngine.Object::op_Inequality
+  34 brfalse.s    59
+  36 ldarg.0      
+  37 ldfld        WearNTear::m_connectedHeightMap
+  42 ldarg.0      
+  43 ldftn        WearNTear::ClearCachedSupport()
+  49 newobj       System.Action::.ctor
+  54 callvirt     Heightmap::add_m_clearConnectedWearNTearCache(class:89)
+  59 ret          

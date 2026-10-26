@@ -1,0 +1,12 @@
+== WearNTear::ClearCachedSupport() -> void  il_size=34 sha=f275aaaa900e
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_supportColliders
+   6 callvirt     System.Collections.Generic.List`1::Clear
+  11 ldarg.0      
+  12 ldfld        WearNTear::m_supportPositions
+  17 callvirt     System.Collections.Generic.List`1::Clear
+  22 ldarg.0      
+  23 ldfld        WearNTear::m_supportValue
+  28 callvirt     System.Collections.Generic.List`1::Clear
+  33 ret          

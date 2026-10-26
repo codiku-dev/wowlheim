@@ -1,0 +1,103 @@
+== Recipe::GetRequiredStationLevel(i4) -> i4  il_size=17 sha=e36b6d8236bd
+   locals_sig=null
+   0 ldc.i4.1     
+   1 ldarg.0      
+   2 ldfld        Recipe::m_minStationLevel
+   7 call         UnityEngine.Mathf::Max
+  12 ldarg.1      
+  13 ldc.i4.1     
+  14 sub          
+  15 add          
+  16 ret          
+
+== Recipe::GetRequiredStation(i4) -> class:1048  il_size=33 sha=cdd6018c5724
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Recipe::m_craftingStation
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    20
+  13 ldarg.0      
+  14 ldfld        Recipe::m_craftingStation
+  19 ret          
+  20 ldarg.1      
+  21 ldc.i4.1     
+  22 ble.s        31
+  24 ldarg.0      
+  25 ldfld        Recipe::m_repairStation
+  30 ret          
+  31 ldnull       
+  32 ret          
+
+== Recipe::GetAmount(i4, i4&, class:3744&, i4) -> i4  il_size=90 sha=6ea028d4a0fe
+   locals_sig=0x1100000d
+   0 ldarg.0      
+   1 ldfld        Recipe::m_amount
+   6 stloc.0      
+   7 ldarg.2      
+   8 ldc.i4.0     
+   9 stind.i4     
+  10 ldarg.3      
+  11 ldnull       
+  12 stind.ref    
+  13 ldarg.0      
+  14 ldfld        Recipe::m_requireOnlyOneIngredient
+  19 brfalse.s    85
+  21 ldarg.3      
+  22 ldsfld       Player::m_localPlayer
+  27 ldsfld       Player::m_localPlayer
+  32 callvirt     Humanoid::GetInventory()
+  37 ldarg.0      
+  38 ldarg.1      
+  39 ldarg.2      
+  40 ldloca.s     1
+  42 ldarg.s      4
+  44 callvirt     Player::GetFirstRequiredItem(class:1056,class:1080,i4,i4&,i4&,i4)
+  49 stind.ref    
+  50 ldloc.0      
+  51 ldarg.3      
+  52 ldind.ref    
+  53 ldfld        ItemDrop+ItemData::m_quality
+  58 ldc.i4.1     
+  59 sub          
+  60 ldarg.0      
+  61 ldfld        Recipe::m_amount
+  66 mul          
+  67 conv.r4      
+  68 ldarg.0      
+  69 ldfld        Recipe::m_qualityResultAmountMultiplier
+  74 mul          
+  75 call         UnityEngine.Mathf::Ceil
+  80 conv.i4      
+  81 ldloc.1      
+  82 add          
+  83 add          
+  84 stloc.0      
+  85 ldloc.0      
+  86 ldarg.s      4
+  88 mul          
+  89 ret          
+
+== Recipe::.ctor() -> void  il_size=59 sha=60197fc07c73
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        Recipe::m_amount
+   7 ldarg.0      
+   8 ldc.i4.1     
+   9 stfld        Recipe::m_enabled
+  14 ldarg.0      
+  15 ldc.r4       1
+  20 stfld        Recipe::m_qualityResultAmountMultiplier
+  25 ldarg.0      
+  26 ldc.i4.s     100
+  28 stfld        Recipe::m_listSortWeight
+  33 ldarg.0      
+  34 ldc.i4.1     
+  35 stfld        Recipe::m_minStationLevel
+  40 ldarg.0      
+  41 ldc.i4.0     
+  42 newarr       Piece+Requirement
+  47 stfld        Recipe::m_resources
+  52 ldarg.0      
+  53 call         UnityEngine.ScriptableObject::.ctor
+  58 ret          

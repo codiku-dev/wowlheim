@@ -1,0 +1,256 @@
+== WearNTearUpdater::Start() -> void  il_size=27 sha=55fcd27ab3b2
+   locals_sig=0x11000016
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Time::get_time
+   7 ldc.r4       1
+  12 add          
+  13 dup          
+  14 stloc.0      
+  15 stfld        WearNTearUpdater::m_sleepUntil
+  20 ldloc.0      
+  21 stfld        WearNTearUpdater::m_sleepUntilNext
+  26 ret          
+
+== WearNTearUpdater::Update() -> void  il_size=31 sha=861f593bf6ef
+   locals_sig=0x11000013
+   0 call         UnityEngine.Time::get_time
+   5 stloc.0      
+   6 call         UnityEngine.Time::get_deltaTime
+  11 stloc.1      
+  12 ldloc.0      
+  13 ldarg.0      
+  14 ldfld        WearNTearUpdater::m_sleepUntil
+  19 bge.un.s     22
+  21 ret          
+  22 ldarg.0      
+  23 ldloc.1      
+  24 ldloc.0      
+  25 call         WearNTearUpdater::UpdateWearNTear(r4,r4)
+  30 ret          
+
+== WearNTearUpdater::UpdateWearNTear(r4, r4) -> void  il_size=554 sha=9e216eec2ea3
+   locals_sig=0x11000807
+   0 call         WearNTear::GetAllInstances()
+   5 stloc.0      
+   6 ldarg.0      
+   7 ldflda       WearNTearUpdater::m_sleepUntilNext
+  12 ldarg.0      
+  13 ldfld        WearNTearUpdater::m_sleepUntil
+  18 call         System.Single::Equals
+  23 brfalse      162
+  28 ldarg.0      
+  29 ldarg.2      
+  30 ldc.r4       1
+  35 add          
+  36 stfld        WearNTearUpdater::m_sleepUntilNext
+  41 ldsfld       WearNTearUpdater::s_ashlandsWearTexture
+  46 ldarg.0      
+  47 ldfld        WearNTearUpdater::m_ashlandsWearTexture
+  52 call         UnityEngine.Shader::SetGlobalTexture
+  57 ldloc.0      
+  58 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  63 stloc.2      
+  64 br.s         89
+  66 ldloca.s     2
+  68 call         Enumerator::get_Current
+  73 stloc.3      
+  74 ldloc.3      
+  75 callvirt     UnityEngine.Behaviour::get_enabled
+  80 brfalse.s    89
+  82 ldloc.3      
+  83 ldarg.1      
+  84 callvirt     WearNTear::UpdateCover(r4)
+  89 ldloca.s     2
+  91 call         Enumerator::MoveNext
+  96 brtrue.s     66
+  98 leave.s      114
+ 100 ldloca.s     2
+ 102 constrained. 0x1b00046f
+ 108 callvirt     System.IDisposable::Dispose
+ 113 endfinally   
+ 114 ldloc.0      
+ 115 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 120 stloc.2      
+ 121 br.s         136
+ 123 ldloca.s     2
+ 125 call         Enumerator::get_Current
+ 130 ldarg.2      
+ 131 callvirt     WearNTear::UpdateAshlandsMaterialValues(r4)
+ 136 ldloca.s     2
+ 138 call         Enumerator::MoveNext
+ 143 brtrue.s     123
+ 145 leave.s      161
+ 147 ldloca.s     2
+ 149 constrained. 0x1b00046f
+ 155 callvirt     System.IDisposable::Dispose
+ 160 endfinally   
+ 161 ret          
+ 162 ldarg.0      
+ 163 ldfld        WearNTearUpdater::m_index
+ 168 stloc.1      
+ 169 ldc.i4.0     
+ 170 stloc.s      4
+ 172 br.s         227
+ 174 ldloc.0      
+ 175 callvirt     System.Collections.Generic.List`1::get_Count
+ 180 brfalse.s    237
+ 182 ldloc.1      
+ 183 ldloc.0      
+ 184 callvirt     System.Collections.Generic.List`1::get_Count
+ 189 bge.s        237
+ 191 ldloc.0      
+ 192 ldloc.1      
+ 193 callvirt     System.Collections.Generic.List`1::get_Item
+ 198 stloc.s      5
+ 200 ldloc.s      5
+ 202 callvirt     UnityEngine.Behaviour::get_enabled
+ 207 brfalse.s    217
+ 209 ldloc.s      5
+ 211 ldarg.2      
+ 212 callvirt     WearNTear::UpdateWear(r4)
+ 217 ldloc.1      
+ 218 ldc.i4.1     
+ 219 add          
+ 220 stloc.1      
+ 221 ldloc.s      4
+ 223 ldc.i4.1     
+ 224 add          
+ 225 stloc.s      4
+ 227 ldloc.s      4
+ 229 ldarg.0      
+ 230 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 235 blt.s        174
+ 237 ldarg.0      
+ 238 ldloc.1      
+ 239 ldloc.0      
+ 240 callvirt     System.Collections.Generic.List`1::get_Count
+ 245 blt.s        250
+ 247 ldc.i4.0     
+ 248 br.s         251
+ 250 ldloc.1      
+ 251 stfld        WearNTearUpdater::m_index
+ 256 ldarg.0      
+ 257 ldfld        WearNTearUpdater::m_index
+ 262 brtrue       553
+ 267 ldarg.0      
+ 268 ldfld        WearNTearUpdater::m_sleepUntilNext
+ 273 ldarg.2      
+ 274 sub          
+ 275 stloc.s      6
+ 277 ldloc.s      6
+ 279 call         Utils::Abs
+ 284 ldc.r4       0.10000000149011612
+ 289 blt          504
+ 294 ldloc.s      6
+ 296 ldc.r4       -0.800000011920929
+ 301 bge.un.s     323
+ 303 ldarg.0      
+ 304 ldarg.0      
+ 305 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 310 ldc.i4.s     20
+ 312 add          
+ 313 stfld        WearNTearUpdater::m_updatesPerFrame
+ 318 br           504
+ 323 ldloc.s      6
+ 325 ldc.r4       -0.4000000059604645
+ 330 bge.un.s     352
+ 332 ldarg.0      
+ 333 ldarg.0      
+ 334 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 339 ldc.i4.s     15
+ 341 add          
+ 342 stfld        WearNTearUpdater::m_updatesPerFrame
+ 347 br           504
+ 352 ldloc.s      6
+ 354 ldc.r4       -0.20000000298023224
+ 359 bge.un.s     378
+ 361 ldarg.0      
+ 362 ldarg.0      
+ 363 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 368 ldc.i4.s     10
+ 370 add          
+ 371 stfld        WearNTearUpdater::m_updatesPerFrame
+ 376 br.s         504
+ 378 ldloc.s      6
+ 380 ldc.r4       0
+ 385 bge.un.s     403
+ 387 ldarg.0      
+ 388 ldarg.0      
+ 389 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 394 ldc.i4.5     
+ 395 add          
+ 396 stfld        WearNTearUpdater::m_updatesPerFrame
+ 401 br.s         504
+ 403 ldloc.s      6
+ 405 ldc.r4       0.800000011920929
+ 410 ble.un.s     429
+ 412 ldarg.0      
+ 413 ldarg.0      
+ 414 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 419 ldc.i4.s     20
+ 421 sub          
+ 422 stfld        WearNTearUpdater::m_updatesPerFrame
+ 427 br.s         504
+ 429 ldloc.s      6
+ 431 ldc.r4       0.6000000238418579
+ 436 ble.un.s     455
+ 438 ldarg.0      
+ 439 ldarg.0      
+ 440 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 445 ldc.i4.s     15
+ 447 sub          
+ 448 stfld        WearNTearUpdater::m_updatesPerFrame
+ 453 br.s         504
+ 455 ldloc.s      6
+ 457 ldc.r4       0.30000001192092896
+ 462 ble.un.s     481
+ 464 ldarg.0      
+ 465 ldarg.0      
+ 466 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 471 ldc.i4.s     10
+ 473 sub          
+ 474 stfld        WearNTearUpdater::m_updatesPerFrame
+ 479 br.s         504
+ 481 ldloc.s      6
+ 483 ldc.r4       0.20000000298023224
+ 488 ble.un.s     504
+ 490 ldarg.0      
+ 491 ldarg.0      
+ 492 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 497 ldc.i4.5     
+ 498 sub          
+ 499 stfld        WearNTearUpdater::m_updatesPerFrame
+ 504 ldarg.0      
+ 505 ldarg.0      
+ 506 ldfld        WearNTearUpdater::m_sleepUntilNext
+ 511 stfld        WearNTearUpdater::m_sleepUntil
+ 516 ldarg.0      
+ 517 ldarg.0      
+ 518 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 523 ldc.i4.5     
+ 524 call         UnityEngine.Mathf::Max
+ 529 stfld        WearNTearUpdater::m_updatesPerFrame
+ 534 ldarg.0      
+ 535 ldarg.0      
+ 536 ldfld        WearNTearUpdater::m_updatesPerFrame
+ 541 ldc.i4.s     100
+ 543 call         UnityEngine.Mathf::Min
+ 548 stfld        WearNTearUpdater::m_updatesPerFrame
+ 553 ret          
+
+== WearNTearUpdater::.ctor() -> void  il_size=15 sha=3dcfad654235
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.s     50
+   3 stfld        WearNTearUpdater::m_updatesPerFrame
+   8 ldarg.0      
+   9 call         UnityEngine.MonoBehaviour::.ctor
+  14 ret          
+
+== WearNTearUpdater::.cctor() -> void  il_size=16 sha=8e6a80e14ef9
+   locals_sig=null
+   0 ldstr        "_AshlandsWearTexture"
+   5 call         UnityEngine.Shader::PropertyToID
+  10 stsfld       WearNTearUpdater::s_ashlandsWearTexture
+  15 ret          

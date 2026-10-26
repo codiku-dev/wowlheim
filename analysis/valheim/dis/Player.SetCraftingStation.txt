@@ -1,0 +1,25 @@
+== Player::SetCraftingStation(class:1048) -> void  il_size=53 sha=c4d92142dc07
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_currentStation
+   6 ldarg.1      
+   7 call         UnityEngine.Object::op_Equality
+  12 brfalse.s    15
+  14 ret          
+  15 ldarg.1      
+  16 call         UnityEngine.Object::op_Implicit
+  21 brfalse.s    45
+  23 ldarg.0      
+  24 ldarg.1      
+  25 call         Player::AddKnownStation(class:1048)
+  30 ldarg.1      
+  31 callvirt     CraftingStation::PokeInUse()
+  36 ldarg.0      
+  37 ldc.i4.0     
+  38 ldc.i4.1     
+  39 call         Humanoid::HideHandItems(bool,bool)
+  44 pop          
+  45 ldarg.0      
+  46 ldarg.1      
+  47 stfld        Player::m_currentStation
+  52 ret          

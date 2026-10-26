@@ -1,0 +1,16 @@
+== Player::CanRotatePiece() -> bool  il_size=32 sha=eab5a9b1d5c2
+   locals_sig=0x110000b2
+   0 ldarg.0      
+   1 callvirt     Character::InPlaceMode()
+   6 brfalse.s    30
+   8 ldarg.0      
+   9 ldfld        Player::m_buildPieces
+  14 callvirt     PieceTable::GetSelectedPiece()
+  19 stloc.0      
+  20 ldloc.0      
+  21 brfalse.s    30
+  23 ldloc.0      
+  24 ldfld        Piece::m_canRotate
+  29 ret          
+  30 ldc.i4.0     
+  31 ret          

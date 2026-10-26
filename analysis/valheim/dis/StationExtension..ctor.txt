@@ -1,0 +1,14 @@
+== StationExtension::.ctor() -> void  il_size=44 sha=02f850fa628d
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       5
+   6 stfld        StationExtension::m_maxStationDistance
+  11 ldarg.0      
+  12 ldc.r4       0
+  17 ldc.r4       0
+  22 ldc.r4       0
+  27 newobj       UnityEngine.Vector3::.ctor
+  32 stfld        StationExtension::m_connectionOffset
+  37 ldarg.0      
+  38 call         UnityEngine.MonoBehaviour::.ctor
+  43 ret          

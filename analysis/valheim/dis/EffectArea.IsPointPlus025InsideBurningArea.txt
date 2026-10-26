@@ -1,0 +1,31 @@
+== EffectArea::IsPointPlus025InsideBurningArea(valuetype:81) -> bool  il_size=72 sha=cd4eccaeb405
+   locals_sig=0x110006a2
+   0 ldsfld       EffectArea::s_BurningAreas
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         43
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloca.s     1
+  23 call         System.Collections.Generic.KeyValuePair`2::get_Key
+  28 stloc.2      
+  29 ldloca.s     2
+  31 ldarg.0      
+  32 call         UnityEngine.Bounds::Contains
+  37 brfalse.s    43
+  39 ldc.i4.1     
+  40 stloc.3      
+  41 leave.s      70
+  43 ldloca.s     0
+  45 call         Enumerator::MoveNext
+  50 brtrue.s     13
+  52 leave.s      68
+  54 ldloca.s     0
+  56 constrained. 0x1b0003f4
+  62 callvirt     System.IDisposable::Dispose
+  67 endfinally   
+  68 ldc.i4.0     
+  69 ret          
+  70 ldloc.3      
+  71 ret          

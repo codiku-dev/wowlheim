@@ -1,0 +1,459 @@
+== Player::Update() -> void  il_size=1380 sha=9c14dbc0c718
+   locals_sig=0x11000089
+   0 call         InventoryGui::IsVisible()
+   5 stloc.0      
+   6 ldsfld       ZInput::InputLayout
+  11 brfalse      171
+  16 call         ZInput::IsGamepadActive
+  21 brfalse      171
+  26 ldloc.0      
+  27 brtrue       171
+  32 ldstr        "JoyAltPlace"
+  37 call         ZInput::GetButtonUp
+  42 brfalse.s    56
+  44 ldstr        "JoyAltKeys"
+  49 call         ZInput::GetButton
+  54 br.s         57
+  56 ldc.i4.0     
+  57 brfalse.s    171
+  59 ldarg.0      
+  60 ldarg.0      
+  61 ldfld        Player::m_altPlace
+  66 ldc.i4.0     
+  67 ceq          
+  69 stfld        Player::m_altPlace
+  74 call         MessageHud::get_instance()
+  79 ldnull       
+  80 call         UnityEngine.Object::op_Inequality
+  85 brfalse.s    171
+  87 call         Localization::get_instance
+  92 ldstr        "$hud_altplacement"
+  97 callvirt     Localization::Localize
+ 102 stloc.2      
+ 103 ldarg.0      
+ 104 ldfld        Player::m_altPlace
+ 109 brtrue.s     128
+ 111 call         Localization::get_instance
+ 116 ldstr        "$hud_off"
+ 121 callvirt     Localization::Localize
+ 126 br.s         143
+ 128 call         Localization::get_instance
+ 133 ldstr        "$hud_on"
+ 138 callvirt     Localization::Localize
+ 143 stloc.3      
+ 144 call         MessageHud::get_instance()
+ 149 ldc.i4.1     
+ 150 ldloc.2      
+ 151 ldstr        " "
+ 156 ldloc.3      
+ 157 call         System.String::Concat
+ 162 ldc.i4.0     
+ 163 ldnull       
+ 164 ldc.i4.0     
+ 165 ldc.i4.1     
+ 166 callvirt     MessageHud::ShowMessage(valuetype:3532,string,i4,class:217,bool,bool)
+ 171 ldarg.0      
+ 172 call         Player::UpdateClothFix()
+ 177 ldsfld       Terminal::m_showTests
+ 182 brfalse.s    311
+ 184 ldsfld       Terminal::m_testList
+ 189 ldstr        "Player Deepnorth Fade"
+ 194 ldarg.0      
+ 195 call         UnityEngine.Component::get_transform
+ 200 callvirt     UnityEngine.Transform::get_position
+ 205 ldfld        UnityEngine.Vector3::x
+ 210 ldarg.0      
+ 211 call         UnityEngine.Component::get_transform
+ 216 callvirt     UnityEngine.Transform::get_position
+ 221 ldfld        UnityEngine.Vector3::z
+ 226 call         WorldGenerator::DeepNorthWaveFade(r4,r4)
+ 231 stloc.s      4
+ 233 ldloca.s     4
+ 235 ldstr        "0.00"
+ 240 call         System.Double::ToString
+ 245 ldstr        " / "
+ 250 ldarg.0      
+ 251 call         UnityEngine.Component::get_transform
+ 256 callvirt     UnityEngine.Transform::get_position
+ 261 ldfld        UnityEngine.Vector3::x
+ 266 ldarg.0      
+ 267 call         UnityEngine.Component::get_transform
+ 272 callvirt     UnityEngine.Transform::get_position
+ 277 ldfld        UnityEngine.Vector3::z
+ 282 call         WorldGenerator::CreateDeepNorthGap(r4,r4)
+ 287 stloc.s      4
+ 289 ldloca.s     4
+ 291 ldstr        "0.00"
+ 296 call         System.Double::ToString
+ 301 call         System.String::Concat
+ 306 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+ 311 ldarg.0      
+ 312 ldfld        Character::m_nview
+ 317 callvirt     ZNetView::IsValid()
+ 322 brtrue.s     325
+ 324 ret          
+ 325 ldarg.0      
+ 326 ldfld        Character::m_nview
+ 331 callvirt     ZNetView::IsOwner()
+ 336 brtrue.s     339
+ 338 ret          
+ 339 ldarg.0      
+ 340 callvirt     Character::TakeInput()
+ 345 stloc.1      
+ 346 ldarg.0      
+ 347 ldarg.0      
+ 348 ldfld        Player::m_lastBuildStateFrames
+ 353 ldc.i4.1     
+ 354 add          
+ 355 stfld        Player::m_lastBuildStateFrames
+ 360 ldarg.0      
+ 361 call         Player::UpdateHover()
+ 366 ldloc.1      
+ 367 brfalse      1246
+ 372 ldsfld       Player::m_debugMode
+ 377 brfalse.s    479
+ 379 call         Console::get_instance()
+ 384 callvirt     Terminal::IsCheatsEnabled()
+ 389 brfalse.s    479
+ 391 ldc.i4.s     122
+ 393 ldc.i4.1     
+ 394 call         ZInput::GetKeyDown
+ 399 brfalse.s    408
+ 401 ldarg.0      
+ 402 call         Player::ToggleDebugFly()
+ 407 pop          
+ 408 ldc.i4.s     98
+ 410 ldc.i4.1     
+ 411 call         ZInput::GetKeyDown
+ 416 brfalse.s    425
+ 418 ldarg.0      
+ 419 call         Player::ToggleNoPlacementCost()
+ 424 pop          
+ 425 ldc.i4.s     107
+ 427 ldc.i4.1     
+ 428 call         ZInput::GetKeyDown
+ 433 brfalse.s    452
+ 435 call         Console::get_instance()
+ 440 ldstr        "killenemies"
+ 445 ldc.i4.0     
+ 446 ldc.i4.0     
+ 447 callvirt     Terminal::TryRunCommand(string,bool,bool)
+ 452 ldc.i4.s     108
+ 454 ldc.i4.1     
+ 455 call         ZInput::GetKeyDown
+ 460 brfalse.s    479
+ 462 call         Console::get_instance()
+ 467 ldstr        "removedrops"
+ 472 ldc.i4.0     
+ 473 ldc.i4.0     
+ 474 callvirt     Terminal::TryRunCommand(string,bool,bool)
+ 479 call         ZInput::IsNonClassicFunctionality
+ 484 brfalse.s    493
+ 486 call         ZInput::IsGamepadActive
+ 491 brtrue.s     520
+ 493 ldstr        "AltPlace"
+ 498 call         ZInput::GetButton
+ 503 brtrue.s     517
+ 505 ldstr        "JoyAltPlace"
+ 510 call         ZInput::GetButton
+ 515 br.s         530
+ 517 ldc.i4.1     
+ 518 br.s         530
+ 520 ldstr        "JoyAltKeys"
+ 525 call         ZInput::GetButton
+ 530 stloc.s      5
+ 532 ldstr        "Use"
+ 537 call         ZInput::GetButtonDown
+ 542 brtrue.s     556
+ 544 ldstr        "JoyUse"
+ 549 call         ZInput::GetButtonDown
+ 554 brfalse.s    609
+ 556 call         Hud::InRadial()
+ 561 brtrue.s     609
+ 563 ldarg.0      
+ 564 ldfld        Player::m_hovering
+ 569 call         UnityEngine.Object::op_Implicit
+ 574 brfalse.s    593
+ 576 ldarg.0      
+ 577 ldarg.0      
+ 578 ldfld        Player::m_hovering
+ 583 ldc.i4.0     
+ 584 ldloc.s      5
+ 586 call         Player::Interact(class:133,bool,bool)
+ 591 br.s         668
+ 593 ldarg.0      
+ 594 ldfld        Player::m_doodadController
+ 599 brfalse.s    668
+ 601 ldarg.0      
+ 602 call         Player::StopDoodadControl()
+ 607 br.s         668
+ 609 ldstr        "Use"
+ 614 call         ZInput::GetButton
+ 619 brtrue.s     633
+ 621 ldstr        "JoyUse"
+ 626 call         ZInput::GetButton
+ 631 brfalse.s    668
+ 633 call         Hud::InRadial()
+ 638 brtrue.s     668
+ 640 ldarg.0      
+ 641 ldfld        Player::m_hovering
+ 646 call         UnityEngine.Object::op_Implicit
+ 651 brfalse.s    668
+ 653 ldarg.0      
+ 654 ldarg.0      
+ 655 ldfld        Player::m_hovering
+ 660 ldc.i4.1     
+ 661 ldloc.s      5
+ 663 call         Player::Interact(class:133,bool,bool)
+ 668 call         Hud::InRadial()
+ 673 brtrue.s     706
+ 675 ldstr        "JoyHide"
+ 680 call         ZInput::GetButtonUp
+ 685 brfalse.s    706
+ 687 ldstr        "JoyHide"
+ 692 call         ZInput::GetButtonLastPressedTimer
+ 697 ldc.r4       0.33000001311302185
+ 702 clt          
+ 704 br.s         707
+ 706 ldc.i4.0     
+ 707 stloc.s      6
+ 709 ldsfld       ZInput::InputLayout
+ 714 brfalse.s    723
+ 716 call         ZInput::IsGamepadActive
+ 721 brtrue.s     768
+ 723 ldstr        "Hide"
+ 728 call         ZInput::GetButtonDown
+ 733 brtrue.s     765
+ 735 ldloc.s      6
+ 737 brfalse.s    762
+ 739 ldstr        "JoyAltKeys"
+ 744 call         ZInput::GetButton
+ 749 brtrue.s     762
+ 751 ldarg.0      
+ 752 callvirt     Character::InPlaceMode()
+ 757 ldc.i4.0     
+ 758 ceq          
+ 760 br.s         798
+ 762 ldc.i4.0     
+ 763 br.s         798
+ 765 ldc.i4.1     
+ 766 br.s         798
+ 768 ldarg.0      
+ 769 callvirt     Character::InPlaceMode()
+ 774 ldc.i4.0     
+ 775 ceq          
+ 777 ldloc.s      6
+ 779 and          
+ 780 brfalse.s    797
+ 782 ldstr        "JoyAltKeys"
+ 787 call         ZInput::GetButton
+ 792 ldc.i4.0     
+ 793 ceq          
+ 795 br.s         798
+ 797 ldc.i4.0     
+ 798 brfalse.s    875
+ 800 ldarg.0      
+ 801 call         Humanoid::GetRightItem()
+ 806 brtrue.s     816
+ 808 ldarg.0      
+ 809 call         Humanoid::GetLeftItem()
+ 814 brfalse.s    843
+ 816 ldarg.0      
+ 817 callvirt     Character::InAttack()
+ 822 brtrue.s     875
+ 824 ldarg.0      
+ 825 callvirt     Character::InDodge()
+ 830 brtrue.s     875
+ 832 ldarg.0      
+ 833 ldc.i4.0     
+ 834 ldc.i4.1     
+ 835 call         Humanoid::HideHandItems(bool,bool)
+ 840 pop          
+ 841 br.s         875
+ 843 ldarg.0      
+ 844 call         Character::IsSwimming()
+ 849 brfalse.s    859
+ 851 ldarg.0      
+ 852 call         Character::IsOnGround()
+ 857 brfalse.s    875
+ 859 ldarg.0      
+ 860 callvirt     Character::InDodge()
+ 865 brtrue.s     875
+ 867 ldarg.0      
+ 868 ldc.i4.0     
+ 869 ldc.i4.1     
+ 870 call         Humanoid::ShowHandItems(bool,bool)
+ 875 ldstr        "ToggleWalk"
+ 880 call         ZInput::GetButtonDown
+ 885 brfalse.s    949
+ 887 call         Hud::InRadial()
+ 892 brtrue.s     949
+ 894 ldarg.0      
+ 895 ldarg.0      
+ 896 call         Character::GetWalk()
+ 901 ldc.i4.0     
+ 902 ceq          
+ 904 call         Character::SetWalk(bool)
+ 909 ldarg.0      
+ 910 call         Character::GetWalk()
+ 915 brfalse.s    934
+ 917 ldarg.0      
+ 918 ldc.i4.1     
+ 919 ldstr        "$msg_walk $hud_on"
+ 924 ldc.i4.0     
+ 925 ldnull       
+ 926 ldc.i4.0     
+ 927 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 932 br.s         949
+ 934 ldarg.0      
+ 935 ldc.i4.1     
+ 936 ldstr        "$msg_walk $hud_off"
+ 941 ldc.i4.0     
+ 942 ldnull       
+ 943 ldc.i4.0     
+ 944 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 949 ldarg.0      
+ 950 call         Player::HandleRadialInput()
+ 955 call         ZInput::IsGamepadActive
+ 960 brfalse.s    977
+ 962 ldstr        "JoyAltKeys"
+ 967 call         ZInput::GetButton
+ 972 ldc.i4.0     
+ 973 ceq          
+ 975 br.s         978
+ 977 ldc.i4.0     
+ 978 stloc.s      7
+ 980 ldsfld       ZInput::InputLayout
+ 985 brtrue.s     999
+ 987 ldstr        "JoyGP"
+ 992 call         ZInput::GetButtonDown
+ 997 br.s         1000
+ 999 ldc.i4.0     
+1000 stloc.s      8
+1002 call         ZInput::IsNonClassicFunctionality
+1007 brfalse.s    1033
+1009 ldstr        "JoyLStick"
+1014 call         ZInput::GetButton
+1019 brfalse.s    1033
+1021 ldstr        "JoyRStick"
+1026 call         ZInput::GetButton
+1031 br.s         1034
+1033 ldc.i4.0     
+1034 stloc.s      9
+1036 call         Hud::InRadial()
+1041 brtrue.s     1080
+1043 call         Hud::IsPieceSelectionVisible()
+1048 brtrue.s     1080
+1050 ldstr        "GP"
+1055 call         ZInput::GetButtonDown
+1060 brtrue.s     1073
+1062 ldloc.s      7
+1064 brfalse.s    1080
+1066 ldloc.s      8
+1068 ldloc.s      9
+1070 or           
+1071 brfalse.s    1080
+1073 ldarg.0      
+1074 call         Player::StartGuardianPower()
+1079 pop          
+1080 ldstr        "JoyAutoPickup"
+1085 call         ZInput::GetButtonDown
+1090 brfalse.s    1104
+1092 ldstr        "JoyAltKeys"
+1097 call         ZInput::GetButton
+1102 br.s         1105
+1104 ldc.i4.0     
+1105 stloc.s      10
+1107 ldstr        "AutoPickup"
+1112 call         ZInput::GetButtonDown
+1117 ldloc.s      10
+1119 or           
+1120 brfalse.s    1174
+1122 ldsfld       Player::m_enableAutoPickup
+1127 ldc.i4.0     
+1128 ceq          
+1130 stsfld       Player::m_enableAutoPickup
+1135 ldarg.0      
+1136 ldc.i4.1     
+1137 ldstr        "$hud_autopickup:"
+1142 ldsfld       Player::m_enableAutoPickup
+1147 brtrue.s     1156
+1149 ldstr        "$hud_off"
+1154 br.s         1161
+1156 ldstr        "$hud_on"
+1161 call         System.String::Concat
+1166 ldc.i4.0     
+1167 ldnull       
+1168 ldc.i4.0     
+1169 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+1174 ldc.i4.1     
+1175 stloc.s      11
+1177 br.s         1241
+1179 ldstr        "Hotbar{0}"
+1184 ldloc.s      11
+1186 box          0x010001f3
+1191 call         System.String::Format
+1196 call         ZInput::GetButtonDown
+1201 brtrue.s     1227
+1203 ldstr        "Hotbar{0}Alt"
+1208 ldloc.s      11
+1210 box          0x010001f3
+1215 call         System.String::Format
+1220 call         ZInput::GetButtonDown
+1225 brfalse.s    1235
+1227 ldarg.0      
+1228 ldloc.s      11
+1230 call         Player::UseHotbarItem(i4)
+1235 ldloc.s      11
+1237 ldc.i4.1     
+1238 add          
+1239 stloc.s      11
+1241 ldloc.s      11
+1243 ldc.i4.8     
+1244 ble.s        1179
+1246 ldarg.0      
+1247 ldloc.1      
+1248 call         Player::UpdateControllerTriggerFeedback(bool)
+1253 ldarg.0      
+1254 ldloc.1      
+1255 call         Player::UpdateGyro(bool)
+1260 ldarg.0      
+1261 ldfld        Player::m_blockReload
+1266 ldc.r4       0
+1271 ble.un.s     1291
+1273 ldarg.0      
+1274 ldarg.0      
+1275 ldfld        Player::m_blockReload
+1280 call         UnityEngine.Time::get_deltaTime
+1285 sub          
+1286 stfld        Player::m_blockReload
+1291 ldarg.0      
+1292 ldfld        Player::m_grappling
+1297 ldc.r4       0
+1302 ble.un.s     1361
+1304 ldarg.0      
+1305 ldfld        Player::m_grapplingStaminaDrain
+1310 ldc.r4       0
+1315 ble.un.s     1343
+1317 ldarg.0      
+1318 call         Character::IsOnGround()
+1323 brtrue.s     1343
+1325 ldarg.0      
+1326 call         UnityEngine.Time::get_deltaTime
+1331 ldarg.0      
+1332 ldfld        Player::m_grapplingStaminaDrain
+1337 mul          
+1338 callvirt     Character::UseStamina(r4)
+1343 ldarg.0      
+1344 ldarg.0      
+1345 ldfld        Player::m_grappling
+1350 call         UnityEngine.Time::get_deltaTime
+1355 sub          
+1356 stfld        Player::m_grappling
+1361 ldarg.0      
+1362 ldloc.1      
+1363 call         UnityEngine.Time::get_deltaTime
+1368 call         Player::UpdatePlacement(bool,r4)
+1373 ldarg.0      
+1374 call         Player::UpdateStats()
+1379 ret          

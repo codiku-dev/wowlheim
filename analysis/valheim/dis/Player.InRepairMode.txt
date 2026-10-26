@@ -1,0 +1,21 @@
+== Player::InRepairMode() -> bool  il_size=42 sha=51bdfef1d275
+   locals_sig=0x110000b2
+   0 ldarg.0      
+   1 callvirt     Character::InPlaceMode()
+   6 brfalse.s    40
+   8 ldarg.0      
+   9 ldfld        Player::m_buildPieces
+  14 callvirt     PieceTable::GetSelectedPiece()
+  19 stloc.0      
+  20 ldloc.0      
+  21 brfalse.s    40
+  23 ldloc.0      
+  24 ldfld        Piece::m_repairPiece
+  29 brtrue.s     38
+  31 ldloc.0      
+  32 ldfld        Piece::m_removePiece
+  37 ret          
+  38 ldc.i4.1     
+  39 ret          
+  40 ldc.i4.0     
+  41 ret          

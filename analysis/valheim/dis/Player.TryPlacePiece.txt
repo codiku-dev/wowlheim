@@ -1,0 +1,188 @@
+== Player::TryPlacePiece(class:2264) -> bool  il_size=490 sha=9b680c5291bd
+   locals_sig=0x110000aa
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 call         Player::UpdatePlacementGhost(bool)
+   7 ldarg.0      
+   8 ldfld        Player::m_placementStatus
+  13 stloc.1      
+  14 ldloc.1      
+  15 ldc.i4.1     
+  16 sub          
+  17 switch       [0:168 1:100 2:83 3:117 4:134 5:151 6:185 7:202 8:219 9:236 10:253 11:168 12:270 13:287]
+  78 br           304
+  83 ldarg.0      
+  84 ldc.i4.2     
+  85 ldstr        "$msg_nobuildzone"
+  90 ldc.i4.0     
+  91 ldnull       
+  92 ldc.i4.0     
+  93 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  98 ldc.i4.0     
+  99 ret          
+ 100 ldarg.0      
+ 101 ldc.i4.2     
+ 102 ldstr        "$msg_blocked"
+ 107 ldc.i4.0     
+ 108 ldnull       
+ 109 ldc.i4.0     
+ 110 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 115 ldc.i4.0     
+ 116 ret          
+ 117 ldarg.0      
+ 118 ldc.i4.2     
+ 119 ldstr        "$msg_privatezone"
+ 124 ldc.i4.0     
+ 125 ldnull       
+ 126 ldc.i4.0     
+ 127 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 132 ldc.i4.0     
+ 133 ret          
+ 134 ldarg.0      
+ 135 ldc.i4.2     
+ 136 ldstr        "$msg_needspace"
+ 141 ldc.i4.0     
+ 142 ldnull       
+ 143 ldc.i4.0     
+ 144 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 149 ldc.i4.0     
+ 150 ret          
+ 151 ldarg.0      
+ 152 ldc.i4.2     
+ 153 ldstr        "$msg_noteleportarea"
+ 158 ldc.i4.0     
+ 159 ldnull       
+ 160 ldc.i4.0     
+ 161 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 166 ldc.i4.0     
+ 167 ret          
+ 168 ldarg.0      
+ 169 ldc.i4.2     
+ 170 ldstr        "$msg_invalidplacement"
+ 175 ldc.i4.0     
+ 176 ldnull       
+ 177 ldc.i4.0     
+ 178 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 183 ldc.i4.0     
+ 184 ret          
+ 185 ldarg.0      
+ 186 ldc.i4.2     
+ 187 ldstr        "$msg_extensionmissingstation"
+ 192 ldc.i4.0     
+ 193 ldnull       
+ 194 ldc.i4.0     
+ 195 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 200 ldc.i4.0     
+ 201 ret          
+ 202 ldarg.0      
+ 203 ldc.i4.2     
+ 204 ldstr        "$msg_wrongbiome"
+ 209 ldc.i4.0     
+ 210 ldnull       
+ 211 ldc.i4.0     
+ 212 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 217 ldc.i4.0     
+ 218 ret          
+ 219 ldarg.0      
+ 220 ldc.i4.2     
+ 221 ldstr        "$msg_needcultivated"
+ 226 ldc.i4.0     
+ 227 ldnull       
+ 228 ldc.i4.0     
+ 229 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 234 ldc.i4.0     
+ 235 ret          
+ 236 ldarg.0      
+ 237 ldc.i4.2     
+ 238 ldstr        "$msg_needdirt"
+ 243 ldc.i4.0     
+ 244 ldnull       
+ 245 ldc.i4.0     
+ 246 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 251 ldc.i4.0     
+ 252 ret          
+ 253 ldarg.0      
+ 254 ldc.i4.2     
+ 255 ldstr        "$msg_notindungeon"
+ 260 ldc.i4.0     
+ 261 ldnull       
+ 262 ldc.i4.0     
+ 263 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 268 ldc.i4.0     
+ 269 ret          
+ 270 ldarg.0      
+ 271 ldc.i4.2     
+ 272 ldstr        "$msg_snowtoodeep"
+ 277 ldc.i4.0     
+ 278 ldnull       
+ 279 ldc.i4.0     
+ 280 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 285 ldc.i4.0     
+ 286 ret          
+ 287 ldarg.0      
+ 288 ldc.i4.2     
+ 289 ldstr        "$msg_nosnow"
+ 294 ldc.i4.0     
+ 295 ldnull       
+ 296 ldc.i4.0     
+ 297 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 302 ldc.i4.0     
+ 303 ret          
+ 304 ldstr        "Placed "
+ 309 ldarg.1      
+ 310 callvirt     UnityEngine.Component::get_gameObject
+ 315 callvirt     UnityEngine.Object::get_name
+ 320 call         System.String::Concat
+ 325 call         ZLog::Log
+ 330 ldarg.0      
+ 331 ldfld        Humanoid::m_inventory
+ 336 ldarg.1      
+ 337 ldfld        Piece::m_resources
+ 342 ldc.i4.m1    
+ 343 ldc.i4.1     
+ 344 callvirt     Inventory::ItemCheated(class:4720[],i4,bool)
+ 349 brtrue.s     363
+ 351 ldsfld       Player::m_localPlayer
+ 356 callvirt     Player::NoCostCheat()
+ 361 brfalse.s    373
+ 363 call         PlayerProfile::get_s_bypassCheatChecks()
+ 368 ldc.i4.0     
+ 369 ceq          
+ 371 br.s         374
+ 373 ldc.i4.0     
+ 374 stloc.0      
+ 375 ldstr        "Game"
+ 380 ldstr        "PlacedPiece"
+ 385 ldarg.1      
+ 386 callvirt     UnityEngine.Component::get_gameObject
+ 391 callvirt     UnityEngine.Object::get_name
+ 396 ldc.i4.0     
+ 397 conv.i8      
+ 398 call         Gogan::LogEvent(string,string,string,i8)
+ 403 call         Game::get_instance()
+ 408 ldc.i4.2     
+ 409 ldc.r4       1
+ 414 ldloc.0      
+ 415 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+ 420 call         Game::get_instance()
+ 425 callvirt     Game::GetPlayerProfile()
+ 430 ldarg.1      
+ 431 ldfld        Piece::m_name
+ 436 ldc.r4       1
+ 441 ldloc.0      
+ 442 callvirt     PlayerProfile::IncrementStatBuildPiecePlaced(string,r4,bool)
+ 447 ldarg.0      
+ 448 ldarg.1      
+ 449 ldarg.0      
+ 450 ldfld        Player::m_placementGhost
+ 455 callvirt     UnityEngine.GameObject::get_transform
+ 460 callvirt     UnityEngine.Transform::get_position
+ 465 ldarg.0      
+ 466 ldfld        Player::m_placementGhost
+ 471 callvirt     UnityEngine.GameObject::get_transform
+ 476 callvirt     UnityEngine.Transform::get_rotation
+ 481 ldc.i4.1     
+ 482 ldloc.0      
+ 483 call         Player::PlacePiece(class:2264,valuetype:81,valuetype:137,bool,bool)
+ 488 ldc.i4.1     
+ 489 ret          

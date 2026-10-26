@@ -1,0 +1,8 @@
+== Piece::IsPlacedByPlayer() -> bool  il_size=11 sha=831623c9066e
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Piece::GetCreator()
+   6 ldc.i4.0     
+   7 conv.i8      
+   8 cgt.un       
+  10 ret          

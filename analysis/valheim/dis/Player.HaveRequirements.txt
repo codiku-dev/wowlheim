@@ -1,0 +1,189 @@
+== Player::HaveRequirements(class:1080, bool, i4, i4) -> bool  il_size=137 sha=a2c94612a00e
+   locals_sig=null
+   0 ldarg.2      
+   1 brfalse.s    43
+   3 ldarg.1      
+   4 ldfld        Recipe::m_craftingStation
+   9 call         UnityEngine.Object::op_Implicit
+  14 brfalse.s    56
+  16 ldarg.0      
+  17 ldarg.1      
+  18 ldfld        Recipe::m_craftingStation
+  23 ldfld        CraftingStation::m_name
+  28 ldarg.1      
+  29 ldfld        Recipe::m_minStationLevel
+  34 call         Player::KnowStationLevel(string,i4)
+  39 brtrue.s     56
+  41 ldc.i4.0     
+  42 ret          
+  43 ldarg.0      
+  44 ldarg.1      
+  45 ldarg.3      
+  46 ldc.i4.1     
+  47 call         Player::RequiredCraftingStation(class:1080,i4,bool)
+  52 brtrue.s     56
+  54 ldc.i4.0     
+  55 ret          
+  56 ldarg.1      
+  57 ldfld        Recipe::m_item
+  62 ldfld        ItemDrop::m_itemData
+  67 ldfld        ItemDrop+ItemData::m_shared
+  72 ldfld        ItemDrop+ItemData+SharedData::m_dlc
+  77 callvirt     System.String::get_Length
+  82 ldc.i4.0     
+  83 ble.s        120
+  85 call         DLCMan::get_instance()
+  90 ldarg.1      
+  91 ldfld        Recipe::m_item
+  96 ldfld        ItemDrop::m_itemData
+ 101 ldfld        ItemDrop+ItemData::m_shared
+ 106 ldfld        ItemDrop+ItemData+SharedData::m_dlc
+ 111 callvirt     DLCMan::IsDLCInstalled(string)
+ 116 brtrue.s     120
+ 118 ldc.i4.0     
+ 119 ret          
+ 120 ldarg.0      
+ 121 ldarg.1      
+ 122 ldarg.2      
+ 123 ldarg.3      
+ 124 ldarg.s      4
+ 126 call         Player::HaveRequirementItems(class:1080,bool,i4,i4)
+ 131 brtrue.s     135
+ 133 ldc.i4.0     
+ 134 ret          
+ 135 ldc.i4.1     
+ 136 ret          
+
+== Player::HaveRequirements(class:2264, valuetype:2888) -> bool  il_size=344 sha=7f47eb1b53ff
+   locals_sig=0x110000a6
+   0 ldarg.1      
+   1 ldfld        Piece::m_craftingStation
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    97
+  13 ldarg.2      
+  14 ldc.i4.1     
+  15 beq.s        21
+  17 ldarg.2      
+  18 ldc.i4.2     
+  19 bne.un.s     47
+  21 ldarg.0      
+  22 ldfld        Player::m_knownStations
+  27 ldarg.1      
+  28 ldfld        Piece::m_craftingStation
+  33 ldfld        CraftingStation::m_name
+  38 callvirt     System.Collections.Generic.Dictionary`2::ContainsKey
+  43 brtrue.s     97
+  45 ldc.i4.0     
+  46 ret          
+  47 ldarg.1      
+  48 ldfld        Piece::m_craftingStation
+  53 ldfld        CraftingStation::m_name
+  58 ldarg.0      
+  59 call         UnityEngine.Component::get_transform
+  64 callvirt     UnityEngine.Transform::get_position
+  69 call         CraftingStation::HaveBuildStationInRange(string,valuetype:81)
+  74 call         UnityEngine.Object::op_Implicit
+  79 brtrue.s     97
+  81 call         ZoneSystem::get_instance()
+  86 ldc.i4.s     27
+  88 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+  93 brtrue.s     97
+  95 ldc.i4.0     
+  96 ret          
+  97 ldarg.1      
+  98 ldfld        Piece::m_dlc
+ 103 callvirt     System.String::get_Length
+ 108 ldc.i4.0     
+ 109 ble.s        131
+ 111 call         DLCMan::get_instance()
+ 116 ldarg.1      
+ 117 ldfld        Piece::m_dlc
+ 122 callvirt     DLCMan::IsDLCInstalled(string)
+ 127 brtrue.s     131
+ 129 ldc.i4.0     
+ 130 ret          
+ 131 ldarg.2      
+ 132 ldc.i4.1     
+ 133 beq.s        155
+ 135 call         ZoneSystem::get_instance()
+ 140 ldarg.1      
+ 141 callvirt     Piece::FreeBuildKey()
+ 146 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+ 151 brfalse.s    155
+ 153 ldc.i4.1     
+ 154 ret          
+ 155 ldarg.1      
+ 156 ldfld        Piece::m_resources
+ 161 stloc.0      
+ 162 ldc.i4.0     
+ 163 stloc.1      
+ 164 br           333
+ 169 ldloc.0      
+ 170 ldloc.1      
+ 171 ldelem.ref   
+ 172 stloc.2      
+ 173 ldloc.2      
+ 174 ldfld        Piece+Requirement::m_resItem
+ 179 call         UnityEngine.Object::op_Implicit
+ 184 brfalse      329
+ 189 ldloc.2      
+ 190 ldfld        Piece+Requirement::m_amount
+ 195 ldc.i4.0     
+ 196 ble          329
+ 201 ldarg.2      
+ 202 ldc.i4.1     
+ 203 bne.un.s     241
+ 205 ldarg.0      
+ 206 ldfld        Player::m_knownMaterial
+ 211 ldloc.2      
+ 212 ldfld        Piece+Requirement::m_resItem
+ 217 ldfld        ItemDrop::m_itemData
+ 222 ldfld        ItemDrop+ItemData::m_shared
+ 227 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 232 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 237 brtrue.s     329
+ 239 ldc.i4.0     
+ 240 ret          
+ 241 ldarg.2      
+ 242 ldc.i4.2     
+ 243 bne.un.s     282
+ 245 ldarg.0      
+ 246 ldfld        Humanoid::m_inventory
+ 251 ldloc.2      
+ 252 ldfld        Piece+Requirement::m_resItem
+ 257 ldfld        ItemDrop::m_itemData
+ 262 ldfld        ItemDrop+ItemData::m_shared
+ 267 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 272 ldc.i4.1     
+ 273 callvirt     Inventory::HaveItem(string,bool)
+ 278 brtrue.s     329
+ 280 ldc.i4.0     
+ 281 ret          
+ 282 ldarg.2      
+ 283 brtrue.s     329
+ 285 ldarg.0      
+ 286 ldfld        Humanoid::m_inventory
+ 291 ldloc.2      
+ 292 ldfld        Piece+Requirement::m_resItem
+ 297 ldfld        ItemDrop::m_itemData
+ 302 ldfld        ItemDrop+ItemData::m_shared
+ 307 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 312 ldc.i4.m1    
+ 313 ldc.i4.1     
+ 314 callvirt     Inventory::CountItems(string,i4,bool)
+ 319 ldloc.2      
+ 320 ldfld        Piece+Requirement::m_amount
+ 325 bge.s        329
+ 327 ldc.i4.0     
+ 328 ret          
+ 329 ldloc.1      
+ 330 ldc.i4.1     
+ 331 add          
+ 332 stloc.1      
+ 333 ldloc.1      
+ 334 ldloc.0      
+ 335 ldlen        
+ 336 conv.i4      
+ 337 blt          169
+ 342 ldc.i4.1     
+ 343 ret          

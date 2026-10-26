@@ -1,0 +1,106 @@
+0x0400233b m_randomInitialDamage bool 
+0x0400233c m_onDestroyed class:89 
+0x0400233d m_onDamaged class:89 
+0x0400233e m_new class:133 
+0x0400233f m_worn class:133 
+0x04002340 m_broken class:133 
+0x04002341 m_wet class:133 
+0x04002342 m_snow class:329 
+0x04002343 m_snowWorn class:329 
+0x04002344 m_snowBroken class:329 
+0x04002345 m_noRoofWear bool 
+0x04002346 m_roofCheckOffset r4 
+0x04002347 m_noSupportWear bool 
+0x04002348 m_snowDamageImmune bool 
+0x04002349 m_ashDamageImmune bool 
+0x0400234a m_ashDamageResist bool 
+0x0400234b m_burnable bool 
+0x0400234c m_materialType valuetype:4888 
+0x0400234d m_supports bool 
+0x0400234e m_comOffset valuetype:81 
+0x0400234f m_forceCorrectCOMCalculation bool 
+0x04002350 m_staticPosition bool 
+0x04002351 m_nonSolidRenderers class:165<class:221> 
+0x04002352 m_requiredPersistentEvent string 
+0x04002353 m_takeDamageIfInsideEvent bool 
+0x04002354 m_eventDamage r4 
+0x04002355 m_eventDamageDeviation r4 
+0x04002356 m_snowBuildup r4 
+0x04002357 m_requiredBiome valuetype:4592 
+0x04002358 m_outsideRequiredBiomeDamage r4 
+0x04002359 m_health r4 
+0x0400235a m_damages valuetype:4632 
+0x0400235b m_minToolTier i4 
+0x0400235c m_hitNoise r4 
+0x0400235d m_destroyNoise r4 
+0x0400235e m_triggerPrivateArea bool 
+0x0400235f m_destroyedEffect class:384 
+0x04002360 m_hitEffect class:384 
+0x04002361 m_switchEffect class:384 
+0x04002362 m_autoCreateFragments bool 
+0x04002363 m_fragmentRoots class:133[] 
+0x04002364 c_RainDamageTime r4 = 60
+0x04002365 c_RainDamage r4 = 5
+0x04002366 c_RainDamageMax r4 = 0.5
+0x04002367 c_AshDamageTime r4 = 5
+0x04002368 c_AshDamageMaxResist r4 = 0.10000000149011612
+0x04002369 c_LavaDamageTime r4 = 2
+0x0400236a c_LavaDamage r4 = 70
+0x0400236b c_LavaDamageShielded r4 = 30
+0x0400236c c_ComTestWidth r4 = 0.20000000298023224
+0x0400236d c_ComMinAngle r4 = 100
+0x0400236e s_raycastHits valuetype:153[] 
+0x0400236f s_tempColliders class:77[] 
+0x04002370 s_rayMask i4 
+0x04002371 s_allInstances class:165<class:2520> 
+0x04002372 s_tempSupportPoints class:165<valuetype:81> 
+0x04002373 s_tempSupportPointValues class:165<r4> 
+0x04002374 s_AshlandsDamageShaderID i4 
+0x04002375 m_propertyBlock class:469 
+0x04002376 m_renderers class:165<class:221> 
+0x04002377 m_nview class:1260 
+0x04002378 m_colliders class:77[] 
+0x04002379 m_support r4 
+0x0400237a m_createTime r4 
+0x0400237b m_myIndex i4 
+0x0400237c m_rainTimer r4 
+0x0400237d m_lastRepair r4 
+0x0400237e m_piece class:2264 
+0x0400237f m_roof class:133 
+0x04002380 m_healthPercentage r4 
+0x04002381 m_clearCachedSupport bool 
+0x04002382 m_connectedHeightMap class:2124 
+0x04002383 m_burnDamageTime r4 
+0x04002384 m_ashDamageTime r4 
+0x04002385 m_ashMaterialValue r4 
+0x04002386 m_lastBurnDamageTime r4 
+0x04002387 m_lastMaterialValueTimeCheck r4 
+0x04002388 m_supportColliders class:165<class:77> 
+0x04002389 m_supportPositions class:165<valuetype:81> 
+0x0400238a m_supportValue class:165<r4> 
+0x0400238b m_previousWaterVolume class:2512 
+0x0400238c m_ashroof class:133 
+0x0400238d m_biome valuetype:4592 
+0x0400238e m_heightmap class:2124 
+0x0400238f m_groundDist r4 
+0x04002390 m_ashTimer r4 
+0x04002391 m_inAshlands bool 
+0x04002392 m_shieldChangeID i4 
+0x04002393 m_lavaTimer r4 
+0x04002394 m_lavaValue r4 
+0x04002395 m_rainWet bool 
+0x04002396 m_heavySnow bool 
+0x04002397 m_addPreSnow bool 
+0x04002398 m_lastSupportColorValue r4 
+0x04002399 m_snowDamageTimer r4 
+0x0400239a m_bounds class:165<valuetype:4892> 
+0x0400239b m_oldMaterials class:165<valuetype:4896> 
+0x0400239c m_updateCoverTimer r4 
+0x0400239d m_haveRoof bool 
+0x0400239e m_haveAshRoof bool 
+0x0400239f c_UpdateCoverFrequency r4 = 4
+0x040023a0 c_ExtraSnowMeshBoundsHeight r4 = 1.25
+0x040023a1 s_terrainLayer valuetype:761<i4> 
+0x040023a2 s_snowLevel i4 
+0x040023a3 s_tempRenderers class:165<class:329> 
+0x040023a4 s_tempSkinned class:165<class:457> 

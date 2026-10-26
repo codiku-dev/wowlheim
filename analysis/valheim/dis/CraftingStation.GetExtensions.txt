@@ -1,0 +1,74 @@
+== CraftingStation::GetExtensions() -> class:165<class:2400>  il_size=202 sha=fb7ddfc27f5c
+   locals_sig=0x11000372
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_updateExtensionTimer
+   6 ldc.r4       2
+  11 blt.un       195
+  16 ldarg.0      
+  17 ldc.r4       0
+  22 stfld        CraftingStation::m_updateExtensionTimer
+  27 ldarg.0      
+  28 ldfld        CraftingStation::m_attachedExtensions
+  33 callvirt     System.Collections.Generic.List`1::Clear
+  38 ldarg.0      
+  39 ldarg.0      
+  40 call         UnityEngine.Component::get_transform
+  45 callvirt     UnityEngine.Transform::get_position
+  50 ldarg.0      
+  51 ldfld        CraftingStation::m_attachedExtensions
+  56 call         StationExtension::FindExtensions(class:1048,valuetype:81,class:165<class:2400>)
+  61 ldarg.0      
+  62 ldarg.0      
+  63 ldfld        CraftingStation::m_rangeBuild
+  68 ldarg.0      
+  69 ldc.i4.0     
+  70 call         CraftingStation::GetExtentionCount(bool)
+  75 conv.r4      
+  76 ldarg.0      
+  77 ldfld        CraftingStation::m_extraRangePerLevel
+  82 mul          
+  83 add          
+  84 stfld        CraftingStation::m_buildRange
+  89 ldarg.0      
+  90 ldfld        CraftingStation::m_areaMarker
+  95 call         UnityEngine.Object::op_Implicit
+ 100 brfalse.s    119
+ 102 ldarg.0      
+ 103 ldfld        CraftingStation::m_areaMarkerCircle
+ 108 ldarg.0      
+ 109 ldfld        CraftingStation::m_buildRange
+ 114 stfld        CircleProjector::m_radius
+ 119 ldarg.0      
+ 120 ldfld        CraftingStation::m_effectAreaCollider
+ 125 ldnull       
+ 126 call         UnityEngine.Object::op_Equality
+ 131 brfalse.s    140
+ 133 ldarg.0      
+ 134 ldfld        CraftingStation::m_attachedExtensions
+ 139 ret          
+ 140 ldarg.0      
+ 141 ldfld        CraftingStation::m_effectAreaCollider
+ 146 stloc.2      
+ 147 ldloc.2      
+ 148 isinst       0x0100010f
+ 153 stloc.0      
+ 154 ldloc.0      
+ 155 brtrue.s     169
+ 157 ldloc.2      
+ 158 isinst       0x01000025
+ 163 stloc.1      
+ 164 ldloc.1      
+ 165 brtrue.s     183
+ 167 br.s         195
+ 169 ldloc.0      
+ 170 ldarg.0      
+ 171 ldfld        CraftingStation::m_buildRange
+ 176 callvirt     UnityEngine.SphereCollider::set_radius
+ 181 br.s         195
+ 183 ldloc.1      
+ 184 ldarg.0      
+ 185 ldfld        CraftingStation::m_buildRange
+ 190 callvirt     UnityEngine.CapsuleCollider::set_radius
+ 195 ldarg.0      
+ 196 ldfld        CraftingStation::m_attachedExtensions
+ 201 ret          

@@ -1,0 +1,107 @@
+== Player::FindClosestSnapPoints(class:73, r4, class:73&, class:73&, class:165<class:2264>) -> bool  il_size=273 sha=68d1efd7d16b
+   locals_sig=0x110000b7
+   0 ldarg.0      
+   1 ldfld        Player::m_tempSnapPoints1
+   6 callvirt     System.Collections.Generic.List`1::Clear
+  11 ldarg.1      
+  12 callvirt     UnityEngine.Component::GetComponent<T>
+  17 ldarg.0      
+  18 ldfld        Player::m_tempSnapPoints1
+  23 callvirt     Piece::GetSnapPoints(class:165<class:73>)
+  28 ldarg.0      
+  29 ldfld        Player::m_tempSnapPoints2
+  34 callvirt     System.Collections.Generic.List`1::Clear
+  39 ldarg.0      
+  40 ldfld        Player::m_tempPieces
+  45 callvirt     System.Collections.Generic.List`1::Clear
+  50 ldarg.1      
+  51 callvirt     UnityEngine.Component::get_transform
+  56 callvirt     UnityEngine.Transform::get_position
+  61 ldc.r4       10
+  66 ldarg.0      
+  67 ldfld        Player::m_tempSnapPoints2
+  72 ldarg.0      
+  73 ldfld        Player::m_tempPieces
+  78 call         Piece::GetSnapPoints(valuetype:81,r4,class:165<class:73>,class:165<class:2264>)
+  83 ldc.r4       9999999
+  88 stloc.0      
+  89 ldarg.3      
+  90 ldnull       
+  91 stind.ref    
+  92 ldarg.s      4
+  94 ldnull       
+  95 stind.ref    
+  96 ldarg.0      
+  97 ldfld        Player::m_manualSnapPoint
+ 102 ldc.i4.0     
+ 103 blt.s        173
+ 105 ldarg.0      
+ 106 ldarg.0      
+ 107 ldfld        Player::m_tempSnapPoints1
+ 112 ldarg.0      
+ 113 ldfld        Player::m_manualSnapPoint
+ 118 callvirt     System.Collections.Generic.List`1::get_Item
+ 123 callvirt     UnityEngine.Transform::get_position
+ 128 ldarg.0      
+ 129 ldfld        Player::m_tempSnapPoints2
+ 134 ldarg.2      
+ 135 ldloca.s     1
+ 137 ldloca.s     2
+ 139 call         Player::FindClosestSnappoint(valuetype:81,class:165<class:73>,r4,class:73&,r4&)
+ 144 brfalse.s    171
+ 146 ldarg.3      
+ 147 ldarg.0      
+ 148 ldfld        Player::m_tempSnapPoints1
+ 153 ldarg.0      
+ 154 ldfld        Player::m_manualSnapPoint
+ 159 callvirt     System.Collections.Generic.List`1::get_Item
+ 164 stind.ref    
+ 165 ldarg.s      4
+ 167 ldloc.1      
+ 168 stind.ref    
+ 169 ldc.i4.1     
+ 170 ret          
+ 171 ldc.i4.0     
+ 172 ret          
+ 173 ldarg.0      
+ 174 ldfld        Player::m_tempSnapPoints1
+ 179 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 184 stloc.3      
+ 185 br.s         239
+ 187 ldloca.s     3
+ 189 call         Enumerator::get_Current
+ 194 stloc.s      4
+ 196 ldarg.0      
+ 197 ldloc.s      4
+ 199 callvirt     UnityEngine.Transform::get_position
+ 204 ldarg.0      
+ 205 ldfld        Player::m_tempSnapPoints2
+ 210 ldarg.2      
+ 211 ldloca.s     5
+ 213 ldloca.s     6
+ 215 call         Player::FindClosestSnappoint(valuetype:81,class:165<class:73>,r4,class:73&,r4&)
+ 220 brfalse.s    239
+ 222 ldloc.s      6
+ 224 ldloc.0      
+ 225 bge.un.s     239
+ 227 ldloc.s      6
+ 229 stloc.0      
+ 230 ldarg.3      
+ 231 ldloc.s      4
+ 233 stind.ref    
+ 234 ldarg.s      4
+ 236 ldloc.s      5
+ 238 stind.ref    
+ 239 ldloca.s     3
+ 241 call         Enumerator::MoveNext
+ 246 brtrue.s     187
+ 248 leave.s      264
+ 250 ldloca.s     3
+ 252 constrained. 0x1b00008d
+ 258 callvirt     System.IDisposable::Dispose
+ 263 endfinally   
+ 264 ldarg.3      
+ 265 ldind.ref    
+ 266 ldnull       
+ 267 call         UnityEngine.Object::op_Inequality
+ 272 ret          

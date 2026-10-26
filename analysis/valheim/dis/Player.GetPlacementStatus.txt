@@ -1,0 +1,5 @@
+== Player::GetPlacementStatus() -> valuetype:2900  il_size=7 sha=7e439ed923c7
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_placementStatus
+   6 ret          

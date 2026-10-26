@@ -1,0 +1,12 @@
+== WearNTear::CanBeRemoved() -> bool  il_size=27 sha=8c44764f09e4
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_piece
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    25
+  13 ldarg.0      
+  14 ldfld        WearNTear::m_piece
+  19 callvirt     Piece::CanBeRemoved()
+  24 ret          
+  25 ldc.i4.1     
+  26 ret          

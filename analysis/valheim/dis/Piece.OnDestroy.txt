@@ -1,0 +1,41 @@
+== Piece::OnDestroy() -> void  il_size=125 sha=e843a80bf846
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Piece::m_myListIndex
+   6 ldc.i4.0     
+   7 blt.s        103
+   9 ldsfld       Piece::s_allPieces
+  14 ldarg.0      
+  15 ldfld        Piece::m_myListIndex
+  20 ldsfld       Piece::s_allPieces
+  25 ldsfld       Piece::s_allPieces
+  30 callvirt     System.Collections.Generic.List`1::get_Count
+  35 ldc.i4.1     
+  36 sub          
+  37 callvirt     System.Collections.Generic.List`1::get_Item
+  42 callvirt     System.Collections.Generic.List`1::set_Item
+  47 ldsfld       Piece::s_allPieces
+  52 ldarg.0      
+  53 ldfld        Piece::m_myListIndex
+  58 callvirt     System.Collections.Generic.List`1::get_Item
+  63 ldarg.0      
+  64 ldfld        Piece::m_myListIndex
+  69 stfld        Piece::m_myListIndex
+  74 ldsfld       Piece::s_allPieces
+  79 ldsfld       Piece::s_allPieces
+  84 callvirt     System.Collections.Generic.List`1::get_Count
+  89 ldc.i4.1     
+  90 sub          
+  91 callvirt     System.Collections.Generic.List`1::RemoveAt
+  96 ldarg.0      
+  97 ldc.i4.m1    
+  98 stfld        Piece::m_myListIndex
+ 103 ldarg.0      
+ 104 ldfld        Piece::m_comfort
+ 109 ldc.i4.0     
+ 110 ble.s        124
+ 112 ldsfld       Piece::s_allComfortPieces
+ 117 ldarg.0      
+ 118 callvirt     System.Collections.Generic.HashSet`1::Remove
+ 123 pop          
+ 124 ret          

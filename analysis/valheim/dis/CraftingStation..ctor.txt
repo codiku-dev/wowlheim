@@ -1,0 +1,50 @@
+== CraftingStation::.ctor() -> void  il_size=153 sha=ab8d21d631e6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        ""
+   6 stfld        CraftingStation::m_name
+  11 ldarg.0      
+  12 ldc.r4       4
+  17 stfld        CraftingStation::m_discoverRange
+  22 ldarg.0      
+  23 ldc.r4       10
+  28 stfld        CraftingStation::m_rangeBuild
+  33 ldarg.0      
+  34 ldc.i4.1     
+  35 stfld        CraftingStation::m_craftRequireRoof
+  40 ldarg.0      
+  41 ldc.i4.1     
+  42 stfld        CraftingStation::m_craftRequireFire
+  47 ldarg.0      
+  48 ldc.r4       2
+  53 stfld        CraftingStation::m_useDistance
+  58 ldarg.0      
+  59 ldc.i4.s     107
+  61 stfld        CraftingStation::m_craftingSkill
+  66 ldarg.0      
+  67 ldc.i4.1     
+  68 stfld        CraftingStation::m_hasCraftTab
+  73 ldarg.0      
+  74 ldc.i4.1     
+  75 stfld        CraftingStation::m_canRepair
+  80 ldarg.0      
+  81 newobj       EffectList::.ctor()
+  86 stfld        CraftingStation::m_craftItemEffects
+  91 ldarg.0      
+  92 newobj       EffectList::.ctor()
+  97 stfld        CraftingStation::m_craftItemDoneEffects
+ 102 ldarg.0      
+ 103 newobj       EffectList::.ctor()
+ 108 stfld        CraftingStation::m_repairItemDoneEffects
+ 113 ldarg.0      
+ 114 newobj       EffectList::.ctor()
+ 119 stfld        CraftingStation::m_craftItemDoneFailEffects
+ 124 ldarg.0      
+ 125 ldc.r4       10
+ 130 stfld        CraftingStation::m_useTimer
+ 135 ldarg.0      
+ 136 newobj       System.Collections.Generic.List`1::.ctor
+ 141 stfld        CraftingStation::m_attachedExtensions
+ 146 ldarg.0      
+ 147 call         UnityEngine.MonoBehaviour::.ctor
+ 152 ret          

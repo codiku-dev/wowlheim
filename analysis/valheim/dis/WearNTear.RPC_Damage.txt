@@ -1,0 +1,170 @@
+== WearNTear::RPC_Damage(i8, class:2140) -> void  il_size=490 sha=19785df14b26
+   locals_sig=0x11000804
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brfalse.s    26
+  13 ldarg.0      
+  14 ldfld        WearNTear::m_nview
+  19 callvirt     ZNetView::IsOwner()
+  24 brtrue.s     27
+  26 ret          
+  27 ldarg.0      
+  28 ldfld        WearNTear::m_nview
+  33 callvirt     ZNetView::GetZDO()
+  38 ldsfld       ZDOVars::s_health
+  43 ldarg.0      
+  44 ldfld        WearNTear::m_health
+  49 callvirt     ZDO::GetFloat(i4,r4)
+  54 ldc.r4       0
+  59 bgt.un.s     62
+  61 ret          
+  62 ldarg.2      
+  63 ldarg.0      
+  64 ldfld        WearNTear::m_damages
+  69 ldloca.s     0
+  71 callvirt     HitData::ApplyResistance(valuetype:4632,valuetype:4620&)
+  76 ldarg.2      
+  77 callvirt     HitData::GetTotalDamage()
+  82 stloc.1      
+  83 call         DamageText::get_instance()
+  88 ldloc.0      
+  89 ldarg.2      
+  90 ldfld        HitData::m_point
+  95 ldloc.1      
+  96 ldc.i4.0     
+  97 callvirt     DamageText::ShowText(valuetype:4620,valuetype:81,r4,bool)
+ 102 ldloc.1      
+ 103 ldc.r4       0
+ 108 bgt.un.s     111
+ 110 ret          
+ 111 ldarg.0      
+ 112 ldfld        WearNTear::m_triggerPrivateArea
+ 117 brfalse.s    187
+ 119 ldarg.2      
+ 120 callvirt     HitData::GetAttacker()
+ 125 stloc.2      
+ 126 ldloc.2      
+ 127 call         UnityEngine.Object::op_Implicit
+ 132 brfalse.s    187
+ 134 ldloc.1      
+ 135 ldarg.0      
+ 136 ldfld        WearNTear::m_nview
+ 141 callvirt     ZNetView::GetZDO()
+ 146 ldsfld       ZDOVars::s_health
+ 151 ldarg.0      
+ 152 ldfld        WearNTear::m_health
+ 157 callvirt     ZDO::GetFloat(i4,r4)
+ 162 clt.un       
+ 164 ldc.i4.0     
+ 165 ceq          
+ 167 stloc.3      
+ 168 ldarg.0      
+ 169 call         UnityEngine.Component::get_transform
+ 174 callvirt     UnityEngine.Transform::get_position
+ 179 ldloc.2      
+ 180 ldloc.3      
+ 181 call         PrivateArea::OnObjectDamaged(valuetype:81,class:44,bool)
+ 186 pop          
+ 187 ldarg.2      
+ 188 ldarg.0      
+ 189 ldfld        WearNTear::m_minToolTier
+ 194 ldc.i4.1     
+ 195 callvirt     HitData::CheckToolTier(i4,bool)
+ 200 brtrue.s     226
+ 202 call         DamageText::get_instance()
+ 207 ldc.i4.5     
+ 208 ldarg.2      
+ 209 ldfld        HitData::m_point
+ 214 ldc.r4       0
+ 219 ldc.i4.0     
+ 220 callvirt     DamageText::ShowText(valuetype:3328,valuetype:81,r4,bool)
+ 225 ret          
+ 226 ldarg.0      
+ 227 ldloc.1      
+ 228 ldarg.2      
+ 229 call         WearNTear::ApplyDamage(r4,class:2140)
+ 234 pop          
+ 235 ldarg.2      
+ 236 ldfld        HitData::m_hitType
+ 241 ldc.i4.s     20
+ 243 beq.s        370
+ 245 ldarg.2      
+ 246 ldfld        HitData::m_hitType
+ 251 ldc.i4.s     21
+ 253 beq.s        370
+ 255 ldarg.2      
+ 256 callvirt     HitData::GetAttacker()
+ 261 brtrue.s     270
+ 263 ldsfld       ZDOID::None
+ 268 br.s         281
+ 270 ldarg.2      
+ 271 callvirt     HitData::GetAttacker()
+ 276 callvirt     Character::GetZDOID()
+ 281 stloc.s      4
+ 283 ldarg.0      
+ 284 ldfld        WearNTear::m_hitEffect
+ 289 ldarg.2      
+ 290 ldfld        HitData::m_point
+ 295 call         UnityEngine.Quaternion::get_identity
+ 300 ldarg.0      
+ 301 call         UnityEngine.Component::get_transform
+ 306 ldc.r4       1
+ 311 ldc.i4.m1    
+ 312 ldloc.s      4
+ 314 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 319 pop          
+ 320 ldarg.2      
+ 321 callvirt     HitData::GetTotalPhysicalDamage()
+ 326 ldc.r4       0
+ 331 ble.un.s     370
+ 333 ldarg.0      
+ 334 ldfld        WearNTear::m_hitEffect
+ 339 ldarg.2      
+ 340 ldfld        HitData::m_point
+ 345 call         UnityEngine.Quaternion::get_identity
+ 350 ldarg.0      
+ 351 call         UnityEngine.Component::get_transform
+ 356 ldc.r4       1
+ 361 ldc.i4.m1    
+ 362 ldloc.s      4
+ 364 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 369 pop          
+ 370 ldarg.0      
+ 371 ldfld        WearNTear::m_hitNoise
+ 376 ldc.r4       0
+ 381 ble.un.s     433
+ 383 ldarg.2      
+ 384 ldfld        HitData::m_hitType
+ 389 ldc.i4.s     20
+ 391 beq.s        433
+ 393 ldarg.2      
+ 394 ldfld        HitData::m_point
+ 399 ldc.r4       10
+ 404 call         Player::GetClosestPlayer(valuetype:81,r4)
+ 409 stloc.s      5
+ 411 ldloc.s      5
+ 413 call         UnityEngine.Object::op_Implicit
+ 418 brfalse.s    433
+ 420 ldloc.s      5
+ 422 ldarg.0      
+ 423 ldfld        WearNTear::m_hitNoise
+ 428 callvirt     Character::AddNoise(r4)
+ 433 ldarg.0      
+ 434 ldfld        WearNTear::m_onDamaged
+ 439 brfalse.s    452
+ 441 ldarg.0      
+ 442 ldfld        WearNTear::m_onDamaged
+ 447 callvirt     System.Action::Invoke
+ 452 ldarg.2      
+ 453 ldflda       HitData::m_damage
+ 458 ldfld        HitData+DamageTypes::m_fire
+ 463 ldc.r4       3
+ 468 ble.un.s     489
+ 470 ldarg.0      
+ 471 call         WearNTear::IsWet()
+ 476 brtrue.s     489
+ 478 ldarg.0      
+ 479 ldc.r4       3
+ 484 stfld        WearNTear::m_burnDamageTime
+ 489 ret          

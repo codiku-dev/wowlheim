@@ -1,0 +1,18 @@
+== CraftingStation::CheckFire() -> void  il_size=53 sha=1f539f55dce4
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::get_transform
+   7 callvirt     UnityEngine.Transform::get_position
+  12 call         EffectArea::IsPointPlus025InsideBurningArea(valuetype:81)
+  17 stfld        CraftingStation::m_haveFire
+  22 ldarg.0      
+  23 ldfld        CraftingStation::m_haveFireObject
+  28 call         UnityEngine.Object::op_Implicit
+  33 brfalse.s    52
+  35 ldarg.0      
+  36 ldfld        CraftingStation::m_haveFireObject
+  41 ldarg.0      
+  42 ldfld        CraftingStation::m_haveFire
+  47 callvirt     UnityEngine.GameObject::SetActive
+  52 ret          

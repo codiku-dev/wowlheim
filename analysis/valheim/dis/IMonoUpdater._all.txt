@@ -1,0 +1,11 @@
+== IMonoUpdater::CustomFixedUpdate(r4) -> void  il_size=1 sha=684888c0ebb1
+   locals_sig=null
+   0 ret          
+
+== IMonoUpdater::CustomUpdate(r4, r4) -> void  il_size=1 sha=684888c0ebb1
+   locals_sig=null
+   0 ret          
+
+== IMonoUpdater::CustomLateUpdate(r4) -> void  il_size=1 sha=684888c0ebb1
+   locals_sig=null
+   0 ret          

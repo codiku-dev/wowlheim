@@ -1,0 +1,339 @@
+diff --git a/src/game/Chat/Chat.cpp b/src/game/Chat/Chat.cpp
+index ffa25ba..5c0309e 100644
+--- a/src/game/Chat/Chat.cpp
++++ b/src/game/Chat/Chat.cpp
+@@ -320,6 +320,31 @@ ChatCommand* ChatHandler::getCommandTable()
+         { nullptr,          0,                  false, nullptr,                                        "", nullptr }
+     };
+ 
++    static ChatCommand buildCommandTable[] =
++    {
++        { "list",           SEC_PLAYER,         false, &ChatHandler::HandleBuildListCommand,           "", nullptr },
++        { "place",          SEC_PLAYER,         false, &ChatHandler::HandleBuildPlaceCommand,          "", nullptr },
++        { "remove",         SEC_PLAYER,         false, &ChatHandler::HandleBuildRemoveCommand,         "", nullptr },
++        { "count",          SEC_PLAYER,         false, &ChatHandler::HandleBuildCountCommand,          "", nullptr },
++        { "near",           SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildNearCommand,           "", nullptr },
++        { "bulk",           SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildBulkCommand,           "", nullptr },
++        { "perf",           SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildPerfCommand,           "", nullptr },
++        { "support",        SEC_PLAYER,         false, &ChatHandler::HandleBuildSupportCommand,        "", nullptr },
++        { "rain",           SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildRainCommand,           "", nullptr },
++        { "stats",          SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildStatsCommand,          "", nullptr },
++        { "dump",           SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildDumpCommand,           "", nullptr },
++        { "grace",          SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildGraceCommand,          "", nullptr },
++        { "station",        SEC_PLAYER,         false, &ChatHandler::HandleBuildStationCommand,        "", nullptr },
++        { "recipes",        SEC_PLAYER,         false, &ChatHandler::HandleBuildRecipesCommand,        "", nullptr },
++        { "craft",          SEC_PLAYER,         false, &ChatHandler::HandleBuildCraftCommand,          "", nullptr },
++        { "nocost",         SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildNoCostCommand,         "", nullptr },
++        { "removeid",       SEC_GAMEMASTER,     false, &ChatHandler::HandleBuildRemoveIdCommand,       "", nullptr },
++        { "repair",         SEC_PLAYER,         false, &ChatHandler::HandleBuildRepairCommand,         "", nullptr },
++        { "inv",            SEC_PLAYER,         false, &ChatHandler::HandleBuildInvCommand,            "", nullptr },
++        { "api",            SEC_PLAYER,         false, &ChatHandler::HandleBuildApiCommand,            "", nullptr },
++        { nullptr,          0,                  false, nullptr,                                        "", nullptr }
++    };
++
+     static ChatCommand gobjectCommandTable[] =
+     {
+         { "add",            SEC_GAMEMASTER,     false, &ChatHandler::HandleGameObjectAddCommand,       "", nullptr },
+@@ -926,6 +951,7 @@ ChatCommand* ChatHandler::getCommandTable()
+         { "gm",             SEC_PLAYER,         true,  nullptr,                                           "", gmCommandTable       },
+         { "honor",          SEC_GAMEMASTER,     false, nullptr,                                           "", honorCommandTable    },
+         { "go",             SEC_MODERATOR,      false, nullptr,                                           "", goCommandTable       },
++        { "build",          SEC_PLAYER,         false, nullptr,                                           "", buildCommandTable    },
+         { "gobject",        SEC_GAMEMASTER,     false, nullptr,                                           "", gobjectCommandTable  },
+         { "guild",          SEC_GAMEMASTER,     true,  nullptr,                                           "", guildCommandTable    },
+         { "instance",       SEC_ADMINISTRATOR,  true,  nullptr,                                           "", instanceCommandTable },
+diff --git a/src/game/Chat/Chat.h b/src/game/Chat/Chat.h
+index 00fde0a..3f95d39 100644
+--- a/src/game/Chat/Chat.h
++++ b/src/game/Chat/Chat.h
+@@ -338,6 +338,31 @@ class ChatHandler
+         bool HandleGameObjectMoveCommand(char* args);
+         bool HandleGameObjectNearCommand(char* args);
+         bool HandleGameObjectNearSpawnedCommand(char* args);
++        // Wowlheim
++        bool HandleBuildListCommand(char* args);
++        bool HandleBuildPlaceCommand(char* args);
++        bool HandleBuildBulkCommand(char* args);
++        bool HandleBuildRemoveCommand(char* args);
++        bool HandleBuildNearCommand(char* args);
++        bool HandleBuildCountCommand(char* args);
++        bool HandleBuildPerfCommand(char* args);
++        bool HandleBuildSupportCommand(char* args);
++        bool HandleBuildRainCommand(char* args);
++        bool HandleBuildStatsCommand(char* args);
++        bool HandleBuildDumpCommand(char* args);
++        bool HandleBuildGraceCommand(char* args);
++        bool HandleBuildStationCommand(char* args);
++        bool HandleBuildRecipesCommand(char* args);
++        bool HandleBuildCraftCommand(char* args);
++        bool HandleBuildNoCostCommand(char* args);
++        bool HandleBuildRemoveIdCommand(char* args);
++        bool HandleBuildRepairCommand(char* args);
++        bool HandleBuildInvCommand(char* args);
++        bool HandleBuildApiCommand(char* args);
++        bool HandleBuildSelectCommand(char* args);
++        bool HandleBuildModeCommand(char* args);
++        bool HandleBuildPlaceAtCommand(char* args);
++        bool HandleBuildTreesCommand(char* args);
+         bool HandleGameObjectPhaseCommand(char* args);
+         bool HandleGameObjectTargetCommand(char* args);
+         bool HandleGameObjectTurnCommand(char* args);
+diff --git a/src/game/Entities/GameObject.cpp b/src/game/Entities/GameObject.cpp
+index 043cad6..fa96a5c 100644
+--- a/src/game/Entities/GameObject.cpp
++++ b/src/game/Entities/GameObject.cpp
+@@ -38,6 +38,7 @@
+ #include "OutdoorPvP/OutdoorPvP.h"
+ #include "Util/Util.h"
+ #include "AI/ScriptDevAI/ScriptDevAIMgr.h"
++#include "Wowlheim/BuildingMgr.h"
+ #include "vmap/GameObjectModel.h"
+ #include "Server/SQLStorages.h"
+ #include "World/WorldState.h"
+@@ -1463,6 +1464,29 @@ void GameObject::Use(Unit* user, SpellEntry const* spellInfo)
+     // user must be provided
+     MANGOS_ASSERT(user || PrintEntryError("GameObject::Use (without user)"));
+ 
++    // Wowlheim : pi?ce de construction -> d?molir / r?parer au marteau selon le mode choisi (Valheim)
++    if (user->GetTypeId() == TYPEID_PLAYER && GetEntry() >= 9110000 && GetEntry() < 9120000 &&
++            Wowlheim_OnPieceUse(static_cast<Player*>(user), GetDbGuid()))
++        return;
++
++    // Wowlheim : n?ud de ressource -> outil ?quip? requis (hache/pic de Wowlheim), usure de l'outil ? chaque r?colte
++    if (user->GetTypeId() == TYPEID_PLAYER && sBuildingMgr.IsNodeEntry(GetEntry()))
++    {
++        std::string wlErr;
++        Player* wlPlayer = static_cast<Player*>(user);
++        if (!sBuildingMgr.CheckHarvest(wlPlayer, GetEntry(), wlErr))
++        {
++            wlPlayer->GetSession()->SendNotification("%s", wlErr.c_str());
++            return;
++        }
++        sBuildingMgr.ConsumeToolDurability(wlPlayer);
++        // ouverture directe du butin du n?ud (les coffres sans serrure ne s'ouvrent pas d'eux-m?mes dans ce c?ur)
++        if (!m_loot)
++            m_loot = new Loot(wlPlayer, this, LOOT_CORPSE);
++        m_loot->ShowContentTo(wlPlayer);
++        return;
++    }
++
+     // by default spell caster is user
+     WorldObject* spellCaster = user;
+     uint32 spellId = 0;
+@@ -2101,6 +2125,13 @@ void GameObject::UpdateModel()
+     delete m_model;
+ 
+     m_model = GameObjectModel::construct(this);
++    // Wowlheim : les pi?ces de construction (entr?es 9100000+) restent hors de l'arbre dynamique (BIH) :
++    // sa reconstruction l?ve ? invalid node overlap ? avec nos mod?les et plante le thread de mise ? jour des cartes.
++    if (m_model && GetEntry() >= 9100000 && GetEntry() < 9200000)
++    {
++        delete m_model;
++        m_model = nullptr;
++    }
+     if (m_model)
+         GetMap()->InsertGameObjectModel(*m_model);
+ }
+diff --git a/src/game/Entities/Unit.cpp b/src/game/Entities/Unit.cpp
+index 7d1b89f..cad7163 100644
+--- a/src/game/Entities/Unit.cpp
++++ b/src/game/Entities/Unit.cpp
+@@ -17,6 +17,7 @@
+  */
+ 
+ #include "Entities/Unit.h"
++#include "Wowlheim/TreeMgr.h"
+ #include "Log/Log.h"
+ #include "Server/Opcodes.h"
+ #include "Server/WorldPacket.h"
+@@ -901,6 +902,8 @@ void Unit::FallSuicide()
+ 
+ uint32 Unit::DealDamage(Unit* dealer, Unit* victim, uint32 damage, CleanDamage const* cleanDamage, DamageEffectType damagetype, SpellSchoolMask damageSchoolMask, SpellEntry const* spellInfo, bool durabilityLoss, Spell* spell)
+ {
++    if (!Wowlheim_AllowDamage(dealer, victim, (damagetype == DIRECT_DAMAGE && !spellInfo) || damagetype == INSTAKILL))    // Wowlheim : arbres = coupe seulement
++        damage = 0;
+     // remove affects from attacker at any non-DoT damage (including 0 damage)
+     if (damagetype != DOT && damagetype != INSTAKILL)
+     {
+@@ -1018,6 +1021,7 @@ uint32 Unit::DealDamage(Unit* dealer, Unit* victim, uint32 damage, CleanDamage c
+ 
+ void Unit::Kill(Unit* killer, Unit* victim, DamageEffectType damagetype, SpellEntry const* spellInfo, bool durabilityLoss, bool duel_hasEnded)
+ {
++    Wowlheim_OnKill(killer, victim);                            // Wowlheim : chute de l'arbre, buches
+     DEBUG_FILTER_LOG(LOG_FILTER_DAMAGE, "DealDamage %s Killed %s", killer ? killer->GetGuidStr().c_str() : "", victim->GetGuidStr().c_str());
+ 
+     /*
+@@ -2646,6 +2650,7 @@ void Unit::AttackerStateUpdate(Unit* pVictim, WeaponAttackType attType, bool ext
+ 
+     CalcDamageInfo meleeDamageInfo;
+     CalculateMeleeDamage(pVictim, &meleeDamageInfo, attType);
++    Wowlheim_AdjustMelee(this, pVictim, &meleeDamageInfo);     // Wowlheim : coupe a la hache (arbres)
+ 
+     // Send log damage message to client
+     for (uint8 i = 0; i < m_weaponDamageInfo.weapon[attType].lines; i++)
+diff --git a/src/game/Maps/GridMap.cpp b/src/game/Maps/GridMap.cpp
+index 6bc21db..fe1b459 100644
+--- a/src/game/Maps/GridMap.cpp
++++ b/src/game/Maps/GridMap.cpp
+@@ -1296,7 +1296,7 @@ GridMap* TerrainInfo::LoadMapAndVMap(const uint32 x, const uint32 y, bool mapOnl
+         }
+     }
+ 
+-    if (!MMAP::MMapFactory::createOrGetMMapManager()->IsMMapIsLoaded(m_mapId, x, y))
++    if (MMAP::MMapFactory::createOrGetMMapManager()->IsEnabled() && !MMAP::MMapFactory::createOrGetMMapManager()->IsMMapIsLoaded(m_mapId, x, y))
+     {
+         // load navmesh
+         MMAP::MMapFactory::createOrGetMMapManager()->loadMap(sWorld.GetDataPath(), m_mapId, x, y);
+diff --git a/src/game/Maps/MapUpdater.cpp b/src/game/Maps/MapUpdater.cpp
+index 77de6f2..73e6054 100644
+--- a/src/game/Maps/MapUpdater.cpp
++++ b/src/game/Maps/MapUpdater.cpp
+@@ -1,3 +1,4 @@
++#include <typeinfo>
+ /*
+  * This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
+  *
+@@ -17,6 +18,7 @@
+  */
+ 
+ #include "MapUpdater.h"
++#include "Log/Log.h"
+ #include "MapWorkers.h"
+ 
+ MapUpdater::MapUpdater(size_t num_threads) : _cancelationToken(false), pending_requests(0)
+@@ -93,7 +95,15 @@ void MapUpdater::WorkerThread()
+             return;
+         }
+ 
+-        request->execute();
++        try
++        {
++            request->execute();
++        }
++        catch (std::exception const& e)
++        {
++            sLog.outError("WOWLHEIM-DEBUG exception dans MapUpdater : %s (type %s)", e.what(), typeid(e).name());
++            throw;
++        }
+ 
+         delete request;
+     }
+diff --git a/src/game/Spells/Spell.cpp b/src/game/Spells/Spell.cpp
+index bf5c5c5..a8c23fa 100644
+--- a/src/game/Spells/Spell.cpp
++++ b/src/game/Spells/Spell.cpp
+@@ -17,6 +17,7 @@
+  */
+ 
+ #include "Spells/Spell.h"
++#include "Wowlheim/BuildingMgr.h"
+ #include "Database/DatabaseEnv.h"
+ #include "Server/WorldPacket.h"
+ #include "Server/WorldSession.h"
+@@ -3175,6 +3176,14 @@ SpellCastResult Spell::cast(bool skipCheck)
+         return SPELL_FAILED_ERROR;
+     }
+ 
++    // Wowlheim : sort de pose du marteau -> la pi?ce choisie est pos?e au point vis? (cercle de ciblage au sol)
++    if (m_spellInfo->Id == BuildingMgr::WL_PLACE_SPELL && m_caster->GetTypeId() == TYPEID_PLAYER && (m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION))
++    {
++        float wlx, wly, wlz;
++        m_targets.getDestination(wlx, wly, wlz);
++        Wowlheim_PlaceFromSpell(static_cast<Player*>(m_caster), wlx, wly, wlz);
++    }
++
+     // update pointers base at GUIDs to prevent access to already nonexistent object
+     UpdatePointers();
+ 
+diff --git a/src/game/Spells/SpellEffects.cpp b/src/game/Spells/SpellEffects.cpp
+index a9fb230..77df320 100644
+--- a/src/game/Spells/SpellEffects.cpp
++++ b/src/game/Spells/SpellEffects.cpp
+@@ -27,6 +27,7 @@
+ #include "Entities/Player.h"
+ #include "Entities/Unit.h"
+ #include "Spells/Spell.h"
++#include "Wowlheim/BuildingMgr.h"
+ #include "Entities/DynamicObject.h"
+ #include "Spells/SpellAuras.h"
+ #include "Entities/UpdateData.h"
+@@ -3616,6 +3617,8 @@ void Spell::EffectInterruptCast(SpellEffectIndex /*eff_idx*/)
+ 
+ void Spell::EffectSummonObjectWild(SpellEffectIndex eff_idx)
+ {
++    if (m_spellInfo->Id == BuildingMgr::WL_PLACE_SPELL)       // Wowlheim : la pose est faite par Spell::cast (BuildingMgr::PlaceFromSpell)
++        return;
+     uint32 gameobject_id = m_spellInfo->EffectMiscValue[eff_idx];
+ 
+     GameObject* pGameObj = new GameObject;
+diff --git a/src/game/Weather/Weather.h b/src/game/Weather/Weather.h
+index a37843e..67d17b5 100644
+--- a/src/game/Weather/Weather.h
++++ b/src/game/Weather/Weather.h
+@@ -63,6 +63,8 @@ class Weather
+         void SetWeather(WeatherType type, float grade, Map const* _map, bool isPermanent);
+         /// Update the weather in this zone, when the timer is expired the weather will be rolled again
+         bool Update(uint32 diff, Map const* _map);
++        /// Wowlheim : pluie active dans la zone (tout degr? de pluie)
++        bool IsRaining() const { return m_type == WEATHER_TYPE_RAIN && m_grade > 0.0f; }
+         /// Check if a type is valid
+         static bool IsValidWeatherType(uint32 type)
+         {
+diff --git a/src/game/World/World.cpp b/src/game/World/World.cpp
+index e344c52..2140285 100644
+--- a/src/game/World/World.cpp
++++ b/src/game/World/World.cpp
+@@ -21,6 +21,7 @@
+ */
+ 
+ #include "World/World.h"
++#include "Wowlheim/BuildingMgr.h"
+ #include "Database/DatabaseEnv.h"
+ #include "Config/Config.h"
+ #include "Platform/Define.h"
+@@ -1253,6 +1254,9 @@ void World::SetInitialWorldSettings()
+     sLog.outString("Loading GameObjects for quests...");
+     sObjectMgr.LoadGameObjectForQuests();
+ 
++    sLog.outString("Loading Wowlheim buildings...");
++    sBuildingMgr.Load();
++
+     sLog.outString("Loading BattleMasters...");
+     sBattleGroundMgr.LoadBattleMastersEntry(false);
+ 
+@@ -1511,6 +1515,8 @@ void World::Update(uint32 diff)
+     m_currentMSTime = WorldTimer::getMSTime();
+     m_currentTime = std::chrono::time_point_cast<std::chrono::milliseconds>(Clock::now());
+     m_currentDiff = diff;
++    sBuildingMgr.RecordDiff(diff);
++    sBuildingMgr.Update(diff);
+ 
+ #ifdef ENABLE_PLAYERBOTS
+     m_currentDiffSum += diff;
+diff --git a/src/mangosd/WorldRunnable.cpp b/src/mangosd/WorldRunnable.cpp
+index 5b9f4d7..b90009f 100644
+--- a/src/mangosd/WorldRunnable.cpp
++++ b/src/mangosd/WorldRunnable.cpp
+@@ -1,3 +1,4 @@
++#include <typeinfo>
+ /*
+  * This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
+  *
+@@ -84,7 +85,16 @@ void WorldRunnable::run()
+         World::m_worldLoopCounter = World::m_worldLoopCounter + 1;
+ 
+         diffTick = WorldTimer::tick();
+-        sWorld.Update(diffTick);
++        try
++        {
++            sWorld.Update(diffTick);
++        }
++        catch (std::exception const& e)
++        {
++            sLog.outError("WOWLHEIM-DEBUG exception dans World::Update : %s (type %s)", e.what(), typeid(e).name());
++            sLog.WaitBeforeContinueIfNeed();
++            throw;
++        }
+         diffTime = WorldTimer::getMSTime() - WorldTimer::tickTime();
+ 
+         // we have to wait WORLD_SLEEP_CONST max between loops

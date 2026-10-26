@@ -1,0 +1,32 @@
+== WearNTear::.cctor() -> void  il_size=134 sha=819440a20329
+   locals_sig=null
+   0 ldc.i4.0     
+   1 stsfld       WearNTear::m_randomInitialDamage
+   6 ldc.i4       128
+  11 newarr       0x01000026
+  16 stsfld       WearNTear::s_raycastHits
+  21 ldc.i4       128
+  26 newarr       0x01000013
+  31 stsfld       WearNTear::s_tempColliders
+  36 ldc.i4.0     
+  37 stsfld       WearNTear::s_rayMask
+  42 newobj       System.Collections.Generic.List`1::.ctor
+  47 stsfld       WearNTear::s_allInstances
+  52 newobj       System.Collections.Generic.List`1::.ctor
+  57 stsfld       WearNTear::s_tempSupportPoints
+  62 newobj       System.Collections.Generic.List`1::.ctor
+  67 stsfld       WearNTear::s_tempSupportPointValues
+  72 ldstr        "_TakingAshlandsDamage"
+  77 call         UnityEngine.Shader::PropertyToID
+  82 stsfld       WearNTear::s_AshlandsDamageShaderID
+  87 ldc.i4.m1    
+  88 newobj       System.Nullable`1::.ctor
+  93 stsfld       WearNTear::s_terrainLayer
+  98 ldstr        "_SnowLevel"
+ 103 call         UnityEngine.Shader::PropertyToID
+ 108 stsfld       WearNTear::s_snowLevel
+ 113 newobj       System.Collections.Generic.List`1::.ctor
+ 118 stsfld       WearNTear::s_tempRenderers
+ 123 newobj       System.Collections.Generic.List`1::.ctor
+ 128 stsfld       WearNTear::s_tempSkinned
+ 133 ret          

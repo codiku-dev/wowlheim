@@ -1,0 +1,48 @@
+== CraftingStation::FindClosestStationInRange(string, valuetype:81, r4) -> class:1048  il_size=113 sha=ef346115a34a
+   locals_sig=0x11000371
+   0 ldnull       
+   1 stloc.0      
+   2 ldc.r4       99999
+   7 stloc.1      
+   8 ldsfld       CraftingStation::m_allStations
+  13 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  18 stloc.2      
+  19 br.s         86
+  21 ldloca.s     2
+  23 call         Enumerator::get_Current
+  28 stloc.3      
+  29 ldloc.3      
+  30 ldfld        CraftingStation::m_name
+  35 ldarg.0      
+  36 call         System.String::op_Inequality
+  41 brtrue.s     86
+  43 ldloc.3      
+  44 callvirt     UnityEngine.Component::get_transform
+  49 callvirt     UnityEngine.Transform::get_position
+  54 ldarg.1      
+  55 call         UnityEngine.Vector3::Distance
+  60 stloc.s      4
+  62 ldloc.s      4
+  64 ldarg.2      
+  65 bge.un.s     86
+  67 ldloc.s      4
+  69 ldloc.1      
+  70 blt.s        81
+  72 ldloc.0      
+  73 ldnull       
+  74 call         UnityEngine.Object::op_Equality
+  79 brfalse.s    86
+  81 ldloc.3      
+  82 stloc.0      
+  83 ldloc.s      4
+  85 stloc.1      
+  86 ldloca.s     2
+  88 call         Enumerator::MoveNext
+  93 brtrue.s     21
+  95 leave.s      111
+  97 ldloca.s     2
+  99 constrained. 0x1b0001fc
+ 105 callvirt     System.IDisposable::Dispose
+ 110 endfinally   
+ 111 ldloc.0      
+ 112 ret          

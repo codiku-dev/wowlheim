@@ -1,0 +1,5 @@
+== Player::GetCurrentCraftingStation() -> class:1048  il_size=7 sha=9f9804e30a5a
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_currentStation
+   6 ret          

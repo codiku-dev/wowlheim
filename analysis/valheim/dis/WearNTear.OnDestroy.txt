@@ -1,0 +1,41 @@
+== WearNTear::OnDestroy() -> void  il_size=134 sha=56d386e0c197
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_myIndex
+   6 ldc.i4.m1    
+   7 beq.s        96
+   9 ldsfld       WearNTear::s_allInstances
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_myIndex
+  20 ldsfld       WearNTear::s_allInstances
+  25 ldsfld       WearNTear::s_allInstances
+  30 callvirt     System.Collections.Generic.List`1::get_Count
+  35 ldc.i4.1     
+  36 sub          
+  37 callvirt     System.Collections.Generic.List`1::get_Item
+  42 callvirt     System.Collections.Generic.List`1::set_Item
+  47 ldsfld       WearNTear::s_allInstances
+  52 ldarg.0      
+  53 ldfld        WearNTear::m_myIndex
+  58 callvirt     System.Collections.Generic.List`1::get_Item
+  63 ldarg.0      
+  64 ldfld        WearNTear::m_myIndex
+  69 stfld        WearNTear::m_myIndex
+  74 ldsfld       WearNTear::s_allInstances
+  79 ldsfld       WearNTear::s_allInstances
+  84 callvirt     System.Collections.Generic.List`1::get_Count
+  89 ldc.i4.1     
+  90 sub          
+  91 callvirt     System.Collections.Generic.List`1::RemoveAt
+  96 ldarg.0      
+  97 ldfld        WearNTear::m_connectedHeightMap
+ 102 ldnull       
+ 103 call         UnityEngine.Object::op_Inequality
+ 108 brfalse.s    133
+ 110 ldarg.0      
+ 111 ldfld        WearNTear::m_connectedHeightMap
+ 116 ldarg.0      
+ 117 ldftn        WearNTear::ClearCachedSupport()
+ 123 newobj       System.Action::.ctor
+ 128 callvirt     Heightmap::remove_m_clearConnectedWearNTearCache(class:89)
+ 133 ret          

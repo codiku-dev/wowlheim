@@ -1,0 +1,16 @@
+== WearNTear::RPC_Remove(i8, bool) -> void  il_size=36 sha=9e263fd1b5a6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brfalse.s    26
+  13 ldarg.0      
+  14 ldfld        WearNTear::m_nview
+  19 callvirt     ZNetView::IsOwner()
+  24 brtrue.s     27
+  26 ret          
+  27 ldarg.0      
+  28 ldnull       
+  29 ldarg.2      
+  30 call         WearNTear::Destroy(class:2140,bool)
+  35 ret          

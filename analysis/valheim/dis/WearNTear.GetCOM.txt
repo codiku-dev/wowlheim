@@ -1,0 +1,13 @@
+== WearNTear::GetCOM() -> valuetype:81  il_size=39 sha=59bec91a5c6a
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 ldarg.0      
+  12 call         UnityEngine.Component::get_transform
+  17 callvirt     UnityEngine.Transform::get_rotation
+  22 ldarg.0      
+  23 ldfld        WearNTear::m_comOffset
+  28 call         UnityEngine.Quaternion::op_Multiply
+  33 call         UnityEngine.Vector3::op_Addition
+  38 ret          

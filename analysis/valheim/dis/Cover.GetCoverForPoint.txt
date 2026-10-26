@@ -1,0 +1,52 @@
+== Cover::GetCoverForPoint il_size=103 sha=56989a8e49ec
+   0 call         Cover::Setup
+   5 ldc.r4       0
+  10 stloc.0      
+  11 ldarg.2      
+  12 ldarg.0      
+  13 call         Cover::IsUnderRoof
+  18 stind.i1     
+  19 ldsfld       Cover::m_coverRays
+  24 stloc.1      
+  25 ldc.i4.0     
+  26 stloc.2      
+  27 br.s         84
+  29 ldloc.1      
+  30 ldloc.2      
+  31 ldelem       0x0100002a
+  36 stloc.3      
+  37 ldarg.0      
+  38 ldloc.3      
+  39 ldarg.3      
+  40 call         UnityEngine.Vector3::op_Multiply
+  45 call         UnityEngine.Vector3::op_Addition
+  50 ldloc.3      
+  51 ldloca.s     4
+  53 ldc.r4       30
+  58 ldarg.3      
+  59 sub          
+  60 ldsfld       Cover::m_coverRayMask
+  65 call         UnityEngine.Physics::Raycast
+  70 brfalse.s    80
+  72 ldloc.0      
+  73 ldc.r4       1
+  78 add          
+  79 stloc.0      
+  80 ldloc.2      
+  81 ldc.i4.1     
+  82 add          
+  83 stloc.2      
+  84 ldloc.2      
+  85 ldloc.1      
+  86 ldlen        
+  87 conv.i4      
+  88 blt.s        29
+  90 ldarg.1      
+  91 ldloc.0      
+  92 ldsfld       Cover::m_coverRays
+  97 ldlen        
+  98 conv.i4      
+  99 conv.r4      
+ 100 div          
+ 101 stind.r4     
+ 102 ret          

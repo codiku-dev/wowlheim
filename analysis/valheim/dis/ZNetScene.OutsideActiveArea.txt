@@ -1,0 +1,17 @@
+== ZNetScene::OutsideActiveArea(valuetype:81) -> bool  il_size=22 sha=948eaaf0ca2a
+   locals_sig=null
+   0 ldarg.1      
+   1 call         ZNet::get_instance()
+   6 callvirt     ZNet::GetReferencePosition()
+  11 call         ZoneSystem::GetZone(valuetype:81)
+  16 call         ZNetScene::OutsideActiveArea(valuetype:81,valuetype:173)
+  21 ret          
+
+== ZNetScene::OutsideActiveArea(valuetype:81, valuetype:173) -> bool  il_size=11 sha=1f7309cd8210
+   locals_sig=null
+   0 ldarg.1      
+   1 ldarg.0      
+   2 call         ZNetScene::PointInsideActiveArea(valuetype:173,valuetype:81)
+   7 ldc.i4.0     
+   8 ceq          
+  10 ret          

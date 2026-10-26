@@ -1,0 +1,59 @@
+== Piece::OnPlaced() -> void  il_size=156 sha=edc91178aba5
+   locals_sig=0x1100073b
+   0 ldarg.0      
+   1 ldfld        Piece::m_harvest
+   6 brfalse      155
+  11 ldsfld       Player::m_localPlayer
+  16 ldc.i4.s     106
+  18 callvirt     Character::GetSkillFactor(valuetype:2932)
+  23 stloc.0      
+  24 ldarg.0      
+  25 ldfld        Piece::m_harvestRadius
+  30 ldarg.0      
+  31 ldfld        Piece::m_harvestRadiusMaxLevel
+  36 ldloc.0      
+  37 call         UnityEngine.Mathf::Lerp
+  42 stloc.1      
+  43 ldarg.0      
+  44 call         UnityEngine.Component::get_transform
+  49 callvirt     UnityEngine.Transform::get_position
+  54 ldloc.1      
+  55 ldsfld       Piece::s_pieceColliders
+  60 ldsfld       Piece::s_harvestRayMask
+  65 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  70 stloc.2      
+  71 ldc.i4.0     
+  72 stloc.3      
+  73 br.s         135
+  75 ldsfld       Piece::s_pieceColliders
+  80 ldloc.3      
+  81 ldelem.ref   
+  82 callvirt     UnityEngine.Component::get_gameObject
+  87 callvirt     UnityEngine.GameObject::GetComponent<T>
+  92 stloc.s      4
+  94 ldloc.s      4
+  96 brfalse.s    131
+  98 ldloc.s      4
+ 100 ldfld        Pickable::m_harvestable
+ 105 brfalse.s    131
+ 107 ldloc.s      4
+ 109 callvirt     Pickable::CanBePicked()
+ 114 brfalse.s    131
+ 116 ldloc.s      4
+ 118 ldsfld       Player::m_localPlayer
+ 123 ldc.i4.0     
+ 124 ldc.i4.0     
+ 125 callvirt     Pickable::Interact(class:108,bool,bool)
+ 130 pop          
+ 131 ldloc.3      
+ 132 ldc.i4.1     
+ 133 add          
+ 134 stloc.3      
+ 135 ldloc.3      
+ 136 ldloc.2      
+ 137 blt.s        75
+ 139 call         ZNetScene::get_instance()
+ 144 ldarg.0      
+ 145 call         UnityEngine.Component::get_gameObject
+ 150 callvirt     ZNetScene::Destroy(class:133)
+ 155 ret          

@@ -1,0 +1,104 @@
+== Player::UpdateStations(r4) -> void  il_size=315 sha=41afa9b70d40
+   locals_sig=0x110000be
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        Player::m_stationDiscoverTimer
+   7 ldarg.1      
+   8 add          
+   9 stfld        Player::m_stationDiscoverTimer
+  14 ldarg.0      
+  15 ldfld        Player::m_stationDiscoverTimer
+  20 ldc.r4       1
+  25 ble.un.s     44
+  27 ldarg.0      
+  28 ldc.r4       0
+  33 stfld        Player::m_stationDiscoverTimer
+  38 ldarg.0      
+  39 call         CraftingStation::UpdateKnownStationsInRange(class:144)
+  44 ldarg.0      
+  45 ldfld        Player::m_currentStation
+  50 ldnull       
+  51 call         UnityEngine.Object::op_Inequality
+  56 brfalse      265
+  61 ldarg.0      
+  62 ldfld        Player::m_currentStation
+  67 ldarg.0      
+  68 callvirt     CraftingStation::InUseDistance(class:108)
+  73 brtrue.s     93
+  75 call         InventoryGui::get_instance()
+  80 callvirt     InventoryGui::Hide()
+  85 ldarg.0      
+  86 ldnull       
+  87 call         Player::SetCraftingStation(class:1048)
+  92 ret          
+  93 call         InventoryGui::IsVisible()
+  98 brtrue.s     108
+ 100 ldarg.0      
+ 101 ldnull       
+ 102 call         Player::SetCraftingStation(class:1048)
+ 107 ret          
+ 108 ldarg.0      
+ 109 ldfld        Player::m_currentStation
+ 114 callvirt     CraftingStation::PokeInUse()
+ 119 ldarg.0      
+ 120 callvirt     Character::AlwaysRotateCamera()
+ 125 brtrue.s     230
+ 127 ldarg.0      
+ 128 ldfld        Player::m_currentStation
+ 133 callvirt     UnityEngine.Component::get_transform
+ 138 callvirt     UnityEngine.Transform::get_position
+ 143 ldarg.0      
+ 144 call         UnityEngine.Component::get_transform
+ 149 callvirt     UnityEngine.Transform::get_position
+ 154 call         UnityEngine.Vector3::op_Subtraction
+ 159 stloc.2      
+ 160 ldloca.s     2
+ 162 call         UnityEngine.Vector3::get_normalized
+ 167 stloc.0      
+ 168 ldloca.s     0
+ 170 ldc.r4       0
+ 175 stfld        UnityEngine.Vector3::y
+ 180 ldloca.s     0
+ 182 call         UnityEngine.Vector3::Normalize
+ 187 ldloc.0      
+ 188 call         UnityEngine.Quaternion::LookRotation
+ 193 stloc.1      
+ 194 ldarg.0      
+ 195 call         UnityEngine.Component::get_transform
+ 200 ldarg.0      
+ 201 call         UnityEngine.Component::get_transform
+ 206 callvirt     UnityEngine.Transform::get_rotation
+ 211 ldloc.1      
+ 212 ldarg.0      
+ 213 ldfld        Character::m_turnSpeed
+ 218 ldarg.1      
+ 219 mul          
+ 220 call         UnityEngine.Quaternion::RotateTowards
+ 225 callvirt     UnityEngine.Transform::set_rotation
+ 230 ldarg.0      
+ 231 ldfld        Character::m_zanim
+ 236 ldstr        "crafting"
+ 241 ldarg.0      
+ 242 ldfld        Player::m_currentStation
+ 247 ldfld        CraftingStation::m_useAnimation
+ 252 callvirt     ZSyncAnimation::SetInt(string,i4)
+ 257 ldarg.0      
+ 258 ldc.i4.1     
+ 259 stfld        Player::m_inCraftingStation
+ 264 ret          
+ 265 ldarg.0      
+ 266 ldfld        Player::m_inCraftingStation
+ 271 brfalse.s    314
+ 273 ldarg.0      
+ 274 ldfld        Character::m_zanim
+ 279 ldstr        "crafting"
+ 284 ldc.i4.0     
+ 285 callvirt     ZSyncAnimation::SetInt(string,i4)
+ 290 ldarg.0      
+ 291 ldc.i4.0     
+ 292 stfld        Player::m_inCraftingStation
+ 297 call         InventoryGui::IsVisible()
+ 302 brfalse.s    314
+ 304 call         InventoryGui::get_instance()
+ 309 callvirt     InventoryGui::Hide()
+ 314 ret          

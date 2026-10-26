@@ -1,0 +1,11 @@
+== Player::InShelter() -> bool  il_size=22 sha=cea0d0d7075a
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_coverPercentage
+   6 ldc.r4       0.800000011920929
+  11 blt.un.s     20
+  13 ldarg.0      
+  14 ldfld        Player::m_underRoof
+  19 ret          
+  20 ldc.i4.0     
+  21 ret          

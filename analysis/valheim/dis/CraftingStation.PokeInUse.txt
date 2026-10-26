@@ -1,0 +1,8 @@
+== CraftingStation::PokeInUse() -> void  il_size=18 sha=4b5c35f73e44
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       0
+   6 stfld        CraftingStation::m_useTimer
+  11 ldarg.0      
+  12 call         CraftingStation::TriggerExtensionEffects()
+  17 ret          

@@ -1,0 +1,984 @@
+== Player::UpdatePlacementGhost(bool) -> void  il_size=2881 sha=2cbbb07cd5fa
+   locals_sig=0x110000b5
+   0 ldarg.0      
+   1 ldfld        Player::m_placementGhost
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Equality
+  12 brfalse.s    40
+  14 ldarg.0      
+  15 ldfld        Player::m_placementMarkerInstance
+  20 call         UnityEngine.Object::op_Implicit
+  25 brfalse.s    39
+  27 ldarg.0      
+  28 ldfld        Player::m_placementMarkerInstance
+  33 ldc.i4.0     
+  34 callvirt     UnityEngine.GameObject::SetActive
+  39 ret          
+  40 call         ZInput::IsNonClassicFunctionality
+  45 brfalse.s    54
+  47 call         ZInput::IsGamepadActive
+  52 brtrue.s     99
+  54 ldstr        "AltPlace"
+  59 call         ZInput::GetButton
+  64 brtrue.s     96
+  66 ldstr        "JoyAltPlace"
+  71 call         ZInput::GetButton
+  76 brfalse.s    93
+  78 ldstr        "JoyRotate"
+  83 call         ZInput::GetButton
+  88 ldc.i4.0     
+  89 ceq          
+  91 br.s         105
+  93 ldc.i4.0     
+  94 br.s         105
+  96 ldc.i4.1     
+  97 br.s         105
+  99 ldarg.0      
+ 100 ldfld        Player::m_altPlace
+ 105 stloc.0      
+ 106 ldarg.0      
+ 107 ldfld        Player::m_placementGhost
+ 112 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 117 stloc.1      
+ 118 ldloc.1      
+ 119 ldfld        Piece::m_waterPiece
+ 124 brtrue.s     134
+ 126 ldloc.1      
+ 127 ldfld        Piece::m_noInWater
+ 132 br.s         135
+ 134 ldc.i4.1     
+ 135 stloc.2      
+ 136 ldarg.0      
+ 137 ldloca.s     3
+ 139 ldloca.s     4
+ 141 ldloca.s     5
+ 143 ldloca.s     6
+ 145 ldloca.s     7
+ 147 ldloc.2      
+ 148 call         Player::PieceRayTest(valuetype:81&,valuetype:81&,class:2264&,class:2124&,class:77&,bool)
+ 153 brfalse      2820
+ 158 ldarg.0      
+ 159 ldc.i4.0     
+ 160 stfld        Player::m_placementStatus
+ 165 ldc.r4       0
+ 170 ldarg.0      
+ 171 ldfld        Player::m_placeRotationDegrees
+ 176 ldarg.0      
+ 177 ldfld        Player::m_placeRotation
+ 182 conv.r4      
+ 183 mul          
+ 184 ldc.r4       0
+ 189 call         UnityEngine.Quaternion::Euler
+ 194 stloc.s      8
+ 196 ldarg.0      
+ 197 ldfld        Player::m_placementMarkerInstance
+ 202 ldnull       
+ 203 call         UnityEngine.Object::op_Equality
+ 208 brfalse.s    233
+ 210 ldarg.0      
+ 211 ldarg.0      
+ 212 ldfld        Player::m_placeMarker
+ 217 ldloc.3      
+ 218 call         UnityEngine.Quaternion::get_identity
+ 223 call         UnityEngine.Object::Instantiate<T>
+ 228 stfld        Player::m_placementMarkerInstance
+ 233 ldarg.0      
+ 234 ldfld        Player::m_placementMarkerInstance
+ 239 ldc.i4.1     
+ 240 callvirt     UnityEngine.GameObject::SetActive
+ 245 ldarg.0      
+ 246 ldfld        Player::m_placementMarkerInstance
+ 251 callvirt     UnityEngine.GameObject::get_transform
+ 256 ldloc.3      
+ 257 callvirt     UnityEngine.Transform::set_position
+ 262 ldarg.0      
+ 263 ldfld        Player::m_placementMarkerInstance
+ 268 callvirt     UnityEngine.GameObject::get_transform
+ 273 ldloc.s      4
+ 275 ldloc.s      8
+ 277 call         UnityEngine.Vector3::get_forward
+ 282 call         UnityEngine.Quaternion::op_Multiply
+ 287 call         UnityEngine.Quaternion::LookRotation
+ 292 callvirt     UnityEngine.Transform::set_rotation
+ 297 ldloc.1      
+ 298 ldfld        Piece::m_groundOnly
+ 303 brtrue.s     321
+ 305 ldloc.1      
+ 306 ldfld        Piece::m_groundPiece
+ 311 brtrue.s     321
+ 313 ldloc.1      
+ 314 ldfld        Piece::m_cultivatedGroundOnly
+ 319 brfalse.s    333
+ 321 ldarg.0      
+ 322 ldfld        Player::m_placementMarkerInstance
+ 327 ldc.i4.0     
+ 328 callvirt     UnityEngine.GameObject::SetActive
+ 333 ldloc.s      5
+ 335 ldnull       
+ 336 call         UnityEngine.Object::op_Inequality
+ 341 brtrue.s     346
+ 343 ldnull       
+ 344 br.s         353
+ 346 ldloc.s      5
+ 348 callvirt     UnityEngine.Component::GetComponent<T>
+ 353 stloc.s      9
+ 355 ldloc.1      
+ 356 callvirt     UnityEngine.Component::GetComponent<T>
+ 361 stloc.s      10
+ 363 ldloc.s      10
+ 365 ldnull       
+ 366 call         UnityEngine.Object::op_Inequality
+ 371 brfalse.s    444
+ 373 ldloc.s      10
+ 375 ldloc.3      
+ 376 callvirt     StationExtension::FindClosestStationInRange(valuetype:81)
+ 381 stloc.s      15
+ 383 ldloc.s      15
+ 385 call         UnityEngine.Object::op_Implicit
+ 390 brfalse.s    408
+ 392 ldloc.s      10
+ 394 ldloc.s      15
+ 396 ldc.r4       1
+ 401 callvirt     StationExtension::StartConnectionEffect(class:1048,r4)
+ 406 br.s         422
+ 408 ldloc.s      10
+ 410 callvirt     StationExtension::StopConnectionEffect()
+ 415 ldarg.0      
+ 416 ldc.i4.7     
+ 417 stfld        Player::m_placementStatus
+ 422 ldloc.s      10
+ 424 ldloc.1      
+ 425 ldfld        Piece::m_spaceRequirement
+ 430 callvirt     StationExtension::OtherExtensionInRange(r4)
+ 435 brfalse.s    444
+ 437 ldarg.0      
+ 438 ldc.i4.5     
+ 439 stfld        Player::m_placementStatus
+ 444 ldloc.1      
+ 445 ldfld        Piece::m_blockRadius
+ 450 ldc.r4       0
+ 455 ble.un       635
+ 460 ldloc.1      
+ 461 ldfld        Piece::m_blockingPieces
+ 466 callvirt     System.Collections.Generic.List`1::get_Count
+ 471 ldc.i4.0     
+ 472 ble          635
+ 477 ldloc.3      
+ 478 ldloc.1      
+ 479 ldfld        Piece::m_blockRadius
+ 484 ldc.i4.1     
+ 485 newarr       0x010001e8
+ 490 dup          
+ 491 ldc.i4.0     
+ 492 ldstr        "piece"
+ 497 stelem.ref   
+ 498 call         UnityEngine.LayerMask::GetMask
+ 503 call         UnityEngine.Physics::OverlapSphere
+ 508 stloc.s      16
+ 510 ldc.i4.0     
+ 511 stloc.s      17
+ 513 br.s         627
+ 515 ldloc.s      16
+ 517 ldloc.s      17
+ 519 ldelem.ref   
+ 520 callvirt     UnityEngine.Component::get_gameObject
+ 525 callvirt     UnityEngine.GameObject::GetComponentInParent<T>
+ 530 stloc.s      18
+ 532 ldloc.s      18
+ 534 brfalse.s    621
+ 536 ldloc.s      18
+ 538 ldloc.1      
+ 539 call         UnityEngine.Object::op_Inequality
+ 544 brfalse.s    621
+ 546 ldloc.1      
+ 547 ldfld        Piece::m_blockingPieces
+ 552 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 557 stloc.s      19
+ 559 br.s         596
+ 561 ldloca.s     19
+ 563 call         Enumerator::get_Current
+ 568 ldfld        Piece::m_name
+ 573 ldloc.s      18
+ 575 ldfld        Piece::m_name
+ 580 call         System.String::op_Equality
+ 585 brfalse.s    596
+ 587 ldarg.0      
+ 588 ldc.i4.5     
+ 589 stfld        Player::m_placementStatus
+ 594 leave.s      621
+ 596 ldloca.s     19
+ 598 call         Enumerator::MoveNext
+ 603 brtrue.s     561
+ 605 leave.s      621
+ 607 ldloca.s     19
+ 609 constrained. 0x1b00008c
+ 615 callvirt     System.IDisposable::Dispose
+ 620 endfinally   
+ 621 ldloc.s      17
+ 623 ldc.i4.1     
+ 624 add          
+ 625 stloc.s      17
+ 627 ldloc.s      17
+ 629 ldloc.s      16
+ 631 ldlen        
+ 632 conv.i4      
+ 633 blt.s        515
+ 635 ldloc.1      
+ 636 ldfld        Piece::m_mustConnectTo
+ 641 ldnull       
+ 642 call         UnityEngine.Object::op_Inequality
+ 647 brfalse      832
+ 652 ldnull       
+ 653 stloc.s      20
+ 655 ldloc.1      
+ 656 callvirt     UnityEngine.Component::get_transform
+ 661 callvirt     UnityEngine.Transform::get_position
+ 666 ldloc.1      
+ 667 ldfld        Piece::m_connectRadius
+ 672 call         UnityEngine.Physics::OverlapSphere
+ 677 stloc.s      16
+ 679 ldc.i4.0     
+ 680 stloc.s      17
+ 682 br.s         805
+ 684 ldloc.s      16
+ 686 ldloc.s      17
+ 688 ldelem.ref   
+ 689 callvirt     UnityEngine.Component::GetComponentInParent<T>
+ 694 stloc.s      21
+ 696 ldloc.s      21
+ 698 brfalse.s    799
+ 700 ldloc.s      21
+ 702 ldarg.0      
+ 703 ldfld        Character::m_nview
+ 708 call         UnityEngine.Object::op_Inequality
+ 713 brfalse.s    799
+ 715 ldloc.s      21
+ 717 callvirt     UnityEngine.Object::get_name
+ 722 ldloc.1      
+ 723 ldfld        Piece::m_mustConnectTo
+ 728 callvirt     UnityEngine.Object::get_name
+ 733 callvirt     System.String::Contains
+ 738 brfalse.s    799
+ 740 ldloc.1      
+ 741 ldfld        Piece::m_mustBeAboveConnected
+ 746 brfalse.s    793
+ 748 ldloc.1      
+ 749 callvirt     UnityEngine.Component::get_transform
+ 754 callvirt     UnityEngine.Transform::get_position
+ 759 call         UnityEngine.Vector3::get_down
+ 764 ldloca.s     22
+ 766 call         UnityEngine.Physics::Raycast
+ 771 pop          
+ 772 ldloca.s     22
+ 774 call         UnityEngine.RaycastHit::get_transform
+ 779 callvirt     UnityEngine.Component::GetComponentInParent<T>
+ 784 ldloc.s      21
+ 786 call         UnityEngine.Object::op_Inequality
+ 791 brtrue.s     799
+ 793 ldloc.s      21
+ 795 stloc.s      20
+ 797 br.s         816
+ 799 ldloc.s      17
+ 801 ldc.i4.1     
+ 802 add          
+ 803 stloc.s      17
+ 805 ldloc.s      17
+ 807 ldloc.s      16
+ 809 ldlen        
+ 810 conv.i4      
+ 811 blt          684
+ 816 ldloc.s      20
+ 818 call         UnityEngine.Object::op_Implicit
+ 823 brtrue.s     832
+ 825 ldarg.0      
+ 826 ldc.i4.1     
+ 827 stfld        Player::m_placementStatus
+ 832 ldloc.s      9
+ 834 call         UnityEngine.Object::op_Implicit
+ 839 brfalse.s    857
+ 841 ldloc.s      9
+ 843 ldfld        WearNTear::m_supports
+ 848 brtrue.s     857
+ 850 ldarg.0      
+ 851 ldc.i4.1     
+ 852 stfld        Player::m_placementStatus
+ 857 ldloc.1      
+ 858 ldfld        Piece::m_waterPiece
+ 863 brfalse.s    885
+ 865 ldloc.s      7
+ 867 ldnull       
+ 868 call         UnityEngine.Object::op_Equality
+ 873 brfalse.s    885
+ 875 ldloc.0      
+ 876 brtrue.s     885
+ 878 ldarg.0      
+ 879 ldc.i4.1     
+ 880 stfld        Player::m_placementStatus
+ 885 ldloc.1      
+ 886 ldfld        Piece::m_noInWater
+ 891 brfalse.s    910
+ 893 ldloc.s      7
+ 895 ldnull       
+ 896 call         UnityEngine.Object::op_Inequality
+ 901 brfalse.s    910
+ 903 ldarg.0      
+ 904 ldc.i4.1     
+ 905 stfld        Player::m_placementStatus
+ 910 ldloc.1      
+ 911 ldfld        Piece::m_groundPiece
+ 916 brfalse.s    948
+ 918 ldloc.s      6
+ 920 ldnull       
+ 921 call         UnityEngine.Object::op_Equality
+ 926 brfalse.s    948
+ 928 ldarg.0      
+ 929 ldfld        Player::m_placementGhost
+ 934 ldc.i4.0     
+ 935 callvirt     UnityEngine.GameObject::SetActive
+ 940 ldarg.0      
+ 941 ldc.i4.1     
+ 942 stfld        Player::m_placementStatus
+ 947 ret          
+ 948 ldloc.1      
+ 949 ldfld        Piece::m_groundOnly
+ 954 brfalse.s    973
+ 956 ldloc.s      6
+ 958 ldnull       
+ 959 call         UnityEngine.Object::op_Equality
+ 964 brfalse.s    973
+ 966 ldarg.0      
+ 967 ldc.i4.1     
+ 968 stfld        Player::m_placementStatus
+ 973 ldloc.1      
+ 974 ldfld        Piece::m_cultivatedGroundOnly
+ 979 brfalse.s    1009
+ 981 ldloc.s      6
+ 983 ldnull       
+ 984 call         UnityEngine.Object::op_Equality
+ 989 brtrue.s     1001
+ 991 ldloc.s      6
+ 993 ldloc.3      
+ 994 callvirt     Heightmap::IsCultivated(valuetype:81)
+ 999 brtrue.s     1009
+1001 ldarg.0      
+1002 ldc.i4.s     9
+1004 stfld        Player::m_placementStatus
+1009 ldloc.1      
+1010 ldfld        Piece::m_vegetationGroundOnly
+1015 brfalse.s    1093
+1017 ldloc.s      6
+1019 ldnull       
+1020 call         UnityEngine.Object::op_Equality
+1025 stloc.s      23
+1027 ldloc.s      23
+1029 brtrue.s     1081
+1031 ldloc.s      6
+1033 ldloc.3      
+1034 ldc.r4       0.019999999552965164
+1039 ldc.i4.0     
+1040 callvirt     Heightmap::GetBiome(valuetype:81,r4,bool)
+1045 ldloc.s      6
+1047 ldloc.3      
+1048 callvirt     Heightmap::GetVegetationMask(valuetype:81)
+1053 stloc.s      24
+1055 ldc.i4.s     32
+1057 beq.s        1070
+1059 ldloc.s      24
+1061 ldc.r4       0.25
+1066 clt          
+1068 br.s         1079
+1070 ldloc.s      24
+1072 ldc.r4       0.10000000149011612
+1077 cgt          
+1079 stloc.s      23
+1081 ldloc.s      23
+1083 brfalse.s    1093
+1085 ldarg.0      
+1086 ldc.i4.s     10
+1088 stfld        Player::m_placementStatus
+1093 ldloc.1      
+1094 ldfld        Piece::m_notOnWood
+1099 brfalse.s    1145
+1101 ldloc.s      5
+1103 call         UnityEngine.Object::op_Implicit
+1108 brfalse.s    1145
+1110 ldloc.s      9
+1112 call         UnityEngine.Object::op_Implicit
+1117 brfalse.s    1145
+1119 ldloc.s      9
+1121 ldfld        WearNTear::m_materialType
+1126 brfalse.s    1138
+1128 ldloc.s      9
+1130 ldfld        WearNTear::m_materialType
+1135 ldc.i4.3     
+1136 bne.un.s     1145
+1138 ldarg.0      
+1139 ldc.i4.1     
+1140 stfld        Player::m_placementStatus
+1145 ldloc.1      
+1146 ldfld        Piece::m_notOnTiltingSurface
+1151 brfalse.s    1174
+1153 ldloc.s      4
+1155 ldfld        UnityEngine.Vector3::y
+1160 ldc.r4       0.800000011920929
+1165 bge.un.s     1174
+1167 ldarg.0      
+1168 ldc.i4.1     
+1169 stfld        Player::m_placementStatus
+1174 ldloc.1      
+1175 ldfld        Piece::m_inCeilingOnly
+1180 brfalse.s    1203
+1182 ldloc.s      4
+1184 ldfld        UnityEngine.Vector3::y
+1189 ldc.r4       -0.5
+1194 ble.un.s     1203
+1196 ldarg.0      
+1197 ldc.i4.1     
+1198 stfld        Player::m_placementStatus
+1203 ldloc.1      
+1204 ldfld        Piece::m_notOnFloor
+1209 brfalse.s    1232
+1211 ldloc.s      4
+1213 ldfld        UnityEngine.Vector3::y
+1218 ldc.r4       0.10000000149011612
+1223 ble.un.s     1232
+1225 ldarg.0      
+1226 ldc.i4.1     
+1227 stfld        Player::m_placementStatus
+1232 ldloc.1      
+1233 ldfld        Piece::m_onlyInTeleportArea
+1238 brfalse.s    1267
+1240 ldloc.3      
+1241 ldc.i4.s     16
+1243 ldc.r4       0
+1248 call         EffectArea::IsPointInsideArea(valuetype:81,valuetype:4560,r4)
+1253 call         UnityEngine.Object::op_Implicit
+1258 brtrue.s     1267
+1260 ldarg.0      
+1261 ldc.i4.6     
+1262 stfld        Player::m_placementStatus
+1267 ldloc.1      
+1268 ldfld        Piece::m_allowedInDungeons
+1273 brtrue.s     1317
+1275 ldarg.0      
+1276 call         Character::InInterior()
+1281 brfalse.s    1317
+1283 call         EnvMan::get_instance()
+1288 callvirt     EnvMan::CheckInteriorBuildingOverride()
+1293 brtrue.s     1317
+1295 call         ZoneSystem::get_instance()
+1300 ldc.i4.s     34
+1302 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+1307 brtrue.s     1317
+1309 ldarg.0      
+1310 ldc.i4.s     11
+1312 stfld        Player::m_placementStatus
+1317 ldloc.1      
+1318 ldfld        Piece::m_allowedInDeepSnow
+1323 brtrue.s     1368
+1325 ldarg.0      
+1326 ldfld        Player::m_currentBiome
+1331 ldc.i4.s     64
+1333 bne.un.s     1368
+1335 ldloc.s      6
+1337 call         UnityEngine.Object::op_Implicit
+1342 brfalse.s    1368
+1344 ldloc.s      6
+1346 ldloc.3      
+1347 callvirt     Heightmap::GetCultivationMask(valuetype:81)
+1352 ldarg.0      
+1353 ldfld        Player::m_deepSnowBuildHeight
+1358 ble.un.s     1368
+1360 ldarg.0      
+1361 ldc.i4.s     13
+1363 stfld        Player::m_placementStatus
+1368 ldloc.1      
+1369 ldfld        Piece::m_requireDeepSnow
+1374 brfalse.s    1419
+1376 ldarg.0      
+1377 ldfld        Player::m_currentBiome
+1382 ldc.i4.s     64
+1384 bne.un.s     1411
+1386 ldloc.s      6
+1388 ldnull       
+1389 call         UnityEngine.Object::op_Equality
+1394 brtrue.s     1411
+1396 ldloc.s      6
+1398 ldloc.3      
+1399 callvirt     Heightmap::GetCultivationMask(valuetype:81)
+1404 ldc.r4       0
+1409 bgt.un.s     1419
+1411 ldarg.0      
+1412 ldc.i4.s     14
+1414 stfld        Player::m_placementStatus
+1419 ldloc.s      6
+1421 call         UnityEngine.Object::op_Implicit
+1426 brfalse.s    1480
+1428 call         UnityEngine.Vector3::get_up
+1433 stloc.s      4
+1435 ldsfld       Terminal::m_showTests
+1440 brfalse.s    1480
+1442 ldsfld       Terminal::m_testList
+1447 ldstr        "Build paintmask"
+1452 ldloc.s      6
+1454 ldloc.3      
+1455 callvirt     Heightmap::GetPaintMask(valuetype:81)
+1460 stloc.s      25
+1462 ldloca.s     25
+1464 constrained. 0x01000051
+1470 callvirt     System.Object::ToString
+1475 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+1480 ldarg.0      
+1481 ldfld        Player::m_placementGhost
+1486 ldc.i4.1     
+1487 callvirt     UnityEngine.GameObject::SetActive
+1492 ldarg.0      
+1493 ldfld        Player::m_manualSnapPoint
+1498 stloc.s      11
+1500 ldstr        "JoyAltKeys"
+1505 call         ZInput::GetButton
+1510 brtrue       1670
+1515 call         Hud::IsPieceSelectionVisible()
+1520 brtrue       1670
+1525 call         Minimap::get_instance()
+1530 ldfld        Minimap::m_mode
+1535 ldc.i4.2     
+1536 beq          1670
+1541 call         Console::IsVisible()
+1546 brtrue.s     1670
+1548 call         Chat::get_instance()
+1553 callvirt     Chat::HasFocus()
+1558 brtrue.s     1670
+1560 ldstr        "TabLeft"
+1565 call         ZInput::GetButtonDown
+1570 brtrue.s     1601
+1572 ldstr        "JoyPrevSnap"
+1577 call         ZInput::GetButtonUp
+1582 brfalse.s    1615
+1584 ldstr        "JoyPrevSnap"
+1589 call         ZInput::GetButtonLastPressedTimer
+1594 ldc.r4       0.33000001311302185
+1599 bge.un.s     1615
+1601 ldarg.0      
+1602 ldarg.0      
+1603 ldfld        Player::m_manualSnapPoint
+1608 ldc.i4.1     
+1609 sub          
+1610 stfld        Player::m_manualSnapPoint
+1615 ldstr        "TabRight"
+1620 call         ZInput::GetButtonDown
+1625 brtrue.s     1656
+1627 ldstr        "JoyNextSnap"
+1632 call         ZInput::GetButtonUp
+1637 brfalse.s    1670
+1639 ldstr        "JoyNextSnap"
+1644 call         ZInput::GetButtonLastPressedTimer
+1649 ldc.r4       0.33000001311302185
+1654 bge.un.s     1670
+1656 ldarg.0      
+1657 ldarg.0      
+1658 ldfld        Player::m_manualSnapPoint
+1663 ldc.i4.1     
+1664 add          
+1665 stfld        Player::m_manualSnapPoint
+1670 ldarg.0      
+1671 ldfld        Player::m_tempSnapPoints1
+1676 callvirt     System.Collections.Generic.List`1::Clear
+1681 ldarg.0      
+1682 ldfld        Player::m_placementGhost
+1687 callvirt     UnityEngine.GameObject::GetComponent<T>
+1692 ldarg.0      
+1693 ldfld        Player::m_tempSnapPoints1
+1698 callvirt     Piece::GetSnapPoints(class:165<class:73>)
+1703 ldarg.0      
+1704 ldfld        Player::m_manualSnapPoint
+1709 ldc.i4.m1    
+1710 bge.s        1731
+1712 ldarg.0      
+1713 ldarg.0      
+1714 ldfld        Player::m_tempSnapPoints1
+1719 callvirt     System.Collections.Generic.List`1::get_Count
+1724 ldc.i4.1     
+1725 sub          
+1726 stfld        Player::m_manualSnapPoint
+1731 ldarg.0      
+1732 ldfld        Player::m_manualSnapPoint
+1737 ldarg.0      
+1738 ldfld        Player::m_tempSnapPoints1
+1743 callvirt     System.Collections.Generic.List`1::get_Count
+1748 blt.s        1757
+1750 ldarg.0      
+1751 ldc.i4.m1    
+1752 stfld        Player::m_manualSnapPoint
+1757 ldloc.1      
+1758 ldfld        Piece::m_groundPiece
+1763 brtrue.s     1773
+1765 ldloc.1      
+1766 ldfld        Piece::m_clipGround
+1771 brfalse.s    1782
+1773 ldloc.s      6
+1775 call         UnityEngine.Object::op_Implicit
+1780 brtrue.s     1793
+1782 ldloc.1      
+1783 ldfld        Piece::m_clipEverything
+1788 brfalse      2046
+1793 ldarg.0      
+1794 ldfld        Player::m_buildPieces
+1799 callvirt     PieceTable::GetSelectedPrefab()
+1804 dup          
+1805 callvirt     UnityEngine.GameObject::GetComponent<T>
+1810 stloc.s      26
+1812 callvirt     UnityEngine.GameObject::GetComponent<T>
+1817 stloc.s      27
+1819 ldloc.s      26
+1821 call         UnityEngine.Object::op_Implicit
+1826 brtrue.s     1837
+1828 ldloc.s      27
+1830 call         UnityEngine.Object::op_Implicit
+1835 brfalse.s    1951
+1837 ldloc.1      
+1838 ldfld        Piece::m_allowAltGroundPlacement
+1843 brfalse.s    1951
+1845 call         ZInput::IsNonClassicFunctionality
+1850 brfalse.s    1859
+1852 call         ZInput::IsGamepadActive
+1857 brtrue.s     1897
+1859 ldloc.1      
+1860 ldfld        Piece::m_groundPiece
+1865 brfalse.s    1894
+1867 ldstr        "AltPlace"
+1872 call         ZInput::GetButton
+1877 brtrue.s     1894
+1879 ldstr        "JoyAltPlace"
+1884 call         ZInput::GetButton
+1889 ldc.i4.0     
+1890 ceq          
+1892 br.s         1917
+1894 ldc.i4.0     
+1895 br.s         1917
+1897 ldloc.1      
+1898 ldfld        Piece::m_groundPiece
+1903 brfalse.s    1916
+1905 ldarg.0      
+1906 ldfld        Player::m_altPlace
+1911 ldc.i4.0     
+1912 ceq          
+1914 br.s         1917
+1916 ldc.i4.0     
+1917 brfalse.s    1951
+1919 call         ZoneSystem::get_instance()
+1924 ldarg.0      
+1925 call         UnityEngine.Component::get_transform
+1930 callvirt     UnityEngine.Transform::get_position
+1935 callvirt     ZoneSystem::GetGroundHeight(valuetype:81)
+1940 stloc.s      28
+1942 ldloca.s     3
+1944 ldloc.s      28
+1946 stfld        UnityEngine.Vector3::y
+1951 ldarg.0      
+1952 ldfld        Player::m_placementGhost
+1957 callvirt     UnityEngine.GameObject::get_transform
+1962 ldloc.3      
+1963 ldarg.0      
+1964 ldfld        Player::m_manualSnapPoint
+1969 ldc.i4.0     
+1970 blt.s        2008
+1972 ldloc.s      8
+1974 ldarg.0      
+1975 ldfld        Player::m_tempSnapPoints1
+1980 ldarg.0      
+1981 ldfld        Player::m_manualSnapPoint
+1986 callvirt     System.Collections.Generic.List`1::get_Item
+1991 callvirt     UnityEngine.Transform::get_localPosition
+1996 call         UnityEngine.Vector3::op_UnaryNegation
+2001 call         UnityEngine.Quaternion::op_Multiply
+2006 br.s         2013
+2008 call         UnityEngine.Vector3::get_zero
+2013 call         UnityEngine.Vector3::op_Addition
+2018 callvirt     UnityEngine.Transform::set_position
+2023 ldarg.0      
+2024 ldfld        Player::m_placementGhost
+2029 callvirt     UnityEngine.GameObject::get_transform
+2034 ldloc.s      8
+2036 callvirt     UnityEngine.Transform::set_rotation
+2041 br           2375
+2046 ldarg.0      
+2047 ldfld        Player::m_placementGhost
+2052 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+2057 stloc.s      29
+2059 ldloc.s      29
+2061 ldlen        
+2062 brfalse      2375
+2067 ldarg.0      
+2068 ldfld        Player::m_placementGhost
+2073 callvirt     UnityEngine.GameObject::get_transform
+2078 ldloc.3      
+2079 ldloc.s      4
+2081 ldc.r4       50
+2086 call         UnityEngine.Vector3::op_Multiply
+2091 call         UnityEngine.Vector3::op_Addition
+2096 callvirt     UnityEngine.Transform::set_position
+2101 ldarg.0      
+2102 ldfld        Player::m_placementGhost
+2107 callvirt     UnityEngine.GameObject::get_transform
+2112 ldloc.s      8
+2114 callvirt     UnityEngine.Transform::set_rotation
+2119 call         UnityEngine.Vector3::get_zero
+2124 stloc.s      30
+2126 ldc.r4       999999
+2131 stloc.s      31
+2133 ldloc.s      29
+2135 stloc.s      16
+2137 ldc.i4.0     
+2138 stloc.s      17
+2140 br.s         2235
+2142 ldloc.s      16
+2144 ldloc.s      17
+2146 ldelem.ref   
+2147 stloc.s      33
+2149 ldloc.s      33
+2151 callvirt     UnityEngine.Collider::get_isTrigger
+2156 brtrue.s     2229
+2158 ldloc.s      33
+2160 callvirt     UnityEngine.Collider::get_enabled
+2165 brfalse.s    2229
+2167 ldloc.s      33
+2169 isinst       0x01000067
+2174 stloc.s      34
+2176 ldloc.s      34
+2178 ldnull       
+2179 call         UnityEngine.Object::op_Inequality
+2184 brfalse.s    2195
+2186 ldloc.s      34
+2188 callvirt     UnityEngine.MeshCollider::get_convex
+2193 brfalse.s    2229
+2195 ldloc.s      33
+2197 ldloc.3      
+2198 callvirt     UnityEngine.Collider::ClosestPoint
+2203 stloc.s      35
+2205 ldloc.s      35
+2207 ldloc.3      
+2208 call         UnityEngine.Vector3::Distance
+2213 stloc.s      36
+2215 ldloc.s      36
+2217 ldloc.s      31
+2219 bge.un.s     2229
+2221 ldloc.s      35
+2223 stloc.s      30
+2225 ldloc.s      36
+2227 stloc.s      31
+2229 ldloc.s      17
+2231 ldc.i4.1     
+2232 add          
+2233 stloc.s      17
+2235 ldloc.s      17
+2237 ldloc.s      16
+2239 ldlen        
+2240 conv.i4      
+2241 blt.s        2142
+2243 ldarg.0      
+2244 ldfld        Player::m_placementGhost
+2249 callvirt     UnityEngine.GameObject::get_transform
+2254 callvirt     UnityEngine.Transform::get_position
+2259 ldloc.s      30
+2261 call         UnityEngine.Vector3::op_Subtraction
+2266 stloc.s      32
+2268 ldloc.1      
+2269 ldfld        Piece::m_waterPiece
+2274 brfalse.s    2288
+2276 ldloca.s     32
+2278 ldc.r4       3
+2283 stfld        UnityEngine.Vector3::y
+2288 ldarg.0      
+2289 ldfld        Player::m_placementGhost
+2294 callvirt     UnityEngine.GameObject::get_transform
+2299 ldloc.3      
+2300 ldarg.0      
+2301 ldfld        Player::m_manualSnapPoint
+2306 ldc.i4.0     
+2307 blt.s        2345
+2309 ldloc.s      8
+2311 ldarg.0      
+2312 ldfld        Player::m_tempSnapPoints1
+2317 ldarg.0      
+2318 ldfld        Player::m_manualSnapPoint
+2323 callvirt     System.Collections.Generic.List`1::get_Item
+2328 callvirt     UnityEngine.Transform::get_localPosition
+2333 call         UnityEngine.Vector3::op_UnaryNegation
+2338 call         UnityEngine.Quaternion::op_Multiply
+2343 br.s         2347
+2345 ldloc.s      32
+2347 call         UnityEngine.Vector3::op_Addition
+2352 callvirt     UnityEngine.Transform::set_position
+2357 ldarg.0      
+2358 ldfld        Player::m_placementGhost
+2363 callvirt     UnityEngine.GameObject::get_transform
+2368 ldloc.s      8
+2370 callvirt     UnityEngine.Transform::set_rotation
+2375 ldloc.s      11
+2377 ldarg.0      
+2378 ldfld        Player::m_manualSnapPoint
+2383 beq.s        2443
+2385 ldarg.0      
+2386 ldc.i4.2     
+2387 ldstr        "$msg_snapping "
+2392 ldarg.0      
+2393 ldfld        Player::m_manualSnapPoint
+2398 ldc.i4.m1    
+2399 beq.s        2425
+2401 ldarg.0      
+2402 ldfld        Player::m_tempSnapPoints1
+2407 ldarg.0      
+2408 ldfld        Player::m_manualSnapPoint
+2413 callvirt     System.Collections.Generic.List`1::get_Item
+2418 callvirt     UnityEngine.Object::get_name
+2423 br.s         2430
+2425 ldstr        "$msg_snapping_auto"
+2430 call         System.String::Concat
+2435 ldc.i4.0     
+2436 ldnull       
+2437 ldc.i4.0     
+2438 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+2443 ldloc.0      
+2444 brtrue       2616
+2449 ldarg.0      
+2450 ldfld        Player::m_tempPieces
+2455 callvirt     System.Collections.Generic.List`1::Clear
+2460 ldarg.0      
+2461 ldarg.0      
+2462 ldfld        Player::m_placementGhost
+2467 callvirt     UnityEngine.GameObject::get_transform
+2472 ldc.r4       0.5
+2477 ldloca.s     37
+2479 ldloca.s     38
+2481 ldarg.0      
+2482 ldfld        Player::m_tempPieces
+2487 call         Player::FindClosestSnapPoints(class:73,r4,class:73&,class:73&,class:165<class:2264>)
+2492 brfalse.s    2616
+2494 ldloc.s      38
+2496 callvirt     UnityEngine.Transform::get_parent
+2501 callvirt     UnityEngine.Transform::get_position
+2506 pop          
+2507 ldloc.s      38
+2509 callvirt     UnityEngine.Transform::get_position
+2514 ldloc.s      37
+2516 callvirt     UnityEngine.Transform::get_position
+2521 ldarg.0      
+2522 ldfld        Player::m_placementGhost
+2527 callvirt     UnityEngine.GameObject::get_transform
+2532 callvirt     UnityEngine.Transform::get_position
+2537 call         UnityEngine.Vector3::op_Subtraction
+2542 call         UnityEngine.Vector3::op_Subtraction
+2547 stloc.s      39
+2549 ldarg.0      
+2550 ldloc.s      39
+2552 ldarg.0      
+2553 ldfld        Player::m_placementGhost
+2558 callvirt     UnityEngine.GameObject::get_transform
+2563 callvirt     UnityEngine.Transform::get_rotation
+2568 ldarg.0      
+2569 ldfld        Player::m_placementGhost
+2574 callvirt     UnityEngine.Object::get_name
+2579 ldarg.0      
+2580 ldfld        Player::m_tempPieces
+2585 ldloc.1      
+2586 ldfld        Piece::m_allowRotatedOverlap
+2591 call         Player::IsOverlappingOtherPiece(valuetype:81,valuetype:137,string,class:165<class:2264>,bool)
+2596 brtrue.s     2616
+2598 ldarg.0      
+2599 ldfld        Player::m_placementGhost
+2604 callvirt     UnityEngine.GameObject::get_transform
+2609 ldloc.s      39
+2611 callvirt     UnityEngine.Transform::set_position
+2616 ldarg.0      
+2617 ldfld        Player::m_placementGhost
+2622 callvirt     UnityEngine.GameObject::get_transform
+2627 callvirt     UnityEngine.Transform::get_position
+2632 call         Location::IsInsideNoBuildLocation(valuetype:81)
+2637 brfalse.s    2646
+2639 ldarg.0      
+2640 ldc.i4.3     
+2641 stfld        Player::m_placementStatus
+2646 ldloc.1      
+2647 callvirt     UnityEngine.Component::GetComponent<T>
+2652 stloc.s      12
+2654 ldloc.s      12
+2656 call         UnityEngine.Object::op_Implicit
+2661 brtrue.s     2670
+2663 ldc.r4       0
+2668 br.s         2677
+2670 ldloc.s      12
+2672 ldfld        PrivateArea::m_radius
+2677 stloc.s      13
+2679 ldloc.s      12
+2681 ldnull       
+2682 call         UnityEngine.Object::op_Inequality
+2687 stloc.s      14
+2689 ldarg.0      
+2690 ldfld        Player::m_placementGhost
+2695 callvirt     UnityEngine.GameObject::get_transform
+2700 callvirt     UnityEngine.Transform::get_position
+2705 ldloc.s      13
+2707 ldarg.1      
+2708 ldloc.s      14
+2710 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+2715 brtrue.s     2724
+2717 ldarg.0      
+2718 ldc.i4.4     
+2719 stfld        Player::m_placementStatus
+2724 ldarg.0      
+2725 call         Player::CheckPlacementGhostVSPlayers()
+2730 brfalse.s    2739
+2732 ldarg.0      
+2733 ldc.i4.2     
+2734 stfld        Player::m_placementStatus
+2739 ldloc.1      
+2740 ldfld        Piece::m_onlyInBiome
+2745 brfalse.s    2784
+2747 ldarg.0      
+2748 ldfld        Player::m_placementGhost
+2753 callvirt     UnityEngine.GameObject::get_transform
+2758 callvirt     UnityEngine.Transform::get_position
+2763 call         Heightmap::FindBiome(valuetype:81)
+2768 ldloc.1      
+2769 ldfld        Piece::m_onlyInBiome
+2774 and          
+2775 brtrue.s     2784
+2777 ldarg.0      
+2778 ldc.i4.8     
+2779 stfld        Player::m_placementStatus
+2784 ldloc.1      
+2785 ldfld        Piece::m_noClipping
+2790 brfalse.s    2865
+2792 ldarg.0      
+2793 ldarg.0      
+2794 ldfld        Player::m_placementGhost
+2799 ldc.r4       0.20000000298023224
+2804 call         Player::TestGhostClipping(class:133,r4)
+2809 brfalse.s    2865
+2811 ldarg.0      
+2812 ldc.i4.1     
+2813 stfld        Player::m_placementStatus
+2818 br.s         2865
+2820 ldarg.0      
+2821 ldfld        Player::m_placementMarkerInstance
+2826 call         UnityEngine.Object::op_Implicit
+2831 brfalse.s    2845
+2833 ldarg.0      
+2834 ldfld        Player::m_placementMarkerInstance
+2839 ldc.i4.0     
+2840 callvirt     UnityEngine.GameObject::SetActive
+2845 ldarg.0      
+2846 ldfld        Player::m_placementGhost
+2851 ldc.i4.0     
+2852 callvirt     UnityEngine.GameObject::SetActive
+2857 ldarg.0      
+2858 ldc.i4.s     12
+2860 stfld        Player::m_placementStatus
+2865 ldarg.0      
+2866 ldarg.0      
+2867 ldfld        Player::m_placementStatus
+2872 ldc.i4.0     
+2873 ceq          
+2875 call         Player::SetPlacementGhostValid(bool)
+2880 ret          

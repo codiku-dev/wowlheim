@@ -1,0 +1,24 @@
+== Player::UpdateCover(r4) -> void  il_size=67 sha=e7b3715bb108
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        Player::m_updateCoverTimer
+   7 ldarg.1      
+   8 add          
+   9 stfld        Player::m_updateCoverTimer
+  14 ldarg.0      
+  15 ldfld        Player::m_updateCoverTimer
+  20 ldc.r4       1
+  25 ble.un.s     66
+  27 ldarg.0      
+  28 ldc.r4       0
+  33 stfld        Player::m_updateCoverTimer
+  38 ldarg.0      
+  39 call         Character::GetCenterPoint()
+  44 ldarg.0      
+  45 ldflda       Player::m_coverPercentage
+  50 ldarg.0      
+  51 ldflda       Player::m_underRoof
+  56 ldc.r4       0.5
+  61 call         Cover::GetCoverForPoint
+  66 ret          

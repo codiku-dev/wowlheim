@@ -1,0 +1,64 @@
+== CraftingStation::CheckUsable(class:144, bool) -> bool  il_size=138 sha=72ccb08a27a1
+   locals_sig=0x11000054
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_craftRequireRoof
+   6 brfalse.s    92
+   8 ldarg.1      
+   9 callvirt     Player::NoCostCheat()
+  14 brtrue.s     92
+  16 ldarg.0      
+  17 ldfld        CraftingStation::m_roofCheckPoint
+  22 callvirt     UnityEngine.Transform::get_position
+  27 ldloca.s     0
+  29 ldloca.s     1
+  31 ldc.r4       0.5
+  36 call         Cover::GetCoverForPoint
+  41 ldloc.1      
+  42 brtrue.s     64
+  44 ldarg.2      
+  45 brfalse.s    62
+  47 ldarg.1      
+  48 ldc.i4.2     
+  49 ldstr        "$msg_stationneedroof"
+  54 ldc.i4.0     
+  55 ldnull       
+  56 ldc.i4.0     
+  57 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  62 ldc.i4.0     
+  63 ret          
+  64 ldloc.0      
+  65 ldc.r4       0.699999988079071
+  70 bge.un.s     92
+  72 ldarg.2      
+  73 brfalse.s    90
+  75 ldarg.1      
+  76 ldc.i4.2     
+  77 ldstr        "$msg_stationtooexposed"
+  82 ldc.i4.0     
+  83 ldnull       
+  84 ldc.i4.0     
+  85 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  90 ldc.i4.0     
+  91 ret          
+  92 ldarg.0      
+  93 ldfld        CraftingStation::m_craftRequireFire
+  98 brfalse.s    136
+ 100 ldarg.1      
+ 101 callvirt     Player::NoCostCheat()
+ 106 brtrue.s     136
+ 108 ldarg.0      
+ 109 ldfld        CraftingStation::m_haveFire
+ 114 brtrue.s     136
+ 116 ldarg.2      
+ 117 brfalse.s    134
+ 119 ldarg.1      
+ 120 ldc.i4.2     
+ 121 ldstr        "$msg_needfire"
+ 126 ldc.i4.0     
+ 127 ldnull       
+ 128 ldc.i4.0     
+ 129 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 134 ldc.i4.0     
+ 135 ret          
+ 136 ldc.i4.1     
+ 137 ret          

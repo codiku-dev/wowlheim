@@ -1,0 +1,100 @@
+== Player::CheckPlacementGhostVSPlayers() -> bool  il_size=270 sha=925d74fbac2c
+   locals_sig=0x110000ba
+   0 ldarg.0      
+   1 ldfld        Player::m_placementGhost
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Equality
+  12 brfalse.s    16
+  14 ldc.i4.0     
+  15 ret          
+  16 newobj       System.Collections.Generic.List`1::.ctor
+  21 stloc.0      
+  22 ldarg.0      
+  23 call         UnityEngine.Component::get_transform
+  28 callvirt     UnityEngine.Transform::get_position
+  33 ldc.r4       30
+  38 ldloc.0      
+  39 call         Character::GetCharactersInRange(valuetype:81,r4,class:165<class:44>)
+  44 ldarg.0      
+  45 ldfld        Player::m_placementGhost
+  50 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+  55 stloc.1      
+  56 ldc.i4.0     
+  57 stloc.2      
+  58 br           256
+  63 ldloc.1      
+  64 ldloc.2      
+  65 ldelem.ref   
+  66 stloc.3      
+  67 ldloc.3      
+  68 callvirt     UnityEngine.Collider::get_isTrigger
+  73 brtrue       252
+  78 ldloc.3      
+  79 callvirt     UnityEngine.Collider::get_enabled
+  84 brfalse      252
+  89 ldloc.3      
+  90 callvirt     UnityEngine.Component::get_gameObject
+  95 ldarg.0      
+  96 ldfld        Player::m_placementGhost
+ 101 call         UnityEngine.Object::op_Equality
+ 106 brtrue       252
+ 111 ldloc.3      
+ 112 isinst       0x01000067
+ 117 stloc.s      4
+ 119 ldloc.s      4
+ 121 ldnull       
+ 122 call         UnityEngine.Object::op_Inequality
+ 127 brfalse.s    138
+ 129 ldloc.s      4
+ 131 callvirt     UnityEngine.MeshCollider::get_convex
+ 136 brfalse.s    252
+ 138 ldloc.0      
+ 139 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 144 stloc.s      5
+ 146 br.s         227
+ 148 ldloca.s     5
+ 150 call         Enumerator::get_Current
+ 155 callvirt     Character::GetCollider()
+ 160 stloc.s      6
+ 162 ldloc.3      
+ 163 ldloc.3      
+ 164 callvirt     UnityEngine.Component::get_transform
+ 169 callvirt     UnityEngine.Transform::get_position
+ 174 ldloc.3      
+ 175 callvirt     UnityEngine.Component::get_transform
+ 180 callvirt     UnityEngine.Transform::get_rotation
+ 185 ldloc.s      6
+ 187 ldloc.s      6
+ 189 callvirt     UnityEngine.Component::get_transform
+ 194 callvirt     UnityEngine.Transform::get_position
+ 199 ldloc.s      6
+ 201 callvirt     UnityEngine.Component::get_transform
+ 206 callvirt     UnityEngine.Transform::get_rotation
+ 211 ldloca.s     7
+ 213 ldloca.s     8
+ 215 call         UnityEngine.Physics::ComputePenetration
+ 220 brfalse.s    227
+ 222 ldc.i4.1     
+ 223 stloc.s      9
+ 225 leave.s      267
+ 227 ldloca.s     5
+ 229 call         Enumerator::MoveNext
+ 234 brtrue.s     148
+ 236 leave.s      252
+ 238 ldloca.s     5
+ 240 constrained. 0x1b000058
+ 246 callvirt     System.IDisposable::Dispose
+ 251 endfinally   
+ 252 ldloc.2      
+ 253 ldc.i4.1     
+ 254 add          
+ 255 stloc.2      
+ 256 ldloc.2      
+ 257 ldloc.1      
+ 258 ldlen        
+ 259 conv.i4      
+ 260 blt          63
+ 265 ldc.i4.0     
+ 266 ret          
+ 267 ldloc.s      9
+ 269 ret          

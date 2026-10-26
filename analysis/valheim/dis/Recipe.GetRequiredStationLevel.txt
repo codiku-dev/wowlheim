@@ -1,0 +1,11 @@
+== Recipe::GetRequiredStationLevel(i4) -> i4  il_size=17 sha=e36b6d8236bd
+   locals_sig=null
+   0 ldc.i4.1     
+   1 ldarg.0      
+   2 ldfld        Recipe::m_minStationLevel
+   7 call         UnityEngine.Mathf::Max
+  12 ldarg.1      
+  13 ldc.i4.1     
+  14 sub          
+  15 add          
+  16 ret          

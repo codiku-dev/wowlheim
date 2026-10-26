@@ -1,0 +1,568 @@
+== EffectArea::Awake() -> void  il_size=321 sha=716f17abdb6d
+   locals_sig=0x1100069d
+   0 ldarg.0      
+   1 ldfld        EffectArea::m_statusEffect
+   6 call         System.String::IsNullOrEmpty
+  11 brtrue.s     30
+  13 ldarg.0      
+  14 ldarg.0      
+  15 ldfld        EffectArea::m_statusEffect
+  20 call         StringExtensionMethods::GetStableHashCode
+  25 stfld        EffectArea::m_statusEffectHash
+  30 ldsfld       EffectArea::s_characterMask
+  35 brtrue.s     61
+  37 ldc.i4.1     
+  38 newarr       0x010001e8
+  43 dup          
+  44 ldc.i4.0     
+  45 ldstr        "character_trigger"
+  50 stelem.ref   
+  51 call         UnityEngine.LayerMask::GetMask
+  56 stsfld       EffectArea::s_characterMask
+  61 ldarg.0      
+  62 ldarg.0      
+  63 call         UnityEngine.Component::GetComponent<T>
+  68 stfld        EffectArea::m_collider
+  73 ldarg.0      
+  74 ldfld        EffectArea::m_collider
+  79 ldc.i4.1     
+  80 callvirt     UnityEngine.Collider::set_isTrigger
+  85 ldarg.0      
+  86 ldfld        EffectArea::m_type
+  91 ldc.i4.s     32
+  93 and          
+  94 brfalse.s    203
+  96 ldarg.0      
+  97 ldarg.0      
+  98 ldfld        EffectArea::m_collider
+ 103 callvirt     UnityEngine.Collider::get_bounds
+ 108 ldarg.0      
+ 109 newobj       System.Collections.Generic.KeyValuePair`2::.ctor
+ 114 stfld        EffectArea::noMonsterArea
+ 119 ldsfld       EffectArea::s_noMonsterAreas
+ 124 ldarg.0      
+ 125 ldfld        EffectArea::noMonsterArea
+ 130 callvirt     System.Collections.Generic.List`1::Add
+ 135 ldarg.0      
+ 136 ldfld        EffectArea::m_collider
+ 141 callvirt     UnityEngine.Collider::get_bounds
+ 146 stloc.0      
+ 147 ldloca.s     0
+ 149 ldc.r4       15
+ 154 ldc.r4       15
+ 159 ldc.r4       15
+ 164 newobj       UnityEngine.Vector3::.ctor
+ 169 call         UnityEngine.Bounds::Expand
+ 174 ldarg.0      
+ 175 ldloc.0      
+ 176 ldarg.0      
+ 177 newobj       System.Collections.Generic.KeyValuePair`2::.ctor
+ 182 stfld        EffectArea::noMonsterCloseToArea
+ 187 ldsfld       EffectArea::s_noMonsterCloseToAreas
+ 192 ldarg.0      
+ 193 ldfld        EffectArea::noMonsterCloseToArea
+ 198 callvirt     System.Collections.Generic.List`1::Add
+ 203 ldarg.0      
+ 204 ldfld        EffectArea::m_type
+ 209 ldc.i4.8     
+ 210 and          
+ 211 brfalse.s    281
+ 213 ldarg.0      
+ 214 ldfld        EffectArea::m_collider
+ 219 callvirt     UnityEngine.Collider::get_bounds
+ 224 stloc.1      
+ 225 ldloca.s     1
+ 227 ldc.r4       0.25
+ 232 ldc.r4       0.25
+ 237 ldc.r4       0.25
+ 242 newobj       UnityEngine.Vector3::.ctor
+ 247 call         UnityEngine.Bounds::Expand
+ 252 ldarg.0      
+ 253 ldloc.1      
+ 254 ldarg.0      
+ 255 newobj       System.Collections.Generic.KeyValuePair`2::.ctor
+ 260 stfld        EffectArea::burnCloseToArea
+ 265 ldsfld       EffectArea::s_BurningAreas
+ 270 ldarg.0      
+ 271 ldfld        EffectArea::burnCloseToArea
+ 276 callvirt     System.Collections.Generic.List`1::Add
+ 281 ldarg.0      
+ 282 ldarg.0      
+ 283 ldfld        EffectArea::m_type
+ 288 box          EffectArea+Type
+ 293 ldc.i4.1     
+ 294 box          EffectArea+Type
+ 299 call         System.Enum::HasFlag
+ 304 stfld        EffectArea::m_isHeatType
+ 309 ldsfld       EffectArea::s_allAreas
+ 314 ldarg.0      
+ 315 callvirt     System.Collections.Generic.List`1::Add
+ 320 ret          
+
+== EffectArea::OnDestroy() -> void  il_size=118 sha=9e2369ddc43d
+   locals_sig=null
+   0 ldsfld       EffectArea::s_allAreas
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Remove
+  11 pop          
+  12 ldsfld       EffectArea::s_noMonsterAreas
+  17 ldarg.0      
+  18 ldfld        EffectArea::noMonsterArea
+  23 callvirt     System.Collections.Generic.List`1::Contains
+  28 brfalse.s    47
+  30 ldsfld       EffectArea::s_noMonsterAreas
+  35 ldarg.0      
+  36 ldfld        EffectArea::noMonsterArea
+  41 callvirt     System.Collections.Generic.List`1::Remove
+  46 pop          
+  47 ldsfld       EffectArea::s_noMonsterCloseToAreas
+  52 ldarg.0      
+  53 ldfld        EffectArea::noMonsterCloseToArea
+  58 callvirt     System.Collections.Generic.List`1::Contains
+  63 brfalse.s    82
+  65 ldsfld       EffectArea::s_noMonsterCloseToAreas
+  70 ldarg.0      
+  71 ldfld        EffectArea::noMonsterCloseToArea
+  76 callvirt     System.Collections.Generic.List`1::Remove
+  81 pop          
+  82 ldsfld       EffectArea::s_BurningAreas
+  87 ldarg.0      
+  88 ldfld        EffectArea::burnCloseToArea
+  93 callvirt     System.Collections.Generic.List`1::Contains
+  98 brfalse.s    117
+ 100 ldsfld       EffectArea::s_BurningAreas
+ 105 ldarg.0      
+ 106 ldfld        EffectArea::burnCloseToArea
+ 111 callvirt     System.Collections.Generic.List`1::Remove
+ 116 pop          
+ 117 ret          
+
+== EffectArea::OnEnable() -> void  il_size=12 sha=f81ba205037a
+   locals_sig=null
+   0 call         EffectArea::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Add
+  11 ret          
+
+== EffectArea::OnDisable() -> void  il_size=13 sha=f424b7f3061a
+   locals_sig=null
+   0 call         EffectArea::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Remove
+  11 pop          
+  12 ret          
+
+== EffectArea::OnTriggerEnter(class:77) -> void  il_size=99 sha=00105f945703
+   locals_sig=0x1100014f
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        EffectArea::m_collisions
+   7 ldc.i4.1     
+   8 add          
+   9 stfld        EffectArea::m_collisions
+  14 ldarg.0      
+  15 ldfld        EffectArea::m_isHeatType
+  20 brtrue.s     31
+  22 ldarg.0      
+  23 ldfld        EffectArea::m_statusEffectHash
+  28 brtrue.s     31
+  30 ret          
+  31 ldarg.1      
+  32 callvirt     UnityEngine.Component::GetComponent<T>
+  37 stloc.0      
+  38 ldloc.0      
+  39 call         UnityEngine.Object::op_Implicit
+  44 brfalse.s    54
+  46 ldloc.0      
+  47 callvirt     Character::IsOwner()
+  52 brtrue.s     55
+  54 ret          
+  55 ldarg.0      
+  56 ldfld        EffectArea::m_playerOnly
+  61 brfalse.s    72
+  63 ldloc.0      
+  64 callvirt     Character::IsPlayer()
+  69 brtrue.s     72
+  71 ret          
+  72 ldarg.0      
+  73 ldfld        EffectArea::m_collidedWithCharacter
+  78 ldloc.0      
+  79 callvirt     System.Collections.Generic.List`1::Contains
+  84 brtrue.s     98
+  86 ldarg.0      
+  87 ldfld        EffectArea::m_collidedWithCharacter
+  92 ldloc.0      
+  93 callvirt     System.Collections.Generic.List`1::Add
+  98 ret          
+
+== EffectArea::OnTriggerExit(class:77) -> void  il_size=44 sha=2429ebdba4f5
+   locals_sig=0x1100014f
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        EffectArea::m_collisions
+   7 ldc.i4.1     
+   8 sub          
+   9 stfld        EffectArea::m_collisions
+  14 ldarg.1      
+  15 callvirt     UnityEngine.Component::GetComponent<T>
+  20 stloc.0      
+  21 ldloc.0      
+  22 ldnull       
+  23 call         UnityEngine.Object::op_Inequality
+  28 brfalse.s    43
+  30 ldarg.0      
+  31 ldfld        EffectArea::m_collidedWithCharacter
+  36 ldloc.0      
+  37 callvirt     System.Collections.Generic.List`1::Remove
+  42 pop          
+  43 ret          
+
+== EffectArea::CustomFixedUpdate(r4) -> void  il_size=144 sha=66f7618b3d97
+   locals_sig=0x1100069e
+   0 ldarg.0      
+   1 ldfld        EffectArea::m_collisions
+   6 ldc.i4.0     
+   7 ble.s        22
+   9 ldarg.0      
+  10 ldfld        EffectArea::m_collidedWithCharacter
+  15 callvirt     System.Collections.Generic.List`1::get_Count
+  20 brtrue.s     23
+  22 ret          
+  23 call         ZNet::get_instance()
+  28 ldnull       
+  29 call         UnityEngine.Object::op_Equality
+  34 brfalse.s    37
+  36 ret          
+  37 ldarg.0      
+  38 ldfld        EffectArea::m_collidedWithCharacter
+  43 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  48 stloc.0      
+  49 br.s         118
+  51 ldloca.s     0
+  53 call         Enumerator::get_Current
+  58 stloc.1      
+  59 ldarg.0      
+  60 ldfld        EffectArea::m_statusEffectHash
+  65 brfalse.s    93
+  67 ldloc.1      
+  68 callvirt     Character::GetSEMan()
+  73 ldarg.0      
+  74 ldfld        EffectArea::m_statusEffectHash
+  79 ldc.i4.1     
+  80 ldc.i4.0     
+  81 ldc.r4       0
+  86 ldc.i4.m1    
+  87 callvirt     SEMan::AddStatusEffect(i4,bool,i4,r4,i2)
+  92 pop          
+  93 ldarg.0      
+  94 ldfld        EffectArea::m_isHeatType
+  99 brfalse.s    118
+ 101 ldloc.1      
+ 102 ldarg.0      
+ 103 call         UnityEngine.Component::get_transform
+ 108 callvirt     UnityEngine.Transform::get_position
+ 113 callvirt     Character::OnNearFire(valuetype:81)
+ 118 ldloca.s     0
+ 120 call         Enumerator::MoveNext
+ 125 brtrue.s     51
+ 127 leave.s      143
+ 129 ldloca.s     0
+ 131 constrained. 0x1b000058
+ 137 callvirt     System.IDisposable::Dispose
+ 142 endfinally   
+ 143 ret          
+
+== EffectArea::GetRadius() -> r4  il_size=79 sha=ad30bfb6b3da
+   locals_sig=0x1100069f
+   0 ldarg.0      
+   1 ldfld        EffectArea::m_collider
+   6 stloc.3      
+   7 ldloc.3      
+   8 isinst       0x0100010f
+  13 stloc.0      
+  14 ldloc.0      
+  15 brtrue.s     29
+  17 ldloc.3      
+  18 isinst       0x01000025
+  23 stloc.1      
+  24 ldloc.1      
+  25 brtrue.s     38
+  27 br.s         47
+  29 ldloc.0      
+  30 callvirt     UnityEngine.SphereCollider::get_radius
+  35 stloc.2      
+  36 br.s         77
+  38 ldloc.1      
+  39 callvirt     UnityEngine.CapsuleCollider::get_radius
+  44 stloc.2      
+  45 br.s         77
+  47 ldarg.0      
+  48 ldfld        EffectArea::m_collider
+  53 callvirt     UnityEngine.Collider::get_bounds
+  58 stloc.s      4
+  60 ldloca.s     4
+  62 call         UnityEngine.Bounds::get_size
+  67 stloc.s      5
+  69 ldloca.s     5
+  71 call         UnityEngine.Vector3::get_magnitude
+  76 stloc.2      
+  77 ldloc.2      
+  78 ret          
+
+== EffectArea::IsPointInsideNoMonsterArea(valuetype:81) -> class:2056  il_size=78 sha=f6bed2f32770
+   locals_sig=0x110006a0
+   0 ldsfld       EffectArea::s_noMonsterAreas
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         49
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloca.s     1
+  23 call         System.Collections.Generic.KeyValuePair`2::get_Key
+  28 stloc.2      
+  29 ldloca.s     2
+  31 ldarg.0      
+  32 call         UnityEngine.Bounds::Contains
+  37 brfalse.s    49
+  39 ldloca.s     1
+  41 call         System.Collections.Generic.KeyValuePair`2::get_Value
+  46 stloc.3      
+  47 leave.s      76
+  49 ldloca.s     0
+  51 call         Enumerator::MoveNext
+  56 brtrue.s     13
+  58 leave.s      74
+  60 ldloca.s     0
+  62 constrained. 0x1b0003f4
+  68 callvirt     System.IDisposable::Dispose
+  73 endfinally   
+  74 ldnull       
+  75 ret          
+  76 ldloc.3      
+  77 ret          
+
+== EffectArea::IsPointCloseToNoMonsterArea(valuetype:81) -> class:2056  il_size=78 sha=2c2fbc0eee3d
+   locals_sig=0x110006a0
+   0 ldsfld       EffectArea::s_noMonsterCloseToAreas
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         49
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloca.s     1
+  23 call         System.Collections.Generic.KeyValuePair`2::get_Key
+  28 stloc.2      
+  29 ldloca.s     2
+  31 ldarg.0      
+  32 call         UnityEngine.Bounds::Contains
+  37 brfalse.s    49
+  39 ldloca.s     1
+  41 call         System.Collections.Generic.KeyValuePair`2::get_Value
+  46 stloc.3      
+  47 leave.s      76
+  49 ldloca.s     0
+  51 call         Enumerator::MoveNext
+  56 brtrue.s     13
+  58 leave.s      74
+  60 ldloca.s     0
+  62 constrained. 0x1b0003f4
+  68 callvirt     System.IDisposable::Dispose
+  73 endfinally   
+  74 ldnull       
+  75 ret          
+  76 ldloc.3      
+  77 ret          
+
+== EffectArea::IsPointInsideArea(valuetype:81, valuetype:4560, r4) -> class:2056  il_size=90 sha=fc29c9eb4faf
+   locals_sig=0x110006a1
+   0 ldarg.1      
+   1 ldc.i4.8     
+   2 bne.un.s     25
+   4 ldarga.s     2
+   6 ldc.r4       0.25
+  11 call         System.Single::Equals
+  16 brfalse.s    25
+  18 ldarg.0      
+  19 call         EffectArea::GetBurningAreaPointPlus025(valuetype:81)
+  24 ret          
+  25 ldarg.0      
+  26 ldarg.2      
+  27 ldsfld       EffectArea::m_tempColliders
+  32 ldsfld       EffectArea::s_characterMask
+  37 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  42 stloc.0      
+  43 ldc.i4.0     
+  44 stloc.1      
+  45 br.s         84
+  47 ldsfld       EffectArea::m_tempColliders
+  52 ldloc.1      
+  53 ldelem.ref   
+  54 callvirt     UnityEngine.Component::GetComponent<T>
+  59 stloc.2      
+  60 ldloc.2      
+  61 call         UnityEngine.Object::op_Implicit
+  66 brfalse.s    80
+  68 ldloc.2      
+  69 ldfld        EffectArea::m_type
+  74 ldarg.1      
+  75 and          
+  76 brfalse.s    80
+  78 ldloc.2      
+  79 ret          
+  80 ldloc.1      
+  81 ldc.i4.1     
+  82 add          
+  83 stloc.1      
+  84 ldloc.1      
+  85 ldloc.0      
+  86 blt.s        47
+  88 ldnull       
+  89 ret          
+
+== EffectArea::IsPointPlus025InsideBurningArea(valuetype:81) -> bool  il_size=72 sha=cd4eccaeb405
+   locals_sig=0x110006a2
+   0 ldsfld       EffectArea::s_BurningAreas
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         43
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloca.s     1
+  23 call         System.Collections.Generic.KeyValuePair`2::get_Key
+  28 stloc.2      
+  29 ldloca.s     2
+  31 ldarg.0      
+  32 call         UnityEngine.Bounds::Contains
+  37 brfalse.s    43
+  39 ldc.i4.1     
+  40 stloc.3      
+  41 leave.s      70
+  43 ldloca.s     0
+  45 call         Enumerator::MoveNext
+  50 brtrue.s     13
+  52 leave.s      68
+  54 ldloca.s     0
+  56 constrained. 0x1b0003f4
+  62 callvirt     System.IDisposable::Dispose
+  67 endfinally   
+  68 ldc.i4.0     
+  69 ret          
+  70 ldloc.3      
+  71 ret          
+
+== EffectArea::GetBurningAreaPointPlus025(valuetype:81) -> class:2056  il_size=78 sha=594faa8460c5
+   locals_sig=0x110006a0
+   0 ldsfld       EffectArea::s_BurningAreas
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         49
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloca.s     1
+  23 call         System.Collections.Generic.KeyValuePair`2::get_Key
+  28 stloc.2      
+  29 ldloca.s     2
+  31 ldarg.0      
+  32 call         UnityEngine.Bounds::Contains
+  37 brfalse.s    49
+  39 ldloca.s     1
+  41 call         System.Collections.Generic.KeyValuePair`2::get_Value
+  46 stloc.3      
+  47 leave.s      76
+  49 ldloca.s     0
+  51 call         Enumerator::MoveNext
+  56 brtrue.s     13
+  58 leave.s      74
+  60 ldloca.s     0
+  62 constrained. 0x1b0003f4
+  68 callvirt     System.IDisposable::Dispose
+  73 endfinally   
+  74 ldnull       
+  75 ret          
+  76 ldloc.3      
+  77 ret          
+
+== EffectArea::GetBaseValue(valuetype:81, r4) -> i4  il_size=69 sha=84c4ed42dcc5
+   locals_sig=0x110006a3
+   0 ldc.i4.0     
+   1 stloc.0      
+   2 ldarg.0      
+   3 ldarg.1      
+   4 ldsfld       EffectArea::m_tempColliders
+   9 ldsfld       EffectArea::s_characterMask
+  14 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  19 stloc.1      
+  20 ldc.i4.0     
+  21 stloc.2      
+  22 br.s         63
+  24 ldsfld       EffectArea::m_tempColliders
+  29 ldloc.2      
+  30 ldelem.ref   
+  31 callvirt     UnityEngine.Component::GetComponent<T>
+  36 stloc.3      
+  37 ldloc.3      
+  38 call         UnityEngine.Object::op_Implicit
+  43 brfalse.s    59
+  45 ldloc.3      
+  46 ldfld        EffectArea::m_type
+  51 ldc.i4.4     
+  52 and          
+  53 brfalse.s    59
+  55 ldloc.0      
+  56 ldc.i4.1     
+  57 add          
+  58 stloc.0      
+  59 ldloc.2      
+  60 ldc.i4.1     
+  61 add          
+  62 stloc.2      
+  63 ldloc.2      
+  64 ldloc.1      
+  65 blt.s        24
+  67 ldloc.0      
+  68 ret          
+
+== EffectArea::GetAllAreas() -> class:165<class:2056>  il_size=6 sha=aa51623a58d0
+   locals_sig=null
+   0 ldsfld       EffectArea::s_allAreas
+   5 ret          
+
+== EffectArea::get_Instances() -> class:165<class:1116>  il_size=6 sha=ca0048535a99
+   locals_sig=null
+   0 ldsfld       EffectArea::<Instances>k__BackingField
+   5 ret          
+
+== EffectArea::.ctor() -> void  il_size=29 sha=19b0133b3bca
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        ""
+   6 stfld        EffectArea::m_statusEffect
+  11 ldarg.0      
+  12 newobj       System.Collections.Generic.List`1::.ctor
+  17 stfld        EffectArea::m_collidedWithCharacter
+  22 ldarg.0      
+  23 call         UnityEngine.MonoBehaviour::.ctor
+  28 ret          
+
+== EffectArea::.cctor() -> void  il_size=72 sha=285484182846
+   locals_sig=null
+   0 ldc.i4.0     
+   1 stsfld       EffectArea::s_characterMask
+   6 newobj       System.Collections.Generic.List`1::.ctor
+  11 stsfld       EffectArea::s_allAreas
+  16 newobj       System.Collections.Generic.List`1::.ctor
+  21 stsfld       EffectArea::s_noMonsterAreas
+  26 newobj       System.Collections.Generic.List`1::.ctor
+  31 stsfld       EffectArea::s_noMonsterCloseToAreas
+  36 newobj       System.Collections.Generic.List`1::.ctor
+  41 stsfld       EffectArea::s_BurningAreas
+  46 ldc.i4       128
+  51 newarr       0x01000013
+  56 stsfld       EffectArea::m_tempColliders
+  61 newobj       System.Collections.Generic.List`1::.ctor
+  66 stsfld       EffectArea::<Instances>k__BackingField
+  71 ret          

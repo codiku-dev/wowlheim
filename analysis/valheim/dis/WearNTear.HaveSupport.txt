@@ -1,0 +1,10 @@
+== WearNTear::HaveSupport() -> bool  il_size=18 sha=6cad72bb8530
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_support
+   6 ldarg.0      
+   7 call         WearNTear::GetMinSupport()
+  12 clt.un       
+  14 ldc.i4.0     
+  15 ceq          
+  17 ret          

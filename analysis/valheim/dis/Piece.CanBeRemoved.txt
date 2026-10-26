@@ -1,0 +1,24 @@
+== Piece::CanBeRemoved() -> bool  il_size=48 sha=18902370086e
+   locals_sig=0x1100073c
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponentInChildren<T>
+   6 stloc.0      
+   7 ldloc.0      
+   8 ldnull       
+   9 call         UnityEngine.Object::op_Inequality
+  14 brfalse.s    23
+  16 ldloc.0      
+  17 callvirt     Container::CanBeRemoved()
+  22 ret          
+  23 ldarg.0      
+  24 call         UnityEngine.Component::GetComponentInChildren<T>
+  29 stloc.1      
+  30 ldloc.1      
+  31 ldnull       
+  32 call         UnityEngine.Object::op_Inequality
+  37 brfalse.s    46
+  39 ldloc.1      
+  40 callvirt     Ship::CanBeRemoved()
+  45 ret          
+  46 ldc.i4.1     
+  47 ret          

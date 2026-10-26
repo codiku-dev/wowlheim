@@ -1,0 +1,43 @@
+== StationExtension::FindExtensions(class:1048, valuetype:81, class:165<class:2400>) -> void  il_size=120 sha=7f363fbc1138
+   locals_sig=0x110007a5
+   0 ldsfld       StationExtension::m_allExtensions
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         94
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 callvirt     UnityEngine.Component::get_transform
+  27 callvirt     UnityEngine.Transform::get_position
+  32 ldarg.1      
+  33 call         UnityEngine.Vector3::Distance
+  38 ldloc.1      
+  39 ldfld        StationExtension::m_maxStationDistance
+  44 bge.un.s     94
+  46 ldloc.1      
+  47 ldfld        StationExtension::m_craftingStation
+  52 ldfld        CraftingStation::m_name
+  57 ldarg.0      
+  58 ldfld        CraftingStation::m_name
+  63 call         System.String::op_Equality
+  68 brfalse.s    94
+  70 ldloc.1      
+  71 ldfld        StationExtension::m_stack
+  76 brtrue.s     87
+  78 ldarg.2      
+  79 ldloc.1      
+  80 call         StationExtension::ExtensionInList(class:165<class:2400>,class:2400)
+  85 brtrue.s     94
+  87 ldarg.2      
+  88 ldloc.1      
+  89 callvirt     System.Collections.Generic.List`1::Add
+  94 ldloca.s     0
+  96 call         Enumerator::MoveNext
+ 101 brtrue.s     13
+ 103 leave.s      119
+ 105 ldloca.s     0
+ 107 constrained. 0x1b0001fe
+ 113 callvirt     System.IDisposable::Dispose
+ 118 endfinally   
+ 119 ret          

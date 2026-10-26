@@ -1,0 +1,194 @@
+== Piece::DropResources(class:2140) -> void  il_size=589 sha=d1b7fdb2e53a
+   locals_sig=0x1100073d
+   0 call         ZoneSystem::get_instance()
+   5 ldarg.0      
+   6 call         Piece::FreeBuildKey()
+  11 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+  16 brfalse.s    19
+  18 ret          
+  19 ldnull       
+  20 stloc.0      
+  21 ldarg.0      
+  22 call         UnityEngine.Component::get_gameObject
+  27 callvirt     UnityEngine.GameObject::GetComponent<T>
+  32 stloc.1      
+  33 ldarg.0      
+  34 ldfld        Piece::m_resources
+  39 stloc.2      
+  40 ldc.i4.0     
+  41 stloc.3      
+  42 br           579
+  47 ldloc.2      
+  48 ldloc.3      
+  49 ldelem.ref   
+  50 stloc.s      4
+  52 ldloc.s      4
+  54 ldfld        Piece+Requirement::m_resItem
+  59 ldnull       
+  60 call         UnityEngine.Object::op_Equality
+  65 brtrue       575
+  70 ldloc.s      4
+  72 ldfld        Piece+Requirement::m_recover
+  77 brfalse      575
+  82 call         ObjectDB::get_instance()
+  87 ldloc.s      4
+  89 ldfld        Piece+Requirement::m_resItem
+  94 callvirt     UnityEngine.Object::get_name
+  99 call         Utils::GetPrefabName
+ 104 callvirt     ObjectDB::GetItemPrefab(string)
+ 109 stloc.s      5
+ 111 ldloc.s      4
+ 113 ldfld        Piece+Requirement::m_amount
+ 118 stloc.s      6
+ 120 ldloc.1      
+ 121 call         UnityEngine.Object::op_Implicit
+ 126 brfalse.s    147
+ 128 ldloc.s      6
+ 130 conv.r4      
+ 131 ldloc.1      
+ 132 callvirt     Feast::GetStackPercentige()
+ 137 mul          
+ 138 conv.r8      
+ 139 call         System.Math::Floor
+ 144 conv.i4      
+ 145 stloc.s      6
+ 147 ldloc.s      6
+ 149 ldc.i4.0     
+ 150 ble          575
+ 155 call         Game::get_instance()
+ 160 ldarg.1      
+ 161 ldloc.s      4
+ 163 ldfld        Piece+Requirement::m_resItem
+ 168 ldloc.s      5
+ 170 ldloca.s     6
+ 172 callvirt     Game::CheckDropConversion(class:2140,class:1060,class:133,i4&)
+ 177 stloc.s      5
+ 179 ldarg.0      
+ 180 call         Piece::IsPlacedByPlayer()
+ 185 brtrue.s     199
+ 187 ldc.i4.1     
+ 188 ldloc.s      6
+ 190 ldc.i4.3     
+ 191 div          
+ 192 call         UnityEngine.Mathf::Max
+ 197 stloc.s      6
+ 199 ldarg.0      
+ 200 ldfld        Piece::m_destroyedLootPrefab
+ 205 call         UnityEngine.Object::op_Implicit
+ 210 brfalse      567
+ 215 br           409
+ 220 ldloc.s      5
+ 222 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 227 ldfld        ItemDrop::m_itemData
+ 232 callvirt     ItemDrop+ItemData::Clone()
+ 237 stloc.s      7
+ 239 ldloc.s      7
+ 241 ldloc.s      5
+ 243 stfld        ItemDrop+ItemData::m_dropPrefab
+ 248 ldloc.s      7
+ 250 ldloc.s      6
+ 252 ldloc.s      7
+ 254 ldfld        ItemDrop+ItemData::m_shared
+ 259 ldfld        ItemDrop+ItemData+SharedData::m_maxStackSize
+ 264 call         UnityEngine.Mathf::Min
+ 269 stfld        ItemDrop+ItemData::m_stack
+ 274 ldloc.s      6
+ 276 ldloc.s      7
+ 278 ldfld        ItemDrop+ItemData::m_stack
+ 283 sub          
+ 284 stloc.s      6
+ 286 ldloc.0      
+ 287 ldnull       
+ 288 call         UnityEngine.Object::op_Equality
+ 293 brtrue.s     308
+ 295 ldloc.0      
+ 296 callvirt     Container::GetInventory()
+ 301 callvirt     Inventory::HaveEmptySlot()
+ 306 brtrue.s     362
+ 308 ldarg.0      
+ 309 ldfld        Piece::m_destroyedLootPrefab
+ 314 ldarg.0      
+ 315 call         UnityEngine.Component::get_transform
+ 320 callvirt     UnityEngine.Transform::get_position
+ 325 call         UnityEngine.Vector3::get_up
+ 330 ldarg.0      
+ 331 ldfld        Piece::m_returnResourceHeightOffset
+ 336 call         UnityEngine.Vector3::op_Multiply
+ 341 call         UnityEngine.Vector3::op_Addition
+ 346 call         UnityEngine.Quaternion::get_identity
+ 351 call         UnityEngine.Object::Instantiate<T>
+ 356 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 361 stloc.0      
+ 362 ldarg.0      
+ 363 ldfld        Piece::m_nview
+ 368 callvirt     ZNetView::GetZDO()
+ 373 call         CheatUtils::IsCheated(class:1164)
+ 378 brfalse.s    395
+ 380 call         PlayerProfile::get_s_bypassCheatChecks()
+ 385 brtrue.s     395
+ 387 ldloc.s      7
+ 389 ldc.i4.1     
+ 390 stfld        ItemDrop+ItemData::m_cheated
+ 395 ldloc.0      
+ 396 callvirt     Container::GetInventory()
+ 401 ldloc.s      7
+ 403 callvirt     Inventory::AddItem(class:3744)
+ 408 pop          
+ 409 ldloc.s      6
+ 411 ldc.i4.0     
+ 412 bgt          220
+ 417 br           575
+ 422 ldloc.s      5
+ 424 ldarg.0      
+ 425 call         UnityEngine.Component::get_transform
+ 430 callvirt     UnityEngine.Transform::get_position
+ 435 call         UnityEngine.Vector3::get_up
+ 440 ldarg.0      
+ 441 ldfld        Piece::m_returnResourceHeightOffset
+ 446 call         UnityEngine.Vector3::op_Multiply
+ 451 call         UnityEngine.Vector3::op_Addition
+ 456 call         UnityEngine.Quaternion::get_identity
+ 461 call         UnityEngine.Object::Instantiate<T>
+ 466 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 471 stloc.s      8
+ 473 ldloc.s      8
+ 475 ldloc.s      6
+ 477 ldloc.s      8
+ 479 ldfld        ItemDrop::m_itemData
+ 484 ldfld        ItemDrop+ItemData::m_shared
+ 489 ldfld        ItemDrop+ItemData+SharedData::m_maxStackSize
+ 494 call         UnityEngine.Mathf::Min
+ 499 callvirt     ItemDrop::SetStack(i4)
+ 504 ldloc.s      8
+ 506 ldc.i4.0     
+ 507 call         ItemDrop::OnCreateNew(class:1060,bool)
+ 512 ldarg.0      
+ 513 ldfld        Piece::m_nview
+ 518 callvirt     ZNetView::GetZDO()
+ 523 call         CheatUtils::IsCheated(class:1164)
+ 528 brfalse.s    550
+ 530 call         PlayerProfile::get_s_bypassCheatChecks()
+ 535 brtrue.s     550
+ 537 ldloc.s      8
+ 539 ldfld        ItemDrop::m_itemData
+ 544 ldc.i4.1     
+ 545 stfld        ItemDrop+ItemData::m_cheated
+ 550 ldloc.s      6
+ 552 ldloc.s      8
+ 554 ldfld        ItemDrop::m_itemData
+ 559 ldfld        ItemDrop+ItemData::m_stack
+ 564 sub          
+ 565 stloc.s      6
+ 567 ldloc.s      6
+ 569 ldc.i4.0     
+ 570 bgt          422
+ 575 ldloc.3      
+ 576 ldc.i4.1     
+ 577 add          
+ 578 stloc.3      
+ 579 ldloc.3      
+ 580 ldloc.2      
+ 581 ldlen        
+ 582 conv.i4      
+ 583 blt          47
+ 588 ret          

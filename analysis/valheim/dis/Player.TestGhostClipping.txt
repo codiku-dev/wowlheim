@@ -1,0 +1,72 @@
+== Player::TestGhostClipping(class:133, r4) -> bool  il_size=151 sha=e87c1aa68328
+   locals_sig=0x110000b9
+   0 ldarg.1      
+   1 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+   6 ldarg.1      
+   7 callvirt     UnityEngine.GameObject::get_transform
+  12 callvirt     UnityEngine.Transform::get_position
+  17 ldc.r4       10
+  22 ldarg.0      
+  23 ldfld        Player::m_placeRayMask
+  28 call         UnityEngine.Physics::OverlapSphere
+  33 stloc.0      
+  34 stloc.1      
+  35 ldc.i4.0     
+  36 stloc.2      
+  37 br.s         143
+  39 ldloc.1      
+  40 ldloc.2      
+  41 ldelem.ref   
+  42 stloc.3      
+  43 ldloc.0      
+  44 stloc.s      4
+  46 ldc.i4.0     
+  47 stloc.s      5
+  49 br.s         131
+  51 ldloc.s      4
+  53 ldloc.s      5
+  55 ldelem.ref   
+  56 stloc.s      6
+  58 ldloc.3      
+  59 ldloc.3      
+  60 callvirt     UnityEngine.Component::get_transform
+  65 callvirt     UnityEngine.Transform::get_position
+  70 ldloc.3      
+  71 callvirt     UnityEngine.Component::get_transform
+  76 callvirt     UnityEngine.Transform::get_rotation
+  81 ldloc.s      6
+  83 ldloc.s      6
+  85 callvirt     UnityEngine.Component::get_transform
+  90 callvirt     UnityEngine.Transform::get_position
+  95 ldloc.s      6
+  97 callvirt     UnityEngine.Component::get_transform
+ 102 callvirt     UnityEngine.Transform::get_rotation
+ 107 ldloca.s     7
+ 109 ldloca.s     8
+ 111 call         UnityEngine.Physics::ComputePenetration
+ 116 brfalse.s    125
+ 118 ldloc.s      8
+ 120 ldarg.2      
+ 121 ble.un.s     125
+ 123 ldc.i4.1     
+ 124 ret          
+ 125 ldloc.s      5
+ 127 ldc.i4.1     
+ 128 add          
+ 129 stloc.s      5
+ 131 ldloc.s      5
+ 133 ldloc.s      4
+ 135 ldlen        
+ 136 conv.i4      
+ 137 blt.s        51
+ 139 ldloc.2      
+ 140 ldc.i4.1     
+ 141 add          
+ 142 stloc.2      
+ 143 ldloc.2      
+ 144 ldloc.1      
+ 145 ldlen        
+ 146 conv.i4      
+ 147 blt.s        39
+ 149 ldc.i4.0     
+ 150 ret          

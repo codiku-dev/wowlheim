@@ -1,0 +1,142 @@
+== WearNTear::SetupColliders() -> void  il_size=436 sha=b27eebe2ea3e
+   locals_sig=0x110007fe
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldc.i4.1     
+   3 call         UnityEngine.Component::GetComponentsInChildren<T>
+   8 stfld        WearNTear::m_colliders
+  13 ldarg.0      
+  14 newobj       System.Collections.Generic.List`1::.ctor
+  19 stfld        WearNTear::m_bounds
+  24 ldarg.0      
+  25 ldfld        WearNTear::m_colliders
+  30 stloc.0      
+  31 ldc.i4.0     
+  32 stloc.1      
+  33 br           426
+  38 ldloc.0      
+  39 ldloc.1      
+  40 ldelem.ref   
+  41 stloc.2      
+  42 ldloc.2      
+  43 callvirt     UnityEngine.Collider::get_isTrigger
+  48 brtrue       422
+  53 ldloc.2      
+  54 callvirt     UnityEngine.Collider::get_attachedRigidbody
+  59 ldnull       
+  60 call         UnityEngine.Object::op_Inequality
+  65 brtrue       422
+  70 ldloca.s     3
+  72 initobj      WearNTear+BoundData
+  78 ldloc.2      
+  79 isinst       0x01000078
+  84 brfalse      263
+  89 ldloc.2      
+  90 isinst       0x01000078
+  95 stloc.s      4
+  97 ldloca.s     3
+  99 ldloc.s      4
+ 101 callvirt     UnityEngine.Component::get_transform
+ 106 callvirt     UnityEngine.Transform::get_rotation
+ 111 stfld        WearNTear+BoundData::m_rot
+ 116 ldloca.s     3
+ 118 ldloc.s      4
+ 120 callvirt     UnityEngine.Component::get_transform
+ 125 callvirt     UnityEngine.Transform::get_position
+ 130 ldloc.s      4
+ 132 callvirt     UnityEngine.Component::get_transform
+ 137 ldloc.s      4
+ 139 callvirt     UnityEngine.BoxCollider::get_center
+ 144 callvirt     UnityEngine.Transform::TransformVector
+ 149 call         UnityEngine.Vector3::op_Addition
+ 154 stfld        WearNTear+BoundData::m_pos
+ 159 ldloca.s     3
+ 161 ldloc.s      4
+ 163 callvirt     UnityEngine.Component::get_transform
+ 168 callvirt     UnityEngine.Transform::get_lossyScale
+ 173 ldfld        UnityEngine.Vector3::x
+ 178 ldloc.s      4
+ 180 callvirt     UnityEngine.BoxCollider::get_size
+ 185 ldfld        UnityEngine.Vector3::x
+ 190 mul          
+ 191 ldloc.s      4
+ 193 callvirt     UnityEngine.Component::get_transform
+ 198 callvirt     UnityEngine.Transform::get_lossyScale
+ 203 ldfld        UnityEngine.Vector3::y
+ 208 ldloc.s      4
+ 210 callvirt     UnityEngine.BoxCollider::get_size
+ 215 ldfld        UnityEngine.Vector3::y
+ 220 mul          
+ 221 ldloc.s      4
+ 223 callvirt     UnityEngine.Component::get_transform
+ 228 callvirt     UnityEngine.Transform::get_lossyScale
+ 233 ldfld        UnityEngine.Vector3::z
+ 238 ldloc.s      4
+ 240 callvirt     UnityEngine.BoxCollider::get_size
+ 245 ldfld        UnityEngine.Vector3::z
+ 250 mul          
+ 251 newobj       UnityEngine.Vector3::.ctor
+ 256 stfld        WearNTear+BoundData::m_size
+ 261 br.s         319
+ 263 ldloca.s     3
+ 265 call         UnityEngine.Quaternion::get_identity
+ 270 stfld        WearNTear+BoundData::m_rot
+ 275 ldloca.s     3
+ 277 ldloc.2      
+ 278 callvirt     UnityEngine.Collider::get_bounds
+ 283 stloc.s      5
+ 285 ldloca.s     5
+ 287 call         UnityEngine.Bounds::get_center
+ 292 stfld        WearNTear+BoundData::m_pos
+ 297 ldloca.s     3
+ 299 ldloc.2      
+ 300 callvirt     UnityEngine.Collider::get_bounds
+ 305 stloc.s      5
+ 307 ldloca.s     5
+ 309 call         UnityEngine.Bounds::get_size
+ 314 stfld        WearNTear+BoundData::m_size
+ 319 ldloca.s     3
+ 321 ldflda       WearNTear+BoundData::m_size
+ 326 ldflda       UnityEngine.Vector3::x
+ 331 dup          
+ 332 ldind.r4     
+ 333 ldc.r4       0.30000001192092896
+ 338 add          
+ 339 stind.r4     
+ 340 ldloca.s     3
+ 342 ldflda       WearNTear+BoundData::m_size
+ 347 ldflda       UnityEngine.Vector3::y
+ 352 dup          
+ 353 ldind.r4     
+ 354 ldc.r4       0.30000001192092896
+ 359 add          
+ 360 stind.r4     
+ 361 ldloca.s     3
+ 363 ldflda       WearNTear+BoundData::m_size
+ 368 ldflda       UnityEngine.Vector3::z
+ 373 dup          
+ 374 ldind.r4     
+ 375 ldc.r4       0.30000001192092896
+ 380 add          
+ 381 stind.r4     
+ 382 ldloca.s     3
+ 384 ldflda       WearNTear+BoundData::m_size
+ 389 dup          
+ 390 ldobj        0x01000014
+ 395 ldc.r4       0.5
+ 400 call         UnityEngine.Vector3::op_Multiply
+ 405 stobj        0x01000014
+ 410 ldarg.0      
+ 411 ldfld        WearNTear::m_bounds
+ 416 ldloc.3      
+ 417 callvirt     System.Collections.Generic.List`1::Add
+ 422 ldloc.1      
+ 423 ldc.i4.1     
+ 424 add          
+ 425 stloc.1      
+ 426 ldloc.1      
+ 427 ldloc.0      
+ 428 ldlen        
+ 429 conv.i4      
+ 430 blt          38
+ 435 ret          

@@ -1,0 +1,12 @@
+== EnvMan::CalculateWet() -> bool  il_size=19 sha=16c580998e10
+   locals_sig=0x1100050c
+   0 ldarg.0      
+   1 call         EnvMan::GetCurrentEnvironment()
+   6 stloc.0      
+   7 ldloc.0      
+   8 brfalse.s    17
+  10 ldloc.0      
+  11 ldfld        EnvSetup::m_isWet
+  16 ret          
+  17 ldc.i4.0     
+  18 ret          

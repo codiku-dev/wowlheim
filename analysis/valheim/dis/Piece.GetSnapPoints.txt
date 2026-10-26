@@ -1,0 +1,62 @@
+== Piece::GetSnapPoints(valuetype:81, r4, class:165<class:73>, class:165<class:2264>) -> void  il_size=67 sha=483aec823b22
+   locals_sig=0x1100073f
+   0 ldarg.0      
+   1 ldarg.1      
+   2 ldsfld       Piece::s_pieceColliders
+   7 ldsfld       Piece::s_pieceRayMask
+  12 call         UnityEngine.Physics::OverlapSphereNonAlloc
+  17 stloc.0      
+  18 ldc.i4.0     
+  19 stloc.1      
+  20 br.s         62
+  22 ldsfld       Piece::s_pieceColliders
+  27 ldloc.1      
+  28 ldelem.ref   
+  29 callvirt     UnityEngine.Component::GetComponentInParent<T>
+  34 stloc.2      
+  35 ldloc.2      
+  36 ldnull       
+  37 call         UnityEngine.Object::op_Inequality
+  42 brfalse.s    58
+  44 ldloc.2      
+  45 ldarg.2      
+  46 callvirt     Piece::GetSnapPoints(class:165<class:73>)
+  51 ldarg.3      
+  52 ldloc.2      
+  53 callvirt     System.Collections.Generic.List`1::Add
+  58 ldloc.1      
+  59 ldc.i4.1     
+  60 add          
+  61 stloc.1      
+  62 ldloc.1      
+  63 ldloc.0      
+  64 blt.s        22
+  66 ret          
+
+== Piece::GetSnapPoints(class:165<class:73>) -> void  il_size=56 sha=c83698cc103d
+   locals_sig=0x110001b3
+   0 ldc.i4.0     
+   1 stloc.0      
+   2 br.s         41
+   4 ldarg.0      
+   5 call         UnityEngine.Component::get_transform
+  10 ldloc.0      
+  11 callvirt     UnityEngine.Transform::GetChild
+  16 stloc.1      
+  17 ldloc.1      
+  18 ldstr        "snappoint"
+  23 callvirt     UnityEngine.Component::CompareTag
+  28 brfalse.s    37
+  30 ldarg.1      
+  31 ldloc.1      
+  32 callvirt     System.Collections.Generic.List`1::Add
+  37 ldloc.0      
+  38 ldc.i4.1     
+  39 add          
+  40 stloc.0      
+  41 ldloc.0      
+  42 ldarg.0      
+  43 call         UnityEngine.Component::get_transform
+  48 callvirt     UnityEngine.Transform::get_childCount
+  53 blt.s        4
+  55 ret          

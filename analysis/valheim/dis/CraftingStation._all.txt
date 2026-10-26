@@ -1,0 +1,747 @@
+== CraftingStation::Start() -> void  il_size=133 sha=82284bbdd5c2
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        CraftingStation::m_nview
+  12 ldarg.0      
+  13 ldfld        CraftingStation::m_nview
+  18 call         UnityEngine.Object::op_Implicit
+  23 brfalse.s    39
+  25 ldarg.0      
+  26 ldfld        CraftingStation::m_nview
+  31 callvirt     ZNetView::GetZDO()
+  36 brtrue.s     39
+  38 ret          
+  39 ldsfld       CraftingStation::m_allStations
+  44 ldarg.0      
+  45 callvirt     System.Collections.Generic.List`1::Add
+  50 ldarg.0      
+  51 ldfld        CraftingStation::m_areaMarker
+  56 call         UnityEngine.Object::op_Implicit
+  61 brfalse.s    92
+  63 ldarg.0      
+  64 ldfld        CraftingStation::m_areaMarker
+  69 ldc.i4.0     
+  70 callvirt     UnityEngine.GameObject::SetActive
+  75 ldarg.0      
+  76 ldarg.0      
+  77 ldfld        CraftingStation::m_areaMarker
+  82 callvirt     UnityEngine.GameObject::GetComponent<T>
+  87 stfld        CraftingStation::m_areaMarkerCircle
+  92 ldarg.0      
+  93 ldfld        CraftingStation::m_craftRequireFire
+  98 brfalse.s    121
+ 100 ldarg.0      
+ 101 ldstr        "CheckFire"
+ 106 ldc.r4       1
+ 111 ldc.r4       1
+ 116 call         UnityEngine.MonoBehaviour::InvokeRepeating
+ 121 ldarg.0      
+ 122 ldc.r4       2
+ 127 stfld        CraftingStation::m_updateExtensionTimer
+ 132 ret          
+
+== CraftingStation::OnEnable() -> void  il_size=12 sha=f2981b7c790d
+   locals_sig=null
+   0 call         CraftingStation::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Add
+  11 ret          
+
+== CraftingStation::OnDisable() -> void  il_size=13 sha=b86733e7ac1e
+   locals_sig=null
+   0 call         CraftingStation::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Remove
+  11 pop          
+  12 ret          
+
+== CraftingStation::OnDestroy() -> void  il_size=13 sha=0edc2bee3820
+   locals_sig=null
+   0 ldsfld       CraftingStation::m_allStations
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Remove
+  11 pop          
+  12 ret          
+
+== CraftingStation::Interact(class:108, bool, bool) -> bool  il_size=69 sha=89a9313c28f5
+   locals_sig=0x1100003f
+   0 ldarg.2      
+   1 brfalse.s    5
+   3 ldc.i4.0     
+   4 ret          
+   5 ldarg.1      
+   6 ldsfld       Player::m_localPlayer
+  11 call         UnityEngine.Object::op_Equality
+  16 brfalse.s    67
+  18 ldarg.0      
+  19 ldarg.1      
+  20 call         CraftingStation::InUseDistance(class:108)
+  25 brtrue.s     29
+  27 ldc.i4.0     
+  28 ret          
+  29 ldarg.1      
+  30 isinst       Player
+  35 stloc.0      
+  36 ldarg.0      
+  37 ldloc.0      
+  38 ldc.i4.1     
+  39 call         CraftingStation::CheckUsable(class:144,bool)
+  44 brfalse.s    67
+  46 ldloc.0      
+  47 ldarg.0      
+  48 callvirt     Player::SetCraftingStation(class:1048)
+  53 call         InventoryGui::get_instance()
+  58 ldnull       
+  59 ldc.i4.3     
+  60 callvirt     InventoryGui::Show(class:2016,i4)
+  65 ldc.i4.0     
+  66 ret          
+  67 ldc.i4.0     
+  68 ret          
+
+== CraftingStation::UseItem(class:108, class:3744) -> bool  il_size=2 sha=84a0936ff1fb
+   locals_sig=null
+   0 ldc.i4.0     
+   1 ret          
+
+== CraftingStation::CheckUsable(class:144, bool) -> bool  il_size=138 sha=72ccb08a27a1
+   locals_sig=0x11000054
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_craftRequireRoof
+   6 brfalse.s    92
+   8 ldarg.1      
+   9 callvirt     Player::NoCostCheat()
+  14 brtrue.s     92
+  16 ldarg.0      
+  17 ldfld        CraftingStation::m_roofCheckPoint
+  22 callvirt     UnityEngine.Transform::get_position
+  27 ldloca.s     0
+  29 ldloca.s     1
+  31 ldc.r4       0.5
+  36 call         Cover::GetCoverForPoint
+  41 ldloc.1      
+  42 brtrue.s     64
+  44 ldarg.2      
+  45 brfalse.s    62
+  47 ldarg.1      
+  48 ldc.i4.2     
+  49 ldstr        "$msg_stationneedroof"
+  54 ldc.i4.0     
+  55 ldnull       
+  56 ldc.i4.0     
+  57 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  62 ldc.i4.0     
+  63 ret          
+  64 ldloc.0      
+  65 ldc.r4       0.699999988079071
+  70 bge.un.s     92
+  72 ldarg.2      
+  73 brfalse.s    90
+  75 ldarg.1      
+  76 ldc.i4.2     
+  77 ldstr        "$msg_stationtooexposed"
+  82 ldc.i4.0     
+  83 ldnull       
+  84 ldc.i4.0     
+  85 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  90 ldc.i4.0     
+  91 ret          
+  92 ldarg.0      
+  93 ldfld        CraftingStation::m_craftRequireFire
+  98 brfalse.s    136
+ 100 ldarg.1      
+ 101 callvirt     Player::NoCostCheat()
+ 106 brtrue.s     136
+ 108 ldarg.0      
+ 109 ldfld        CraftingStation::m_haveFire
+ 114 brtrue.s     136
+ 116 ldarg.2      
+ 117 brfalse.s    134
+ 119 ldarg.1      
+ 120 ldc.i4.2     
+ 121 ldstr        "$msg_needfire"
+ 126 ldc.i4.0     
+ 127 ldnull       
+ 128 ldc.i4.0     
+ 129 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 134 ldc.i4.0     
+ 135 ret          
+ 136 ldc.i4.1     
+ 137 ret          
+
+== CraftingStation::GetHoverText() -> string  il_size=56 sha=70b58b202a18
+   locals_sig=null
+   0 ldarg.0      
+   1 ldsfld       Player::m_localPlayer
+   6 call         CraftingStation::InUseDistance(class:108)
+  11 brtrue.s     29
+  13 call         Localization::get_instance
+  18 ldstr        "<color=#888888>$piece_toofar</color>"
+  23 callvirt     Localization::Localize
+  28 ret          
+  29 call         Localization::get_instance
+  34 ldarg.0      
+  35 ldfld        CraftingStation::m_name
+  40 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] $piece_use "
+  45 call         System.String::Concat
+  50 callvirt     Localization::Localize
+  55 ret          
+
+== CraftingStation::GetHoverName() -> string  il_size=7 sha=69b50f792ec5
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_name
+   6 ret          
+
+== CraftingStation::ShowAreaMarker() -> void  il_size=59 sha=5c504140114d
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_areaMarker
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    58
+  13 ldarg.0      
+  14 ldfld        CraftingStation::m_areaMarker
+  19 ldc.i4.1     
+  20 callvirt     UnityEngine.GameObject::SetActive
+  25 ldarg.0      
+  26 ldstr        "HideMarker"
+  31 call         UnityEngine.MonoBehaviour::CancelInvoke
+  36 ldarg.0      
+  37 ldstr        "HideMarker"
+  42 ldc.r4       0.5
+  47 call         UnityEngine.MonoBehaviour::Invoke
+  52 ldarg.0      
+  53 call         CraftingStation::PokeInUse()
+  58 ret          
+
+== CraftingStation::HideMarker() -> void  il_size=13 sha=84cc8c932c46
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_areaMarker
+   6 ldc.i4.0     
+   7 callvirt     UnityEngine.GameObject::SetActive
+  12 ret          
+
+== CraftingStation::UpdateKnownStationsInRange(class:144) -> void  il_size=91 sha=869d7ae0cced
+   locals_sig=0x1100036d
+   0 ldarg.0      
+   1 callvirt     UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 stloc.0      
+  12 ldsfld       CraftingStation::m_allStations
+  17 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  22 stloc.1      
+  23 br.s         65
+  25 ldloca.s     1
+  27 call         Enumerator::get_Current
+  32 stloc.2      
+  33 ldloc.2      
+  34 callvirt     UnityEngine.Component::get_transform
+  39 callvirt     UnityEngine.Transform::get_position
+  44 ldloc.0      
+  45 call         UnityEngine.Vector3::Distance
+  50 ldloc.2      
+  51 ldfld        CraftingStation::m_discoverRange
+  56 bge.un.s     65
+  58 ldarg.0      
+  59 ldloc.2      
+  60 callvirt     Player::AddKnownStation(class:1048)
+  65 ldloca.s     1
+  67 call         Enumerator::MoveNext
+  72 brtrue.s     25
+  74 leave.s      90
+  76 ldloca.s     1
+  78 constrained. 0x1b0001fc
+  84 callvirt     System.IDisposable::Dispose
+  89 endfinally   
+  90 ret          
+
+== CraftingStation::CustomUpdate(r4, r4) -> void  il_size=110 sha=95174cc6faea
+   locals_sig=0x11000091
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_nview
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Equality
+  12 brtrue.s     27
+  14 ldarg.0      
+  15 ldfld        CraftingStation::m_nview
+  20 callvirt     ZNetView::IsValid()
+  25 brtrue.s     28
+  27 ret          
+  28 ldarg.0      
+  29 ldarg.0      
+  30 ldfld        CraftingStation::m_useTimer
+  35 ldarg.1      
+  36 add          
+  37 stfld        CraftingStation::m_useTimer
+  42 ldarg.0      
+  43 ldarg.0      
+  44 ldfld        CraftingStation::m_updateExtensionTimer
+  49 ldarg.1      
+  50 add          
+  51 stfld        CraftingStation::m_updateExtensionTimer
+  56 ldarg.0      
+  57 ldfld        CraftingStation::m_inUseObject
+  62 call         UnityEngine.Object::op_Implicit
+  67 brfalse.s    109
+  69 ldarg.0      
+  70 ldfld        CraftingStation::m_useTimer
+  75 ldc.r4       1
+  80 clt          
+  82 stloc.0      
+  83 ldarg.0      
+  84 ldfld        CraftingStation::m_inUseObject
+  89 callvirt     UnityEngine.GameObject::get_activeSelf
+  94 ldloc.0      
+  95 beq.s        109
+  97 ldarg.0      
+  98 ldfld        CraftingStation::m_inUseObject
+ 103 ldloc.0      
+ 104 callvirt     UnityEngine.GameObject::SetActive
+ 109 ret          
+
+== CraftingStation::CheckFire() -> void  il_size=53 sha=1f539f55dce4
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::get_transform
+   7 callvirt     UnityEngine.Transform::get_position
+  12 call         EffectArea::IsPointPlus025InsideBurningArea(valuetype:81)
+  17 stfld        CraftingStation::m_haveFire
+  22 ldarg.0      
+  23 ldfld        CraftingStation::m_haveFireObject
+  28 call         UnityEngine.Object::op_Implicit
+  33 brfalse.s    52
+  35 ldarg.0      
+  36 ldfld        CraftingStation::m_haveFireObject
+  41 ldarg.0      
+  42 ldfld        CraftingStation::m_haveFire
+  47 callvirt     UnityEngine.GameObject::SetActive
+  52 ret          
+
+== CraftingStation::PokeInUse() -> void  il_size=18 sha=4b5c35f73e44
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       0
+   6 stfld        CraftingStation::m_useTimer
+  11 ldarg.0      
+  12 call         CraftingStation::TriggerExtensionEffects()
+  17 ret          
+
+== CraftingStation::GetCraftingStation(valuetype:81) -> class:1048  il_size=105 sha=a5e73195c26e
+   locals_sig=0x1100036e
+   0 ldsfld       CraftingStation::m_triggerMask
+   5 brtrue.s     31
+   7 ldc.i4.1     
+   8 newarr       0x010001e8
+  13 dup          
+  14 ldc.i4.0     
+  15 ldstr        "character_trigger"
+  20 stelem.ref   
+  21 call         UnityEngine.LayerMask::GetMask
+  26 stsfld       CraftingStation::m_triggerMask
+  31 ldarg.0      
+  32 ldc.r4       0.10000000149011612
+  37 ldsfld       CraftingStation::m_triggerMask
+  42 ldc.i4.2     
+  43 call         UnityEngine.Physics::OverlapSphere
+  48 stloc.0      
+  49 ldc.i4.0     
+  50 stloc.1      
+  51 br.s         97
+  53 ldloc.0      
+  54 ldloc.1      
+  55 ldelem.ref   
+  56 stloc.2      
+  57 ldloc.2      
+  58 callvirt     UnityEngine.Component::get_gameObject
+  63 ldstr        "StationUseArea"
+  68 callvirt     UnityEngine.GameObject::CompareTag
+  73 brfalse.s    93
+  75 ldloc.2      
+  76 callvirt     UnityEngine.Component::GetComponentInParent<T>
+  81 stloc.3      
+  82 ldloc.3      
+  83 ldnull       
+  84 call         UnityEngine.Object::op_Inequality
+  89 brfalse.s    93
+  91 ldloc.3      
+  92 ret          
+  93 ldloc.1      
+  94 ldc.i4.1     
+  95 add          
+  96 stloc.1      
+  97 ldloc.1      
+  98 ldloc.0      
+  99 ldlen        
+ 100 conv.i4      
+ 101 blt.s        53
+ 103 ldnull       
+ 104 ret          
+
+== CraftingStation::HaveBuildStationInRange(string, valuetype:81) -> class:1048  il_size=118 sha=bb962093967d
+   locals_sig=0x1100036f
+   0 ldsfld       CraftingStation::m_allStations
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         89
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldfld        CraftingStation::m_name
+  27 ldarg.0      
+  28 call         System.String::op_Inequality
+  33 brtrue.s     89
+  35 ldloc.1      
+  36 callvirt     CraftingStation::GetStationBuildRange()
+  41 stloc.2      
+  42 ldarga.s     1
+  44 ldloc.1      
+  45 callvirt     UnityEngine.Component::get_transform
+  50 callvirt     UnityEngine.Transform::get_position
+  55 ldfld        UnityEngine.Vector3::y
+  60 stfld        UnityEngine.Vector3::y
+  65 ldloc.1      
+  66 callvirt     UnityEngine.Component::get_transform
+  71 callvirt     UnityEngine.Transform::get_position
+  76 ldarg.1      
+  77 call         UnityEngine.Vector3::Distance
+  82 ldloc.2      
+  83 bge.un.s     89
+  85 ldloc.1      
+  86 stloc.3      
+  87 leave.s      116
+  89 ldloca.s     0
+  91 call         Enumerator::MoveNext
+  96 brtrue.s     13
+  98 leave.s      114
+ 100 ldloca.s     0
+ 102 constrained. 0x1b0001fc
+ 108 callvirt     System.IDisposable::Dispose
+ 113 endfinally   
+ 114 ldnull       
+ 115 ret          
+ 116 ldloc.3      
+ 117 ret          
+
+== CraftingStation::FindStationsInRange(string, valuetype:81, r4, class:165<class:1048>) -> void  il_size=88 sha=105f1dd67813
+   locals_sig=0x11000370
+   0 ldsfld       CraftingStation::m_allStations
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         62
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldfld        CraftingStation::m_name
+  27 ldarg.0      
+  28 call         System.String::op_Inequality
+  33 brtrue.s     62
+  35 ldloc.1      
+  36 callvirt     UnityEngine.Component::get_transform
+  41 callvirt     UnityEngine.Transform::get_position
+  46 ldarg.1      
+  47 call         UnityEngine.Vector3::Distance
+  52 ldarg.2      
+  53 bge.un.s     62
+  55 ldarg.3      
+  56 ldloc.1      
+  57 callvirt     System.Collections.Generic.List`1::Add
+  62 ldloca.s     0
+  64 call         Enumerator::MoveNext
+  69 brtrue.s     13
+  71 leave.s      87
+  73 ldloca.s     0
+  75 constrained. 0x1b0001fc
+  81 callvirt     System.IDisposable::Dispose
+  86 endfinally   
+  87 ret          
+
+== CraftingStation::FindClosestStationInRange(string, valuetype:81, r4) -> class:1048  il_size=113 sha=ef346115a34a
+   locals_sig=0x11000371
+   0 ldnull       
+   1 stloc.0      
+   2 ldc.r4       99999
+   7 stloc.1      
+   8 ldsfld       CraftingStation::m_allStations
+  13 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  18 stloc.2      
+  19 br.s         86
+  21 ldloca.s     2
+  23 call         Enumerator::get_Current
+  28 stloc.3      
+  29 ldloc.3      
+  30 ldfld        CraftingStation::m_name
+  35 ldarg.0      
+  36 call         System.String::op_Inequality
+  41 brtrue.s     86
+  43 ldloc.3      
+  44 callvirt     UnityEngine.Component::get_transform
+  49 callvirt     UnityEngine.Transform::get_position
+  54 ldarg.1      
+  55 call         UnityEngine.Vector3::Distance
+  60 stloc.s      4
+  62 ldloc.s      4
+  64 ldarg.2      
+  65 bge.un.s     86
+  67 ldloc.s      4
+  69 ldloc.1      
+  70 blt.s        81
+  72 ldloc.0      
+  73 ldnull       
+  74 call         UnityEngine.Object::op_Equality
+  79 brfalse.s    86
+  81 ldloc.3      
+  82 stloc.0      
+  83 ldloc.s      4
+  85 stloc.1      
+  86 ldloca.s     2
+  88 call         Enumerator::MoveNext
+  93 brtrue.s     21
+  95 leave.s      111
+  97 ldloca.s     2
+  99 constrained. 0x1b0001fc
+ 105 callvirt     System.IDisposable::Dispose
+ 110 endfinally   
+ 111 ldloc.0      
+ 112 ret          
+
+== CraftingStation::GetExtensions() -> class:165<class:2400>  il_size=202 sha=fb7ddfc27f5c
+   locals_sig=0x11000372
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_updateExtensionTimer
+   6 ldc.r4       2
+  11 blt.un       195
+  16 ldarg.0      
+  17 ldc.r4       0
+  22 stfld        CraftingStation::m_updateExtensionTimer
+  27 ldarg.0      
+  28 ldfld        CraftingStation::m_attachedExtensions
+  33 callvirt     System.Collections.Generic.List`1::Clear
+  38 ldarg.0      
+  39 ldarg.0      
+  40 call         UnityEngine.Component::get_transform
+  45 callvirt     UnityEngine.Transform::get_position
+  50 ldarg.0      
+  51 ldfld        CraftingStation::m_attachedExtensions
+  56 call         StationExtension::FindExtensions(class:1048,valuetype:81,class:165<class:2400>)
+  61 ldarg.0      
+  62 ldarg.0      
+  63 ldfld        CraftingStation::m_rangeBuild
+  68 ldarg.0      
+  69 ldc.i4.0     
+  70 call         CraftingStation::GetExtentionCount(bool)
+  75 conv.r4      
+  76 ldarg.0      
+  77 ldfld        CraftingStation::m_extraRangePerLevel
+  82 mul          
+  83 add          
+  84 stfld        CraftingStation::m_buildRange
+  89 ldarg.0      
+  90 ldfld        CraftingStation::m_areaMarker
+  95 call         UnityEngine.Object::op_Implicit
+ 100 brfalse.s    119
+ 102 ldarg.0      
+ 103 ldfld        CraftingStation::m_areaMarkerCircle
+ 108 ldarg.0      
+ 109 ldfld        CraftingStation::m_buildRange
+ 114 stfld        CircleProjector::m_radius
+ 119 ldarg.0      
+ 120 ldfld        CraftingStation::m_effectAreaCollider
+ 125 ldnull       
+ 126 call         UnityEngine.Object::op_Equality
+ 131 brfalse.s    140
+ 133 ldarg.0      
+ 134 ldfld        CraftingStation::m_attachedExtensions
+ 139 ret          
+ 140 ldarg.0      
+ 141 ldfld        CraftingStation::m_effectAreaCollider
+ 146 stloc.2      
+ 147 ldloc.2      
+ 148 isinst       0x0100010f
+ 153 stloc.0      
+ 154 ldloc.0      
+ 155 brtrue.s     169
+ 157 ldloc.2      
+ 158 isinst       0x01000025
+ 163 stloc.1      
+ 164 ldloc.1      
+ 165 brtrue.s     183
+ 167 br.s         195
+ 169 ldloc.0      
+ 170 ldarg.0      
+ 171 ldfld        CraftingStation::m_buildRange
+ 176 callvirt     UnityEngine.SphereCollider::set_radius
+ 181 br.s         195
+ 183 ldloc.1      
+ 184 ldarg.0      
+ 185 ldfld        CraftingStation::m_buildRange
+ 190 callvirt     UnityEngine.CapsuleCollider::set_radius
+ 195 ldarg.0      
+ 196 ldfld        CraftingStation::m_attachedExtensions
+ 201 ret          
+
+== CraftingStation::TriggerExtensionEffects() -> void  il_size=75 sha=a9316e5f0622
+   locals_sig=0x11000373
+   0 ldarg.0      
+   1 call         CraftingStation::GetConnectionEffectPoint()
+   6 stloc.0      
+   7 ldarg.0      
+   8 call         CraftingStation::GetExtensions()
+  13 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  18 stloc.1      
+  19 br.s         49
+  21 ldloca.s     1
+  23 call         Enumerator::get_Current
+  28 stloc.2      
+  29 ldloc.2      
+  30 call         UnityEngine.Object::op_Implicit
+  35 brfalse.s    49
+  37 ldloc.2      
+  38 ldloc.0      
+  39 ldc.r4       1
+  44 callvirt     StationExtension::StartConnectionEffect(valuetype:81,r4)
+  49 ldloca.s     1
+  51 call         Enumerator::MoveNext
+  56 brtrue.s     21
+  58 leave.s      74
+  60 ldloca.s     1
+  62 constrained. 0x1b0001fe
+  68 callvirt     System.IDisposable::Dispose
+  73 endfinally   
+  74 ret          
+
+== CraftingStation::GetConnectionEffectPoint() -> valuetype:81  il_size=37 sha=dbfe596e5881
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_connectionPoint
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    25
+  13 ldarg.0      
+  14 ldfld        CraftingStation::m_connectionPoint
+  19 callvirt     UnityEngine.Transform::get_position
+  24 ret          
+  25 ldarg.0      
+  26 call         UnityEngine.Component::get_transform
+  31 callvirt     UnityEngine.Transform::get_position
+  36 ret          
+
+== CraftingStation::GetLevel(bool) -> i4  il_size=10 sha=4ca9b43d918b
+   locals_sig=null
+   0 ldc.i4.1     
+   1 ldarg.0      
+   2 ldarg.1      
+   3 call         CraftingStation::GetExtentionCount(bool)
+   8 add          
+   9 ret          
+
+== CraftingStation::GetExtentionCount(bool) -> i4  il_size=22 sha=6d63003df14c
+   locals_sig=null
+   0 ldarg.1      
+   1 brfalse.s    10
+   3 ldarg.0      
+   4 call         CraftingStation::GetExtensions()
+   9 pop          
+  10 ldarg.0      
+  11 ldfld        CraftingStation::m_attachedExtensions
+  16 callvirt     System.Collections.Generic.List`1::get_Count
+  21 ret          
+
+== CraftingStation::GetStationBuildRange() -> r4  il_size=14 sha=3b8da15f4a34
+   locals_sig=null
+   0 ldarg.0      
+   1 call         CraftingStation::GetExtensions()
+   6 pop          
+   7 ldarg.0      
+   8 ldfld        CraftingStation::m_buildRange
+  13 ret          
+
+== CraftingStation::InUseDistance(class:108) -> bool  il_size=36 sha=4217e0471641
+   locals_sig=null
+   0 ldarg.1      
+   1 callvirt     UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 ldarg.0      
+  12 call         UnityEngine.Component::get_transform
+  17 callvirt     UnityEngine.Transform::get_position
+  22 call         UnityEngine.Vector3::Distance
+  27 ldarg.0      
+  28 ldfld        CraftingStation::m_useDistance
+  33 clt          
+  35 ret          
+
+== CraftingStation::GetHoverOffset() -> r4  il_size=7 sha=17e5da9f7024
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_hoverOffset
+   6 ret          
+
+== CraftingStation::get_Instances() -> class:165<class:1116>  il_size=6 sha=a54d69f17213
+   locals_sig=null
+   0 ldsfld       CraftingStation::<Instances>k__BackingField
+   5 ret          
+
+== CraftingStation::.ctor() -> void  il_size=153 sha=ab8d21d631e6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        ""
+   6 stfld        CraftingStation::m_name
+  11 ldarg.0      
+  12 ldc.r4       4
+  17 stfld        CraftingStation::m_discoverRange
+  22 ldarg.0      
+  23 ldc.r4       10
+  28 stfld        CraftingStation::m_rangeBuild
+  33 ldarg.0      
+  34 ldc.i4.1     
+  35 stfld        CraftingStation::m_craftRequireRoof
+  40 ldarg.0      
+  41 ldc.i4.1     
+  42 stfld        CraftingStation::m_craftRequireFire
+  47 ldarg.0      
+  48 ldc.r4       2
+  53 stfld        CraftingStation::m_useDistance
+  58 ldarg.0      
+  59 ldc.i4.s     107
+  61 stfld        CraftingStation::m_craftingSkill
+  66 ldarg.0      
+  67 ldc.i4.1     
+  68 stfld        CraftingStation::m_hasCraftTab
+  73 ldarg.0      
+  74 ldc.i4.1     
+  75 stfld        CraftingStation::m_canRepair
+  80 ldarg.0      
+  81 newobj       EffectList::.ctor()
+  86 stfld        CraftingStation::m_craftItemEffects
+  91 ldarg.0      
+  92 newobj       EffectList::.ctor()
+  97 stfld        CraftingStation::m_craftItemDoneEffects
+ 102 ldarg.0      
+ 103 newobj       EffectList::.ctor()
+ 108 stfld        CraftingStation::m_repairItemDoneEffects
+ 113 ldarg.0      
+ 114 newobj       EffectList::.ctor()
+ 119 stfld        CraftingStation::m_craftItemDoneFailEffects
+ 124 ldarg.0      
+ 125 ldc.r4       10
+ 130 stfld        CraftingStation::m_useTimer
+ 135 ldarg.0      
+ 136 newobj       System.Collections.Generic.List`1::.ctor
+ 141 stfld        CraftingStation::m_attachedExtensions
+ 146 ldarg.0      
+ 147 call         UnityEngine.MonoBehaviour::.ctor
+ 152 ret          
+
+== CraftingStation::.cctor() -> void  il_size=27 sha=665520a803ed
+   locals_sig=null
+   0 newobj       System.Collections.Generic.List`1::.ctor
+   5 stsfld       CraftingStation::m_allStations
+  10 ldc.i4.0     
+  11 stsfld       CraftingStation::m_triggerMask
+  16 newobj       System.Collections.Generic.List`1::.ctor
+  21 stsfld       CraftingStation::<Instances>k__BackingField
+  26 ret          

@@ -1,0 +1,113 @@
+== Piece::Awake() -> void  il_size=328 sha=7274e89cf7f0
+   locals_sig=0x1100073a
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        Piece::m_nview
+  12 ldsfld       Piece::s_allPieces
+  17 ldarg.0      
+  18 callvirt     System.Collections.Generic.List`1::Add
+  23 ldarg.0      
+  24 ldsfld       Piece::s_allPieces
+  29 callvirt     System.Collections.Generic.List`1::get_Count
+  34 ldc.i4.1     
+  35 sub          
+  36 stfld        Piece::m_myListIndex
+  41 ldarg.0      
+  42 ldfld        Piece::m_comfort
+  47 ldc.i4.0     
+  48 ble.s        62
+  50 ldsfld       Piece::s_allComfortPieces
+  55 ldarg.0      
+  56 callvirt     System.Collections.Generic.HashSet`1::Add
+  61 pop          
+  62 ldarg.0      
+  63 ldfld        Piece::m_nview
+  68 call         UnityEngine.Object::op_Implicit
+  73 brfalse.s    145
+  75 ldarg.0      
+  76 ldfld        Piece::m_nview
+  81 callvirt     ZNetView::IsValid()
+  86 brfalse.s    145
+  88 ldarg.0      
+  89 ldarg.0      
+  90 ldfld        Piece::m_nview
+  95 callvirt     ZNetView::GetZDO()
+ 100 ldsfld       ZDOVars::s_creator
+ 105 ldc.i4.0     
+ 106 conv.i8      
+ 107 callvirt     ZDO::GetLong(i4,i8)
+ 112 stfld        Piece::m_creator
+ 117 ldarg.0      
+ 118 ldarg.0      
+ 119 ldfld        Piece::m_nview
+ 124 callvirt     ZNetView::GetZDO()
+ 129 ldsfld       ZDOVars::s_creatorIndex
+ 134 ldc.i4.m1    
+ 135 callvirt     ZDO::GetInt(i4,i4)
+ 140 stfld        Piece::m_creatorPlatformUserIDIndex
+ 145 ldsfld       Piece::s_ghostLayer
+ 150 brtrue.s     167
+ 152 ldstr        "ghost"
+ 157 call         UnityEngine.LayerMask::NameToLayer
+ 162 stsfld       Piece::s_ghostLayer
+ 167 ldsfld       Piece::s_pieceRayMask
+ 172 brtrue.s     206
+ 174 ldc.i4.2     
+ 175 newarr       0x010001e8
+ 180 dup          
+ 181 ldc.i4.0     
+ 182 ldstr        "piece"
+ 187 stelem.ref   
+ 188 dup          
+ 189 ldc.i4.1     
+ 190 ldstr        "piece_nonsolid"
+ 195 stelem.ref   
+ 196 call         UnityEngine.LayerMask::GetMask
+ 201 stsfld       Piece::s_pieceRayMask
+ 206 ldsfld       Piece::s_harvestRayMask
+ 211 brtrue.s     253
+ 213 ldc.i4.3     
+ 214 newarr       0x010001e8
+ 219 dup          
+ 220 ldc.i4.0     
+ 221 ldstr        "piece"
+ 226 stelem.ref   
+ 227 dup          
+ 228 ldc.i4.1     
+ 229 ldstr        "piece_nonsolid"
+ 234 stelem.ref   
+ 235 dup          
+ 236 ldc.i4.2     
+ 237 ldstr        "item"
+ 242 stelem.ref   
+ 243 call         UnityEngine.LayerMask::GetMask
+ 248 stsfld       Piece::s_harvestRayMask
+ 253 ldarg.0      
+ 254 ldfld        Piece::m_harvest
+ 259 brfalse.s    327
+ 261 ldarg.0      
+ 262 call         UnityEngine.Component::get_transform
+ 267 ldstr        "_GhostOnly"
+ 272 callvirt     UnityEngine.Transform::Find
+ 277 stloc.0      
+ 278 ldloc.0      
+ 279 brfalse.s    327
+ 281 ldsfld       Player::m_localPlayer
+ 286 ldc.i4.s     106
+ 288 callvirt     Character::GetSkillFactor(valuetype:2932)
+ 293 stloc.1      
+ 294 ldarg.0      
+ 295 ldfld        Piece::m_harvestRadius
+ 300 ldarg.0      
+ 301 ldfld        Piece::m_harvestRadiusMaxLevel
+ 306 ldloc.1      
+ 307 call         UnityEngine.Mathf::Lerp
+ 312 stloc.2      
+ 313 ldloc.0      
+ 314 ldloc.2      
+ 315 ldloc.2      
+ 316 ldloc.2      
+ 317 newobj       UnityEngine.Vector3::.ctor
+ 322 callvirt     UnityEngine.Transform::set_localScale
+ 327 ret          

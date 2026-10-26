@@ -1,0 +1,9 @@
+== WearNTear::OnPlaced() -> void  il_size=19 sha=54f614c10cb6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       -1
+   6 stfld        WearNTear::m_createTime
+  11 ldarg.0      
+  12 ldc.i4.1     
+  13 stfld        WearNTear::m_clearCachedSupport
+  18 ret          

@@ -1,0 +1,67 @@
+== ItemSets::AddKnown(class:4660) -> void  il_size=193 sha=73857643c783
+   locals_sig=0x110006f4
+   0 ldarg.1      
+   1 ldfld        ItemSets+ItemSet::m_knownStations
+   6 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  11 stloc.0      
+  12 br.s         33
+  14 ldloca.s     0
+  16 call         Enumerator::get_Current
+  21 stloc.1      
+  22 ldsfld       Player::m_localPlayer
+  27 ldloc.1      
+  28 callvirt     Player::AddKnownStation(class:1048)
+  33 ldloca.s     0
+  35 call         Enumerator::MoveNext
+  40 brtrue.s     14
+  42 leave.s      58
+  44 ldloca.s     0
+  46 constrained. 0x1b0001fc
+  52 callvirt     System.IDisposable::Dispose
+  57 endfinally   
+  58 ldarg.1      
+  59 ldfld        ItemSets+ItemSet::m_knownItems
+  64 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  69 stloc.2      
+  70 br.s         96
+  72 ldloca.s     2
+  74 call         Enumerator::get_Current
+  79 stloc.3      
+  80 ldsfld       Player::m_localPlayer
+  85 ldloc.3      
+  86 ldfld        ItemDrop::m_itemData
+  91 callvirt     Player::AddKnownItem(class:3744)
+  96 ldloca.s     2
+  98 call         Enumerator::MoveNext
+ 103 brtrue.s     72
+ 105 leave.s      121
+ 107 ldloca.s     2
+ 109 constrained. 0x1b0000d6
+ 115 callvirt     System.IDisposable::Dispose
+ 120 endfinally   
+ 121 ldarg.1      
+ 122 ldfld        ItemSets+ItemSet::m_inheritKnownFromItemSet
+ 127 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 132 stloc.s      4
+ 134 br.s         167
+ 136 ldloca.s     4
+ 138 call         Enumerator::get_Current
+ 143 stloc.s      5
+ 145 ldarg.0      
+ 146 ldloc.s      5
+ 148 call         ItemSets::GetSet(string)
+ 153 stloc.s      6
+ 155 ldloc.s      6
+ 157 brfalse.s    167
+ 159 ldarg.0      
+ 160 ldloc.s      6
+ 162 call         ItemSets::AddKnown(class:4660)
+ 167 ldloca.s     4
+ 169 call         Enumerator::MoveNext
+ 174 brtrue.s     136
+ 176 leave.s      192
+ 178 ldloca.s     4
+ 180 constrained. 0x1b00007b
+ 186 callvirt     System.IDisposable::Dispose
+ 191 endfinally   
+ 192 ret          

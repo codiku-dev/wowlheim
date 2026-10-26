@@ -1,0 +1,25 @@
+== MonoUpdatersExtra::CustomUpdate(class:165<class:1116>, class:165<class:1116>, string, r4, r4) -> void  il_size=63 sha=88f3ad3c082e
+   locals_sig=0x110003a8
+   0 ldarg.0      
+   1 ldarg.1      
+   2 callvirt     System.Collections.Generic.List`1::AddRange
+   7 ldarg.0      
+   8 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  13 stloc.0      
+  14 br.s         31
+  16 ldloca.s     0
+  18 call         Enumerator::get_Current
+  23 ldarg.3      
+  24 ldarg.s      4
+  26 callvirt     IMonoUpdater::CustomUpdate(r4,r4)
+  31 ldloca.s     0
+  33 call         Enumerator::MoveNext
+  38 brtrue.s     16
+  40 leave.s      56
+  42 ldloca.s     0
+  44 constrained. 0x1b00020b
+  50 callvirt     System.IDisposable::Dispose
+  55 endfinally   
+  56 ldarg.0      
+  57 callvirt     System.Collections.Generic.List`1::Clear
+  62 ret          

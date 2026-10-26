@@ -1,0 +1,10 @@
+== Player::GetHoveringPiece() -> class:2264  il_size=17 sha=932165722be8
+   locals_sig=null
+   0 ldarg.0      
+   1 callvirt     Character::InPlaceMode()
+   6 brtrue.s     10
+   8 ldnull       
+   9 ret          
+  10 ldarg.0      
+  11 ldfld        Player::m_hoveringPiece
+  16 ret          

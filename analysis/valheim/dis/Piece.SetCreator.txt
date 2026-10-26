@@ -1,0 +1,48 @@
+== Piece::SetCreator(i8, valuetype:389) -> void  il_size=138 sha=b9655aabc97a
+   locals_sig=0x1100073e
+   0 newobj       Piece+<>c__DisplayClass8_0::.ctor()
+   5 stloc.0      
+   6 ldloc.0      
+   7 ldarg.2      
+   8 stfld        Piece+<>c__DisplayClass8_0::platformUserID
+  13 ldarg.0      
+  14 ldfld        Piece::m_nview
+  19 ldnull       
+  20 call         UnityEngine.Object::op_Equality
+  25 brfalse.s    28
+  27 ret          
+  28 ldarg.0      
+  29 ldfld        Piece::m_nview
+  34 callvirt     ZNetView::IsOwner()
+  39 brfalse.s    137
+  41 ldarg.0      
+  42 call         Piece::GetCreator()
+  47 brfalse.s    50
+  49 ret          
+  50 ldarg.0      
+  51 ldarg.1      
+  52 stfld        Piece::m_creator
+  57 ldarg.0      
+  58 ldfld        Piece::m_nview
+  63 callvirt     ZNetView::GetZDO()
+  68 ldsfld       ZDOVars::s_creator
+  73 ldarg.1      
+  74 callvirt     ZDO::Set(i4,i8)
+  79 call         ZNet::get_World()
+  84 ldfld        World::m_playerHistory
+  89 ldloc.0      
+  90 ldftn        Piece+<>c__DisplayClass8_0::<SetCreator>b__0(valuetype:3816)
+  96 newobj       System.Predicate`1::.ctor
+ 101 callvirt     System.Collections.Generic.List`1::FindIndex
+ 106 stloc.1      
+ 107 ldarg.0      
+ 108 ldloc.1      
+ 109 stfld        Piece::m_creatorPlatformUserIDIndex
+ 114 ldarg.0      
+ 115 ldfld        Piece::m_nview
+ 120 callvirt     ZNetView::GetZDO()
+ 125 ldsfld       ZDOVars::s_creatorIndex
+ 130 ldloc.1      
+ 131 ldc.i4.0     
+ 132 callvirt     ZDO::Set(i4,i4,bool)
+ 137 ret          

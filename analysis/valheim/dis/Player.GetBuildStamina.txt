@@ -1,0 +1,41 @@
+== Player::GetBuildStamina() -> r4  il_size=97 sha=f811a1675ad1
+   locals_sig=0x11000013
+   0 ldarg.0      
+   1 call         Humanoid::GetRightItem()
+   6 ldfld        ItemDrop+ItemData::m_shared
+  11 ldfld        ItemDrop+ItemData+SharedData::m_attack
+  16 ldfld        Attack::m_attackStamina
+  21 stloc.0      
+  22 ldloc.0      
+  23 ldc.r4       1
+  28 ldarg.0      
+  29 callvirt     Character::GetEquipmentHomeItemModifier()
+  34 add          
+  35 mul          
+  36 stloc.0      
+  37 ldarg.0      
+  38 ldfld        Character::m_seman
+  43 ldloc.0      
+  44 ldloca.s     0
+  46 ldc.i4.1     
+  47 callvirt     SEMan::ModifyHomeItemStaminaUsage(r4,r4&,bool)
+  52 ldarg.0      
+  53 ldfld        Player::m_buildPieces
+  58 ldfld        PieceTable::m_skill
+  63 brfalse.s    95
+  65 ldarg.0      
+  66 ldarg.0      
+  67 ldfld        Player::m_buildPieces
+  72 ldfld        PieceTable::m_skill
+  77 callvirt     Character::GetSkillFactor(valuetype:2932)
+  82 stloc.1      
+  83 ldloc.0      
+  84 ldloc.0      
+  85 ldc.r4       0.5
+  90 mul          
+  91 ldloc.1      
+  92 mul          
+  93 sub          
+  94 stloc.0      
+  95 ldloc.0      
+  96 ret          

@@ -1,0 +1,158 @@
+== Player::GetAvailableRecipes(class:165<class:1080>&) -> void  il_size=524 sha=40635be3a95e
+   locals_sig=0x110000d0
+   0 ldarg.1      
+   1 ldind.ref    
+   2 callvirt     System.Collections.Generic.List`1::Clear
+   7 call         ObjectDB::get_instance()
+  12 ldfld        ObjectDB::m_recipes
+  17 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  22 stloc.0      
+  23 br           495
+  28 ldloca.s     0
+  30 call         Enumerator::get_Current
+  35 stloc.1      
+  36 ldarg.0      
+  37 ldfld        Player::m_currentSeason
+  42 ldnull       
+  43 call         UnityEngine.Object::op_Inequality
+  48 brtrue.s     53
+  50 ldc.i4.0     
+  51 br.s         70
+  53 ldarg.0      
+  54 ldfld        Player::m_currentSeason
+  59 ldfld        SeasonalItemGroup::Recipes
+  64 ldloc.1      
+  65 callvirt     System.Collections.Generic.List`1::Contains
+  70 stloc.2      
+  71 ldloc.1      
+  72 ldfld        Recipe::m_enabled
+  77 brtrue.s     85
+  79 ldloc.2      
+  80 brfalse      495
+  85 ldloc.1      
+  86 ldfld        Recipe::m_item
+  91 call         UnityEngine.Object::op_Implicit
+  96 brfalse      495
+ 101 ldsfld       Player::s_FilterCraft
+ 106 callvirt     System.Collections.Generic.List`1::get_Count
+ 111 ldc.i4.0     
+ 112 ble          350
+ 117 ldc.i4.0     
+ 118 stloc.3      
+ 119 ldc.i4.0     
+ 120 stloc.s      4
+ 122 br           327
+ 127 ldsfld       Player::s_FilterCraft
+ 132 ldloc.s      4
+ 134 callvirt     System.Collections.Generic.List`1::get_Item
+ 139 callvirt     System.String::get_Length
+ 144 ldc.i4.0     
+ 145 ble          303
+ 150 ldloc.1      
+ 151 ldfld        Recipe::m_item
+ 156 callvirt     UnityEngine.Object::get_name
+ 161 callvirt     System.String::ToLower
+ 166 ldsfld       Player::s_FilterCraft
+ 171 ldloc.s      4
+ 173 callvirt     System.Collections.Generic.List`1::get_Item
+ 178 callvirt     System.String::ToLower
+ 183 callvirt     System.String::Contains
+ 188 brtrue       344
+ 193 ldloc.1      
+ 194 ldfld        Recipe::m_item
+ 199 ldfld        ItemDrop::m_itemData
+ 204 ldfld        ItemDrop+ItemData::m_shared
+ 209 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 214 callvirt     System.String::ToLower
+ 219 ldsfld       Player::s_FilterCraft
+ 224 ldloc.s      4
+ 226 callvirt     System.Collections.Generic.List`1::get_Item
+ 231 callvirt     System.String::ToLower
+ 236 callvirt     System.String::Contains
+ 241 brtrue.s     344
+ 243 call         Localization::get_instance
+ 248 ldloc.1      
+ 249 ldfld        Recipe::m_item
+ 254 ldfld        ItemDrop::m_itemData
+ 259 ldfld        ItemDrop+ItemData::m_shared
+ 264 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 269 callvirt     Localization::Localize
+ 274 callvirt     System.String::ToLower
+ 279 ldsfld       Player::s_FilterCraft
+ 284 ldloc.s      4
+ 286 callvirt     System.Collections.Generic.List`1::get_Item
+ 291 callvirt     System.String::ToLower
+ 296 callvirt     System.String::Contains
+ 301 brtrue.s     344
+ 303 ldloc.s      4
+ 305 ldc.i4.1     
+ 306 add          
+ 307 ldsfld       Player::s_FilterCraft
+ 312 callvirt     System.Collections.Generic.List`1::get_Count
+ 317 bne.un.s     321
+ 319 ldc.i4.1     
+ 320 stloc.3      
+ 321 ldloc.s      4
+ 323 ldc.i4.1     
+ 324 add          
+ 325 stloc.s      4
+ 327 ldloc.s      4
+ 329 ldsfld       Player::s_FilterCraft
+ 334 callvirt     System.Collections.Generic.List`1::get_Count
+ 339 blt          127
+ 344 ldloc.3      
+ 345 brtrue       495
+ 350 ldloc.1      
+ 351 ldfld        Recipe::m_item
+ 356 ldfld        ItemDrop::m_itemData
+ 361 ldfld        ItemDrop+ItemData::m_shared
+ 366 ldfld        ItemDrop+ItemData+SharedData::m_dlc
+ 371 callvirt     System.String::get_Length
+ 376 ldc.i4.0     
+ 377 ble.s        412
+ 379 call         DLCMan::get_instance()
+ 384 ldloc.1      
+ 385 ldfld        Recipe::m_item
+ 390 ldfld        ItemDrop::m_itemData
+ 395 ldfld        ItemDrop+ItemData::m_shared
+ 400 ldfld        ItemDrop+ItemData+SharedData::m_dlc
+ 405 callvirt     DLCMan::IsDLCInstalled(string)
+ 410 brfalse.s    495
+ 412 ldarg.0      
+ 413 ldfld        Player::m_knownRecipes
+ 418 ldloc.1      
+ 419 ldfld        Recipe::m_item
+ 424 ldfld        ItemDrop::m_itemData
+ 429 ldfld        ItemDrop+ItemData::m_shared
+ 434 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 439 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 444 brtrue.s     468
+ 446 ldarg.0      
+ 447 ldfld        Player::m_noPlacementCost
+ 452 brtrue.s     468
+ 454 call         ZoneSystem::get_instance()
+ 459 ldc.i4.s     28
+ 461 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+ 466 brfalse.s    495
+ 468 ldarg.0      
+ 469 ldloc.1      
+ 470 ldc.i4.1     
+ 471 ldc.i4.0     
+ 472 call         Player::RequiredCraftingStation(class:1080,i4,bool)
+ 477 brtrue.s     487
+ 479 ldarg.0      
+ 480 ldfld        Player::m_noPlacementCost
+ 485 brfalse.s    495
+ 487 ldarg.1      
+ 488 ldind.ref    
+ 489 ldloc.1      
+ 490 callvirt     System.Collections.Generic.List`1::Add
+ 495 ldloca.s     0
+ 497 call         Enumerator::MoveNext
+ 502 brtrue       28
+ 507 leave.s      523
+ 509 ldloca.s     0
+ 511 constrained. 0x1b00009a
+ 517 callvirt     System.IDisposable::Dispose
+ 522 endfinally   
+ 523 ret          

@@ -1,0 +1,672 @@
+== Player::UpdatePlacement(bool, r4) -> void  il_size=2068 sha=9c008f378993
+   locals_sig=0x1100008e
+   0 ldarg.0      
+   1 call         Player::UpdateWearNTearHover()
+   6 ldarg.0      
+   7 callvirt     Character::InPlaceMode()
+  12 brfalse      2042
+  17 ldarg.0      
+  18 callvirt     Character::IsDead()
+  23 brtrue       2042
+  28 ldarg.1      
+  29 brtrue.s     32
+  31 ret          
+  32 ldarg.0      
+  33 call         Player::UpdateBuildGuiInput()
+  38 call         Hud::IsPieceSelectionVisible()
+  43 brfalse.s    46
+  45 ret          
+  46 ldarg.0      
+  47 call         Humanoid::GetRightItem()
+  52 stloc.0      
+  53 ldstr        "AltPlace"
+  58 call         ZInput::GetButton
+  63 brtrue.s     77
+  65 ldstr        "JoyAltKeys"
+  70 call         ZInput::GetButton
+  75 brfalse.s    204
+  77 ldstr        "JoyLStick"
+  82 call         ZInput::GetButtonDown
+  87 brtrue.s     197
+  89 ldstr        "JoyRStick"
+  94 call         ZInput::GetButtonDown
+  99 brtrue.s     197
+ 101 ldstr        "JoyButtonA"
+ 106 call         ZInput::GetButtonDown
+ 111 brtrue.s     197
+ 113 ldstr        "JoyButtonB"
+ 118 call         ZInput::GetButtonDown
+ 123 brtrue.s     197
+ 125 ldstr        "JoyButtonX"
+ 130 call         ZInput::GetButtonDown
+ 135 brtrue.s     197
+ 137 ldstr        "JoyButtonY"
+ 142 call         ZInput::GetButtonDown
+ 147 brtrue.s     197
+ 149 ldstr        "JoyDPadUp"
+ 154 call         ZInput::GetButtonDown
+ 159 brtrue.s     197
+ 161 ldstr        "JoyDPadDown"
+ 166 call         ZInput::GetButtonDown
+ 171 brtrue.s     197
+ 173 ldstr        "JoyDPadLeft"
+ 178 call         ZInput::GetButtonDown
+ 183 brtrue.s     197
+ 185 ldstr        "JoyDPadRight"
+ 190 call         ZInput::GetButtonDown
+ 195 brfalse.s    204
+ 197 ldarg.0      
+ 198 ldc.i4.1     
+ 199 stfld        Player::m_blockRemove
+ 204 ldstr        "Remove"
+ 209 call         ZInput::GetButtonDown
+ 214 brtrue.s     228
+ 216 ldstr        "JoyRemove"
+ 221 call         ZInput::GetButtonDown
+ 226 brfalse.s    282
+ 228 ldstr        "AltPlace"
+ 233 call         ZInput::GetButton
+ 238 brtrue.s     252
+ 240 ldstr        "JoyAltKeys"
+ 245 call         ZInput::GetButton
+ 250 brfalse.s    282
+ 252 ldsfld       ZInput::InputLayout
+ 257 brfalse.s    266
+ 259 call         ZInput::IsGamepadActive
+ 264 brtrue.s     282
+ 266 ldarg.0      
+ 267 call         Player::CopyPiece()
+ 272 pop          
+ 273 ldarg.0      
+ 274 ldc.i4.1     
+ 275 stfld        Player::m_blockRemove
+ 280 br.s         332
+ 282 ldarg.0      
+ 283 ldfld        Player::m_blockRemove
+ 288 brtrue.s     332
+ 290 call         ZInput::IsGamepadActive
+ 295 brtrue.s     309
+ 297 ldstr        "Remove"
+ 302 call         ZInput::GetButtonUp
+ 307 brtrue.s     321
+ 309 ldstr        "JoyRemove"
+ 314 call         ZInput::GetButtonUp
+ 319 brfalse.s    332
+ 321 ldarg.0      
+ 322 call         UnityEngine.Time::get_time
+ 327 stfld        Player::m_removePressedTime
+ 332 ldstr        "AltPlace"
+ 337 call         ZInput::GetButton
+ 342 brtrue.s     363
+ 344 ldstr        "JoyAltKeys"
+ 349 call         ZInput::GetButton
+ 354 brtrue.s     363
+ 356 ldarg.0      
+ 357 ldc.i4.0     
+ 358 stfld        Player::m_blockRemove
+ 363 ldarg.0      
+ 364 call         Player::GetHoveringPiece()
+ 369 stloc.1      
+ 370 ldloc.1      
+ 371 call         UnityEngine.Object::op_Implicit
+ 376 brfalse.s    388
+ 378 ldloc.1      
+ 379 callvirt     UnityEngine.Component::GetComponent<T>
+ 384 stloc.3      
+ 385 ldloc.3      
+ 386 brtrue.s     391
+ 388 ldnull       
+ 389 br.s         392
+ 391 ldloc.3      
+ 392 stloc.2      
+ 393 ldloc.1      
+ 394 call         UnityEngine.Object::op_Implicit
+ 399 brfalse.s    413
+ 401 ldloc.1      
+ 402 callvirt     UnityEngine.Component::GetComponent<T>
+ 407 stloc.s      5
+ 409 ldloc.s      5
+ 411 brtrue.s     416
+ 413 ldnull       
+ 414 br.s         418
+ 416 ldloc.s      5
+ 418 stloc.s      4
+ 420 ldloc.0      
+ 421 ldfld        ItemDrop+ItemData::m_shared
+ 426 ldfld        ItemDrop+ItemData+SharedData::m_buildPieces
+ 431 ldfld        PieceTable::m_canRemovePieces
+ 436 brfalse.s    472
+ 438 ldloc.1      
+ 439 call         UnityEngine.Object::op_Implicit
+ 444 brfalse.s    533
+ 446 ldloc.2      
+ 447 call         UnityEngine.Object::op_Implicit
+ 452 brtrue.s     472
+ 454 ldloc.s      4
+ 456 call         UnityEngine.Object::op_Implicit
+ 461 brfalse.s    533
+ 463 ldloc.s      4
+ 465 callvirt     ItemDrop::IsPiece()
+ 470 brfalse.s    533
+ 472 ldloc.0      
+ 473 ldfld        ItemDrop+ItemData::m_shared
+ 478 ldfld        ItemDrop+ItemData+SharedData::m_buildPieces
+ 483 ldfld        PieceTable::m_canRemoveFeasts
+ 488 brfalse.s    530
+ 490 ldloc.1      
+ 491 call         UnityEngine.Object::op_Implicit
+ 496 brfalse.s    527
+ 498 ldloc.2      
+ 499 call         UnityEngine.Object::op_Implicit
+ 504 brtrue.s     527
+ 506 ldloc.s      4
+ 508 call         UnityEngine.Object::op_Implicit
+ 513 brfalse.s    524
+ 515 ldloc.s      4
+ 517 callvirt     ItemDrop::IsPiece()
+ 522 br.s         534
+ 524 ldc.i4.0     
+ 525 br.s         534
+ 527 ldc.i4.1     
+ 528 br.s         534
+ 530 ldc.i4.0     
+ 531 br.s         534
+ 533 ldc.i4.1     
+ 534 stloc.s      6
+ 536 call         UnityEngine.Time::get_time
+ 541 ldarg.0      
+ 542 ldfld        Player::m_removePressedTime
+ 547 sub          
+ 548 ldc.r4       0.20000000298023224
+ 553 bge.un       841
+ 558 ldloc.s      6
+ 560 brfalse      841
+ 565 call         UnityEngine.Time::get_time
+ 570 ldarg.0      
+ 571 ldfld        Player::m_lastToolUseTime
+ 576 sub          
+ 577 ldarg.0      
+ 578 ldfld        Player::m_removeDelay
+ 583 ble.un       841
+ 588 ldarg.0      
+ 589 ldc.r4       -9999
+ 594 stfld        Player::m_removePressedTime
+ 599 ldarg.0      
+ 600 ldloc.0      
+ 601 ldfld        ItemDrop+ItemData::m_shared
+ 606 ldfld        ItemDrop+ItemData+SharedData::m_attack
+ 611 ldfld        Attack::m_attackStamina
+ 616 callvirt     Character::HaveStamina(r4)
+ 621 brfalse      831
+ 626 ldarg.0      
+ 627 call         Player::RemovePiece()
+ 632 brfalse      841
+ 637 ldarg.0      
+ 638 call         UnityEngine.Time::get_time
+ 643 stfld        Player::m_lastToolUseTime
+ 648 ldarg.0      
+ 649 ldc.r4       50
+ 654 call         Character::AddNoise(r4)
+ 659 ldarg.0      
+ 660 ldarg.0      
+ 661 call         Player::GetBuildStamina()
+ 666 callvirt     Character::UseStamina(r4)
+ 671 ldarg.0      
+ 672 ldfld        Player::m_buildPieces
+ 677 ldfld        PieceTable::m_skill
+ 682 brfalse.s    744
+ 684 ldarg.0      
+ 685 ldfld        Player::m_buildRemoveDebt
+ 690 ldc.i4.s     20
+ 692 bge.s        744
+ 694 ldarg.0      
+ 695 ldarg.0      
+ 696 ldfld        Player::m_buildRemoveDebt
+ 701 ldc.i4.1     
+ 702 add          
+ 703 stfld        Player::m_buildRemoveDebt
+ 708 ldarg.0      
+ 709 ldfld        Player::m_buildPieces
+ 714 ldfld        PieceTable::m_skill
+ 719 ldc.i4.s     107
+ 721 bne.un.s     744
+ 723 call         Game::get_instance()
+ 728 ldc.i4       170
+ 733 ldc.r4       1
+ 738 ldc.i4.0     
+ 739 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+ 744 ldloc.0      
+ 745 ldfld        ItemDrop+ItemData::m_shared
+ 750 ldfld        ItemDrop+ItemData+SharedData::m_useDurability
+ 755 brfalse.s    783
+ 757 ldloc.0      
+ 758 dup          
+ 759 ldfld        ItemDrop+ItemData::m_durability
+ 764 ldarg.0      
+ 765 ldloc.0      
+ 766 call         Player::GetPlaceDurability(class:3744)
+ 771 ldsfld       Game::m_durabilityRate
+ 776 mul          
+ 777 sub          
+ 778 stfld        ItemDrop+ItemData::m_durability
+ 783 ldloc.0      
+ 784 ldfld        ItemDrop+ItemData::m_shared
+ 789 ldfld        ItemDrop+ItemData+SharedData::m_destroyEffect
+ 794 ldloc.1      
+ 795 callvirt     UnityEngine.Component::get_transform
+ 800 callvirt     UnityEngine.Transform::get_position
+ 805 call         UnityEngine.Quaternion::get_identity
+ 810 ldnull       
+ 811 ldc.r4       1
+ 816 ldc.i4.m1    
+ 817 ldarg.0      
+ 818 call         Character::GetZDOID()
+ 823 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 828 pop          
+ 829 br.s         841
+ 831 call         Hud::get_instance()
+ 836 callvirt     Hud::StaminaBarEmptyFlash()
+ 841 ldstr        "Attack"
+ 846 call         ZInput::GetButtonDown
+ 851 brtrue.s     865
+ 853 ldstr        "JoyPlace"
+ 858 call         ZInput::GetButtonDown
+ 863 brfalse.s    883
+ 865 call         Hud::InRadial()
+ 870 brtrue.s     883
+ 872 ldarg.0      
+ 873 call         UnityEngine.Time::get_time
+ 878 stfld        Player::m_placePressedTime
+ 883 call         UnityEngine.Time::get_time
+ 888 ldarg.0      
+ 889 ldfld        Player::m_placePressedTime
+ 894 sub          
+ 895 ldc.r4       0.20000000298023224
+ 900 bge.un       1447
+ 905 call         UnityEngine.Time::get_time
+ 910 ldarg.0      
+ 911 ldfld        Player::m_lastToolUseTime
+ 916 sub          
+ 917 ldarg.0      
+ 918 ldfld        Player::m_placeDelay
+ 923 ble.un       1447
+ 928 ldarg.0      
+ 929 ldc.r4       -9999
+ 934 stfld        Player::m_placePressedTime
+ 939 ldstr        "JoyAltKeys"
+ 944 call         ZInput::GetButton
+ 949 brfalse.s    970
+ 951 ldarg.0      
+ 952 call         Player::CopyPiece()
+ 957 pop          
+ 958 ldarg.0      
+ 959 ldc.i4.1     
+ 960 stfld        Player::m_blockRemove
+ 965 br           1447
+ 970 ldarg.0      
+ 971 ldfld        Player::m_buildPieces
+ 976 callvirt     PieceTable::GetSelectedPiece()
+ 981 stloc.s      11
+ 983 ldloc.s      11
+ 985 ldnull       
+ 986 call         UnityEngine.Object::op_Inequality
+ 991 brfalse      1447
+ 996 ldarg.0      
+ 997 ldloc.0      
+ 998 ldfld        ItemDrop+ItemData::m_shared
+1003 ldfld        ItemDrop+ItemData+SharedData::m_attack
+1008 ldfld        Attack::m_attackStamina
+1013 callvirt     Character::HaveStamina(r4)
+1018 brfalse      1437
+1023 ldloc.s      11
+1025 ldfld        Piece::m_repairPiece
+1030 brfalse.s    1046
+1032 ldarg.0      
+1033 ldloc.0      
+1034 ldloc.s      11
+1036 call         Player::Repair(class:3744,class:2264)
+1041 br           1447
+1046 ldloc.s      11
+1048 ldfld        Piece::m_removePiece
+1053 ldloc.s      6
+1055 and          
+1056 brfalse.s    1070
+1058 ldarg.0      
+1059 call         Player::RemovePiece()
+1064 pop          
+1065 br           1447
+1070 ldarg.0      
+1071 ldfld        Player::m_placementGhost
+1076 ldnull       
+1077 call         UnityEngine.Object::op_Inequality
+1082 brfalse      1447
+1087 ldarg.0      
+1088 ldfld        Player::m_noPlacementCost
+1093 brtrue.s     1109
+1095 ldarg.0      
+1096 ldloc.s      11
+1098 ldc.i4.0     
+1099 call         Player::HaveRequirements(class:2264,valuetype:2888)
+1104 brfalse      1420
+1109 ldarg.0      
+1110 ldloc.s      11
+1112 call         Player::TryPlacePiece(class:2264)
+1117 brfalse      1447
+1122 call         Hud::get_instance()
+1127 ldfld        Hud::m_buildUi
+1132 ldarg.0      
+1133 call         Player::GetSelectedPiece()
+1138 callvirt     BuildUi::AddRecentPiece(class:2264)
+1143 ldarg.0      
+1144 call         UnityEngine.Time::get_time
+1149 stfld        Player::m_lastToolUseTime
+1154 call         ZoneSystem::get_instance()
+1159 ldloc.s      11
+1161 callvirt     Piece::FreeBuildKey()
+1166 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+1171 brtrue.s     1189
+1173 ldarg.0      
+1174 ldloc.s      11
+1176 ldfld        Piece::m_resources
+1181 ldc.i4.0     
+1182 ldc.i4.m1    
+1183 ldc.i4.1     
+1184 call         Player::ConsumeResources(class:4720[],i4,i4,i4)
+1189 ldarg.0      
+1190 ldarg.0      
+1191 call         Player::GetBuildStamina()
+1196 callvirt     Character::UseStamina(r4)
+1201 ldarg.0      
+1202 ldfld        Player::m_buildPieces
+1207 ldfld        PieceTable::m_skill
+1212 brfalse.s    1333
+1214 ldarg.0      
+1215 ldfld        Player::m_buildPieces
+1220 ldfld        PieceTable::m_skill
+1225 ldc.i4.s     107
+1227 bne.un.s     1250
+1229 call         Game::get_instance()
+1234 ldc.i4       168
+1239 ldc.r4       1
+1244 ldc.i4.0     
+1245 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+1250 ldarg.0      
+1251 ldfld        Player::m_buildRemoveDebt
+1256 ldc.i4.0     
+1257 ble.s        1275
+1259 ldarg.0      
+1260 ldarg.0      
+1261 ldfld        Player::m_buildRemoveDebt
+1266 ldc.i4.1     
+1267 sub          
+1268 stfld        Player::m_buildRemoveDebt
+1273 br.s         1333
+1275 ldarg.0      
+1276 ldarg.0      
+1277 ldfld        Player::m_buildPieces
+1282 ldfld        PieceTable::m_skill
+1287 ldc.r4       1
+1292 callvirt     Character::RaiseSkill(valuetype:2932,r4)
+1297 ldarg.0      
+1298 ldfld        Player::m_buildPieces
+1303 ldfld        PieceTable::m_skill
+1308 ldc.i4.s     107
+1310 bne.un.s     1333
+1312 call         Game::get_instance()
+1317 ldc.i4       169
+1322 ldc.r4       1
+1327 ldc.i4.0     
+1328 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+1333 ldloc.0      
+1334 ldfld        ItemDrop+ItemData::m_shared
+1339 ldfld        ItemDrop+ItemData+SharedData::m_useDurability
+1344 brfalse.s    1372
+1346 ldloc.0      
+1347 dup          
+1348 ldfld        ItemDrop+ItemData::m_durability
+1353 ldarg.0      
+1354 ldloc.0      
+1355 call         Player::GetPlaceDurability(class:3744)
+1360 ldsfld       Game::m_durabilityRate
+1365 mul          
+1366 sub          
+1367 stfld        ItemDrop+ItemData::m_durability
+1372 ldloc.0      
+1373 ldfld        ItemDrop+ItemData::m_shared
+1378 ldfld        ItemDrop+ItemData+SharedData::m_buildEffect
+1383 ldarg.0      
+1384 call         UnityEngine.Component::get_transform
+1389 callvirt     UnityEngine.Transform::get_position
+1394 call         UnityEngine.Quaternion::get_identity
+1399 ldnull       
+1400 ldc.r4       1
+1405 ldc.i4.m1    
+1406 ldarg.0      
+1407 call         Character::GetZDOID()
+1412 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+1417 pop          
+1418 br.s         1447
+1420 ldarg.0      
+1421 ldc.i4.2     
+1422 ldstr        "$msg_missingrequirement"
+1427 ldc.i4.0     
+1428 ldnull       
+1429 ldc.i4.0     
+1430 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+1435 br.s         1447
+1437 call         Hud::get_instance()
+1442 callvirt     Hud::StaminaBarEmptyFlash()
+1447 ldarg.0      
+1448 ldfld        Player::m_placementGhost
+1453 call         UnityEngine.Object::op_Implicit
+1458 brfalse.s    1489
+1460 ldarg.0      
+1461 ldfld        Player::m_placementGhost
+1466 callvirt     UnityEngine.GameObject::get_gameObject
+1471 callvirt     UnityEngine.GameObject::GetComponent<T>
+1476 stloc.s      7
+1478 ldloc.s      7
+1480 brfalse.s    1489
+1482 ldloc.s      7
+1484 callvirt     IPieceMarker::ShowBuildMarker()
+1489 ldloc.1      
+1490 call         UnityEngine.Object::op_Implicit
+1495 brfalse.s    1521
+1497 ldloc.1      
+1498 callvirt     UnityEngine.Component::get_gameObject
+1503 callvirt     UnityEngine.GameObject::GetComponent<T>
+1508 stloc.s      12
+1510 ldloc.s      12
+1512 brfalse.s    1521
+1514 ldloc.s      12
+1516 callvirt     IPieceMarker::ShowHoverMarker()
+1521 ldarg.0      
+1522 ldfld        Player::m_placementGhost
+1527 call         UnityEngine.Object::op_Implicit
+1532 brfalse      1673
+1537 ldarg.0      
+1538 ldfld        Player::m_placementGhost
+1543 callvirt     UnityEngine.GameObject::GetComponent<T>
+1548 stloc.s      8
+1550 ldloc.s      8
+1552 brfalse.s    1673
+1554 ldloc.s      8
+1556 ldfld        Piece::m_canRotate
+1561 brfalse.s    1673
+1563 ldarg.0      
+1564 ldfld        Player::m_placementGhost
+1569 callvirt     UnityEngine.GameObject::get_activeInHierarchy
+1574 brfalse.s    1673
+1576 ldarg.0      
+1577 ldarg.0      
+1578 ldfld        Player::m_scrollCurrAmount
+1583 call         ZInput::GetMouseScrollWheel
+1588 add          
+1589 stfld        Player::m_scrollCurrAmount
+1594 ldarg.0      
+1595 ldfld        Player::m_scrollCurrAmount
+1600 ldarg.0      
+1601 ldfld        Player::m_scrollAmountThreshold
+1606 ble.un.s     1633
+1608 ldarg.0      
+1609 ldc.r4       0
+1614 stfld        Player::m_scrollCurrAmount
+1619 ldarg.0      
+1620 ldarg.0      
+1621 ldfld        Player::m_placeRotation
+1626 ldc.i4.1     
+1627 add          
+1628 stfld        Player::m_placeRotation
+1633 ldarg.0      
+1634 ldfld        Player::m_scrollCurrAmount
+1639 ldarg.0      
+1640 ldfld        Player::m_scrollAmountThreshold
+1645 neg          
+1646 bge.un.s     1673
+1648 ldarg.0      
+1649 ldc.r4       0
+1654 stfld        Player::m_scrollCurrAmount
+1659 ldarg.0      
+1660 ldarg.0      
+1661 ldfld        Player::m_placeRotation
+1666 ldc.i4.1     
+1667 sub          
+1668 stfld        Player::m_placeRotation
+1673 ldc.r4       0
+1678 stloc.s      9
+1680 ldc.i4.0     
+1681 stloc.s      10
+1683 call         ZInput::IsGamepadActive
+1688 brfalse.s    1798
+1690 ldsfld       ZInput::InputLayout
+1695 stloc.s      13
+1697 ldloc.s      13
+1699 brfalse.s    1760
+1701 ldloc.s      13
+1703 ldc.i4.1     
+1704 sub          
+1705 ldc.i4.1     
+1706 bgt.un.s     1798
+1708 ldstr        "JoyRotate"
+1713 call         ZInput::GetButton
+1718 ldstr        "JoyRotateRight"
+1723 call         ZInput::GetButton
+1728 stloc.s      14
+1730 dup          
+1731 ldloc.s      14
+1733 or           
+1734 stloc.s      10
+1736 brfalse.s    1747
+1738 ldc.r4       0.5
+1743 stloc.s      9
+1745 br.s         1798
+1747 ldloc.s      14
+1749 brfalse.s    1798
+1751 ldc.r4       -0.5
+1756 stloc.s      9
+1758 br.s         1798
+1760 call         ZInput::GetJoyRightStickX
+1765 stloc.s      9
+1767 ldstr        "JoyRotate"
+1772 call         ZInput::GetButton
+1777 brfalse.s    1795
+1779 ldloc.s      9
+1781 call         UnityEngine.Mathf::Abs
+1786 ldc.r4       0.5
+1791 cgt          
+1793 br.s         1796
+1795 ldc.i4.0     
+1796 stloc.s      10
+1798 ldloc.s      10
+1800 brfalse      1938
+1805 ldarg.0      
+1806 ldfld        Player::m_rotatePieceTimer
+1811 ldc.r4       0
+1816 bne.un.s     1859
+1818 ldloc.s      9
+1820 ldc.r4       0
+1825 bge.un.s     1843
+1827 ldarg.0      
+1828 ldarg.0      
+1829 ldfld        Player::m_placeRotation
+1834 ldc.i4.1     
+1835 add          
+1836 stfld        Player::m_placeRotation
+1841 br.s         1922
+1843 ldarg.0      
+1844 ldarg.0      
+1845 ldfld        Player::m_placeRotation
+1850 ldc.i4.1     
+1851 sub          
+1852 stfld        Player::m_placeRotation
+1857 br.s         1922
+1859 ldarg.0      
+1860 ldfld        Player::m_rotatePieceTimer
+1865 ldc.r4       0.25
+1870 ble.un.s     1922
+1872 ldloc.s      9
+1874 ldc.r4       0
+1879 bge.un.s     1897
+1881 ldarg.0      
+1882 ldarg.0      
+1883 ldfld        Player::m_placeRotation
+1888 ldc.i4.1     
+1889 add          
+1890 stfld        Player::m_placeRotation
+1895 br.s         1911
+1897 ldarg.0      
+1898 ldarg.0      
+1899 ldfld        Player::m_placeRotation
+1904 ldc.i4.1     
+1905 sub          
+1906 stfld        Player::m_placeRotation
+1911 ldarg.0      
+1912 ldc.r4       0.17000000178813934
+1917 stfld        Player::m_rotatePieceTimer
+1922 ldarg.0      
+1923 ldarg.0      
+1924 ldfld        Player::m_rotatePieceTimer
+1929 ldarg.2      
+1930 add          
+1931 stfld        Player::m_rotatePieceTimer
+1936 br.s         1949
+1938 ldarg.0      
+1939 ldc.r4       0
+1944 stfld        Player::m_rotatePieceTimer
+1949 ldarg.0      
+1950 ldfld        Player::m_ghostRippleDistance
+1955 callvirt     System.Collections.Generic.Dictionary`2::GetEnumerator
+1960 stloc.s      15
+1962 br.s         2017
+1964 ldloca.s     15
+1966 call         Enumerator::get_Current
+1971 stloc.s      16
+1973 ldloca.s     16
+1975 call         System.Collections.Generic.KeyValuePair`2::get_Key
+1980 ldstr        "_RippleDistance"
+1985 ldc.i4       306
+1990 ldc.i4.1     
+1991 call         ZInput::GetKey
+1996 brtrue.s     2005
+1998 ldc.r4       0
+2003 br.s         2012
+2005 ldloca.s     16
+2007 call         System.Collections.Generic.KeyValuePair`2::get_Value
+2012 callvirt     UnityEngine.Material::SetFloat
+2017 ldloca.s     15
+2019 call         Enumerator::MoveNext
+2024 brtrue.s     1964
+2026 leave.s      2067
+2028 ldloca.s     15
+2030 constrained. 0x1b00007d
+2036 callvirt     System.IDisposable::Dispose
+2041 endfinally   
+2042 ldarg.0      
+2043 ldfld        Player::m_placementGhost
+2048 call         UnityEngine.Object::op_Implicit
+2053 brfalse.s    2067
+2055 ldarg.0      
+2056 ldfld        Player::m_placementGhost
+2061 ldc.i4.0     
+2062 callvirt     UnityEngine.GameObject::SetActive
+2067 ret          

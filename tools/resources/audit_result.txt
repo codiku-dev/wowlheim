@@ -1,0 +1,81 @@
+creature_template : 10384 modeles ; apparitions sur cartes 0/1 : 60677 (sur 6394 modeles)
+
+Exclusions (premier motif rencontre) :
+  LootId = 0                                            6141
+  apparait aussi en instance/champ de bataille           830
+  aucune apparition sur les cartes 0/1                   439
+  rang 4                                                 263
+  rang 2                                                 116
+  rang 3                                                  92
+  garde/civil                                             84
+  drapeaux PNJ                                            14
+  type de creature 8                                       2
+
+Modeles eligibles : 2403 (49501 apparitions) ; LootId distincts eligibles : 2403 ; LootId partages entre plusieurs modeles : 1
+  groupe(s) partage(s) : [(16243, ['Plague Slime', 'Plague Slime (Blue)', 'Plague Slime (Red)', 'Plague Slime (Green)'])]
+  creatures vivantes sans aucun butin (LootId=0, hors PNJ) : 408 modeles, 2602 apparitions : non touchees
+
+Eligibles par categorie x palier (modeles / apparitions) :
+categorie         T1 mod/spawn    T2 mod/spawn    T3 mod/spawn    T4 mod/spawn    T5 mod/spawn 
+HUMANOID          193/4461      290/4159      270/3050      195/3303      147/2387   
+MINER              21/589        24/405        12/161        13/378         3/20     
+LOGGER              1/3           1/67          1/1           0/0           1/25     
+BRUTE               6/127        12/279        27/684        20/457         7/208    
+BEAST_MAMMAL       75/3272       40/1474       35/835        38/1248       20/716    
+BEAST_OTHER        49/2302       70/1805       62/1495       65/1685       43/1645   
+BEAST_SPIDER       17/339        19/846         9/330         8/200         4/296    
+BEAST_BASILISK      0/0           3/33          6/194         4/123         0/0      
+UNDEAD             43/733        25/344        16/190        16/326        66/1026   
+ELEM_ROCK           0/0           5/69          4/69          5/99          4/23     
+ELEM_PLANT          6/75          7/132         4/95          2/23          3/47     
+ELEM_OTHER          1/1          16/189        15/168        22/210        30/326    
+GIANT               0/0           0/0           3/3          10/66          7/330    
+MECH                3/79          6/16          2/5           1/1           0/0      
+DRAGONKIN           0/0           9/116         2/13         21/356        44/658    
+DEMON              12/403        14/188        25/412        10/187        38/608    
+OTHER               1/70         14/296         7/120        35/792        38/1035   
+TOTAL             428/12454     555/10418     500/7825      465/9454      455/9350   
+
+Types de creature bruts (modeles avec LootId>0, apparitions continents) :
+  type(CreatureType) -> modeles eligibles : {1: 567, 2: 76, 3: 99, 4: 124, 5: 20, 6: 166, 7: 1244, 9: 12, 10: 95}
+
+Zones (>= 30 apparitions de creatures eligibles) : niveau median, palier, faction (manuelle)
+  carte 0  Dun Morogh                 apparitions  1195  niveau median   7.5 -> palier 1  faction A
+  carte 0  Tirisfal Glades            apparitions  1647  niveau median   7.5 -> palier 1  faction H
+  carte 0  Elwynn Forest              apparitions  1386  niveau median   7.5 -> palier 1  faction A
+  carte 0  Loch Modan                 apparitions   877  niveau median  14.5 -> palier 1  faction A
+  carte 0  Westfall                   apparitions  1336  niveau median  14.5 -> palier 1  faction A
+  carte 0  Silverpine Forest          apparitions  1082  niveau median  14.5 -> palier 1  faction H
+  carte 0  Redridge Mountains         apparitions   963  niveau median  20.5 -> palier 2  faction A
+  carte 0  Wetlands                   apparitions  1225  niveau median  24.5 -> palier 2  faction A
+  carte 0  Duskwood                   apparitions   765  niveau median  25.5 -> palier 2  faction A
+  carte 0  Hillsbrad Foothills        apparitions   916  niveau median  25.5 -> palier 2  faction C
+  carte 0  Arathi Highlands           apparitions  1004  niveau median  33.5 -> palier 3  faction C
+  carte 0  Alterac Mountains          apparitions   635  niveau median  34.5 -> palier 3  faction C
+  carte 0  Stranglethorn Vale         apparitions  2563  niveau median  37.5 -> palier 3  faction C
+  carte 0  Badlands                   apparitions   553  niveau median  38.5 -> palier 3  faction C
+  carte 0  Swamp of Sorrows           apparitions   731  niveau median  41.5 -> palier 4  faction C
+  carte 0  The Hinterlands            apparitions   820  niveau median  46.5 -> palier 4  faction C
+  carte 0  Searing Gorge              apparitions   483  niveau median  47.0 -> palier 4  faction C
+  carte 0  Blasted Lands              apparitions   309  niveau median  49.5 -> palier 4  faction C
+  carte 0  Burning Steppes            apparitions   514  niveau median  54.0 -> palier 5  faction C
+  carte 0  Western Plaguelands        apparitions  1097  niveau median  54.5 -> palier 5  faction C
+  carte 0  Eastern Plaguelands        apparitions  1419  niveau median  55.5 -> palier 5  faction C
+  carte 0  Deadwind Pass              apparitions   108  niveau median  59.0 -> palier 5  faction C
+  carte 1  Durotar                    apparitions  1315  niveau median   7.5 -> palier 1  faction H
+  carte 1  Teldrassil                 apparitions  1281  niveau median   7.5 -> palier 1  faction A
+  carte 1  Mulgore                    apparitions  1632  niveau median   7.5 -> palier 1  faction H
+  carte 1  Darkshore                  apparitions  1674  niveau median  14.5 -> palier 1  faction A
+  carte 1  The Barrens                apparitions  3248  niveau median  15.5 -> palier 2  faction H
+  carte 1  Stonetalon Mountains       apparitions   845  niveau median  20.5 -> palier 2  faction C
+  carte 1  Ashenvale                  apparitions  3013  niveau median  24.0 -> palier 2  faction C
+  carte 1  Thousand Needles           apparitions   684  niveau median  30.0 -> palier 3  faction C
+  carte 1  Desolace                   apparitions  1472  niveau median  33.5 -> palier 3  faction C
+  carte 1  Dustwallow Marsh           apparitions  1227  niveau median  38.5 -> palier 3  faction C
+  carte 1  Feralas                    apparitions  1639  niveau median  44.5 -> palier 4  faction C
+  carte 1  Tanaris                    apparitions  2080  niveau median  46.5 -> palier 4  faction C
+  carte 1  Un'Goro Crater             apparitions   876  niveau median  51.5 -> palier 4  faction C
+  carte 1  Azshara                    apparitions  2425  niveau median  51.5 -> palier 4  faction C
+  carte 1  Felwood                    apparitions   796  niveau median  51.5 -> palier 4  faction C
+  carte 1  Winterspring               apparitions  1957  niveau median  56.5 -> palier 5  faction C
+  carte 1  Silithus                   apparitions  1630  niveau median  58.0 -> palier 5  faction C

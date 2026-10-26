@@ -1,0 +1,66 @@
+== WearNTear::ApplyDamage(r4, class:2140) -> bool  il_size=187 sha=5348f229f3e5
+   locals_sig=0x11000016
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::GetZDO()
+  11 ldsfld       ZDOVars::s_health
+  16 ldarg.0      
+  17 ldfld        WearNTear::m_health
+  22 callvirt     ZDO::GetFloat(i4,r4)
+  27 stloc.0      
+  28 ldloc.0      
+  29 ldc.r4       0
+  34 bgt.un.s     38
+  36 ldc.i4.0     
+  37 ret          
+  38 ldloc.0      
+  39 ldarg.1      
+  40 sub          
+  41 stloc.0      
+  42 ldarg.0      
+  43 ldfld        WearNTear::m_nview
+  48 callvirt     ZNetView::GetZDO()
+  53 ldsfld       ZDOVars::s_health
+  58 ldloc.0      
+  59 callvirt     ZDO::Set(i4,r4)
+  64 ldsfld       Terminal::m_showTests
+  69 brfalse.s    131
+  71 ldsfld       Terminal::m_testList
+  76 ldstr        "damage"
+  81 callvirt     System.Collections.Generic.Dictionary`2::ContainsKey
+  86 brfalse.s    131
+  88 ldstr        "Damage WNT: {0} took {1} damage from {2}"
+  93 ldarg.0      
+  94 call         UnityEngine.Component::get_gameObject
+  99 callvirt     UnityEngine.Object::get_name
+ 104 ldarg.1      
+ 105 box          0x010001ed
+ 110 ldarg.2      
+ 111 brfalse.s    116
+ 113 ldarg.2      
+ 114 br.s         121
+ 116 ldstr        "UNKNOWN"
+ 121 call         System.String::Format
+ 126 call         Terminal::Log(object)
+ 131 ldloc.0      
+ 132 ldc.r4       0
+ 137 bgt.un.s     149
+ 139 ldarg.0      
+ 140 ldarg.2      
+ 141 ldc.i4.0     
+ 142 call         WearNTear::Destroy(class:2140,bool)
+ 147 br.s         185
+ 149 ldarg.0      
+ 150 ldfld        WearNTear::m_nview
+ 155 ldsfld       ZNetView::Everybody
+ 160 ldstr        "RPC_HealthChanged"
+ 165 ldc.i4.1     
+ 166 newarr       0x01000007
+ 171 dup          
+ 172 ldc.i4.0     
+ 173 ldloc.0      
+ 174 box          0x010001ed
+ 179 stelem.ref   
+ 180 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 185 ldc.i4.1     
+ 186 ret          

@@ -1,0 +1,4 @@
+== EnvMan::IsWet() -> bool  il_size=6 sha=a906ff3790c1
+   locals_sig=null
+   0 ldsfld       EnvMan::s_isWet
+   5 ret          

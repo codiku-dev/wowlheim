@@ -1,0 +1,16 @@
+== Piece::FreeBuildKey() -> valuetype:1552  il_size=34 sha=8160b760c267
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponent<T>
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brtrue.s     28
+  14 ldarg.0      
+  15 call         UnityEngine.Component::GetComponent<T>
+  20 ldnull       
+  21 call         UnityEngine.Object::op_Inequality
+  26 brfalse.s    31
+  28 ldc.i4.s     25
+  30 ret          
+  31 ldc.i4.s     24
+  33 ret          

@@ -1,0 +1,31 @@
+== WearNTear::GetSupport() -> r4  il_size=88 sha=19aad93aa5ab
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     20
+  13 ldarg.0      
+  14 call         WearNTear::GetMaxSupport()
+  19 ret          
+  20 ldarg.0      
+  21 ldfld        WearNTear::m_nview
+  26 callvirt     ZNetView::HasOwner()
+  31 brtrue.s     40
+  33 ldarg.0      
+  34 call         WearNTear::GetMaxSupport()
+  39 ret          
+  40 ldarg.0      
+  41 ldfld        WearNTear::m_nview
+  46 callvirt     ZNetView::IsOwner()
+  51 brfalse.s    60
+  53 ldarg.0      
+  54 ldfld        WearNTear::m_support
+  59 ret          
+  60 ldarg.0      
+  61 ldfld        WearNTear::m_nview
+  66 callvirt     ZNetView::GetZDO()
+  71 ldsfld       ZDOVars::s_support
+  76 ldarg.0      
+  77 call         WearNTear::GetMaxSupport()
+  82 callvirt     ZDO::GetFloat(i4,r4)
+  87 ret          

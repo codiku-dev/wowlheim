@@ -1,0 +1,34 @@
+== WearNTear::FindSupportPoint(valuetype:81, class:2520, class:77) -> valuetype:81  il_size=89 sha=d55f32e662ab
+   locals_sig=0x11000802
+   0 ldarg.2      
+   1 isinst       0x01000067
+   6 stloc.0      
+   7 ldloc.0      
+   8 ldnull       
+   9 call         UnityEngine.Object::op_Inequality
+  14 brfalse.s    81
+  16 ldloc.0      
+  17 callvirt     UnityEngine.MeshCollider::get_convex
+  22 brtrue.s     81
+  24 ldloc.0      
+  25 ldarg.0      
+  26 call         UnityEngine.Vector3::get_down
+  31 newobj       UnityEngine.Ray::.ctor
+  36 ldloca.s     1
+  38 ldc.r4       10
+  43 callvirt     UnityEngine.Collider::Raycast
+  48 brfalse.s    58
+  50 ldloca.s     1
+  52 call         UnityEngine.RaycastHit::get_point
+  57 ret          
+  58 ldarg.0      
+  59 ldarg.1      
+  60 callvirt     WearNTear::GetCOM()
+  65 call         UnityEngine.Vector3::op_Addition
+  70 ldc.r4       0.5
+  75 call         UnityEngine.Vector3::op_Multiply
+  80 ret          
+  81 ldarg.2      
+  82 ldarg.0      
+  83 callvirt     UnityEngine.Collider::ClosestPoint
+  88 ret          

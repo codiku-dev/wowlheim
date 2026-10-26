@@ -1,0 +1,34 @@
+== Player::CheckCanRemovePiece(class:2264) -> bool  il_size=89 sha=e1b331dce1f2
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_noPlacementCost
+   6 brtrue.s     87
+   8 ldarg.1      
+   9 ldfld        Piece::m_craftingStation
+  14 ldnull       
+  15 call         UnityEngine.Object::op_Inequality
+  20 brfalse.s    87
+  22 ldarg.1      
+  23 ldfld        Piece::m_craftingStation
+  28 ldfld        CraftingStation::m_name
+  33 ldarg.0      
+  34 call         UnityEngine.Component::get_transform
+  39 callvirt     UnityEngine.Transform::get_position
+  44 call         CraftingStation::HaveBuildStationInRange(string,valuetype:81)
+  49 call         UnityEngine.Object::op_Implicit
+  54 brtrue.s     87
+  56 call         ZoneSystem::get_instance()
+  61 ldc.i4.s     27
+  63 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+  68 brtrue.s     87
+  70 ldarg.0      
+  71 ldc.i4.2     
+  72 ldstr        "$msg_missingstation"
+  77 ldc.i4.0     
+  78 ldnull       
+  79 ldc.i4.0     
+  80 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  85 ldc.i4.0     
+  86 ret          
+  87 ldc.i4.1     
+  88 ret          

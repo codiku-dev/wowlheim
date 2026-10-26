@@ -1,0 +1,17 @@
+== WearNTear::ShouldUpdate(r4) -> bool  il_size=37 sha=69ffca77b4c6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_createTime
+   6 ldc.r4       0
+  11 blt.s        35
+  13 ldarg.1      
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_createTime
+  20 sub          
+  21 ldc.r4       30
+  26 bgt.s        35
+  28 ldarg.0      
+  29 ldfld        WearNTear::m_addPreSnow
+  34 ret          
+  35 ldc.i4.1     
+  36 ret          

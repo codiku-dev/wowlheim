@@ -1,0 +1,146 @@
+== Player::UpdateKnownRecipesList() -> void  il_size=421 sha=60bfcf7efde4
+   locals_sig=0x110000c6
+   0 call         Game::get_instance()
+   5 ldnull       
+   6 call         UnityEngine.Object::op_Equality
+  11 brfalse.s    14
+  13 ret          
+  14 call         ObjectDB::get_instance()
+  19 ldfld        ObjectDB::m_recipes
+  24 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  29 stloc.1      
+  30 br.s         152
+  32 ldloca.s     1
+  34 call         Enumerator::get_Current
+  39 stloc.2      
+  40 ldarg.0      
+  41 ldfld        Player::m_currentSeason
+  46 ldnull       
+  47 call         UnityEngine.Object::op_Inequality
+  52 brtrue.s     57
+  54 ldc.i4.0     
+  55 br.s         74
+  57 ldarg.0      
+  58 ldfld        Player::m_currentSeason
+  63 ldfld        SeasonalItemGroup::Recipes
+  68 ldloc.2      
+  69 callvirt     System.Collections.Generic.List`1::Contains
+  74 stloc.3      
+  75 ldloc.2      
+  76 ldfld        Recipe::m_enabled
+  81 brtrue.s     86
+  83 ldloc.3      
+  84 brfalse.s    152
+  86 ldloc.2      
+  87 ldfld        Recipe::m_item
+  92 call         UnityEngine.Object::op_Implicit
+  97 brfalse.s    152
+  99 ldarg.0      
+ 100 ldfld        Player::m_knownRecipes
+ 105 ldloc.2      
+ 106 ldfld        Recipe::m_item
+ 111 ldfld        ItemDrop::m_itemData
+ 116 ldfld        ItemDrop+ItemData::m_shared
+ 121 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 126 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 131 brtrue.s     152
+ 133 ldarg.0      
+ 134 ldloc.2      
+ 135 ldc.i4.1     
+ 136 ldc.i4.0     
+ 137 ldc.i4.1     
+ 138 call         Player::HaveRequirements(class:1080,bool,i4,i4)
+ 143 brfalse.s    152
+ 145 ldarg.0      
+ 146 ldloc.2      
+ 147 call         Player::AddKnownRecipe(class:1080)
+ 152 ldloca.s     1
+ 154 call         Enumerator::MoveNext
+ 159 brtrue       32
+ 164 leave.s      180
+ 166 ldloca.s     1
+ 168 constrained. 0x1b00009a
+ 174 callvirt     System.IDisposable::Dispose
+ 179 endfinally   
+ 180 ldarg.0      
+ 181 ldfld        Player::m_tempOwnedPieceTables
+ 186 callvirt     System.Collections.Generic.List`1::Clear
+ 191 ldarg.0      
+ 192 ldfld        Humanoid::m_inventory
+ 197 ldarg.0      
+ 198 ldfld        Player::m_tempOwnedPieceTables
+ 203 callvirt     Inventory::GetAllPieceTables(class:165<class:1076>)
+ 208 ldc.i4.0     
+ 209 stloc.0      
+ 210 ldarg.0      
+ 211 ldfld        Player::m_tempOwnedPieceTables
+ 216 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 221 stloc.s      4
+ 223 br           383
+ 228 ldloca.s     4
+ 230 call         Enumerator::get_Current
+ 235 ldfld        PieceTable::m_pieces
+ 240 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 245 stloc.s      5
+ 247 br.s         358
+ 249 ldloca.s     5
+ 251 call         Enumerator::get_Current
+ 256 stloc.s      6
+ 258 ldloc.s      6
+ 260 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 265 stloc.s      7
+ 267 ldarg.0      
+ 268 ldfld        Player::m_currentSeason
+ 273 ldnull       
+ 274 call         UnityEngine.Object::op_Inequality
+ 279 brtrue.s     284
+ 281 ldc.i4.0     
+ 282 br.s         302
+ 284 ldarg.0      
+ 285 ldfld        Player::m_currentSeason
+ 290 ldfld        SeasonalItemGroup::Pieces
+ 295 ldloc.s      6
+ 297 callvirt     System.Collections.Generic.List`1::Contains
+ 302 stloc.s      8
+ 304 ldloc.s      7
+ 306 ldfld        Piece::m_enabled
+ 311 brtrue.s     317
+ 313 ldloc.s      8
+ 315 brfalse.s    358
+ 317 ldarg.0      
+ 318 ldfld        Player::m_knownRecipes
+ 323 ldloc.s      7
+ 325 ldfld        Piece::m_name
+ 330 callvirt     System.Collections.Generic.HashSet`1::Contains
+ 335 brtrue.s     358
+ 337 ldarg.0      
+ 338 ldloc.s      7
+ 340 ldc.i4.1     
+ 341 call         Player::HaveRequirements(class:2264,valuetype:2888)
+ 346 brfalse.s    358
+ 348 ldarg.0      
+ 349 ldloc.s      7
+ 351 call         Player::AddKnownPiece(class:2264)
+ 356 ldc.i4.1     
+ 357 stloc.0      
+ 358 ldloca.s     5
+ 360 call         Enumerator::MoveNext
+ 365 brtrue.s     249
+ 367 leave.s      383
+ 369 ldloca.s     5
+ 371 constrained. 0x1b00009e
+ 377 callvirt     System.IDisposable::Dispose
+ 382 endfinally   
+ 383 ldloca.s     4
+ 385 call         Enumerator::MoveNext
+ 390 brtrue       228
+ 395 leave.s      411
+ 397 ldloca.s     4
+ 399 constrained. 0x1b00009c
+ 405 callvirt     System.IDisposable::Dispose
+ 410 endfinally   
+ 411 ldloc.0      
+ 412 brfalse.s    420
+ 414 ldarg.0      
+ 415 call         Player::UpdateAvailablePiecesList()
+ 420 ret          

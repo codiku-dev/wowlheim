@@ -1,0 +1,10 @@
+== Player::SetPlacementGhostValid(bool) -> void  il_size=21 sha=c67376121472
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Player::m_placementGhost
+   6 callvirt     UnityEngine.GameObject::GetComponent<T>
+  11 ldarg.1      
+  12 ldc.i4.0     
+  13 ceq          
+  15 callvirt     Piece::SetInvalidPlacementHeightlight(bool)
+  20 ret          

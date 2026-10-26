@@ -1,0 +1,19 @@
+== WearNTear::HaveRoof() -> bool  il_size=50 sha=ee7ee2732763
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_roof
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    15
+  13 ldc.i4.1     
+  14 ret          
+  15 ldarg.0      
+  16 call         UnityEngine.Component::get_transform
+  21 ldarg.0      
+  22 call         UnityEngine.Component::get_transform
+  27 callvirt     UnityEngine.Transform::get_position
+  32 ldarg.0      
+  33 ldflda       WearNTear::m_roof
+  38 ldarg.0      
+  39 ldfld        WearNTear::m_roofCheckOffset
+  44 call         WearNTear::RoofCheck(class:73,valuetype:81,class:133&,r4)
+  49 ret          

@@ -1,0 +1,31 @@
+== Player::ResetCharacter() -> void  il_size=105 sha=8b489c1a8c0c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       0
+   6 stfld        Player::m_guardianPowerCooldown
+  11 call         Player::ResetSeenTutorials()
+  16 ldarg.0      
+  17 ldfld        Player::m_knownRecipes
+  22 callvirt     System.Collections.Generic.HashSet`1::Clear
+  27 ldarg.0      
+  28 ldfld        Player::m_knownStations
+  33 callvirt     System.Collections.Generic.Dictionary`2::Clear
+  38 ldarg.0      
+  39 ldfld        Player::m_knownMaterial
+  44 callvirt     System.Collections.Generic.HashSet`1::Clear
+  49 ldarg.0      
+  50 ldfld        Player::m_uniques
+  55 callvirt     System.Collections.Generic.HashSet`1::Clear
+  60 ldarg.0      
+  61 ldfld        Player::m_trophies
+  66 callvirt     System.Collections.Generic.HashSet`1::Clear
+  71 ldarg.0      
+  72 ldfld        Player::m_skills
+  77 callvirt     Skills::Clear()
+  82 ldarg.0      
+  83 ldfld        Player::m_knownBiome
+  88 callvirt     System.Collections.Generic.HashSet`1::Clear
+  93 ldarg.0      
+  94 ldfld        Player::m_knownTexts
+  99 callvirt     System.Collections.Generic.Dictionary`2::Clear
+ 104 ret          

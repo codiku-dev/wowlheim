@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Wowlheim
+## Notes: Menu de construction du marteau (facon Valheim) ; canal [WL] avec le serveur
+## Author: Wowlheim
+## SavedVariables: WowlheimDB
+WowlheimData.lua
+WowlheimCore.lua
+Wowlheim.lua

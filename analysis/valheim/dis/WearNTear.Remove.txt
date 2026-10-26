@@ -1,0 +1,19 @@
+== WearNTear::Remove(bool) -> void  il_size=46 sha=582b4817641b
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_nview
+  20 ldstr        "RPC_Remove"
+  25 ldc.i4.1     
+  26 newarr       0x01000007
+  31 dup          
+  32 ldc.i4.0     
+  33 ldarg.1      
+  34 box          0x010001f2
+  39 stelem.ref   
+  40 callvirt     ZNetView::InvokeRPC(string,object[])
+  45 ret          

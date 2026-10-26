@@ -1,0 +1,17 @@
+== WearNTear::Damage il_size=41 sha=35b6c2b5d8cf
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     0x06001242
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_nview
+  20 ldstr        0x7000043e
+  25 ldc.i4.1     
+  26 newarr       0x01000007
+  31 dup          
+  32 ldc.i4.0     
+  33 ldarg.1      
+  34 stelem.ref   
+  35 callvirt     0x0600124e
+  40 ret          

@@ -1,0 +1,10 @@
+== WearNTear::IsWet() -> bool  il_size=17 sha=8933ed672c49
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_rainWet
+   6 brtrue.s     15
+   8 ldarg.0      
+   9 call         WearNTear::IsUnderWater()
+  14 ret          
+  15 ldc.i4.1     
+  16 ret          

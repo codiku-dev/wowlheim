@@ -1,0 +1,47 @@
+== Player::IsOverlappingOtherPiece(valuetype:81, valuetype:137, string, class:165<class:2264>, bool) -> bool  il_size=126 sha=92ab6fcb8e5b
+   locals_sig=0x110000b6
+   0 ldarg.0      
+   1 ldfld        Player::m_tempPieces
+   6 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  11 stloc.0      
+  12 br.s         97
+  14 ldloca.s     0
+  16 call         Enumerator::get_Current
+  21 stloc.1      
+  22 ldarg.1      
+  23 ldloc.1      
+  24 callvirt     UnityEngine.Component::get_transform
+  29 callvirt     UnityEngine.Transform::get_position
+  34 call         UnityEngine.Vector3::Distance
+  39 ldc.r4       0.05000000074505806
+  44 bge.un.s     97
+  46 ldarg.s      5
+  48 brfalse.s    74
+  50 ldloc.1      
+  51 callvirt     UnityEngine.Component::get_transform
+  56 callvirt     UnityEngine.Transform::get_rotation
+  61 ldarg.2      
+  62 call         UnityEngine.Quaternion::Angle
+  67 ldc.r4       10
+  72 bgt.s        97
+  74 ldloc.1      
+  75 callvirt     UnityEngine.Component::get_gameObject
+  80 callvirt     UnityEngine.Object::get_name
+  85 ldarg.3      
+  86 call         Utils::CustomStartsWith
+  91 brfalse.s    97
+  93 ldc.i4.1     
+  94 stloc.2      
+  95 leave.s      124
+  97 ldloca.s     0
+  99 call         Enumerator::MoveNext
+ 104 brtrue.s     14
+ 106 leave.s      122
+ 108 ldloca.s     0
+ 110 constrained. 0x1b00008c
+ 116 callvirt     System.IDisposable::Dispose
+ 121 endfinally   
+ 122 ldc.i4.0     
+ 123 ret          
+ 124 ldloc.2      
+ 125 ret          

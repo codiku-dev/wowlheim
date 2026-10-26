@@ -1,0 +1,48 @@
+Large Crag Boar (entry 1126, niveau 6-7, rang 0, LootId 1126) : 20000 morts simulees ; lignes Wowlheim : 1
+  Peau de cerf        50.3 % des morts, 0.75 par mort en moyenne
+  Chutes de cuir      30.1 % des morts, 0.45 par mort en moyenne
+  Andouiller           8.0 % des morts, 0.08 par mort en moyenne
+Rockjaw Trogg (entry 707, niveau 1-2, rang 0, LootId 707) : 20000 morts simulees ; lignes Wowlheim : 1
+  Bois                20.4 % des morts, 0.30 par mort en moyenne
+  Pierre              50.0 % des morts, 1.00 par mort en moyenne
+  Silex               39.9 % des morts, 0.60 par mort en moyenne
+  Résine              10.2 % des morts, 0.10 par mort en moyenne
+  Chutes de cuir      45.6 % des morts, 0.92 par mort en moyenne
+  Andouiller           2.9 % des morts, 0.03 par mort en moyenne
+Forest Moss Creeper (entry 2350, niveau 20-21, rang 0, LootId 2350) : 20000 morts simulees ; lignes Wowlheim : 1
+  Résine              10.2 % des morts, 0.15 par mort en moyenne
+  Œil de gréling       6.3 % des morts, 0.06 par mort en moyenne
+Shadowhide Gnoll (entry 433, niveau 22-23, rang 0, LootId 433) : 20000 morts simulees ; lignes Wowlheim : 1
+  Bois                 8.1 % des morts, 0.12 par mort en moyenne
+  Pierre               8.0 % des morts, 0.12 par mort en moyenne
+  Silex               10.0 % des morts, 0.15 par mort en moyenne
+  Résine               7.8 % des morts, 0.08 par mort en moyenne
+  Chutes de cuir      16.4 % des morts, 0.24 par mort en moyenne
+  Bois fin            20.0 % des morts, 0.30 par mort en moyenne
+  Bois de cœur         8.2 % des morts, 0.08 par mort en moyenne
+  Cuivre              15.0 % des morts, 0.22 par mort en moyenne
+  Étain               12.2 % des morts, 0.12 par mort en moyenne
+  Peau de troll       44.9 % des morts, 0.67 par mort en moyenne
+  Œil de gréling       6.2 % des morts, 0.06 par mort en moyenne
+Skeletal Warder (entry 785, niveau 28-29, rang 0, LootId 785) : 20000 morts simulees ; lignes Wowlheim : 1
+  Fragments d'os      49.6 % des morts, 0.99 par mort en moyenne
+  Noyau de Surtling    4.0 % des morts, 0.04 par mort en moyenne
+Wandering Protector (entry 12836, niveau 35-35, rang 1, LootId 12836) : 20000 morts simulees ; lignes Wowlheim : 1
+  Bois fin            18.1 % des morts, 0.27 par mort en moyenne
+  Bois de cœur        20.2 % des morts, 0.30 par mort en moyenne
+  Peau de troll       36.2 % des morts, 0.54 par mort en moyenne
+  Fer                 39.8 % des morts, 0.60 par mort en moyenne
+  Écorce ancienne     60.0 % des morts, 0.91 par mort en moyenne
+Ember Worg (entry 9690, niveau 51-52, rang 0, LootId 9690) : 20000 morts simulees ; lignes Wowlheim : 1
+  Fragments d'os       8.2 % des morts, 0.12 par mort en moyenne
+  Entrailles          15.8 % des morts, 0.24 par mort en moyenne
+  Fourrure de loup    49.4 % des morts, 0.75 par mort en moyenne
+  Glande de gel        6.8 % des morts, 0.07 par mort en moyenne
+Venture Co. Miner (entry 1094, niveau 34-35, rang 0, LootId 1094) : 20000 morts simulees ; lignes Wowlheim : 1
+  Bois fin             7.9 % des morts, 0.12 par mort en moyenne
+  Bois de cœur         7.8 % des morts, 0.08 par mort en moyenne
+  Cuivre              15.9 % des morts, 0.24 par mort en moyenne
+  Étain               14.8 % des morts, 0.22 par mort en moyenne
+  Fer                 45.0 % des morts, 0.90 par mort en moyenne
+  Écorce ancienne     10.3 % des morts, 0.10 par mort en moyenne
+  Fragments d'os      12.1 % des morts, 0.18 par mort en moyenne

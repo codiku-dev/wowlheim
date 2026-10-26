@@ -1,0 +1,16 @@
+== Player::KnowStationLevel(string, i4) -> bool  il_size=26 sha=22bbf0059a85
+   locals_sig=0x1100000a
+   0 ldarg.0      
+   1 ldfld        Player::m_knownStations
+   6 ldarg.1      
+   7 ldloca.s     0
+   9 callvirt     System.Collections.Generic.Dictionary`2::TryGetValue
+  14 brfalse.s    24
+  16 ldloc.0      
+  17 ldarg.2      
+  18 clt          
+  20 ldc.i4.0     
+  21 ceq          
+  23 ret          
+  24 ldc.i4.0     
+  25 ret          

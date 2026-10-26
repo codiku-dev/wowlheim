@@ -1,0 +1,119 @@
+== MonoUpdaters::Update() -> void  il_size=380 sha=c2a55013b03c
+   locals_sig=0x110003a6
+   0 ldsfld       MonoUpdaters::s_updateCount
+   5 ldc.i4.1     
+   6 add          
+   7 stsfld       MonoUpdaters::s_updateCount
+  12 call         UnityEngine.Time::get_deltaTime
+  17 stloc.0      
+  18 call         UnityEngine.Time::get_time
+  23 stloc.1      
+  24 ldarg.0      
+  25 ldfld        MonoUpdaters::m_waterVolumeInstances
+  30 call         WaterVolume::get_Instances()
+  35 callvirt     System.Collections.Generic.List`1::AddRange
+  40 ldarg.0      
+  41 ldfld        MonoUpdaters::m_waterVolumeInstances
+  46 callvirt     System.Collections.Generic.List`1::get_Count
+  51 ldc.i4.0     
+  52 ble.s        172
+  54 call         WaterVolume::StaticUpdate()
+  59 ldarg.0      
+  60 ldfld        MonoUpdaters::m_waterVolumeInstances
+  65 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  70 stloc.2      
+  71 br.s         85
+  73 ldloca.s     2
+  75 call         Enumerator::get_Current
+  80 callvirt     WaterVolume::UpdateFloaters()
+  85 ldloca.s     2
+  87 call         Enumerator::MoveNext
+  92 brtrue.s     73
+  94 leave.s      110
+  96 ldloca.s     2
+  98 constrained. 0x1b000209
+ 104 callvirt     System.IDisposable::Dispose
+ 109 endfinally   
+ 110 ldarg.0      
+ 111 ldfld        MonoUpdaters::m_waterVolumeInstances
+ 116 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 121 stloc.2      
+ 122 br.s         136
+ 124 ldloca.s     2
+ 126 call         Enumerator::get_Current
+ 131 callvirt     WaterVolume::UpdateMaterials()
+ 136 ldloca.s     2
+ 138 call         Enumerator::MoveNext
+ 143 brtrue.s     124
+ 145 leave.s      161
+ 147 ldloca.s     2
+ 149 constrained. 0x1b000209
+ 155 callvirt     System.IDisposable::Dispose
+ 160 endfinally   
+ 161 ldarg.0      
+ 162 ldfld        MonoUpdaters::m_waterVolumeInstances
+ 167 callvirt     System.Collections.Generic.List`1::Clear
+ 172 ldarg.0      
+ 173 ldfld        MonoUpdaters::m_update
+ 178 call         Smoke::get_Instances()
+ 183 ldstr        "MonoUpdaters.Update.Smoke"
+ 188 ldloc.0      
+ 189 ldloc.1      
+ 190 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 195 ldarg.0      
+ 196 ldfld        MonoUpdaters::m_update
+ 201 call         ZSFX::get_Instances()
+ 206 ldstr        "MonoUpdaters.Update.ZSFX"
+ 211 ldloc.0      
+ 212 ldloc.1      
+ 213 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 218 ldarg.0      
+ 219 ldfld        MonoUpdaters::m_update
+ 224 call         VisEquipment::get_Instances()
+ 229 ldstr        "MonoUpdaters.Update.VisEquipment"
+ 234 ldloc.0      
+ 235 ldloc.1      
+ 236 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 241 ldarg.0      
+ 242 ldfld        MonoUpdaters::m_update
+ 247 call         FootStep::get_Instances()
+ 252 ldstr        "MonoUpdaters.Update.FootStep"
+ 257 ldloc.0      
+ 258 ldloc.1      
+ 259 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 264 ldarg.0      
+ 265 ldfld        MonoUpdaters::m_update
+ 270 call         InstanceRenderer::get_Instances()
+ 275 ldstr        "MonoUpdaters.Update.InstanceRenderer"
+ 280 ldloc.0      
+ 281 ldloc.1      
+ 282 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 287 ldarg.0      
+ 288 ldfld        MonoUpdaters::m_update
+ 293 call         WaterTrigger::get_Instances()
+ 298 ldstr        "MonoUpdaters.Update.WaterTrigger"
+ 303 ldloc.0      
+ 304 ldloc.1      
+ 305 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 310 ldarg.0      
+ 311 ldfld        MonoUpdaters::m_update
+ 316 call         LightFlicker::get_Instances()
+ 321 ldstr        "MonoUpdaters.Update.LightFlicker"
+ 326 ldloc.0      
+ 327 ldloc.1      
+ 328 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 333 ldarg.0      
+ 334 ldfld        MonoUpdaters::m_update
+ 339 call         SmokeSpawner::get_Instances()
+ 344 ldstr        "MonoUpdaters.Update.SmokeSpawner"
+ 349 ldloc.0      
+ 350 ldloc.1      
+ 351 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 356 ldarg.0      
+ 357 ldfld        MonoUpdaters::m_update
+ 362 call         CraftingStation::get_Instances()
+ 367 ldstr        "MonoUpdaters.Update.CraftingStation"
+ 372 ldloc.0      
+ 373 ldloc.1      
+ 374 call         MonoUpdatersExtra::CustomUpdate(class:165<class:1116>,class:165<class:1116>,string,r4,r4)
+ 379 ret          

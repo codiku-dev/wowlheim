@@ -1,0 +1,33 @@
+== Cover::Setup il_size=77 sha=ad4bb7c47dfd
+   0 ldsfld       Cover::m_coverRays
+   5 brtrue.s     76
+   7 ldc.i4.6     
+   8 newarr       0x010000bb
+  13 dup          
+  14 ldc.i4.0     
+  15 ldstr        "Default"
+  20 stelem.ref   
+  21 dup          
+  22 ldc.i4.1     
+  23 ldstr        "static_solid"
+  28 stelem.ref   
+  29 dup          
+  30 ldc.i4.2     
+  31 ldstr        "Default_small"
+  36 stelem.ref   
+  37 dup          
+  38 ldc.i4.3     
+  39 ldstr        "piece"
+  44 stelem.ref   
+  45 dup          
+  46 ldc.i4.4     
+  47 ldstr        "terrain"
+  52 stelem.ref   
+  53 dup          
+  54 ldc.i4.5     
+  55 ldstr        "vehicle"
+  60 stelem.ref   
+  61 call         UnityEngine.LayerMask::GetMask
+  66 stsfld       Cover::m_coverRayMask
+  71 call         Cover::CreateCoverRays
+  76 ret          

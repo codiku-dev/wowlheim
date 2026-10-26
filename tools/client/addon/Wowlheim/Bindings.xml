@@ -1,0 +1,13 @@
+<Bindings>
+	<!-- Charge automatiquement par le client (fichier Bindings.xml du dossier de l'addon). Aucune touche par defaut :
+	     a lier dans Menu > Raccourcis (section Wowlheim). Libelles : BINDING_* dans Wowlheim.lua. -->
+	<Binding name="WOWLHEIM_TOGGLE" header="WOWLHEIM">
+		Wowlheim.Toggle();
+	</Binding>
+	<Binding name="WOWLHEIM_ROTATE_LEFT">
+		Wowlheim.Rotate(-1);
+	</Binding>
+	<Binding name="WOWLHEIM_ROTATE_RIGHT">
+		Wowlheim.Rotate(1);
+	</Binding>
+</Bindings>

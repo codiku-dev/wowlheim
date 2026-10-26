@@ -1,0 +1,16 @@
+== Piece::.cctor() -> void  il_size=54 sha=e1425d4c6276
+   locals_sig=null
+   0 ldc.i4.0     
+   1 stsfld       Piece::s_ghostLayer
+   6 ldc.i4.0     
+   7 stsfld       Piece::s_pieceRayMask
+  12 ldc.i4.0     
+  13 stsfld       Piece::s_harvestRayMask
+  18 ldc.i4       2000
+  23 newarr       0x01000013
+  28 stsfld       Piece::s_pieceColliders
+  33 newobj       System.Collections.Generic.List`1::.ctor
+  38 stsfld       Piece::s_allPieces
+  43 newobj       System.Collections.Generic.HashSet`1::.ctor
+  48 stsfld       Piece::s_allComfortPieces
+  53 ret          

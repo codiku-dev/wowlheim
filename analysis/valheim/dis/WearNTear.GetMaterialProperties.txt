@@ -1,0 +1,138 @@
+== WearNTear::GetMaterialProperties(r4&, r4&, r4&, r4&) -> void  il_size=354 sha=6dfddfb3d4e9
+   locals_sig=0x11000806
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_materialType
+   6 stloc.0      
+   7 ldloc.0      
+   8 switch       [0:54 1:114 2:144 3:84 4:174 5:204 6:234 7:264 8:294]
+  49 br           324
+  54 ldarg.1      
+  55 ldc.r4       100
+  60 stind.r4     
+  61 ldarg.2      
+  62 ldc.r4       10
+  67 stind.r4     
+  68 ldarg.s      4
+  70 ldc.r4       0.125
+  75 stind.r4     
+  76 ldarg.3      
+  77 ldc.r4       0.20000000298023224
+  82 stind.r4     
+  83 ret          
+  84 ldarg.1      
+  85 ldc.r4       140
+  90 stind.r4     
+  91 ldarg.2      
+  92 ldc.r4       10
+  97 stind.r4     
+  98 ldarg.s      4
+ 100 ldc.r4       0.10000000149011612
+ 105 stind.r4     
+ 106 ldarg.3      
+ 107 ldc.r4       0.1666666716337204
+ 112 stind.r4     
+ 113 ret          
+ 114 ldarg.1      
+ 115 ldc.r4       1000
+ 120 stind.r4     
+ 121 ldarg.2      
+ 122 ldc.r4       100
+ 127 stind.r4     
+ 128 ldarg.s      4
+ 130 ldc.r4       0.125
+ 135 stind.r4     
+ 136 ldarg.3      
+ 137 ldc.r4       1
+ 142 stind.r4     
+ 143 ret          
+ 144 ldarg.1      
+ 145 ldc.r4       1500
+ 150 stind.r4     
+ 151 ldarg.2      
+ 152 ldc.r4       20
+ 157 stind.r4     
+ 158 ldarg.s      4
+ 160 ldc.r4       0.07692307978868484
+ 165 stind.r4     
+ 166 ldarg.3      
+ 167 ldc.r4       0.07692307978868484
+ 172 stind.r4     
+ 173 ret          
+ 174 ldarg.1      
+ 175 ldc.r4       1500
+ 180 stind.r4     
+ 181 ldarg.2      
+ 182 ldc.r4       100
+ 187 stind.r4     
+ 188 ldarg.s      4
+ 190 ldc.r4       0.125
+ 195 stind.r4     
+ 196 ldarg.3      
+ 197 ldc.r4       0.5
+ 202 stind.r4     
+ 203 ret          
+ 204 ldarg.1      
+ 205 ldc.r4       2000
+ 210 stind.r4     
+ 211 ldarg.2      
+ 212 ldc.r4       100
+ 217 stind.r4     
+ 218 ldarg.s      4
+ 220 ldc.r4       0.10000000149011612
+ 225 stind.r4     
+ 226 ldarg.3      
+ 227 ldc.r4       0.3333333432674408
+ 232 stind.r4     
+ 233 ret          
+ 234 ldarg.1      
+ 235 ldc.r4       5000
+ 240 stind.r4     
+ 241 ldarg.2      
+ 242 ldc.r4       100
+ 247 stind.r4     
+ 248 ldarg.s      4
+ 250 ldc.r4       0.06666667014360428
+ 255 stind.r4     
+ 256 ldarg.3      
+ 257 ldc.r4       0.25
+ 262 stind.r4     
+ 263 ret          
+ 264 ldarg.1      
+ 265 ldc.r4       1000
+ 270 stind.r4     
+ 271 ldarg.2      
+ 272 ldc.r4       100
+ 277 stind.r4     
+ 278 ldarg.s      4
+ 280 ldc.r4       0.125
+ 285 stind.r4     
+ 286 ldarg.3      
+ 287 ldc.r4       0.3333333432674408
+ 292 stind.r4     
+ 293 ret          
+ 294 ldarg.1      
+ 295 ldc.r4       200
+ 300 stind.r4     
+ 301 ldarg.2      
+ 302 ldc.r4       10
+ 307 stind.r4     
+ 308 ldarg.s      4
+ 310 ldc.r4       0.07692307978868484
+ 315 stind.r4     
+ 316 ldarg.3      
+ 317 ldc.r4       0.20000000298023224
+ 322 stind.r4     
+ 323 ret          
+ 324 ldarg.1      
+ 325 ldc.r4       0
+ 330 stind.r4     
+ 331 ldarg.2      
+ 332 ldc.r4       0
+ 337 stind.r4     
+ 338 ldarg.s      4
+ 340 ldc.r4       0
+ 345 stind.r4     
+ 346 ldarg.3      
+ 347 ldc.r4       0
+ 352 stind.r4     
+ 353 ret          

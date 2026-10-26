@@ -1,0 +1,5 @@
+== WearNTear::RPC_ClearCachedSupport(i8) -> void  il_size=7 sha=86c74655017f
+   locals_sig=null
+   0 ldarg.0      
+   1 call         WearNTear::ClearCachedSupport()
+   6 ret          

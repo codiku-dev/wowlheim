@@ -1,0 +1,80 @@
+== WearNTear::.ctor() -> void  il_size=242 sha=f2c883a0d126
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.i4.1     
+   2 stfld        WearNTear::m_noRoofWear
+   7 ldarg.0      
+   8 ldc.i4.1     
+   9 stfld        WearNTear::m_noSupportWear
+  14 ldarg.0      
+  15 ldc.i4.1     
+  16 stfld        WearNTear::m_burnable
+  21 ldarg.0      
+  22 ldc.i4.1     
+  23 stfld        WearNTear::m_supports
+  28 ldarg.0      
+  29 call         UnityEngine.Vector3::get_zero
+  34 stfld        WearNTear::m_comOffset
+  39 ldarg.0      
+  40 ldc.i4.1     
+  41 stfld        WearNTear::m_staticPosition
+  46 ldarg.0      
+  47 newobj       System.Collections.Generic.List`1::.ctor
+  52 stfld        WearNTear::m_nonSolidRenderers
+  57 ldarg.0      
+  58 ldstr        ""
+  63 stfld        WearNTear::m_requiredPersistentEvent
+  68 ldarg.0      
+  69 ldc.r4       25
+  74 stfld        WearNTear::m_eventDamage
+  79 ldarg.0      
+  80 ldc.r4       10
+  85 stfld        WearNTear::m_eventDamageDeviation
+  90 ldarg.0      
+  91 ldc.r4       25
+  96 stfld        WearNTear::m_outsideRequiredBiomeDamage
+ 101 ldarg.0      
+ 102 ldc.r4       100
+ 107 stfld        WearNTear::m_health
+ 112 ldarg.0      
+ 113 ldc.i4.1     
+ 114 stfld        WearNTear::m_triggerPrivateArea
+ 119 ldarg.0      
+ 120 newobj       EffectList::.ctor()
+ 125 stfld        WearNTear::m_destroyedEffect
+ 130 ldarg.0      
+ 131 newobj       EffectList::.ctor()
+ 136 stfld        WearNTear::m_hitEffect
+ 141 ldarg.0      
+ 142 newobj       EffectList::.ctor()
+ 147 stfld        WearNTear::m_switchEffect
+ 152 ldarg.0      
+ 153 ldc.i4.1     
+ 154 stfld        WearNTear::m_autoCreateFragments
+ 159 ldarg.0      
+ 160 ldc.r4       1
+ 165 stfld        WearNTear::m_support
+ 170 ldarg.0      
+ 171 ldc.i4.m1    
+ 172 stfld        WearNTear::m_myIndex
+ 177 ldarg.0      
+ 178 ldc.r4       100
+ 183 stfld        WearNTear::m_healthPercentage
+ 188 ldarg.0      
+ 189 newobj       System.Collections.Generic.List`1::.ctor
+ 194 stfld        WearNTear::m_supportColliders
+ 199 ldarg.0      
+ 200 newobj       System.Collections.Generic.List`1::.ctor
+ 205 stfld        WearNTear::m_supportPositions
+ 210 ldarg.0      
+ 211 newobj       System.Collections.Generic.List`1::.ctor
+ 216 stfld        WearNTear::m_supportValue
+ 221 ldarg.0      
+ 222 ldc.i4.1     
+ 223 stfld        WearNTear::m_haveRoof
+ 228 ldarg.0      
+ 229 ldc.i4.1     
+ 230 stfld        WearNTear::m_haveAshRoof
+ 235 ldarg.0      
+ 236 call         UnityEngine.MonoBehaviour::.ctor
+ 241 ret          

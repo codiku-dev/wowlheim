@@ -1,0 +1,504 @@
+== WearNTear::UpdateWear(r4) -> void  il_size=1485 sha=e4942dfb41c2
+   locals_sig=0x110007ff
+   0 ldarg.0      
+   1 ldfld        WearNTear::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_nview
+  20 callvirt     ZNetView::IsOwner()
+  25 brfalse      1419
+  30 ldarg.0      
+  31 ldarg.1      
+  32 call         WearNTear::ShouldUpdate(r4)
+  37 brfalse      1419
+  42 call         ZNetScene::get_instance()
+  47 ldarg.0      
+  48 call         UnityEngine.Component::get_transform
+  53 callvirt     UnityEngine.Transform::get_position
+  58 callvirt     ZNetScene::OutsideActiveArea(valuetype:81)
+  63 brfalse.s    112
+  65 ldarg.0      
+  66 call         WearNTear::GetMaxSupport()
+  71 stloc.3      
+  72 ldarg.0      
+  73 ldflda       WearNTear::m_support
+  78 ldloc.3      
+  79 call         System.Single::Equals
+  84 ldc.i4.0     
+  85 ceq          
+  87 brfalse.s    111
+  89 ldarg.0      
+  90 ldfld        WearNTear::m_nview
+  95 callvirt     ZNetView::GetZDO()
+ 100 ldsfld       ZDOVars::s_support
+ 105 ldloc.3      
+ 106 callvirt     ZDO::Set(i4,r4)
+ 111 ret          
+ 112 ldarg.0      
+ 113 call         UnityEngine.Component::get_transform
+ 118 callvirt     UnityEngine.Transform::get_position
+ 123 ldarg.0      
+ 124 ldflda       WearNTear::m_shieldChangeID
+ 129 call         ShieldGenerator::IsInsideShieldCached(valuetype:81,i4&)
+ 134 stloc.0      
+ 135 ldc.r4       0
+ 140 stloc.1      
+ 141 ldarg.0      
+ 142 ldloc.0      
+ 143 brtrue.s     168
+ 145 ldarg.0      
+ 146 ldfld        WearNTear::m_haveRoof
+ 151 brtrue.s     168
+ 153 ldarg.0      
+ 154 ldfld        WearNTear::m_noRoofWear
+ 159 brfalse.s    168
+ 161 call         EnvMan::IsWet()
+ 166 br.s         169
+ 168 ldc.i4.0     
+ 169 stfld        WearNTear::m_rainWet
+ 174 ldarg.0      
+ 175 ldfld        WearNTear::m_wet
+ 180 call         UnityEngine.Object::op_Implicit
+ 185 brfalse.s    204
+ 187 ldarg.0      
+ 188 ldfld        WearNTear::m_wet
+ 193 ldarg.0      
+ 194 ldfld        WearNTear::m_rainWet
+ 199 callvirt     UnityEngine.GameObject::SetActive
+ 204 ldarg.0      
+ 205 ldfld        WearNTear::m_noRoofWear
+ 210 brfalse.s    301
+ 212 ldloc.0      
+ 213 brtrue.s     301
+ 215 ldarg.0      
+ 216 call         WearNTear::GetHealthPercentage()
+ 221 ldc.r4       0.5
+ 226 ble.un.s     301
+ 228 ldarg.0      
+ 229 call         WearNTear::IsWet()
+ 234 brfalse.s    290
+ 236 ldarg.0      
+ 237 ldfld        WearNTear::m_rainTimer
+ 242 ldc.r4       0
+ 247 bne.un.s     258
+ 249 ldarg.0      
+ 250 ldarg.1      
+ 251 stfld        WearNTear::m_rainTimer
+ 256 br.s         301
+ 258 ldarg.1      
+ 259 ldarg.0      
+ 260 ldfld        WearNTear::m_rainTimer
+ 265 sub          
+ 266 ldc.r4       60
+ 271 ble.un.s     301
+ 273 ldarg.0      
+ 274 ldarg.1      
+ 275 stfld        WearNTear::m_rainTimer
+ 280 ldloc.1      
+ 281 ldc.r4       5
+ 286 add          
+ 287 stloc.1      
+ 288 br.s         301
+ 290 ldarg.0      
+ 291 ldc.r4       0
+ 296 stfld        WearNTear::m_rainTimer
+ 301 ldarg.0      
+ 302 ldfld        WearNTear::m_noSupportWear
+ 307 brfalse.s    329
+ 309 ldarg.0      
+ 310 call         WearNTear::UpdateSupport()
+ 315 ldarg.0      
+ 316 call         WearNTear::HaveSupport()
+ 321 brtrue.s     329
+ 323 ldc.r4       100
+ 328 stloc.1      
+ 329 ldarg.0      
+ 330 ldfld        WearNTear::m_requiredPersistentEvent
+ 335 call         System.String::IsNullOrEmpty
+ 340 brtrue       486
+ 345 call         PersistentEventSystem::get_instance()
+ 350 ldarg.0      
+ 351 call         UnityEngine.Component::get_transform
+ 356 callvirt     UnityEngine.Transform::get_position
+ 361 callvirt     PersistentEventSystem::GetActiveEvent(valuetype:81)
+ 366 stloc.s      4
+ 368 ldarg.0      
+ 369 ldfld        WearNTear::m_takeDamageIfInsideEvent
+ 374 brfalse.s    430
+ 376 ldloc.s      4
+ 378 brfalse.s    430
+ 380 ldloc.s      4
+ 382 ldfld        PersistentEventSystem+PersistentEvent::internalName
+ 387 ldarg.0      
+ 388 ldfld        WearNTear::m_requiredPersistentEvent
+ 393 call         System.String::op_Equality
+ 398 brfalse.s    430
+ 400 ldloc.1      
+ 401 ldarg.0      
+ 402 ldfld        WearNTear::m_eventDamage
+ 407 ldarg.0      
+ 408 ldfld        WearNTear::m_eventDamageDeviation
+ 413 neg          
+ 414 ldarg.0      
+ 415 ldfld        WearNTear::m_eventDamageDeviation
+ 420 call         UnityEngine.Random::Range
+ 425 add          
+ 426 add          
+ 427 stloc.1      
+ 428 br.s         486
+ 430 ldloc.s      4
+ 432 brfalse.s    454
+ 434 ldloc.s      4
+ 436 ldfld        PersistentEventSystem+PersistentEvent::internalName
+ 441 ldarg.0      
+ 442 ldfld        WearNTear::m_requiredPersistentEvent
+ 447 call         System.String::op_Inequality
+ 452 brtrue.s     458
+ 454 ldloc.s      4
+ 456 brtrue.s     486
+ 458 ldloc.1      
+ 459 ldarg.0      
+ 460 ldfld        WearNTear::m_eventDamage
+ 465 ldarg.0      
+ 466 ldfld        WearNTear::m_eventDamageDeviation
+ 471 neg          
+ 472 ldarg.0      
+ 473 ldfld        WearNTear::m_eventDamageDeviation
+ 478 call         UnityEngine.Random::Range
+ 483 add          
+ 484 add          
+ 485 stloc.1      
+ 486 ldc.i4.0     
+ 487 stloc.2      
+ 488 ldarg.0      
+ 489 call         WearNTear::UpdateBiome()
+ 494 ldarg.0      
+ 495 ldfld        WearNTear::m_biome
+ 500 ldc.i4.s     64
+ 502 bne.un       955
+ 507 ldarg.0      
+ 508 ldloc.0      
+ 509 call         WearNTear::CanHaveSnow(bool)
+ 514 stloc.s      5
+ 516 ldloc.s      5
+ 518 brfalse      699
+ 523 ldarg.0      
+ 524 ldfld        WearNTear::m_snowBuildup
+ 529 ldc.r4       1
+ 534 bge.un       699
+ 539 ldarg.0      
+ 540 ldc.i4.0     
+ 541 stfld        WearNTear::m_heavySnow
+ 546 ldarg.0      
+ 547 ldfld        WearNTear::m_addPreSnow
+ 552 brtrue.s     566
+ 554 call         EnvMan::get_instance()
+ 559 callvirt     EnvMan::GetSnowBuildup()
+ 564 br.s         571
+ 566 ldc.r4       1
+ 571 stloc.s      6
+ 573 ldloc.s      6
+ 575 ldc.r4       0
+ 580 ble.un       955
+ 585 ldarg.0      
+ 586 ldfld        WearNTear::m_addPreSnow
+ 591 brfalse.s    635
+ 593 ldarg.0      
+ 594 ldc.r4       1
+ 599 stfld        WearNTear::m_snowBuildup
+ 604 ldarg.0      
+ 605 ldc.i4.0     
+ 606 stfld        WearNTear::m_addPreSnow
+ 611 ldarg.0      
+ 612 ldfld        WearNTear::m_nview
+ 617 callvirt     ZNetView::GetZDO()
+ 622 ldsfld       ZDOVars::s_preSnow
+ 627 ldc.i4.0     
+ 628 callvirt     ZDO::Set(i4,bool)
+ 633 br.s         667
+ 635 ldarg.0      
+ 636 ldarg.0      
+ 637 ldfld        WearNTear::m_snowBuildup
+ 642 ldloc.s      6
+ 644 call         UnityEngine.Time::get_deltaTime
+ 649 mul          
+ 650 call         Game::get_instance()
+ 655 ldfld        Game::m_snowBuildupSpeed
+ 660 mul          
+ 661 add          
+ 662 stfld        WearNTear::m_snowBuildup
+ 667 ldarg.0      
+ 668 ldfld        WearNTear::m_nview
+ 673 callvirt     ZNetView::GetZDO()
+ 678 ldsfld       ZDOVars::s_snow
+ 683 ldarg.0      
+ 684 ldfld        WearNTear::m_snowBuildup
+ 689 callvirt     ZDO::Set(i4,r4)
+ 694 br           955
+ 699 ldarg.0      
+ 700 ldfld        WearNTear::m_snowDamageImmune
+ 705 brfalse.s    724
+ 707 call         ZoneSystem::get_instance()
+ 712 ldc.i4.s     39
+ 714 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+ 719 brfalse      955
+ 724 call         ZoneSystem::get_instance()
+ 729 ldc.i4.s     38
+ 731 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+ 736 brtrue       955
+ 741 ldarg.0      
+ 742 ldloc.s      5
+ 744 stfld        WearNTear::m_heavySnow
+ 749 ldarg.0      
+ 750 ldfld        WearNTear::m_heavySnow
+ 755 brfalse      955
+ 760 ldarg.0      
+ 761 ldarg.0      
+ 762 call         WearNTear::GetSupportColorValue()
+ 767 stfld        WearNTear::m_lastSupportColorValue
+ 772 ldarg.0      
+ 773 ldfld        WearNTear::m_lastSupportColorValue
+ 778 ldc.r4       -1
+ 783 beq          955
+ 788 ldarg.0      
+ 789 ldfld        WearNTear::m_lastSupportColorValue
+ 794 call         Game::get_instance()
+ 799 ldfld        Game::m_snowSupportLevel
+ 804 bge.un       955
+ 809 ldarg.0      
+ 810 ldc.i4.1     
+ 811 stfld        WearNTear::m_heavySnow
+ 816 ldloc.1      
+ 817 call         Game::get_instance()
+ 822 ldfld        Game::m_snowDamage
+ 827 add          
+ 828 stloc.1      
+ 829 call         ZNet::get_instance()
+ 834 callvirt     ZNet::GetTimeSeconds()
+ 839 ldarg.0      
+ 840 ldfld        WearNTear::m_snowDamageTimer
+ 845 conv.r8      
+ 846 blt.un.s     955
+ 848 ldarg.0      
+ 849 call         ZNet::get_instance()
+ 854 callvirt     ZNet::GetTimeSeconds()
+ 859 conv.r4      
+ 860 call         Game::get_instance()
+ 865 ldflda       Game::m_snowDamageEffectIntervalRange
+ 870 ldfld        UnityEngine.Vector2::x
+ 875 call         Game::get_instance()
+ 880 ldflda       Game::m_snowDamageEffectIntervalRange
+ 885 ldfld        UnityEngine.Vector2::y
+ 890 call         UnityEngine.Random::Range
+ 895 add          
+ 896 stfld        WearNTear::m_snowDamageTimer
+ 901 call         Game::get_instance()
+ 906 ldfld        Game::m_snowDamageEffect
+ 911 ldarg.0      
+ 912 call         UnityEngine.Component::get_transform
+ 917 callvirt     UnityEngine.Transform::get_position
+ 922 call         UnityEngine.Quaternion::get_identity
+ 927 ldarg.0      
+ 928 call         UnityEngine.Component::get_transform
+ 933 ldc.r4       1
+ 938 ldc.i4.m1    
+ 939 ldloca.s     7
+ 941 initobj      ZDOID
+ 947 ldloc.s      7
+ 949 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 954 pop          
+ 955 ldarg.0      
+ 956 ldfld        WearNTear::m_biome
+ 961 ldc.i4.s     32
+ 963 bne.un       1289
+ 968 ldarg.0      
+ 969 ldc.i4.1     
+ 970 stfld        WearNTear::m_inAshlands
+ 975 call         Game::get_instance()
+ 980 ldfld        Game::m_ashDamage
+ 985 ldc.r4       0
+ 990 ble.un.s     1112
+ 992 ldloc.0      
+ 993 brtrue.s     1112
+ 995 ldarg.0      
+ 996 ldfld        WearNTear::m_ashDamageImmune
+1001 brtrue.s     1112
+1003 ldarg.0      
+1004 ldfld        WearNTear::m_haveAshRoof
+1009 brtrue.s     1037
+1011 ldarg.0      
+1012 ldfld        WearNTear::m_ashDamageResist
+1017 brfalse.s    1034
+1019 ldarg.0      
+1020 call         WearNTear::GetHealthPercentage()
+1025 ldc.r4       0.10000000149011612
+1030 cgt          
+1032 br.s         1038
+1034 ldc.i4.1     
+1035 br.s         1038
+1037 ldc.i4.0     
+1038 stloc.2      
+1039 ldloc.2      
+1040 brfalse.s    1101
+1042 ldarg.0      
+1043 ldfld        WearNTear::m_ashTimer
+1048 ldc.r4       0
+1053 bne.un.s     1064
+1055 ldarg.0      
+1056 ldarg.1      
+1057 stfld        WearNTear::m_ashTimer
+1062 br.s         1112
+1064 ldarg.1      
+1065 ldarg.0      
+1066 ldfld        WearNTear::m_ashTimer
+1071 sub          
+1072 ldc.r4       5
+1077 ble.un.s     1112
+1079 ldarg.0      
+1080 ldarg.1      
+1081 stfld        WearNTear::m_ashTimer
+1086 ldloc.1      
+1087 call         Game::get_instance()
+1092 ldfld        Game::m_ashDamage
+1097 add          
+1098 stloc.1      
+1099 br.s         1112
+1101 ldarg.0      
+1102 ldc.r4       0
+1107 stfld        WearNTear::m_ashTimer
+1112 ldarg.0      
+1113 ldfld        WearNTear::m_staticPosition
+1118 brtrue.s     1148
+1120 ldarg.0      
+1121 ldarg.0      
+1122 ldfld        WearNTear::m_heightmap
+1127 ldarg.0      
+1128 call         UnityEngine.Component::get_transform
+1133 callvirt     UnityEngine.Transform::get_position
+1138 callvirt     Heightmap::GetLava(valuetype:81)
+1143 stfld        WearNTear::m_lavaValue
+1148 ldarg.0      
+1149 ldfld        WearNTear::m_lavaValue
+1154 ldc.r4       0.20000000298023224
+1159 ble.un.s     1278
+1161 ldarg.0      
+1162 ldfld        WearNTear::m_groundDist
+1167 ldc.r4       1.5
+1172 bge.un.s     1278
+1174 ldarg.0      
+1175 ldfld        WearNTear::m_ashDamageImmune
+1180 brtrue.s     1278
+1182 ldarg.0      
+1183 ldfld        WearNTear::m_lavaTimer
+1188 ldc.r4       0
+1193 bne.un.s     1204
+1195 ldarg.0      
+1196 ldarg.1      
+1197 stfld        WearNTear::m_lavaTimer
+1202 br.s         1289
+1204 ldarg.1      
+1205 ldarg.0      
+1206 ldfld        WearNTear::m_lavaTimer
+1211 sub          
+1212 ldc.r4       2
+1217 ble.un.s     1289
+1219 ldarg.0      
+1220 ldarg.1      
+1221 stfld        WearNTear::m_lavaTimer
+1226 ldloc.0      
+1227 brtrue.s     1236
+1229 ldc.r4       70
+1234 br.s         1241
+1236 ldc.r4       30
+1241 ldarg.0      
+1242 ldfld        WearNTear::m_lavaValue
+1247 mul          
+1248 stloc.s      8
+1250 ldloc.1      
+1251 ldloc.s      8
+1253 ldarg.0      
+1254 ldfld        WearNTear::m_ashDamageResist
+1259 brtrue.s     1268
+1261 ldc.r4       1
+1266 br.s         1273
+1268 ldc.r4       0.33000001311302185
+1273 mul          
+1274 add          
+1275 stloc.1      
+1276 br.s         1289
+1278 ldarg.0      
+1279 ldc.r4       0
+1284 stfld        WearNTear::m_lavaTimer
+1289 ldarg.0      
+1290 ldfld        WearNTear::m_requiredBiome
+1295 brfalse.s    1335
+1297 ldarg.0      
+1298 ldfld        WearNTear::m_requiredBiome
+1303 box          Heightmap+Biome
+1308 ldarg.0      
+1309 ldfld        WearNTear::m_biome
+1314 box          Heightmap+Biome
+1319 call         System.Enum::HasFlag
+1324 brtrue.s     1335
+1326 ldloc.1      
+1327 ldarg.0      
+1328 ldfld        WearNTear::m_outsideRequiredBiomeDamage
+1333 add          
+1334 stloc.1      
+1335 ldarg.0      
+1336 ldloc.2      
+1337 brtrue.s     1342
+1339 ldc.i4.0     
+1340 br.s         1343
+1342 ldc.i4.5     
+1343 conv.r4      
+1344 stfld        WearNTear::m_ashDamageTime
+1349 ldloc.1      
+1350 ldc.r4       0
+1355 ble.un.s     1371
+1357 ldarg.0      
+1358 call         WearNTear::CanBeRemoved()
+1363 brtrue.s     1371
+1365 ldc.r4       0
+1370 stloc.1      
+1371 ldloc.1      
+1372 ldc.r4       0
+1377 ble.un.s     1419
+1379 ldloc.1      
+1380 ldc.r4       100
+1385 div          
+1386 ldarg.0      
+1387 ldfld        WearNTear::m_health
+1392 mul          
+1393 stloc.s      9
+1395 call         ZoneSystem::get_instance()
+1400 ldc.i4.s     37
+1402 callvirt     ZoneSystem::GetGlobalKey(valuetype:1552)
+1407 brtrue.s     1419
+1409 ldarg.0      
+1410 ldloc.s      9
+1412 ldnull       
+1413 call         WearNTear::ApplyDamage(r4,class:2140)
+1418 pop          
+1419 ldarg.0      
+1420 ldfld        WearNTear::m_snow
+1425 call         UnityEngine.Object::op_Implicit
+1430 brfalse.s    1477
+1432 ldarg.0      
+1433 ldfld        WearNTear::m_nview
+1438 callvirt     ZNetView::IsValid()
+1443 brfalse.s    1477
+1445 ldarg.0      
+1446 ldarg.0      
+1447 ldfld        WearNTear::m_nview
+1452 callvirt     ZNetView::GetZDO()
+1457 ldsfld       ZDOVars::s_snow
+1462 ldc.r4       0
+1467 callvirt     ZDO::GetFloat(i4,r4)
+1472 stfld        WearNTear::m_snowBuildup
+1477 ldarg.0      
+1478 ldc.i4.1     
+1479 call         WearNTear::UpdateVisual(bool)
+1484 ret          

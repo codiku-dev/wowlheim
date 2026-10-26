@@ -1,0 +1,59 @@
+== Player::AddKnownStation(class:1048) -> void  il_size=177 sha=d3679da3a351
+   locals_sig=0x1100000d
+   0 ldarg.1      
+   1 ldc.i4.1     
+   2 callvirt     CraftingStation::GetLevel(bool)
+   7 stloc.0      
+   8 ldarg.0      
+   9 ldfld        Player::m_knownStations
+  14 ldarg.1      
+  15 ldfld        CraftingStation::m_name
+  20 ldloca.s     1
+  22 callvirt     System.Collections.Generic.Dictionary`2::TryGetValue
+  27 brfalse.s    102
+  29 ldloc.1      
+  30 ldloc.0      
+  31 bge.s        101
+  33 ldarg.0      
+  34 ldfld        Player::m_knownStations
+  39 ldarg.1      
+  40 ldfld        CraftingStation::m_name
+  45 ldloc.0      
+  46 callvirt     System.Collections.Generic.Dictionary`2::set_Item
+  51 call         MessageHud::get_instance()
+  56 ldarg.1      
+  57 ldfld        CraftingStation::m_icon
+  62 ldstr        "$msg_newstation_level"
+  67 ldarg.1      
+  68 ldfld        CraftingStation::m_name
+  73 ldstr        " $msg_level "
+  78 ldloca.s     0
+  80 call         System.Int32::ToString
+  85 call         System.String::Concat
+  90 callvirt     MessageHud::QueueUnlockMsg(class:217,string,string)
+  95 ldarg.0      
+  96 call         Player::UpdateKnownRecipesList()
+ 101 ret          
+ 102 ldarg.0      
+ 103 ldfld        Player::m_knownStations
+ 108 ldarg.1      
+ 109 ldfld        CraftingStation::m_name
+ 114 ldloc.0      
+ 115 callvirt     System.Collections.Generic.Dictionary`2::Add
+ 120 call         MessageHud::get_instance()
+ 125 ldarg.1      
+ 126 ldfld        CraftingStation::m_icon
+ 131 ldstr        "$msg_newstation"
+ 136 ldarg.1      
+ 137 ldfld        CraftingStation::m_name
+ 142 callvirt     MessageHud::QueueUnlockMsg(class:217,string,string)
+ 147 ldstr        "Game"
+ 152 ldstr        "StationFound"
+ 157 ldarg.1      
+ 158 ldfld        CraftingStation::m_name
+ 163 ldc.i4.0     
+ 164 conv.i8      
+ 165 call         Gogan::LogEvent(string,string,string,i8)
+ 170 ldarg.0      
+ 171 call         Player::UpdateKnownRecipesList()
+ 176 ret          

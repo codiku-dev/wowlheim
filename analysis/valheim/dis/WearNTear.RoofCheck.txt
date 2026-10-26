@@ -1,0 +1,53 @@
+== WearNTear::RoofCheck(class:73, valuetype:81, class:133&, r4) -> bool  il_size=142 sha=2c202b60638b
+   locals_sig=0x11000803
+   0 ldarg.1      
+   1 ldc.r4       0
+   6 ldarg.3      
+   7 ldc.r4       0
+  12 newobj       UnityEngine.Vector3::.ctor
+  17 call         UnityEngine.Vector3::op_Addition
+  22 ldc.r4       0.10000000149011612
+  27 call         UnityEngine.Vector3::get_up
+  32 ldsfld       WearNTear::s_raycastHits
+  37 ldc.r4       100
+  42 ldsfld       WearNTear::s_rayMask
+  47 call         UnityEngine.Physics::SphereCastNonAlloc
+  52 stloc.0      
+  53 ldc.i4.0     
+  54 stloc.1      
+  55 br.s         133
+  57 ldsfld       WearNTear::s_raycastHits
+  62 ldloc.1      
+  63 ldelem       0x01000026
+  68 stloc.2      
+  69 ldloca.s     2
+  71 call         UnityEngine.RaycastHit::get_collider
+  76 callvirt     UnityEngine.Component::get_transform
+  81 ldarg.0      
+  82 call         Utils::IsAncestor
+  87 brtrue.s     129
+  89 ldloca.s     2
+  91 call         UnityEngine.RaycastHit::get_collider
+  96 callvirt     UnityEngine.Component::get_gameObject
+ 101 ldstr        "leaky"
+ 106 callvirt     UnityEngine.GameObject::CompareTag
+ 111 brtrue.s     129
+ 113 ldarg.2      
+ 114 ldloca.s     2
+ 116 call         UnityEngine.RaycastHit::get_collider
+ 121 callvirt     UnityEngine.Component::get_gameObject
+ 126 stind.ref    
+ 127 ldc.i4.1     
+ 128 ret          
+ 129 ldloc.1      
+ 130 ldc.i4.1     
+ 131 add          
+ 132 stloc.1      
+ 133 ldloc.1      
+ 134 ldloc.0      
+ 135 blt.s        57
+ 137 ldarg.2      
+ 138 ldnull       
+ 139 stind.ref    
+ 140 ldc.i4.0     
+ 141 ret          

@@ -1,0 +1,349 @@
+== StationExtension::Awake() -> void  il_size=67 sha=ab9a5b6d4c8f
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::GetComponent<T>
+   6 callvirt     ZNetView::GetZDO()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldarg.0      
+  16 call         UnityEngine.Component::GetComponent<T>
+  21 stfld        StationExtension::m_piece
+  26 ldsfld       StationExtension::m_allExtensions
+  31 ldarg.0      
+  32 callvirt     System.Collections.Generic.List`1::Add
+  37 ldarg.0      
+  38 ldfld        StationExtension::m_continousConnection
+  43 brfalse.s    66
+  45 ldarg.0      
+  46 ldstr        "UpdateConnection"
+  51 ldc.r4       1
+  56 ldc.r4       4
+  61 call         UnityEngine.MonoBehaviour::InvokeRepeating
+  66 ret          
+
+== StationExtension::OnDestroy() -> void  il_size=44 sha=cc84d7491035
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_connection
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    31
+  13 ldarg.0      
+  14 ldfld        StationExtension::m_connection
+  19 call         UnityEngine.Object::Destroy
+  24 ldarg.0      
+  25 ldnull       
+  26 stfld        StationExtension::m_connection
+  31 ldsfld       StationExtension::m_allExtensions
+  36 ldarg.0      
+  37 callvirt     System.Collections.Generic.List`1::Remove
+  42 pop          
+  43 ret          
+
+== StationExtension::GetHoverText() -> string  il_size=41 sha=c110d0efd8b8
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_continousConnection
+   6 brtrue.s     19
+   8 ldarg.0      
+   9 ldc.r4       1
+  14 call         StationExtension::PokeEffect(r4)
+  19 call         Localization::get_instance
+  24 ldarg.0      
+  25 ldfld        StationExtension::m_piece
+  30 ldfld        Piece::m_name
+  35 callvirt     Localization::Localize
+  40 ret          
+
+== StationExtension::GetHoverName() -> string  il_size=22 sha=5a64f396d1de
+   locals_sig=null
+   0 call         Localization::get_instance
+   5 ldarg.0      
+   6 ldfld        StationExtension::m_piece
+  11 ldfld        Piece::m_name
+  16 callvirt     Localization::Localize
+  21 ret          
+
+== StationExtension::GetExtensionName() -> string  il_size=12 sha=0f695d4a11e3
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_piece
+   6 ldfld        Piece::m_name
+  11 ret          
+
+== StationExtension::FindExtensions(class:1048, valuetype:81, class:165<class:2400>) -> void  il_size=120 sha=7f363fbc1138
+   locals_sig=0x110007a5
+   0 ldsfld       StationExtension::m_allExtensions
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         94
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 callvirt     UnityEngine.Component::get_transform
+  27 callvirt     UnityEngine.Transform::get_position
+  32 ldarg.1      
+  33 call         UnityEngine.Vector3::Distance
+  38 ldloc.1      
+  39 ldfld        StationExtension::m_maxStationDistance
+  44 bge.un.s     94
+  46 ldloc.1      
+  47 ldfld        StationExtension::m_craftingStation
+  52 ldfld        CraftingStation::m_name
+  57 ldarg.0      
+  58 ldfld        CraftingStation::m_name
+  63 call         System.String::op_Equality
+  68 brfalse.s    94
+  70 ldloc.1      
+  71 ldfld        StationExtension::m_stack
+  76 brtrue.s     87
+  78 ldarg.2      
+  79 ldloc.1      
+  80 call         StationExtension::ExtensionInList(class:165<class:2400>,class:2400)
+  85 brtrue.s     94
+  87 ldarg.2      
+  88 ldloc.1      
+  89 callvirt     System.Collections.Generic.List`1::Add
+  94 ldloca.s     0
+  96 call         Enumerator::MoveNext
+ 101 brtrue.s     13
+ 103 leave.s      119
+ 105 ldloca.s     0
+ 107 constrained. 0x1b0001fe
+ 113 callvirt     System.IDisposable::Dispose
+ 118 endfinally   
+ 119 ret          
+
+== StationExtension::ExtensionInList(class:165<class:2400>, class:2400) -> bool  il_size=67 sha=e7ecf10402a2
+   locals_sig=0x110007a6
+   0 ldarg.0      
+   1 callvirt     System.Collections.Generic.List`1::GetEnumerator
+   6 stloc.0      
+   7 br.s         38
+   9 ldloca.s     0
+  11 call         Enumerator::get_Current
+  16 callvirt     StationExtension::GetExtensionName()
+  21 ldarg.1      
+  22 callvirt     StationExtension::GetExtensionName()
+  27 call         System.String::op_Equality
+  32 brfalse.s    38
+  34 ldc.i4.1     
+  35 stloc.1      
+  36 leave.s      65
+  38 ldloca.s     0
+  40 call         Enumerator::MoveNext
+  45 brtrue.s     9
+  47 leave.s      63
+  49 ldloca.s     0
+  51 constrained. 0x1b0001fe
+  57 callvirt     System.IDisposable::Dispose
+  62 endfinally   
+  63 ldc.i4.0     
+  64 ret          
+  65 ldloc.1      
+  66 ret          
+
+== StationExtension::OtherExtensionInRange(r4) -> bool  il_size=93 sha=a66fea4c173e
+   locals_sig=0x110007a7
+   0 ldsfld       StationExtension::m_allExtensions
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         64
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldarg.0      
+  23 call         UnityEngine.Object::op_Equality
+  28 brtrue.s     64
+  30 ldloc.1      
+  31 callvirt     UnityEngine.Component::get_transform
+  36 callvirt     UnityEngine.Transform::get_position
+  41 ldarg.0      
+  42 call         UnityEngine.Component::get_transform
+  47 callvirt     UnityEngine.Transform::get_position
+  52 call         UnityEngine.Vector3::Distance
+  57 ldarg.1      
+  58 bge.un.s     64
+  60 ldc.i4.1     
+  61 stloc.2      
+  62 leave.s      91
+  64 ldloca.s     0
+  66 call         Enumerator::MoveNext
+  71 brtrue.s     13
+  73 leave.s      89
+  75 ldloca.s     0
+  77 constrained. 0x1b0001fe
+  83 callvirt     System.IDisposable::Dispose
+  88 endfinally   
+  89 ldc.i4.0     
+  90 ret          
+  91 ldloc.2      
+  92 ret          
+
+== StationExtension::FindStationsInRange(valuetype:81) -> class:165<class:1048>  il_size=32 sha=137818456a9d
+   locals_sig=0x110007a8
+   0 newobj       System.Collections.Generic.List`1::.ctor
+   5 stloc.0      
+   6 ldarg.0      
+   7 ldfld        StationExtension::m_craftingStation
+  12 ldfld        CraftingStation::m_name
+  17 ldarg.1      
+  18 ldarg.0      
+  19 ldfld        StationExtension::m_maxStationDistance
+  24 ldloc.0      
+  25 call         CraftingStation::FindStationsInRange(string,valuetype:81,r4,class:165<class:1048>)
+  30 ldloc.0      
+  31 ret          
+
+== StationExtension::FindClosestStationInRange(valuetype:81) -> class:1048  il_size=24 sha=b110e48ea109
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_craftingStation
+   6 ldfld        CraftingStation::m_name
+  11 ldarg.1      
+  12 ldarg.0      
+  13 ldfld        StationExtension::m_maxStationDistance
+  18 call         CraftingStation::FindClosestStationInRange(string,valuetype:81,r4)
+  23 ret          
+
+== StationExtension::UpdateConnection() -> void  il_size=12 sha=992aaed40d08
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       5
+   6 call         StationExtension::PokeEffect(r4)
+  11 ret          
+
+== StationExtension::PokeEffect(r4) -> void  il_size=35 sha=b3ccd1cd2163
+   locals_sig=0x110007a9
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::get_transform
+   7 callvirt     UnityEngine.Transform::get_position
+  12 call         StationExtension::FindClosestStationInRange(valuetype:81)
+  17 stloc.0      
+  18 ldloc.0      
+  19 call         UnityEngine.Object::op_Implicit
+  24 brfalse.s    34
+  26 ldarg.0      
+  27 ldloc.0      
+  28 ldarg.1      
+  29 call         StationExtension::StartConnectionEffect(class:1048,r4)
+  34 ret          
+
+== StationExtension::StartConnectionEffect(class:1048, r4) -> void  il_size=14 sha=2462814efc17
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.1      
+   2 callvirt     CraftingStation::GetConnectionEffectPoint()
+   7 ldarg.2      
+   8 call         StationExtension::StartConnectionEffect(valuetype:81,r4)
+  13 ret          
+
+== StationExtension::StartConnectionEffect(valuetype:81, r4) -> void  il_size=161 sha=6bcd915b68a1
+   locals_sig=0x110007aa
+   0 ldarg.0      
+   1 call         StationExtension::GetConnectionPoint()
+   6 stloc.0      
+   7 ldarg.0      
+   8 ldfld        StationExtension::m_connection
+  13 ldnull       
+  14 call         UnityEngine.Object::op_Equality
+  19 brfalse.s    44
+  21 ldarg.0      
+  22 ldarg.0      
+  23 ldfld        StationExtension::m_connectionPrefab
+  28 ldloc.0      
+  29 call         UnityEngine.Quaternion::get_identity
+  34 call         UnityEngine.Object::Instantiate<T>
+  39 stfld        StationExtension::m_connection
+  44 ldarg.1      
+  45 ldloc.0      
+  46 call         UnityEngine.Vector3::op_Subtraction
+  51 stloc.1      
+  52 ldloca.s     1
+  54 call         UnityEngine.Vector3::get_normalized
+  59 call         UnityEngine.Quaternion::LookRotation
+  64 stloc.2      
+  65 ldarg.0      
+  66 ldfld        StationExtension::m_connection
+  71 callvirt     UnityEngine.GameObject::get_transform
+  76 ldloc.0      
+  77 callvirt     UnityEngine.Transform::set_position
+  82 ldarg.0      
+  83 ldfld        StationExtension::m_connection
+  88 callvirt     UnityEngine.GameObject::get_transform
+  93 ldloc.2      
+  94 callvirt     UnityEngine.Transform::set_rotation
+  99 ldarg.0      
+ 100 ldfld        StationExtension::m_connection
+ 105 callvirt     UnityEngine.GameObject::get_transform
+ 110 ldc.r4       1
+ 115 ldc.r4       1
+ 120 ldloca.s     1
+ 122 call         UnityEngine.Vector3::get_magnitude
+ 127 newobj       UnityEngine.Vector3::.ctor
+ 132 callvirt     UnityEngine.Transform::set_localScale
+ 137 ldarg.0      
+ 138 ldstr        "StopConnectionEffect"
+ 143 call         UnityEngine.MonoBehaviour::CancelInvoke
+ 148 ldarg.0      
+ 149 ldstr        "StopConnectionEffect"
+ 154 ldarg.2      
+ 155 call         UnityEngine.MonoBehaviour::Invoke
+ 160 ret          
+
+== StationExtension::StopConnectionEffect() -> void  il_size=32 sha=215f14d27e1b
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_connection
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    31
+  13 ldarg.0      
+  14 ldfld        StationExtension::m_connection
+  19 call         UnityEngine.Object::Destroy
+  24 ldarg.0      
+  25 ldnull       
+  26 stfld        StationExtension::m_connection
+  31 ret          
+
+== StationExtension::GetConnectionPoint() -> valuetype:81  il_size=18 sha=23f0bcbe98fd
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_transform
+   6 ldarg.0      
+   7 ldfld        StationExtension::m_connectionOffset
+  12 callvirt     UnityEngine.Transform::TransformPoint
+  17 ret          
+
+== StationExtension::OnDrawGizmos() -> void  il_size=1 sha=684888c0ebb1
+   locals_sig=null
+   0 ret          
+
+== StationExtension::GetHoverOffset() -> r4  il_size=7 sha=8d75e329b756
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        StationExtension::m_hoverOffset
+   6 ret          
+
+== StationExtension::.ctor() -> void  il_size=44 sha=02f850fa628d
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       5
+   6 stfld        StationExtension::m_maxStationDistance
+  11 ldarg.0      
+  12 ldc.r4       0
+  17 ldc.r4       0
+  22 ldc.r4       0
+  27 newobj       UnityEngine.Vector3::.ctor
+  32 stfld        StationExtension::m_connectionOffset
+  37 ldarg.0      
+  38 call         UnityEngine.MonoBehaviour::.ctor
+  43 ret          
+
+== StationExtension::.cctor() -> void  il_size=11 sha=c0f08d147d8b
+   locals_sig=null
+   0 newobj       System.Collections.Generic.List`1::.ctor
+   5 stsfld       StationExtension::m_allExtensions
+  10 ret          

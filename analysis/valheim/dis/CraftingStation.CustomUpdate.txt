@@ -1,0 +1,43 @@
+== CraftingStation::CustomUpdate(r4, r4) -> void  il_size=110 sha=95174cc6faea
+   locals_sig=0x11000091
+   0 ldarg.0      
+   1 ldfld        CraftingStation::m_nview
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Equality
+  12 brtrue.s     27
+  14 ldarg.0      
+  15 ldfld        CraftingStation::m_nview
+  20 callvirt     ZNetView::IsValid()
+  25 brtrue.s     28
+  27 ret          
+  28 ldarg.0      
+  29 ldarg.0      
+  30 ldfld        CraftingStation::m_useTimer
+  35 ldarg.1      
+  36 add          
+  37 stfld        CraftingStation::m_useTimer
+  42 ldarg.0      
+  43 ldarg.0      
+  44 ldfld        CraftingStation::m_updateExtensionTimer
+  49 ldarg.1      
+  50 add          
+  51 stfld        CraftingStation::m_updateExtensionTimer
+  56 ldarg.0      
+  57 ldfld        CraftingStation::m_inUseObject
+  62 call         UnityEngine.Object::op_Implicit
+  67 brfalse.s    109
+  69 ldarg.0      
+  70 ldfld        CraftingStation::m_useTimer
+  75 ldc.r4       1
+  80 clt          
+  82 stloc.0      
+  83 ldarg.0      
+  84 ldfld        CraftingStation::m_inUseObject
+  89 callvirt     UnityEngine.GameObject::get_activeSelf
+  94 ldloc.0      
+  95 beq.s        109
+  97 ldarg.0      
+  98 ldfld        CraftingStation::m_inUseObject
+ 103 ldloc.0      
+ 104 callvirt     UnityEngine.GameObject::SetActive
+ 109 ret          

@@ -1,0 +1,45 @@
+-- GENERE par tools/resources/generate.py : NE PAS EDITER A LA MAIN. Rejouable (idempotent).
+SET NAMES utf8mb4;
+-- 002 : materiaux (classe 7/11) et outils (classe 2/14, comme le Pic de mineur) de Wowlheim. Plage 9200001-9299999.
+DELETE FROM `item_template` WHERE `entry` BETWEEN 9200001 AND 9299999;
+INSERT INTO `item_template` (`entry`,`class`,`subclass`,`name`,`displayid`,`Quality`,`BuyCount`,`BuyPrice`,`SellPrice`,`InventoryType`,`ItemLevel`,`RequiredLevel`,`stackable`,`delay`,`description`,`Material`,`bonding`) VALUES
+(9200001,7,11,'Bois',7375,1,1,40,4,0,1,0,100,0,'Wowlheim',2,0),
+(9200002,7,11,'Pierre',4714,1,1,40,4,0,1,0,100,0,'Wowlheim',0,0),
+(9200003,7,11,'Silex',18107,1,1,40,4,0,1,0,100,0,'Wowlheim',0,0),
+(9200004,7,11,'Résine',8283,1,1,40,4,0,1,0,100,0,'Wowlheim',0,0),
+(9200005,7,11,'Peau de cerf',6687,1,1,40,4,0,1,0,100,0,'Wowlheim',8,0),
+(9200006,7,11,'Chutes de cuir',7400,1,1,40,4,0,1,0,100,0,'Wowlheim',8,0),
+(9200009,7,11,'Andouiller',7999,2,1,0,20,0,1,0,100,0,'Wowlheim',0,0),
+(9200011,7,11,'Bois fin',7290,1,1,120,12,0,15,0,100,0,'Wowlheim',2,0),
+(9200012,7,11,'Bois de cœur',13458,1,1,120,12,0,15,0,100,0,'Wowlheim',2,0),
+(9200013,7,11,'Cuivre',4681,1,1,120,12,0,15,0,100,0,'Wowlheim',1,0),
+(9200014,7,11,'Étain',4690,1,1,120,12,0,15,0,100,0,'Wowlheim',1,0),
+(9200015,7,11,'Bronze',7390,1,1,0,24,0,15,0,100,0,'Wowlheim',1,0),
+(9200016,7,11,'Peau de troll',6684,1,1,120,12,0,15,0,100,0,'Wowlheim',8,0),
+(9200019,7,11,'Œil de gréling',7394,2,1,0,60,0,15,0,100,0,'Wowlheim',0,0),
+(9200021,7,11,'Fer',4689,1,1,360,36,0,28,0,100,0,'Wowlheim',1,0),
+(9200022,7,11,'Écorce ancienne',7149,1,1,360,36,0,28,0,100,0,'Wowlheim',2,0),
+(9200023,7,11,'Fragments d''os',7350,1,1,360,36,0,28,0,100,0,'Wowlheim',0,0),
+(9200024,7,11,'Entrailles',1116,1,1,360,36,0,28,0,100,0,'Wowlheim',0,0),
+(9200029,7,11,'Noyau de Surtling',8560,2,1,0,180,0,28,0,100,0,'Wowlheim',0,0),
+(9200031,7,11,'Argent',7355,1,1,1080,108,0,40,0,100,0,'Wowlheim',1,0),
+(9200032,7,11,'Obsidienne',20769,1,1,1080,108,0,40,0,100,0,'Wowlheim',0,0),
+(9200033,7,11,'Fourrure de loup',7294,1,1,1080,108,0,40,0,100,0,'Wowlheim',8,0),
+(9200034,7,11,'Cristal',6546,1,1,1080,108,0,40,0,100,0,'Wowlheim',0,0),
+(9200039,7,11,'Glande de gel',4045,2,1,0,540,0,40,0,100,0,'Wowlheim',0,0),
+(9200041,7,11,'Métal noir',20658,1,1,3240,324,0,52,0,100,0,'Wowlheim',1,0),
+(9200042,7,11,'Lin',7383,1,1,3240,324,0,52,0,100,0,'Wowlheim',0,0),
+(9200043,7,11,'Fil de lin',4752,1,1,3240,324,0,52,0,100,0,'Wowlheim',0,0),
+(9200044,7,11,'Peau de lox',6698,1,1,3240,324,0,52,0,100,0,'Wowlheim',8,0),
+(9200049,7,11,'Noyau noir',17922,2,1,0,1620,0,52,0,100,0,'Wowlheim',0,0);
+INSERT INTO `item_template` (`entry`,`class`,`subclass`,`name`,`displayid`,`Quality`,`BuyCount`,`BuyPrice`,`SellPrice`,`InventoryType`,`ItemLevel`,`RequiredLevel`,`stackable`,`delay`,`description`,`Material`,`bonding`,`dmg_min1`,`dmg_max1`,`dmg_type1`,`sheath`,`MaxDurability`) VALUES
+(9201011,2,14,'Hache en silex',7429,1,1,0,10,21,1,1,1,2000,'Wowlheim',1,0,1,3,0,0,0),
+(9201012,2,14,'Pic en andouiller',7493,1,1,0,10,21,1,1,1,2000,'Wowlheim',1,0,1,3,0,0,0),
+(9201021,2,14,'Hache de bronze',7428,1,1,0,30,21,15,15,1,2000,'Wowlheim',1,0,2,5,0,0,0),
+(9201022,2,14,'Pic de bronze',6568,1,1,0,30,21,15,15,1,2000,'Wowlheim',1,0,2,5,0,0,0),
+(9201031,2,14,'Hache de fer',7428,1,1,0,90,21,28,28,1,2000,'Wowlheim',1,0,4,8,0,0,0),
+(9201032,2,14,'Pic de fer',6568,1,1,0,90,21,28,28,1,2000,'Wowlheim',1,0,4,8,0,0,0),
+(9201041,2,14,'Hache d''argent',7426,1,1,0,270,21,40,40,1,2000,'Wowlheim',1,0,6,12,0,0,0),
+(9201042,2,14,'Pic d''argent',14039,1,1,0,270,21,40,40,1,2000,'Wowlheim',1,0,6,12,0,0,0),
+(9201051,2,14,'Hache de métal noir',7427,1,1,0,810,21,52,52,1,2000,'Wowlheim',1,0,8,16,0,0,0),
+(9201052,2,14,'Pic de métal noir',14039,1,1,0,810,21,52,52,1,2000,'Wowlheim',1,0,8,16,0,0,0);

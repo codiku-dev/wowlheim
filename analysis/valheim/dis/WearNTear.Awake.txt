@@ -1,0 +1,325 @@
+== WearNTear::Awake() -> void  il_size=1114 sha=aa873f85d310
+   locals_sig=0x110007fc
+   0 ldsfld       WearNTear::s_terrainLayer
+   5 stloc.1      
+   6 ldc.i4.0     
+   7 stloc.2      
+   8 ldloca.s     1
+  10 call         System.Nullable`1::GetValueOrDefault
+  15 ldloc.2      
+  16 clt          
+  18 ldloca.s     1
+  20 call         System.Nullable`1::get_HasValue
+  25 and          
+  26 brfalse.s    48
+  28 ldstr        "terrain"
+  33 call         UnityEngine.LayerMask::NameToLayer
+  38 newobj       System.Nullable`1::.ctor
+  43 stsfld       WearNTear::s_terrainLayer
+  48 ldarg.0      
+  49 ldarg.0      
+  50 call         UnityEngine.Component::GetComponent<T>
+  55 stfld        WearNTear::m_nview
+  60 ldarg.0      
+  61 ldarg.0      
+  62 call         UnityEngine.Component::GetComponent<T>
+  67 stfld        WearNTear::m_piece
+  72 ldarg.0      
+  73 ldfld        WearNTear::m_nview
+  78 callvirt     ZNetView::GetZDO()
+  83 brtrue.s     86
+  85 ret          
+  86 ldarg.0      
+  87 ldfld        WearNTear::m_nview
+  92 ldstr        "RPC_Damage"
+  97 ldarg.0      
+  98 ldftn        WearNTear::RPC_Damage(i8,class:2140)
+ 104 newobj       System.Action`2::.ctor
+ 109 callvirt     ZNetView::Register<T>
+ 114 ldarg.0      
+ 115 ldfld        WearNTear::m_nview
+ 120 ldstr        "RPC_Remove"
+ 125 ldarg.0      
+ 126 ldftn        WearNTear::RPC_Remove(i8,bool)
+ 132 newobj       System.Action`2::.ctor
+ 137 callvirt     ZNetView::Register<T>
+ 142 ldarg.0      
+ 143 ldfld        WearNTear::m_nview
+ 148 ldstr        "RPC_Repair"
+ 153 ldarg.0      
+ 154 ldftn        WearNTear::RPC_Repair(i8)
+ 160 newobj       System.Action`1::.ctor
+ 165 callvirt     ZNetView::Register(string,class:93<i8>)
+ 170 ldarg.0      
+ 171 ldfld        WearNTear::m_nview
+ 176 ldstr        "RPC_HealthChanged"
+ 181 ldarg.0      
+ 182 ldftn        WearNTear::RPC_HealthChanged(i8,r4)
+ 188 newobj       System.Action`2::.ctor
+ 193 callvirt     ZNetView::Register<T>
+ 198 ldarg.0      
+ 199 ldfld        WearNTear::m_nview
+ 204 ldstr        "RPC_ClearCachedSupport"
+ 209 ldarg.0      
+ 210 ldftn        WearNTear::RPC_ClearCachedSupport(i8)
+ 216 newobj       System.Action`1::.ctor
+ 221 callvirt     ZNetView::Register(string,class:93<i8>)
+ 226 ldarg.0      
+ 227 ldfld        WearNTear::m_nview
+ 232 ldstr        "RPC_SetSnow"
+ 237 ldarg.0      
+ 238 ldftn        WearNTear::RPC_SetSnow(i8,r4)
+ 244 newobj       System.Action`2::.ctor
+ 249 callvirt     ZNetView::Register<T>
+ 254 ldarg.0      
+ 255 ldfld        WearNTear::m_autoCreateFragments
+ 260 brfalse.s    290
+ 262 ldarg.0      
+ 263 ldfld        WearNTear::m_nview
+ 268 ldstr        "RPC_CreateFragments"
+ 273 ldarg.0      
+ 274 ldftn        WearNTear::RPC_CreateFragments(i8)
+ 280 newobj       System.Action`1::.ctor
+ 285 callvirt     ZNetView::Register(string,class:93<i8>)
+ 290 ldsfld       WearNTear::s_rayMask
+ 295 brtrue.s     353
+ 297 ldc.i4.5     
+ 298 newarr       0x010001e8
+ 303 dup          
+ 304 ldc.i4.0     
+ 305 ldstr        "piece"
+ 310 stelem.ref   
+ 311 dup          
+ 312 ldc.i4.1     
+ 313 ldstr        "Default"
+ 318 stelem.ref   
+ 319 dup          
+ 320 ldc.i4.2     
+ 321 ldstr        "static_solid"
+ 326 stelem.ref   
+ 327 dup          
+ 328 ldc.i4.3     
+ 329 ldstr        "Default_small"
+ 334 stelem.ref   
+ 335 dup          
+ 336 ldc.i4.4     
+ 337 ldstr        "terrain"
+ 342 stelem.ref   
+ 343 call         UnityEngine.LayerMask::GetMask
+ 348 stsfld       WearNTear::s_rayMask
+ 353 ldsfld       WearNTear::s_allInstances
+ 358 ldarg.0      
+ 359 callvirt     System.Collections.Generic.List`1::Add
+ 364 ldarg.0      
+ 365 ldsfld       WearNTear::s_allInstances
+ 370 callvirt     System.Collections.Generic.List`1::get_Count
+ 375 ldc.i4.1     
+ 376 sub          
+ 377 stfld        WearNTear::m_myIndex
+ 382 ldarg.0      
+ 383 call         UnityEngine.Time::get_time
+ 388 stfld        WearNTear::m_createTime
+ 393 ldarg.0      
+ 394 ldarg.0      
+ 395 call         WearNTear::GetMaxSupport()
+ 400 stfld        WearNTear::m_support
+ 405 ldarg.0      
+ 406 ldfld        WearNTear::m_nview
+ 411 callvirt     ZNetView::GetZDO()
+ 416 ldsfld       ZDOVars::s_health
+ 421 ldarg.0      
+ 422 ldfld        WearNTear::m_health
+ 427 callvirt     ZDO::GetFloat(i4,r4)
+ 432 stloc.0      
+ 433 ldloca.s     0
+ 435 ldarg.0      
+ 436 ldfld        WearNTear::m_health
+ 441 call         System.Single::Equals
+ 446 brfalse.s    507
+ 448 ldsfld       WearNTear::m_randomInitialDamage
+ 453 brfalse.s    507
+ 455 ldc.r4       0.10000000149011612
+ 460 ldarg.0      
+ 461 ldfld        WearNTear::m_health
+ 466 mul          
+ 467 ldarg.0      
+ 468 ldfld        WearNTear::m_health
+ 473 ldc.r4       0.6000000238418579
+ 478 mul          
+ 479 call         UnityEngine.Random::Range
+ 484 stloc.0      
+ 485 ldarg.0      
+ 486 ldfld        WearNTear::m_nview
+ 491 callvirt     ZNetView::GetZDO()
+ 496 ldsfld       ZDOVars::s_health
+ 501 ldloc.0      
+ 502 callvirt     ZDO::Set(i4,r4)
+ 507 ldsfld       Game::m_worldLevel
+ 512 ldc.i4.0     
+ 513 ble.s        552
+ 515 ldarg.0      
+ 516 ldarg.0      
+ 517 ldfld        WearNTear::m_health
+ 522 ldsfld       Game::m_worldLevel
+ 527 conv.r4      
+ 528 call         Game::get_instance()
+ 533 ldfld        Game::m_worldLevelPieceHPMultiplier
+ 538 mul          
+ 539 ldarg.0      
+ 540 ldfld        WearNTear::m_health
+ 545 mul          
+ 546 add          
+ 547 stfld        WearNTear::m_health
+ 552 ldarg.0      
+ 553 ldc.r4       0
+ 558 ldc.r4       4
+ 563 call         UnityEngine.Random::Range
+ 568 stfld        WearNTear::m_updateCoverTimer
+ 573 ldarg.0      
+ 574 ldloc.0      
+ 575 ldarg.0      
+ 576 ldfld        WearNTear::m_health
+ 581 div          
+ 582 call         UnityEngine.Mathf::Clamp01
+ 587 stfld        WearNTear::m_healthPercentage
+ 592 ldarg.0      
+ 593 newobj       UnityEngine.MaterialPropertyBlock::.ctor
+ 598 stfld        WearNTear::m_propertyBlock
+ 603 ldarg.0      
+ 604 ldarg.0      
+ 605 call         WearNTear::GetHighlightRenderers()
+ 610 stfld        WearNTear::m_renderers
+ 615 ldarg.0      
+ 616 ldc.r4       0
+ 621 call         WearNTear::SetAshlandsMaterialValue(r4)
+ 626 ldarg.0      
+ 627 ldc.i4.0     
+ 628 call         WearNTear::UpdateVisual(bool)
+ 633 ldarg.0      
+ 634 ldfld        WearNTear::m_snow
+ 639 call         UnityEngine.Object::op_Implicit
+ 644 brfalse.s    752
+ 646 ldarg.0      
+ 647 ldfld        WearNTear::m_snow
+ 652 callvirt     UnityEngine.Renderer::get_bounds
+ 657 stloc.3      
+ 658 ldloca.s     3
+ 660 call         UnityEngine.Vector3::get_up
+ 665 ldc.r4       1.25
+ 670 call         UnityEngine.Vector3::op_Multiply
+ 675 call         UnityEngine.Bounds::Expand
+ 680 ldloca.s     3
+ 682 dup          
+ 683 call         UnityEngine.Bounds::get_center
+ 688 call         UnityEngine.Vector3::get_up
+ 693 ldc.r4       0.5
+ 698 call         UnityEngine.Vector3::op_Multiply
+ 703 ldc.r4       1.25
+ 708 call         UnityEngine.Vector3::op_Multiply
+ 713 call         UnityEngine.Vector3::op_Addition
+ 718 call         UnityEngine.Bounds::set_center
+ 723 ldarg.0      
+ 724 ldfld        WearNTear::m_snow
+ 729 ldloc.3      
+ 730 callvirt     UnityEngine.Renderer::set_bounds
+ 735 ldarg.0      
+ 736 ldfld        WearNTear::m_snow
+ 741 callvirt     UnityEngine.Component::get_gameObject
+ 746 ldc.i4.0     
+ 747 callvirt     UnityEngine.GameObject::SetActive
+ 752 ldarg.0      
+ 753 ldfld        WearNTear::m_snowWorn
+ 758 call         UnityEngine.Object::op_Implicit
+ 763 brfalse.s    873
+ 765 ldarg.0      
+ 766 ldfld        WearNTear::m_snowWorn
+ 771 callvirt     UnityEngine.Renderer::get_bounds
+ 776 stloc.s      4
+ 778 ldloca.s     4
+ 780 call         UnityEngine.Vector3::get_up
+ 785 ldc.r4       1.25
+ 790 call         UnityEngine.Vector3::op_Multiply
+ 795 call         UnityEngine.Bounds::Expand
+ 800 ldloca.s     4
+ 802 dup          
+ 803 call         UnityEngine.Bounds::get_center
+ 808 call         UnityEngine.Vector3::get_up
+ 813 ldc.r4       0.5
+ 818 call         UnityEngine.Vector3::op_Multiply
+ 823 ldc.r4       1.25
+ 828 call         UnityEngine.Vector3::op_Multiply
+ 833 call         UnityEngine.Vector3::op_Addition
+ 838 call         UnityEngine.Bounds::set_center
+ 843 ldarg.0      
+ 844 ldfld        WearNTear::m_snowWorn
+ 849 ldloc.s      4
+ 851 callvirt     UnityEngine.Renderer::set_bounds
+ 856 ldarg.0      
+ 857 ldfld        WearNTear::m_snowWorn
+ 862 callvirt     UnityEngine.Component::get_gameObject
+ 867 ldc.i4.0     
+ 868 callvirt     UnityEngine.GameObject::SetActive
+ 873 ldarg.0      
+ 874 ldfld        WearNTear::m_snowBroken
+ 879 call         UnityEngine.Object::op_Implicit
+ 884 brfalse.s    994
+ 886 ldarg.0      
+ 887 ldfld        WearNTear::m_snowBroken
+ 892 callvirt     UnityEngine.Renderer::get_bounds
+ 897 stloc.s      5
+ 899 ldloca.s     5
+ 901 call         UnityEngine.Vector3::get_up
+ 906 ldc.r4       1.25
+ 911 call         UnityEngine.Vector3::op_Multiply
+ 916 call         UnityEngine.Bounds::Expand
+ 921 ldloca.s     5
+ 923 dup          
+ 924 call         UnityEngine.Bounds::get_center
+ 929 call         UnityEngine.Vector3::get_up
+ 934 ldc.r4       0.5
+ 939 call         UnityEngine.Vector3::op_Multiply
+ 944 ldc.r4       1.25
+ 949 call         UnityEngine.Vector3::op_Multiply
+ 954 call         UnityEngine.Vector3::op_Addition
+ 959 call         UnityEngine.Bounds::set_center
+ 964 ldarg.0      
+ 965 ldfld        WearNTear::m_snowBroken
+ 970 ldloc.s      5
+ 972 callvirt     UnityEngine.Renderer::set_bounds
+ 977 ldarg.0      
+ 978 ldfld        WearNTear::m_snowBroken
+ 983 callvirt     UnityEngine.Component::get_gameObject
+ 988 ldc.i4.0     
+ 989 callvirt     UnityEngine.GameObject::SetActive
+ 994 ldarg.0      
+ 995 ldarg.0      
+ 996 ldfld        WearNTear::m_nview
+1001 callvirt     ZNetView::GetZDO()
+1006 ldsfld       ZDOVars::s_preSnow
+1011 ldc.i4.0     
+1012 callvirt     ZDO::GetBool(i4,bool)
+1017 stfld        WearNTear::m_addPreSnow
+1022 ldarg.0      
+1023 ldarg.0      
+1024 ldfld        WearNTear::m_nview
+1029 callvirt     ZNetView::GetZDO()
+1034 ldsfld       ZDOVars::s_snow
+1039 ldc.r4       0
+1044 callvirt     ZDO::GetFloat(i4,r4)
+1049 stfld        WearNTear::m_snowBuildup
+1054 ldarg.0      
+1055 call         WearNTear::UpdateSnowVisual()
+1060 ldarg.0      
+1061 call         ZNet::get_instance()
+1066 callvirt     ZNet::GetTimeSeconds()
+1071 conv.r4      
+1072 call         Game::get_instance()
+1077 ldflda       Game::m_snowDamageEffectIntervalRange
+1082 ldfld        UnityEngine.Vector2::x
+1087 call         Game::get_instance()
+1092 ldflda       Game::m_snowDamageEffectIntervalRange
+1097 ldfld        UnityEngine.Vector2::y
+1102 call         UnityEngine.Random::Range
+1107 add          
+1108 stfld        WearNTear::m_snowDamageTimer
+1113 ret          

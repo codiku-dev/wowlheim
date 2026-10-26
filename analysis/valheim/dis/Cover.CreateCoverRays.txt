@@ -1,0 +1,144 @@
+== Cover::CreateCoverRays il_size=515 sha=597296eaaa37
+   0 ldc.i4.s     17
+   2 newarr       0x0100002a
+   7 dup          
+   8 ldc.i4.0     
+   9 ldc.r4       0
+  14 ldc.r4       1
+  19 ldc.r4       0
+  24 newobj       UnityEngine.Vector3::.ctor
+  29 stelem       0x0100002a
+  34 dup          
+  35 ldc.i4.1     
+  36 ldc.r4       1
+  41 ldc.r4       0
+  46 ldc.r4       0
+  51 newobj       UnityEngine.Vector3::.ctor
+  56 stelem       0x0100002a
+  61 dup          
+  62 ldc.i4.2     
+  63 ldc.r4       -1
+  68 ldc.r4       0
+  73 ldc.r4       0
+  78 newobj       UnityEngine.Vector3::.ctor
+  83 stelem       0x0100002a
+  88 dup          
+  89 ldc.i4.3     
+  90 ldc.r4       0
+  95 ldc.r4       0
+ 100 ldc.r4       1
+ 105 newobj       UnityEngine.Vector3::.ctor
+ 110 stelem       0x0100002a
+ 115 dup          
+ 116 ldc.i4.4     
+ 117 ldc.r4       0
+ 122 ldc.r4       0
+ 127 ldc.r4       -1
+ 132 newobj       UnityEngine.Vector3::.ctor
+ 137 stelem       0x0100002a
+ 142 dup          
+ 143 ldc.i4.5     
+ 144 ldc.r4       -1
+ 149 ldc.r4       0
+ 154 ldc.r4       -1
+ 159 newobj       UnityEngine.Vector3::.ctor
+ 164 stelem       0x0100002a
+ 169 dup          
+ 170 ldc.i4.6     
+ 171 ldc.r4       1
+ 176 ldc.r4       0
+ 181 ldc.r4       -1
+ 186 newobj       UnityEngine.Vector3::.ctor
+ 191 stelem       0x0100002a
+ 196 dup          
+ 197 ldc.i4.7     
+ 198 ldc.r4       -1
+ 203 ldc.r4       0
+ 208 ldc.r4       1
+ 213 newobj       UnityEngine.Vector3::.ctor
+ 218 stelem       0x0100002a
+ 223 dup          
+ 224 ldc.i4.8     
+ 225 ldc.r4       1
+ 230 ldc.r4       0
+ 235 ldc.r4       1
+ 240 newobj       UnityEngine.Vector3::.ctor
+ 245 stelem       0x0100002a
+ 250 dup          
+ 251 ldc.i4.s     9
+ 253 ldc.r4       -1
+ 258 ldc.r4       1
+ 263 ldc.r4       0
+ 268 newobj       UnityEngine.Vector3::.ctor
+ 273 stelem       0x0100002a
+ 278 dup          
+ 279 ldc.i4.s     10
+ 281 ldc.r4       1
+ 286 ldc.r4       1
+ 291 ldc.r4       0
+ 296 newobj       UnityEngine.Vector3::.ctor
+ 301 stelem       0x0100002a
+ 306 dup          
+ 307 ldc.i4.s     11
+ 309 ldc.r4       0
+ 314 ldc.r4       1
+ 319 ldc.r4       1
+ 324 newobj       UnityEngine.Vector3::.ctor
+ 329 stelem       0x0100002a
+ 334 dup          
+ 335 ldc.i4.s     12
+ 337 ldc.r4       0
+ 342 ldc.r4       1
+ 347 ldc.r4       -1
+ 352 newobj       UnityEngine.Vector3::.ctor
+ 357 stelem       0x0100002a
+ 362 dup          
+ 363 ldc.i4.s     13
+ 365 ldc.r4       -1
+ 370 ldc.r4       1
+ 375 ldc.r4       -1
+ 380 newobj       UnityEngine.Vector3::.ctor
+ 385 stelem       0x0100002a
+ 390 dup          
+ 391 ldc.i4.s     14
+ 393 ldc.r4       1
+ 398 ldc.r4       1
+ 403 ldc.r4       -1
+ 408 newobj       UnityEngine.Vector3::.ctor
+ 413 stelem       0x0100002a
+ 418 dup          
+ 419 ldc.i4.s     15
+ 421 ldc.r4       -1
+ 426 ldc.r4       1
+ 431 ldc.r4       1
+ 436 newobj       UnityEngine.Vector3::.ctor
+ 441 stelem       0x0100002a
+ 446 dup          
+ 447 ldc.i4.s     16
+ 449 ldc.r4       1
+ 454 ldc.r4       1
+ 459 ldc.r4       1
+ 464 newobj       UnityEngine.Vector3::.ctor
+ 469 stelem       0x0100002a
+ 474 stsfld       Cover::m_coverRays
+ 479 ldsfld       Cover::m_coverRays
+ 484 stloc.0      
+ 485 ldc.i4.0     
+ 486 stloc.1      
+ 487 br.s         508
+ 489 ldloc.0      
+ 490 ldloc.1      
+ 491 ldelem       0x0100002a
+ 496 stloc.2      
+ 497 ldloca.s     2
+ 499 call         UnityEngine.Vector3::Normalize
+ 504 ldloc.1      
+ 505 ldc.i4.1     
+ 506 add          
+ 507 stloc.1      
+ 508 ldloc.1      
+ 509 ldloc.0      
+ 510 ldlen        
+ 511 conv.i4      
+ 512 blt.s        489
+ 514 ret          

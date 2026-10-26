@@ -1,0 +1,500 @@
+== Player::SetupPlacementGhost() -> void  il_size=1238 sha=faec98600c82
+   locals_sig=0x110000b0
+   0 ldarg.0      
+   1 ldfld        Player::m_placementGhost
+   6 call         UnityEngine.Object::op_Implicit
+  11 brfalse.s    31
+  13 ldarg.0      
+  14 ldfld        Player::m_placementGhost
+  19 call         UnityEngine.Object::Destroy
+  24 ldarg.0      
+  25 ldnull       
+  26 stfld        Player::m_placementGhost
+  31 ldarg.0      
+  32 ldfld        Player::m_buildPieces
+  37 ldnull       
+  38 call         UnityEngine.Object::op_Equality
+  43 brtrue.s     53
+  45 ldarg.0      
+  46 callvirt     Character::IsDead()
+  51 brfalse.s    54
+  53 ret          
+  54 ldarg.0      
+  55 ldfld        Player::m_buildPieces
+  60 callvirt     PieceTable::GetSelectedPrefab()
+  65 stloc.0      
+  66 ldloc.0      
+  67 ldnull       
+  68 call         UnityEngine.Object::op_Equality
+  73 brfalse.s    76
+  75 ret          
+  76 ldloc.0      
+  77 callvirt     UnityEngine.GameObject::GetComponent<T>
+  82 stloc.1      
+  83 ldloc.1      
+  84 ldfld        Piece::m_repairPiece
+  89 brtrue.s     99
+  91 ldloc.1      
+  92 ldfld        Piece::m_removePiece
+  97 brfalse.s    100
+  99 ret          
+ 100 ldc.i4.0     
+ 101 stloc.2      
+ 102 ldloc.0      
+ 103 callvirt     UnityEngine.GameObject::GetComponentInChildren<T>
+ 108 stloc.3      
+ 109 ldloc.3      
+ 110 call         UnityEngine.Object::op_Implicit
+ 115 brfalse.s    131
+ 117 ldloc.3      
+ 118 callvirt     UnityEngine.Behaviour::get_enabled
+ 123 stloc.2      
+ 124 ldloc.3      
+ 125 ldc.i4.0     
+ 126 callvirt     UnityEngine.Behaviour::set_enabled
+ 131 ldc.i4.1     
+ 132 stsfld       TerrainOp::m_forceDisableTerrainOps
+ 137 ldc.i4.1     
+ 138 stsfld       ZNetView::m_forceDisableInit
+ 143 ldarg.0      
+ 144 ldfld        Player::m_placementGhost
+ 149 pop          
+ 150 ldarg.0      
+ 151 ldloc.0      
+ 152 call         UnityEngine.Object::Instantiate<T>
+ 157 stfld        Player::m_placementGhost
+ 162 ldarg.0      
+ 163 ldfld        Player::m_placementGhost
+ 168 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 173 stloc.s      4
+ 175 ldloc.s      4
+ 177 brfalse.s    202
+ 179 ldloc.s      4
+ 181 ldfld        Piece::m_randomInitBuildRotation
+ 186 brfalse.s    202
+ 188 ldarg.0      
+ 189 ldc.i4.0     
+ 190 ldc.i4.s     16
+ 192 call         UnityEngine.Random::Range
+ 197 stfld        Player::m_placeRotation
+ 202 ldarg.0      
+ 203 ldfld        Player::m_placementGhost
+ 208 callvirt     UnityEngine.GameObject::get_gameObject
+ 213 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 218 stloc.s      5
+ 220 ldloc.s      5
+ 222 brfalse.s    232
+ 224 ldloc.s      5
+ 226 ldc.i4.0     
+ 227 callvirt     ItemDrop::MakePiece(bool)
+ 232 ldarg.0      
+ 233 ldfld        Player::m_placementGhost
+ 238 callvirt     UnityEngine.GameObject::GetComponentInChildren<T>
+ 243 stloc.s      6
+ 245 ldloc.s      6
+ 247 brfalse.s    257
+ 249 ldloc.s      6
+ 251 ldc.i4.0     
+ 252 callvirt     UnityEngine.Behaviour::set_enabled
+ 257 ldc.i4.0     
+ 258 stsfld       ZNetView::m_forceDisableInit
+ 263 ldc.i4.0     
+ 264 stsfld       TerrainOp::m_forceDisableTerrainOps
+ 269 ldarg.0      
+ 270 ldfld        Player::m_placementGhost
+ 275 ldloc.0      
+ 276 callvirt     UnityEngine.Object::get_name
+ 281 callvirt     UnityEngine.Object::set_name
+ 286 ldarg.0      
+ 287 ldfld        Player::m_placementGhostLast
+ 292 ldarg.0      
+ 293 ldfld        Player::m_placementGhost
+ 298 callvirt     UnityEngine.Object::get_name
+ 303 call         System.String::op_Inequality
+ 308 brfalse.s    317
+ 310 ldarg.0      
+ 311 ldc.i4.m1    
+ 312 stfld        Player::m_manualSnapPoint
+ 317 ldarg.0      
+ 318 ldarg.0      
+ 319 ldfld        Player::m_placementGhost
+ 324 callvirt     UnityEngine.Object::get_name
+ 329 stfld        Player::m_placementGhostLast
+ 334 ldloc.3      
+ 335 call         UnityEngine.Object::op_Implicit
+ 340 brfalse.s    349
+ 342 ldloc.3      
+ 343 ldloc.2      
+ 344 callvirt     UnityEngine.Behaviour::set_enabled
+ 349 ldarg.0      
+ 350 ldfld        Player::m_placementGhost
+ 355 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 360 stloc.s      11
+ 362 ldc.i4.0     
+ 363 stloc.s      12
+ 365 br.s         383
+ 367 ldloc.s      11
+ 369 ldloc.s      12
+ 371 ldelem.ref   
+ 372 call         UnityEngine.Object::Destroy
+ 377 ldloc.s      12
+ 379 ldc.i4.1     
+ 380 add          
+ 381 stloc.s      12
+ 383 ldloc.s      12
+ 385 ldloc.s      11
+ 387 ldlen        
+ 388 conv.i4      
+ 389 blt.s        367
+ 391 ldarg.0      
+ 392 ldfld        Player::m_placementGhost
+ 397 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 402 stloc.s      13
+ 404 ldc.i4.0     
+ 405 stloc.s      12
+ 407 br.s         425
+ 409 ldloc.s      13
+ 411 ldloc.s      12
+ 413 ldelem.ref   
+ 414 call         UnityEngine.Object::Destroy
+ 419 ldloc.s      12
+ 421 ldc.i4.1     
+ 422 add          
+ 423 stloc.s      12
+ 425 ldloc.s      12
+ 427 ldloc.s      13
+ 429 ldlen        
+ 430 conv.i4      
+ 431 blt.s        409
+ 433 ldarg.0      
+ 434 ldfld        Player::m_placementGhost
+ 439 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 444 stloc.s      14
+ 446 ldc.i4.0     
+ 447 stloc.s      12
+ 449 br.s         467
+ 451 ldloc.s      14
+ 453 ldloc.s      12
+ 455 ldelem.ref   
+ 456 call         UnityEngine.Object::Destroy
+ 461 ldloc.s      12
+ 463 ldc.i4.1     
+ 464 add          
+ 465 stloc.s      12
+ 467 ldloc.s      12
+ 469 ldloc.s      14
+ 471 ldlen        
+ 472 conv.i4      
+ 473 blt.s        451
+ 475 ldarg.0      
+ 476 ldfld        Player::m_placementGhost
+ 481 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 486 stloc.s      15
+ 488 ldc.i4.0     
+ 489 stloc.s      12
+ 491 br.s         509
+ 493 ldloc.s      15
+ 495 ldloc.s      12
+ 497 ldelem.ref   
+ 498 call         UnityEngine.Object::Destroy
+ 503 ldloc.s      12
+ 505 ldc.i4.1     
+ 506 add          
+ 507 stloc.s      12
+ 509 ldloc.s      12
+ 511 ldloc.s      15
+ 513 ldlen        
+ 514 conv.i4      
+ 515 blt.s        493
+ 517 ldarg.0      
+ 518 ldfld        Player::m_placementGhost
+ 523 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 528 stloc.s      16
+ 530 ldc.i4.0     
+ 531 stloc.s      12
+ 533 br.s         631
+ 535 ldloc.s      16
+ 537 ldloc.s      12
+ 539 ldelem.ref   
+ 540 stloc.s      17
+ 542 ldc.i4.1     
+ 543 ldloc.s      17
+ 545 callvirt     UnityEngine.Component::get_gameObject
+ 550 callvirt     UnityEngine.GameObject::get_layer
+ 555 ldc.i4.s     31
+ 557 and          
+ 558 shl          
+ 559 ldarg.0      
+ 560 ldfld        Player::m_placeRayMask
+ 565 and          
+ 566 brtrue.s     625
+ 568 ldstr        "Disabling "
+ 573 ldloc.s      17
+ 575 callvirt     UnityEngine.Component::get_gameObject
+ 580 callvirt     UnityEngine.Object::get_name
+ 585 ldstr        "  "
+ 590 ldloc.s      17
+ 592 callvirt     UnityEngine.Component::get_gameObject
+ 597 callvirt     UnityEngine.GameObject::get_layer
+ 602 call         UnityEngine.LayerMask::LayerToName
+ 607 call         System.String::Concat
+ 612 call         ZLog::Log
+ 617 ldloc.s      17
+ 619 ldc.i4.0     
+ 620 callvirt     UnityEngine.Collider::set_enabled
+ 625 ldloc.s      12
+ 627 ldc.i4.1     
+ 628 add          
+ 629 stloc.s      12
+ 631 ldloc.s      12
+ 633 ldloc.s      16
+ 635 ldlen        
+ 636 conv.i4      
+ 637 blt.s        535
+ 639 ldarg.0      
+ 640 ldfld        Player::m_placementGhost
+ 645 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 650 ldstr        "ghost"
+ 655 call         UnityEngine.LayerMask::NameToLayer
+ 660 stloc.s      7
+ 662 stloc.s      18
+ 664 ldc.i4.0     
+ 665 stloc.s      12
+ 667 br.s         692
+ 669 ldloc.s      18
+ 671 ldloc.s      12
+ 673 ldelem.ref   
+ 674 callvirt     UnityEngine.Component::get_gameObject
+ 679 ldloc.s      7
+ 681 callvirt     UnityEngine.GameObject::set_layer
+ 686 ldloc.s      12
+ 688 ldc.i4.1     
+ 689 add          
+ 690 stloc.s      12
+ 692 ldloc.s      12
+ 694 ldloc.s      18
+ 696 ldlen        
+ 697 conv.i4      
+ 698 blt.s        669
+ 700 ldarg.0      
+ 701 ldfld        Player::m_placementGhost
+ 706 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 711 stloc.s      19
+ 713 ldc.i4.0     
+ 714 stloc.s      12
+ 716 br.s         734
+ 718 ldloc.s      19
+ 720 ldloc.s      12
+ 722 ldelem.ref   
+ 723 call         UnityEngine.Object::Destroy
+ 728 ldloc.s      12
+ 730 ldc.i4.1     
+ 731 add          
+ 732 stloc.s      12
+ 734 ldloc.s      12
+ 736 ldloc.s      19
+ 738 ldlen        
+ 739 conv.i4      
+ 740 blt.s        718
+ 742 ldarg.0      
+ 743 ldfld        Player::m_placementGhost
+ 748 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 753 stloc.s      20
+ 755 ldc.i4.0     
+ 756 stloc.s      12
+ 758 br.s         776
+ 760 ldloc.s      20
+ 762 ldloc.s      12
+ 764 ldelem.ref   
+ 765 call         UnityEngine.Object::Destroy
+ 770 ldloc.s      12
+ 772 ldc.i4.1     
+ 773 add          
+ 774 stloc.s      12
+ 776 ldloc.s      12
+ 778 ldloc.s      20
+ 780 ldlen        
+ 781 conv.i4      
+ 782 blt.s        760
+ 784 ldarg.0      
+ 785 ldfld        Player::m_placementGhost
+ 790 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 795 stloc.s      21
+ 797 ldc.i4.0     
+ 798 stloc.s      12
+ 800 br.s         818
+ 802 ldloc.s      21
+ 804 ldloc.s      12
+ 806 ldelem.ref   
+ 807 call         UnityEngine.Object::Destroy
+ 812 ldloc.s      12
+ 814 ldc.i4.1     
+ 815 add          
+ 816 stloc.s      12
+ 818 ldloc.s      12
+ 820 ldloc.s      21
+ 822 ldlen        
+ 823 conv.i4      
+ 824 blt.s        802
+ 826 ldarg.0      
+ 827 ldfld        Player::m_placementGhost
+ 832 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 837 stloc.s      22
+ 839 ldc.i4.0     
+ 840 stloc.s      12
+ 842 br.s         860
+ 844 ldloc.s      22
+ 846 ldloc.s      12
+ 848 ldelem.ref   
+ 849 call         UnityEngine.Object::Destroy
+ 854 ldloc.s      12
+ 856 ldc.i4.1     
+ 857 add          
+ 858 stloc.s      12
+ 860 ldloc.s      12
+ 862 ldloc.s      22
+ 864 ldlen        
+ 865 conv.i4      
+ 866 blt.s        844
+ 868 ldarg.0      
+ 869 ldfld        Player::m_placementGhost
+ 874 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 879 stloc.s      23
+ 881 ldc.i4.0     
+ 882 stloc.s      12
+ 884 br.s         902
+ 886 ldloc.s      23
+ 888 ldloc.s      12
+ 890 ldelem.ref   
+ 891 call         UnityEngine.Object::Destroy
+ 896 ldloc.s      12
+ 898 ldc.i4.1     
+ 899 add          
+ 900 stloc.s      12
+ 902 ldloc.s      12
+ 904 ldloc.s      23
+ 906 ldlen        
+ 907 conv.i4      
+ 908 blt.s        886
+ 910 ldarg.0      
+ 911 ldfld        Player::m_placementGhost
+ 916 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 921 stloc.s      24
+ 923 ldc.i4.0     
+ 924 stloc.s      12
+ 926 br.s         945
+ 928 ldloc.s      24
+ 930 ldloc.s      12
+ 932 ldelem.ref   
+ 933 ldc.i4.0     
+ 934 callvirt     UnityEngine.Behaviour::set_enabled
+ 939 ldloc.s      12
+ 941 ldc.i4.1     
+ 942 add          
+ 943 stloc.s      12
+ 945 ldloc.s      12
+ 947 ldloc.s      24
+ 949 ldlen        
+ 950 conv.i4      
+ 951 blt.s        928
+ 953 ldarg.0      
+ 954 ldfld        Player::m_placementGhost
+ 959 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+ 964 stloc.s      25
+ 966 ldc.i4.0     
+ 967 stloc.s      12
+ 969 br.s         988
+ 971 ldloc.s      25
+ 973 ldloc.s      12
+ 975 ldelem.ref   
+ 976 ldc.i4.0     
+ 977 callvirt     UnityEngine.Behaviour::set_enabled
+ 982 ldloc.s      12
+ 984 ldc.i4.1     
+ 985 add          
+ 986 stloc.s      12
+ 988 ldloc.s      12
+ 990 ldloc.s      25
+ 992 ldlen        
+ 993 conv.i4      
+ 994 blt.s        971
+ 996 ldarg.0      
+ 997 ldfld        Player::m_placementGhost
+1002 callvirt     UnityEngine.GameObject::GetComponentInChildren<T>
+1007 stloc.s      8
+1009 ldloc.s      8
+1011 call         UnityEngine.Object::op_Implicit
+1016 brfalse.s    1025
+1018 ldloc.s      8
+1020 call         UnityEngine.Object::Destroy
+1025 ldarg.0      
+1026 ldfld        Player::m_placementGhost
+1031 callvirt     UnityEngine.GameObject::GetComponentInChildren<T>
+1036 stloc.s      9
+1038 ldloc.s      9
+1040 call         UnityEngine.Object::op_Implicit
+1045 brfalse.s    1055
+1047 ldloc.s      9
+1049 ldc.i4.0     
+1050 callvirt     UnityEngine.Behaviour::set_enabled
+1055 ldarg.0      
+1056 ldfld        Player::m_placementGhost
+1061 callvirt     UnityEngine.GameObject::GetComponentsInChildren<T>
+1066 stloc.s      26
+1068 ldc.i4.0     
+1069 stloc.s      12
+1071 br.s         1095
+1073 ldloc.s      26
+1075 ldloc.s      12
+1077 ldelem.ref   
+1078 callvirt     UnityEngine.Component::get_gameObject
+1083 ldc.i4.0     
+1084 callvirt     UnityEngine.GameObject::SetActive
+1089 ldloc.s      12
+1091 ldc.i4.1     
+1092 add          
+1093 stloc.s      12
+1095 ldloc.s      12
+1097 ldloc.s      26
+1099 ldlen        
+1100 conv.i4      
+1101 blt.s        1073
+1103 ldarg.0      
+1104 ldfld        Player::m_placementGhost
+1109 callvirt     UnityEngine.GameObject::get_transform
+1114 ldstr        "_GhostOnly"
+1119 callvirt     UnityEngine.Transform::Find
+1124 stloc.s      10
+1126 ldloc.s      10
+1128 call         UnityEngine.Object::op_Implicit
+1133 brfalse.s    1148
+1135 ldloc.s      10
+1137 callvirt     UnityEngine.Component::get_gameObject
+1142 ldc.i4.1     
+1143 callvirt     UnityEngine.GameObject::SetActive
+1148 ldarg.0      
+1149 ldfld        Player::m_placementGhost
+1154 callvirt     UnityEngine.GameObject::get_transform
+1159 ldarg.0      
+1160 call         UnityEngine.Component::get_transform
+1165 callvirt     UnityEngine.Transform::get_position
+1170 callvirt     UnityEngine.Transform::set_position
+1175 ldarg.0      
+1176 ldfld        Player::m_placementGhost
+1181 callvirt     UnityEngine.GameObject::get_transform
+1186 ldloc.0      
+1187 callvirt     UnityEngine.GameObject::get_transform
+1192 callvirt     UnityEngine.Transform::get_localScale
+1197 callvirt     UnityEngine.Transform::set_localScale
+1202 ldarg.0      
+1203 ldfld        Player::m_ghostRippleDistance
+1208 callvirt     System.Collections.Generic.Dictionary`2::Clear
+1213 ldarg.0      
+1214 ldarg.0      
+1215 ldfld        Player::m_placementGhost
+1220 call         Player::CleanupGhostMaterials<T>
+1225 ldarg.0      
+1226 ldarg.0      
+1227 ldfld        Player::m_placementGhost
+1232 call         Player::CleanupGhostMaterials<T>
+1237 ret          

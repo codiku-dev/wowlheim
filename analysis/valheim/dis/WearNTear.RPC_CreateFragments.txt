@@ -1,0 +1,40 @@
+== WearNTear::RPC_CreateFragments(i8) -> void  il_size=74 sha=1f6080febaf4
+   locals_sig=0x1100025e
+   0 ldarg.0      
+   1 call         WearNTear::ResetHighlight()
+   6 ldarg.0      
+   7 ldfld        WearNTear::m_fragmentRoots
+  12 brfalse.s    61
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_fragmentRoots
+  20 ldlen        
+  21 brfalse.s    61
+  23 ldarg.0      
+  24 ldfld        WearNTear::m_fragmentRoots
+  29 stloc.0      
+  30 ldc.i4.0     
+  31 stloc.1      
+  32 br.s         54
+  34 ldloc.0      
+  35 ldloc.1      
+  36 ldelem.ref   
+  37 dup          
+  38 ldc.i4.1     
+  39 callvirt     UnityEngine.GameObject::SetActive
+  44 ldc.i4.0     
+  45 call         Destructible::CreateFragments(class:133,bool)
+  50 ldloc.1      
+  51 ldc.i4.1     
+  52 add          
+  53 stloc.1      
+  54 ldloc.1      
+  55 ldloc.0      
+  56 ldlen        
+  57 conv.i4      
+  58 blt.s        34
+  60 ret          
+  61 ldarg.0      
+  62 call         UnityEngine.Component::get_gameObject
+  67 ldc.i4.1     
+  68 call         Destructible::CreateFragments(class:133,bool)
+  73 ret          

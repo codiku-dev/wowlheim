@@ -1,0 +1,64 @@
+== Player::RequiredCraftingStation(class:1080, i4, bool) -> bool  il_size=147 sha=971ba9840f13
+   locals_sig=0x110000a3
+   0 ldarg.1      
+   1 ldarg.2      
+   2 callvirt     Recipe::GetRequiredStation(i4)
+   7 stloc.0      
+   8 ldarg.0      
+   9 ldfld        Player::m_currentStation
+  14 ldnull       
+  15 call         UnityEngine.Object::op_Inequality
+  20 brfalse.s    37
+  22 ldarg.0      
+  23 ldfld        Player::m_currentStation
+  28 ldfld        CraftingStation::m_upgrader
+  33 brfalse.s    37
+  35 ldc.i4.1     
+  36 ret          
+  37 ldloc.0      
+  38 ldnull       
+  39 call         UnityEngine.Object::op_Inequality
+  44 brfalse.s    116
+  46 ldarg.0      
+  47 ldfld        Player::m_currentStation
+  52 ldnull       
+  53 call         UnityEngine.Object::op_Equality
+  58 brfalse.s    62
+  60 ldc.i4.0     
+  61 ret          
+  62 ldloc.0      
+  63 ldfld        CraftingStation::m_name
+  68 ldarg.0      
+  69 ldfld        Player::m_currentStation
+  74 ldfld        CraftingStation::m_name
+  79 call         System.String::op_Inequality
+  84 brfalse.s    88
+  86 ldc.i4.0     
+  87 ret          
+  88 ldarg.3      
+  89 brfalse.s    145
+  91 ldarg.1      
+  92 ldarg.2      
+  93 callvirt     Recipe::GetRequiredStationLevel(i4)
+  98 stloc.1      
+  99 ldarg.0      
+ 100 ldfld        Player::m_currentStation
+ 105 ldc.i4.1     
+ 106 callvirt     CraftingStation::GetLevel(bool)
+ 111 ldloc.1      
+ 112 bge.s        145
+ 114 ldc.i4.0     
+ 115 ret          
+ 116 ldarg.0      
+ 117 ldfld        Player::m_currentStation
+ 122 ldnull       
+ 123 call         UnityEngine.Object::op_Inequality
+ 128 brfalse.s    145
+ 130 ldarg.0      
+ 131 ldfld        Player::m_currentStation
+ 136 ldfld        CraftingStation::m_showBasicRecipies
+ 141 brtrue.s     145
+ 143 ldc.i4.0     
+ 144 ret          
+ 145 ldc.i4.1     
+ 146 ret          

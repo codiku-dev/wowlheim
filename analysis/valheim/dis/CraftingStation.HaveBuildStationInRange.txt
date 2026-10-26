@@ -1,0 +1,45 @@
+== CraftingStation::HaveBuildStationInRange(string, valuetype:81) -> class:1048  il_size=118 sha=bb962093967d
+   locals_sig=0x1100036f
+   0 ldsfld       CraftingStation::m_allStations
+   5 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  10 stloc.0      
+  11 br.s         89
+  13 ldloca.s     0
+  15 call         Enumerator::get_Current
+  20 stloc.1      
+  21 ldloc.1      
+  22 ldfld        CraftingStation::m_name
+  27 ldarg.0      
+  28 call         System.String::op_Inequality
+  33 brtrue.s     89
+  35 ldloc.1      
+  36 callvirt     CraftingStation::GetStationBuildRange()
+  41 stloc.2      
+  42 ldarga.s     1
+  44 ldloc.1      
+  45 callvirt     UnityEngine.Component::get_transform
+  50 callvirt     UnityEngine.Transform::get_position
+  55 ldfld        UnityEngine.Vector3::y
+  60 stfld        UnityEngine.Vector3::y
+  65 ldloc.1      
+  66 callvirt     UnityEngine.Component::get_transform
+  71 callvirt     UnityEngine.Transform::get_position
+  76 ldarg.1      
+  77 call         UnityEngine.Vector3::Distance
+  82 ldloc.2      
+  83 bge.un.s     89
+  85 ldloc.1      
+  86 stloc.3      
+  87 leave.s      116
+  89 ldloca.s     0
+  91 call         Enumerator::MoveNext
+  96 brtrue.s     13
+  98 leave.s      114
+ 100 ldloca.s     0
+ 102 constrained. 0x1b0001fc
+ 108 callvirt     System.IDisposable::Dispose
+ 113 endfinally   
+ 114 ldnull       
+ 115 ret          
+ 116 ldloc.3      
+ 117 ret          

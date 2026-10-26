@@ -1,0 +1,34 @@
+== WearNTear::UpdateCover(r4) -> void  il_size=89 sha=058f9b6e7245
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        WearNTear::m_updateCoverTimer
+   7 ldarg.1      
+   8 add          
+   9 stfld        WearNTear::m_updateCoverTimer
+  14 ldarg.0      
+  15 ldfld        WearNTear::m_updateCoverTimer
+  20 ldc.r4       4
+  25 bgt.un.s     28
+  27 ret          
+  28 call         EnvMan::IsWet()
+  33 brtrue.s     45
+  35 ldarg.0      
+  36 ldfld        WearNTear::m_biome
+  41 ldc.i4.s     64
+  43 bne.un.s     57
+  45 ldarg.0      
+  46 ldarg.0      
+  47 call         WearNTear::HaveRoof()
+  52 stfld        WearNTear::m_haveRoof
+  57 ldarg.0      
+  58 ldfld        WearNTear::m_inAshlands
+  63 brfalse.s    77
+  65 ldarg.0      
+  66 ldarg.0      
+  67 call         WearNTear::HaveAshRoof()
+  72 stfld        WearNTear::m_haveAshRoof
+  77 ldarg.0      
+  78 ldc.r4       0
+  83 stfld        WearNTear::m_updateCoverTimer
+  88 ret          

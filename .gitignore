@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Captures d'écran de test (volumineuses)
+tools/client/gui/shots/
+
+# Binaires compilés / logs
+*.exe
+*.dll
+*.log
+*.mpq
+
+# Divers
+.DS_Store
+Thumbs.db
