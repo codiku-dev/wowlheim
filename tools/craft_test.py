@@ -11,7 +11,8 @@ def inv(): return ' '.join(say('.build inv'))
 say('.revive'); s.teleport_cmd('.go xyz -6240 770 400 0'); time.sleep(3); say('.revive')   # vallée de Coldridge, hors village
 say('.build nocost on'); say('.build grace 0')
 r = ' '.join(say('.build place Plancher 5 0 0 0')); print(r)
-for a in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90')   # murs de Valheim : étendus le long de l'axe local Y: say('.build place Mur ' + a)
+# murs de Valheim : étendus le long de l'axe local Y
+for a in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90'): say('.build place Mur ' + a)
 say('.build place Toit 5 0 2.0 0'); r = ' '.join(say('.build place Établi 5 0 0.2 0')); print(r)
 time.sleep(3)
 say('.build nocost off')

@@ -4,7 +4,7 @@ import sys, time, re
 from wlclient import Session, login_char, goto_test_spot
 
 s = Session(sys.argv[1], sys.argv[2])
-login_char(s, 'Wllevel')
+login_char(s, 'Wlcraft')
 goto_test_spot(s)
 ok = True
 
@@ -21,7 +21,8 @@ def check(name, cond, detail=''):
 
 say('.build nocost on')
 say('.build place Plancher 5 0 0 0')
-for a in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90')   # murs de Valheim : étendus le long de l'axe local Y:
+# murs de Valheim : étendus le long de l'axe local Y
+for a in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90'):
     say('.build place Mur ' + a)
 say('.build place Toit 5 0 2.0 0')
 say('.build place Établi 5 -0.5 0.2 0')

@@ -9,7 +9,8 @@ def check(name, cond, detail=''):
 say('.build nocost on'); say('.build grace 0')
 # cabane : plancher, 4 murs, toit, établi à l'intérieur
 say('.build place Plancher 5 0 0 0')
-for args in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90')   # murs de Valheim : étendus le long de l'axe local Y: say('.build place Mur ' + args)
+# murs de Valheim : étendus le long de l'axe local Y
+for args in ('6 0 0 0', '4 0 0 0', '5 -1 0 90', '5 1 0 90'): say('.build place Mur ' + args)
 say('.build place Toit 5 0 2.0 0')
 say('.build place Établi 5 0 0.2 0')
 time.sleep(3)

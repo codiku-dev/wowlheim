@@ -30,7 +30,12 @@ check("catalogue du marteau : pièces de Valheim (83)", len(lst) == 83, str(len(
 goto_test_spot(s)
 x, y, z = pos()
 s.send(0x0DA, struct.pack("<II4fI", 0, int(time.time() * 1000) & 0xFFFFFFFF, x, y, z, 0.0, 0)); time.sleep(0.6)   # face au nord (o = 0)
-say(".additem 9200001 4", 1.2); say(".additem 9201100 1", 1.2); time.sleep(0.5); s.equip_item(9201100); time.sleep(1.0)
+say(".additem 9200001 14", 1.2); say(".additem 9201100 1", 1.2); time.sleep(0.5); s.equip_item(9201100); time.sleep(1.0)
+before = pieces()
+# Valheim : plancher et murs exigent une table de fabrication à portée -> on la pose d'abord au marteau (10 Bois)
+say(".build api select 6 0")
+r = say(f".build api placeat {x + 7:.2f} {y + 3:.2f} {z:.2f}", 1.5)
+check("table de fabrication posée au marteau", any("D|place|1" in l for l in r), str(r))
 before = pieces()
 
 say(".build api select 1 0")                                  # Sol en bois (wood_floor, 2 Bois)
@@ -50,7 +55,7 @@ if new2:
           abs(wx - (fx + 1.008 - 0.064)) < 0.06 and abs(wy - fy) < 0.06 and abs(wz - (fz + 0.14)) < 0.06,
           f"sol ({fx:.2f},{fy:.2f},{fz:.2f}) mur ({wx:.2f},{wy:.2f},{wz:.2f})")
     inv = " ".join(say(".build inv"))
-    check("coûts de Valheim : 2 + 2 Bois consommés", "Bois" not in inv, inv)
+    check("coûts de Valheim : 10 + 2 + 2 Bois consommés", "Bois" not in inv, inv)
     say(".build api mode remove")
     s.use_gameobject(9110000 + 2, wg, 1.5)                    # clic droit sur le mur (GameObject cliquable)
     time.sleep(0.5)
