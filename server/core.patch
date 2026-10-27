@@ -79,7 +79,7 @@ index 00fde0a..3f95d39 100644
          bool HandleGameObjectTargetCommand(char* args);
          bool HandleGameObjectTurnCommand(char* args);
 diff --git a/src/game/Entities/GameObject.cpp b/src/game/Entities/GameObject.cpp
-index 043cad6..fa96a5c 100644
+index 043cad6..a95a115 100644
 --- a/src/game/Entities/GameObject.cpp
 +++ b/src/game/Entities/GameObject.cpp
 @@ -38,6 +38,7 @@
@@ -90,16 +90,16 @@ index 043cad6..fa96a5c 100644
  #include "vmap/GameObjectModel.h"
  #include "Server/SQLStorages.h"
  #include "World/WorldState.h"
-@@ -1463,6 +1464,29 @@ void GameObject::Use(Unit* user, SpellEntry const* spellInfo)
+@@ -1463,6 +1464,43 @@ void GameObject::Use(Unit* user, SpellEntry const* spellInfo)
      // user must be provided
      MANGOS_ASSERT(user || PrintEntryError("GameObject::Use (without user)"));
  
-+    // Wowlheim : pi?ce de construction -> d?molir / r?parer au marteau selon le mode choisi (Valheim)
++    // Wowlheim : pi??ce de construction -> d??molir / r??parer au marteau selon le mode choisi (Valheim)
 +    if (user->GetTypeId() == TYPEID_PLAYER && GetEntry() >= 9110000 && GetEntry() < 9120000 &&
 +            Wowlheim_OnPieceUse(static_cast<Player*>(user), GetDbGuid()))
 +        return;
 +
-+    // Wowlheim : n?ud de ressource -> outil ?quip? requis (hache/pic de Wowlheim), usure de l'outil ? chaque r?colte
++    // Wowlheim : n??ud de ressource -> outil ??quip?? requis (hache/pic de Wowlheim), usure de l'outil ?? chaque r??colte
 +    if (user->GetTypeId() == TYPEID_PLAYER && sBuildingMgr.IsNodeEntry(GetEntry()))
 +    {
 +        std::string wlErr;
@@ -110,22 +110,36 @@ index 043cad6..fa96a5c 100644
 +            return;
 +        }
 +        sBuildingMgr.ConsumeToolDurability(wlPlayer);
-+        // ouverture directe du butin du n?ud (les coffres sans serrure ne s'ouvrent pas d'eux-m?mes dans ce c?ur)
++        // ouverture directe du butin du n??ud (les coffres sans serrure ne s'ouvrent pas d'eux-m??mes dans ce c??ur)
 +        if (!m_loot)
 +            m_loot = new Loot(wlPlayer, this, LOOT_CORPSE);
 +        m_loot->ShowContentTo(wlPlayer);
 +        return;
 +    }
 +
++    // Wowlheim : ramassable de Valheim (Pickable.Interact) -> ?? la main, sans outil ni endurance : l'objet va directement
++    // dans le sac (pas de fen??tre de butin) puis le ramassable dispara??t jusqu'?? sa repousse (m_respawnTimeMinutes)
++    if (user->GetTypeId() == TYPEID_PLAYER && GetEntry() >= 9130000 && GetEntry() < 9140000)
++    {
++        Player* wlPlayer = static_cast<Player*>(user);
++        if (m_lootState != GO_READY)
++            return;
++        if (!m_loot)
++            m_loot = new Loot(wlPlayer, this, LOOT_CORPSE);
++        if (m_loot->AutoStore(wlPlayer))
++            SetLootState(GO_JUST_DEACTIVATED);
++        return;
++    }
++
      // by default spell caster is user
      WorldObject* spellCaster = user;
      uint32 spellId = 0;
-@@ -2101,6 +2125,13 @@ void GameObject::UpdateModel()
+@@ -2101,6 +2139,13 @@ void GameObject::UpdateModel()
      delete m_model;
  
      m_model = GameObjectModel::construct(this);
-+    // Wowlheim : les pi?ces de construction (entr?es 9100000+) restent hors de l'arbre dynamique (BIH) :
-+    // sa reconstruction l?ve ? invalid node overlap ? avec nos mod?les et plante le thread de mise ? jour des cartes.
++    // Wowlheim : les pi??ces de construction (entr??es 9100000+) restent hors de l'arbre dynamique (BIH) :
++    // sa reconstruction l??ve ?? invalid node overlap ?? avec nos mod??les et plante le thread de mise ?? jour des cartes.
 +    if (m_model && GetEntry() >= 9100000 && GetEntry() < 9200000)
 +    {
 +        delete m_model;
@@ -234,7 +248,7 @@ index bf5c5c5..a8c23fa 100644
          return SPELL_FAILED_ERROR;
      }
  
-+    // Wowlheim : sort de pose du marteau -> la pi?ce choisie est pos?e au point vis? (cercle de ciblage au sol)
++    // Wowlheim : sort de pose du marteau -> la pi??ce choisie est pos??e au point vis?? (cercle de ciblage au sol)
 +    if (m_spellInfo->Id == BuildingMgr::WL_PLACE_SPELL && m_caster->GetTypeId() == TYPEID_PLAYER && (m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION))
 +    {
 +        float wlx, wly, wlz;
@@ -266,6 +280,29 @@ index a9fb230..77df320 100644
      uint32 gameobject_id = m_spellInfo->EffectMiscValue[eff_idx];
  
      GameObject* pGameObj = new GameObject;
+diff --git a/src/game/Spells/SpellHandler.cpp b/src/game/Spells/SpellHandler.cpp
+index c0919ce..c331265 100644
+--- a/src/game/Spells/SpellHandler.cpp
++++ b/src/game/Spells/SpellHandler.cpp
+@@ -29,6 +29,7 @@
+ #include "Entities/Totem.h"
+ #include "Spells/SpellAuras.h"
+ #include "Loot/LootMgr.h"
++#include "Wowlheim/BuildingMgr.h"
+ 
+ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
+ {
+@@ -269,7 +270,9 @@ void WorldSession::HandleGameObjectUseOpcode(WorldPacket& recv_data)
+     if (!obj)
+         return;
+ 
+-    if (!obj->IsWithinDistInMap(_player, obj->GetInteractionDistance()))
++    // Wowlheim : grandes pieces (fonderie, forge...) -> portee mesuree depuis le bord de leur boite (BuildingMgr::InUseRange)
++    if (!obj->IsWithinDistInMap(_player, obj->GetInteractionDistance()) &&
++            !Wowlheim_PieceInUseRange(_player, obj->GetEntry(), obj->GetDbGuid()))
+         return;
+ 
+     if (obj->GetSpellForLock(_player))
 diff --git a/src/game/Weather/Weather.h b/src/game/Weather/Weather.h
 index a37843e..67d17b5 100644
 --- a/src/game/Weather/Weather.h
@@ -274,7 +311,7 @@ index a37843e..67d17b5 100644
          void SetWeather(WeatherType type, float grade, Map const* _map, bool isPermanent);
          /// Update the weather in this zone, when the timer is expired the weather will be rolled again
          bool Update(uint32 diff, Map const* _map);
-+        /// Wowlheim : pluie active dans la zone (tout degr? de pluie)
++        /// Wowlheim : pluie active dans la zone (tout degr?? de pluie)
 +        bool IsRaining() const { return m_type == WEATHER_TYPE_RAIN && m_grade > 0.0f; }
          /// Check if a type is valid
          static bool IsValidWeatherType(uint32 type)

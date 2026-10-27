@@ -46,11 +46,39 @@ name2path={}
 for path in e.container:
     if path.endswith('.prefab'):
         name2path.setdefault(os.path.basename(path)[:-7],path)
+def hit_areas(go):
+    """Zones d'un MineRock5 : MineRock5.Awake cree une HitArea par Collider de GetComponentsInChildren<Collider>()
+    (GameObjects actifs seulement ; les renderers « extra » enfants d'un collider ne comptent pas).
+    Renvoie, par zone, la hauteur (Unity y, metres, racine du prefab a l'origine = niveau du sol ou Valheim pose le prefab)
+    du point le plus haut de son maillage de collision : une zone dont le haut est <= 0 est enterree (atteignable seulement en creusant)."""
+    import numpy as np
+    from vh_mesh import trs, comp
+    from UnityPy.helpers.MeshHelper import MeshHandler
+    tops=[]
+    def w(t,M,on):
+        g=t.m_GameObject.read(); on=on and g.m_IsActive; Mw=M@trs(t)
+        if on:
+            for c in g.m_Component:
+                o=c.component.deref()
+                if 'Collider' not in o.type.name: continue
+                col=o.read()
+                if o.type.name=='MeshCollider' and col.m_Mesh.m_PathID: mesh=col.m_Mesh.read()
+                else:
+                    mf=comp(g,'MeshFilter'); mesh=mf.m_Mesh.read() if mf and mf.m_Mesh.m_PathID else None
+                if mesh is None: tops.append(None); continue
+                h=MeshHandler(mesh); h.process(); V=np.array(h.m_Vertices,float)[:,:3]
+                tops.append(round(float((np.c_[V,np.ones(len(V))]@Mw.T)[:,1].max()),3))
+        for ch in t.m_Children: w(ch.read(),Mw,on)
+    tr=comp(go,'Transform')
+    w(tr,np.linalg.inv(trs(tr)),True)
+    return tops
 def dump(name):
     p=name2path.get(name)
     if not p: return None
     go=e.container[p].read()
-    return {'path':p,'monos':go_monos(go)}
+    out={'path':p,'monos':go_monos(go)}
+    if 'MineRock5' in out['monos'] or 'MineRock' in out['monos']: out['hit_area_tops']=hit_areas(go); out['hit_areas']=len(out['hit_area_tops'])   # MineRock.Start : idem (m_areaRoot nul)
+    return out
 if __name__=='__main__':
     names=sys.argv[2:]
     out={n:dump(n) for n in names}

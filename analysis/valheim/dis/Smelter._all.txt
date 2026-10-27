@@ -1,0 +1,1832 @@
+== Smelter::Awake() -> void  il_size=528 sha=913d4b1666cb
+   locals_sig=0x11000793
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        Smelter::m_nview
+  12 ldarg.0      
+  13 ldfld        Smelter::m_nview
+  18 ldnull       
+  19 call         UnityEngine.Object::op_Equality
+  24 brfalse.s    38
+  26 ldarg.0      
+  27 ldarg.0      
+  28 call         UnityEngine.Component::GetComponentInParent<T>
+  33 stfld        Smelter::m_nview
+  38 ldarg.0      
+  39 ldfld        Smelter::m_nview
+  44 ldnull       
+  45 call         UnityEngine.Object::op_Equality
+  50 brtrue.s     65
+  52 ldarg.0      
+  53 ldfld        Smelter::m_nview
+  58 callvirt     ZNetView::GetZDO()
+  63 brtrue.s     66
+  65 ret          
+  66 ldarg.0      
+  67 ldfld        Smelter::m_addOreSwitch
+  72 call         UnityEngine.Object::op_Implicit
+  77 brfalse.s    141
+  79 ldarg.0      
+  80 ldfld        Smelter::m_addOreSwitch
+  85 dup          
+  86 ldfld        Switch::m_onUse
+  91 ldarg.0      
+  92 ldftn        Smelter::OnAddOre(class:2404,class:108,class:3744)
+  98 newobj       Switch+Callback::.ctor(object,native-int)
+ 103 call         System.Delegate::Combine
+ 108 castclass    Switch+Callback
+ 113 stfld        Switch::m_onUse
+ 118 ldarg.0      
+ 119 ldfld        Smelter::m_addOreSwitch
+ 124 ldarg.0      
+ 125 ldftn        Smelter::OnHoverAddOre()
+ 131 newobj       Switch+TooltipCallback::.ctor(object,native-int)
+ 136 stfld        Switch::m_onHover
+ 141 ldarg.0      
+ 142 ldfld        Smelter::m_addWoodSwitch
+ 147 call         UnityEngine.Object::op_Implicit
+ 152 brfalse.s    216
+ 154 ldarg.0      
+ 155 ldfld        Smelter::m_addWoodSwitch
+ 160 dup          
+ 161 ldfld        Switch::m_onUse
+ 166 ldarg.0      
+ 167 ldftn        Smelter::OnAddFuel(class:2404,class:108,class:3744)
+ 173 newobj       Switch+Callback::.ctor(object,native-int)
+ 178 call         System.Delegate::Combine
+ 183 castclass    Switch+Callback
+ 188 stfld        Switch::m_onUse
+ 193 ldarg.0      
+ 194 ldfld        Smelter::m_addWoodSwitch
+ 199 ldarg.0      
+ 200 ldftn        Smelter::OnHoverAddFuel()
+ 206 newobj       Switch+TooltipCallback::.ctor(object,native-int)
+ 211 stfld        Switch::m_onHover
+ 216 ldarg.0      
+ 217 ldfld        Smelter::m_emptyOreSwitch
+ 222 call         UnityEngine.Object::op_Implicit
+ 227 brfalse.s    307
+ 229 ldarg.0      
+ 230 ldfld        Smelter::m_emptyOreSwitch
+ 235 dup          
+ 236 ldfld        Switch::m_onUse
+ 241 ldarg.0      
+ 242 ldftn        Smelter::OnEmpty(class:2404,class:108,class:3744)
+ 248 newobj       Switch+Callback::.ctor(object,native-int)
+ 253 call         System.Delegate::Combine
+ 258 castclass    Switch+Callback
+ 263 stfld        Switch::m_onUse
+ 268 ldarg.0      
+ 269 ldfld        Smelter::m_emptyOreSwitch
+ 274 dup          
+ 275 ldfld        Switch::m_onHover
+ 280 ldarg.0      
+ 281 ldftn        Smelter::OnHoverEmptyOre()
+ 287 newobj       Switch+TooltipCallback::.ctor(object,native-int)
+ 292 call         System.Delegate::Combine
+ 297 castclass    Switch+TooltipCallback
+ 302 stfld        Switch::m_onHover
+ 307 ldarg.0      
+ 308 ldfld        Smelter::m_nview
+ 313 ldstr        "RPC_AddOre"
+ 318 ldarg.0      
+ 319 ldftn        Smelter::RPC_AddOre(i8,string,bool)
+ 325 newobj       System.Action`3::.ctor
+ 330 callvirt     ZNetView::Register<T>
+ 335 ldarg.0      
+ 336 ldfld        Smelter::m_nview
+ 341 ldstr        "RPC_AddFuel"
+ 346 ldarg.0      
+ 347 ldftn        Smelter::RPC_AddFuel(i8)
+ 353 newobj       System.Action`1::.ctor
+ 358 callvirt     ZNetView::Register(string,class:93<i8>)
+ 363 ldarg.0      
+ 364 ldfld        Smelter::m_nview
+ 369 ldstr        "RPC_EmptyProcessed"
+ 374 ldarg.0      
+ 375 ldftn        Smelter::RPC_EmptyProcessed(i8)
+ 381 newobj       System.Action`1::.ctor
+ 386 callvirt     ZNetView::Register(string,class:93<i8>)
+ 391 ldarg.0      
+ 392 call         UnityEngine.Component::GetComponent<T>
+ 397 stloc.0      
+ 398 ldloc.0      
+ 399 call         UnityEngine.Object::op_Implicit
+ 404 brfalse.s    440
+ 406 ldloc.0      
+ 407 dup          
+ 408 ldfld        WearNTear::m_onDestroyed
+ 413 ldarg.0      
+ 414 ldftn        Smelter::OnDestroyed()
+ 420 newobj       System.Action::.ctor
+ 425 call         System.Delegate::Combine
+ 430 castclass    0x01000016
+ 435 stfld        WearNTear::m_onDestroyed
+ 440 ldarg.0      
+ 441 ldstr        "UpdateSmelter"
+ 446 ldc.r4       1
+ 451 ldc.r4       1
+ 456 call         UnityEngine.MonoBehaviour::InvokeRepeating
+ 461 ldarg.0      
+ 462 ldfld        Smelter::m_conversion
+ 467 callvirt     System.Collections.Generic.List`1::GetEnumerator
+ 472 stloc.1      
+ 473 br.s         502
+ 475 ldloca.s     1
+ 477 call         Enumerator::get_Current
+ 482 ldfld        Smelter+ItemConversion::m_from
+ 487 ldnull       
+ 488 call         UnityEngine.Object::op_Equality
+ 493 brfalse.s    502
+ 495 ldarg.0      
+ 496 ldc.i4.1     
+ 497 stfld        Smelter::m_noSourceConversion
+ 502 ldloca.s     1
+ 504 call         Enumerator::MoveNext
+ 509 brtrue.s     475
+ 511 leave.s      527
+ 513 ldloca.s     1
+ 515 constrained. 0x1b000448
+ 521 callvirt     System.IDisposable::Dispose
+ 526 endfinally   
+ 527 ret          
+
+== Smelter::DropAllItems() -> void  il_size=319 sha=95c7588acbb4
+   locals_sig=0x11000794
+   0 ldarg.0      
+   1 call         Smelter::SpawnProcessed()
+   6 ldarg.0      
+   7 ldfld        Smelter::m_fuelItem
+  12 ldnull       
+  13 call         UnityEngine.Object::op_Inequality
+  18 brfalse      306
+  23 ldarg.0      
+  24 ldfld        Smelter::m_nview
+  29 callvirt     ZNetView::GetZDO()
+  34 brfalse.s    64
+  36 ldarg.0      
+  37 ldfld        Smelter::m_nview
+  42 callvirt     ZNetView::GetZDO()
+  47 ldsfld       ZDOVars::s_fuel
+  52 ldc.r4       0
+  57 callvirt     ZDO::GetFloat(i4,r4)
+  62 br.s         69
+  64 ldc.r4       0
+  69 stloc.0      
+  70 ldc.i4.0     
+  71 stloc.1      
+  72 br.s         172
+  74 ldarg.0      
+  75 call         UnityEngine.Component::get_transform
+  80 callvirt     UnityEngine.Transform::get_position
+  85 call         UnityEngine.Vector3::get_up
+  90 call         UnityEngine.Vector3::op_Addition
+  95 call         UnityEngine.Random::get_insideUnitSphere
+ 100 ldc.r4       0.30000001192092896
+ 105 call         UnityEngine.Vector3::op_Multiply
+ 110 call         UnityEngine.Vector3::op_Addition
+ 115 stloc.2      
+ 116 ldc.r4       0
+ 121 ldc.i4.0     
+ 122 ldc.i4       360
+ 127 call         UnityEngine.Random::Range
+ 132 conv.r4      
+ 133 ldc.r4       0
+ 138 call         UnityEngine.Quaternion::Euler
+ 143 stloc.3      
+ 144 ldarg.0      
+ 145 ldfld        Smelter::m_fuelItem
+ 150 callvirt     UnityEngine.Component::get_gameObject
+ 155 ldloc.2      
+ 156 ldloc.3      
+ 157 call         UnityEngine.Object::Instantiate<T>
+ 162 ldc.i4.0     
+ 163 call         ItemDrop::OnCreateNew(class:133,bool)
+ 168 ldloc.1      
+ 169 ldc.i4.1     
+ 170 add          
+ 171 stloc.1      
+ 172 ldloc.1      
+ 173 ldloc.0      
+ 174 conv.i4      
+ 175 blt.s        74
+ 177 br.s         306
+ 179 ldarg.0      
+ 180 call         Smelter::GetQueuedOre()
+ 185 stloc.s      4
+ 187 ldarg.0      
+ 188 call         Smelter::RemoveOneOre()
+ 193 ldarg.0      
+ 194 ldloc.s      4
+ 196 call         Smelter::GetItemConversion(string)
+ 201 stloc.s      5
+ 203 ldloc.s      5
+ 205 brfalse.s    306
+ 207 ldarg.0      
+ 208 call         UnityEngine.Component::get_transform
+ 213 callvirt     UnityEngine.Transform::get_position
+ 218 call         UnityEngine.Vector3::get_up
+ 223 call         UnityEngine.Vector3::op_Addition
+ 228 call         UnityEngine.Random::get_insideUnitSphere
+ 233 ldc.r4       0.30000001192092896
+ 238 call         UnityEngine.Vector3::op_Multiply
+ 243 call         UnityEngine.Vector3::op_Addition
+ 248 stloc.s      6
+ 250 ldc.r4       0
+ 255 ldc.i4.0     
+ 256 ldc.i4       360
+ 261 call         UnityEngine.Random::Range
+ 266 conv.r4      
+ 267 ldc.r4       0
+ 272 call         UnityEngine.Quaternion::Euler
+ 277 stloc.s      7
+ 279 ldloc.s      5
+ 281 ldfld        Smelter+ItemConversion::m_from
+ 286 callvirt     UnityEngine.Component::get_gameObject
+ 291 ldloc.s      6
+ 293 ldloc.s      7
+ 295 call         UnityEngine.Object::Instantiate<T>
+ 300 ldc.i4.0     
+ 301 call         ItemDrop::OnCreateNew(class:133,bool)
+ 306 ldarg.0      
+ 307 call         Smelter::GetQueueSize()
+ 312 ldc.i4.0     
+ 313 bgt          179
+ 318 ret          
+
+== Smelter::OnDestroyed() -> void  il_size=20 sha=e7356b6a674d
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brfalse.s    19
+  13 ldarg.0      
+  14 call         Smelter::DropAllItems()
+  19 ret          
+
+== Smelter::IsItemAllowed(class:3744) -> bool  il_size=18 sha=62c409e8a20d
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.1      
+   2 ldfld        ItemDrop+ItemData::m_dropPrefab
+   7 callvirt     UnityEngine.Object::get_name
+  12 call         Smelter::IsItemAllowed(string)
+  17 ret          
+
+== Smelter::IsItemAllowed(string) -> bool  il_size=93 sha=0c54035b67b0
+   locals_sig=0x11000795
+   0 ldarg.0      
+   1 ldfld        Smelter::m_conversion
+   6 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  11 stloc.0      
+  12 br.s         64
+  14 ldloca.s     0
+  16 call         Enumerator::get_Current
+  21 stloc.1      
+  22 ldloc.1      
+  23 ldfld        Smelter+ItemConversion::m_from
+  28 ldnull       
+  29 call         UnityEngine.Object::op_Inequality
+  34 brfalse.s    64
+  36 ldloc.1      
+  37 ldfld        Smelter+ItemConversion::m_from
+  42 callvirt     UnityEngine.Component::get_gameObject
+  47 callvirt     UnityEngine.Object::get_name
+  52 ldarg.1      
+  53 call         System.String::op_Equality
+  58 brfalse.s    64
+  60 ldc.i4.1     
+  61 stloc.2      
+  62 leave.s      91
+  64 ldloca.s     0
+  66 call         Enumerator::MoveNext
+  71 brtrue.s     14
+  73 leave.s      89
+  75 ldloca.s     0
+  77 constrained. 0x1b000448
+  83 callvirt     System.IDisposable::Dispose
+  88 endfinally   
+  89 ldc.i4.0     
+  90 ret          
+  91 ldloc.2      
+  92 ret          
+
+== Smelter::FindCookableItem(class:1056) -> class:3744  il_size=102 sha=675af3203c10
+   locals_sig=0x11000796
+   0 ldarg.0      
+   1 ldfld        Smelter::m_conversion
+   6 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  11 stloc.0      
+  12 br.s         73
+  14 ldloca.s     0
+  16 call         Enumerator::get_Current
+  21 stloc.1      
+  22 ldloc.1      
+  23 ldfld        Smelter+ItemConversion::m_from
+  28 ldnull       
+  29 call         UnityEngine.Object::op_Equality
+  34 brtrue.s     73
+  36 ldarg.1      
+  37 ldloc.1      
+  38 ldfld        Smelter+ItemConversion::m_from
+  43 ldfld        ItemDrop::m_itemData
+  48 ldfld        ItemDrop+ItemData::m_shared
+  53 ldfld        ItemDrop+ItemData+SharedData::m_name
+  58 ldc.i4.m1    
+  59 ldc.i4.0     
+  60 callvirt     Inventory::GetItem(string,i4,bool)
+  65 stloc.2      
+  66 ldloc.2      
+  67 brfalse.s    73
+  69 ldloc.2      
+  70 stloc.3      
+  71 leave.s      100
+  73 ldloca.s     0
+  75 call         Enumerator::MoveNext
+  80 brtrue.s     14
+  82 leave.s      98
+  84 ldloca.s     0
+  86 constrained. 0x1b000448
+  92 callvirt     System.IDisposable::Dispose
+  97 endfinally   
+  98 ldnull       
+  99 ret          
+ 100 ldloc.3      
+ 101 ret          
+
+== Smelter::OnAddOre(class:2404, class:108, class:3744) -> bool  il_size=258 sha=e347f12b92a9
+   locals_sig=null
+   0 ldarg.3      
+   1 brtrue.s     37
+   3 ldarg.0      
+   4 ldarg.2      
+   5 callvirt     Humanoid::GetInventory()
+  10 call         Smelter::FindCookableItem(class:1056)
+  15 starg.s      3
+  17 ldarg.3      
+  18 brtrue.s     37
+  20 ldarg.2      
+  21 ldc.i4.2     
+  22 ldstr        "$msg_noprocessableitems"
+  27 ldc.i4.0     
+  28 ldnull       
+  29 ldc.i4.0     
+  30 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  35 ldc.i4.0     
+  36 ret          
+  37 ldarg.0      
+  38 ldarg.3      
+  39 ldfld        ItemDrop+ItemData::m_dropPrefab
+  44 callvirt     UnityEngine.Object::get_name
+  49 call         Smelter::IsItemAllowed(string)
+  54 brtrue.s     73
+  56 ldarg.2      
+  57 ldc.i4.2     
+  58 ldstr        "$msg_wontwork"
+  63 ldc.i4.0     
+  64 ldnull       
+  65 ldc.i4.0     
+  66 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  71 ldc.i4.0     
+  72 ret          
+  73 ldstr        "trying to add "
+  78 ldarg.3      
+  79 ldfld        ItemDrop+ItemData::m_shared
+  84 ldfld        ItemDrop+ItemData+SharedData::m_name
+  89 call         System.String::Concat
+  94 call         ZLog::Log
+  99 ldarg.0      
+ 100 call         Smelter::GetQueueSize()
+ 105 ldarg.0      
+ 106 ldfld        Smelter::m_maxOre
+ 111 blt.s        130
+ 113 ldarg.2      
+ 114 ldc.i4.2     
+ 115 ldstr        "$msg_itsfull"
+ 120 ldc.i4.0     
+ 121 ldnull       
+ 122 ldc.i4.0     
+ 123 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 128 ldc.i4.0     
+ 129 ret          
+ 130 ldarg.2      
+ 131 ldc.i4.2     
+ 132 ldstr        "$msg_added "
+ 137 ldarg.3      
+ 138 ldfld        ItemDrop+ItemData::m_shared
+ 143 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 148 call         System.String::Concat
+ 153 ldc.i4.0     
+ 154 ldnull       
+ 155 ldc.i4.0     
+ 156 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 161 ldarg.2      
+ 162 callvirt     Humanoid::GetInventory()
+ 167 ldarg.3      
+ 168 ldc.i4.1     
+ 169 callvirt     Inventory::RemoveItem(class:3744,i4)
+ 174 pop          
+ 175 ldarg.0      
+ 176 ldfld        Smelter::m_nview
+ 181 ldstr        "RPC_AddOre"
+ 186 ldc.i4.2     
+ 187 newarr       0x01000007
+ 192 dup          
+ 193 ldc.i4.0     
+ 194 ldarg.3      
+ 195 ldfld        ItemDrop+ItemData::m_dropPrefab
+ 200 callvirt     UnityEngine.Object::get_name
+ 205 stelem.ref   
+ 206 dup          
+ 207 ldc.i4.1     
+ 208 ldarg.3      
+ 209 ldfld        ItemDrop+ItemData::m_cheated
+ 214 box          0x010001f2
+ 219 stelem.ref   
+ 220 callvirt     ZNetView::InvokeRPC(string,object[])
+ 225 ldarg.0      
+ 226 call         UnityEngine.Time::get_time
+ 231 stfld        Smelter::m_addedOreTime
+ 236 ldarg.0      
+ 237 ldfld        Smelter::m_addOreAnimationDuration
+ 242 ldc.r4       0
+ 247 ble.un.s     256
+ 249 ldarg.0      
+ 250 ldc.i4.1     
+ 251 call         Smelter::SetAnimation(bool)
+ 256 ldc.i4.1     
+ 257 ret          
+
+== Smelter::GetBakeTimer() -> r4  il_size=46 sha=6a6a83364596
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     19
+  13 ldc.r4       0
+  18 ret          
+  19 ldarg.0      
+  20 ldfld        Smelter::m_nview
+  25 callvirt     ZNetView::GetZDO()
+  30 ldsfld       ZDOVars::s_bakeTimer
+  35 ldc.r4       0
+  40 callvirt     ZDO::GetFloat(i4,r4)
+  45 ret          
+
+== Smelter::SetBakeTimer(r4) -> void  il_size=37 sha=49cb43a68a1b
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smelter::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_bakeTimer
+  30 ldarg.1      
+  31 callvirt     ZDO::Set(i4,r4)
+  36 ret          
+
+== Smelter::GetFuel() -> r4  il_size=46 sha=67c6aa8b1ccf
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     19
+  13 ldc.r4       0
+  18 ret          
+  19 ldarg.0      
+  20 ldfld        Smelter::m_nview
+  25 callvirt     ZNetView::GetZDO()
+  30 ldsfld       ZDOVars::s_fuel
+  35 ldc.r4       0
+  40 callvirt     ZDO::GetFloat(i4,r4)
+  45 ret          
+
+== Smelter::SetFuel(r4) -> void  il_size=37 sha=5424dcb586f8
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smelter::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_fuel
+  30 ldarg.1      
+  31 callvirt     ZDO::Set(i4,r4)
+  36 ret          
+
+== Smelter::GetQueueSize() -> i4  il_size=38 sha=e108ced73820
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     15
+  13 ldc.i4.0     
+  14 ret          
+  15 ldarg.0      
+  16 ldfld        Smelter::m_nview
+  21 callvirt     ZNetView::GetZDO()
+  26 ldsfld       ZDOVars::s_queued
+  31 ldc.i4.0     
+  32 callvirt     ZDO::GetInt(i4,i4)
+  37 ret          
+
+== Smelter::RPC_AddOre(i8, string, bool) -> void  il_size=115 sha=6809143e4f0e
+   locals_sig=0x1100003d
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldarg.2      
+  16 call         Smelter::IsItemAllowed(string)
+  21 brtrue.s     40
+  23 ldstr        "Item not allowed "
+  28 ldarg.2      
+  29 call         System.String::Concat
+  34 call         ZLog::Log
+  39 ret          
+  40 ldarg.0      
+  41 ldarg.2      
+  42 ldarg.3      
+  43 call         Smelter::QueueOre(string,bool)
+  48 ldarg.0      
+  49 ldfld        Smelter::m_oreAddedEffects
+  54 ldarg.0      
+  55 call         UnityEngine.Component::get_transform
+  60 callvirt     UnityEngine.Transform::get_position
+  65 ldarg.0      
+  66 call         UnityEngine.Component::get_transform
+  71 callvirt     UnityEngine.Transform::get_rotation
+  76 ldnull       
+  77 ldc.r4       1
+  82 ldc.i4.m1    
+  83 ldloca.s     0
+  85 initobj      ZDOID
+  91 ldloc.0      
+  92 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+  97 pop          
+  98 ldstr        "Added ore "
+ 103 ldarg.2      
+ 104 call         System.String::Concat
+ 109 call         ZLog::Log
+ 114 ret          
+
+== Smelter::QueueOre(string, bool) -> void  il_size=89 sha=d1bbb955d90e
+   locals_sig=0x1100000a
+   0 ldarg.0      
+   1 call         Smelter::GetQueueSize()
+   6 stloc.0      
+   7 ldarg.0      
+   8 ldfld        Smelter::m_nview
+  13 callvirt     ZNetView::GetZDO()
+  18 ldstr        "item"
+  23 ldloca.s     0
+  25 call         System.Int32::ToString
+  30 call         System.String::Concat
+  35 ldarg.1      
+  36 callvirt     ZDO::Set(string,string)
+  41 ldarg.0      
+  42 ldfld        Smelter::m_nview
+  47 callvirt     ZNetView::GetZDO()
+  52 ldsfld       ZDOVars::s_queued
+  57 ldloc.0      
+  58 ldc.i4.1     
+  59 add          
+  60 ldc.i4.0     
+  61 callvirt     ZDO::Set(i4,i4,bool)
+  66 ldarg.0      
+  67 ldfld        Smelter::m_nview
+  72 callvirt     ZNetView::GetZDO()
+  77 ldsfld       ZDOVars::s_cheatedQueued
+  82 ldarg.2      
+  83 callvirt     ZDO::Set(i4,bool)
+  88 ret          
+
+== Smelter::GetQueuedOre() -> string  il_size=41 sha=c0147bf3ada6
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Smelter::GetQueueSize()
+   6 brtrue.s     14
+   8 ldstr        ""
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smelter::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_item0
+  30 ldstr        ""
+  35 callvirt     ZDO::GetString(i4,string)
+  40 ret          
+
+== Smelter::RemoveOneOre() -> void  il_size=126 sha=ccb9893a06b9
+   locals_sig=0x11000797
+   0 ldarg.0      
+   1 call         Smelter::GetQueueSize()
+   6 stloc.0      
+   7 ldloc.0      
+   8 brtrue.s     11
+  10 ret          
+  11 ldc.i4.0     
+  12 stloc.1      
+  13 br.s         96
+  15 ldarg.0      
+  16 ldfld        Smelter::m_nview
+  21 callvirt     ZNetView::GetZDO()
+  26 ldstr        "item"
+  31 ldloc.1      
+  32 ldc.i4.1     
+  33 add          
+  34 stloc.3      
+  35 ldloca.s     3
+  37 call         System.Int32::ToString
+  42 call         System.String::Concat
+  47 ldstr        ""
+  52 callvirt     ZDO::GetString(string,string)
+  57 stloc.2      
+  58 ldarg.0      
+  59 ldfld        Smelter::m_nview
+  64 callvirt     ZNetView::GetZDO()
+  69 ldstr        "item"
+  74 ldloca.s     1
+  76 call         System.Int32::ToString
+  81 call         System.String::Concat
+  86 ldloc.2      
+  87 callvirt     ZDO::Set(string,string)
+  92 ldloc.1      
+  93 ldc.i4.1     
+  94 add          
+  95 stloc.1      
+  96 ldloc.1      
+  97 ldloc.0      
+  98 blt.s        15
+ 100 ldarg.0      
+ 101 ldfld        Smelter::m_nview
+ 106 callvirt     ZNetView::GetZDO()
+ 111 ldsfld       ZDOVars::s_queued
+ 116 ldloc.0      
+ 117 ldc.i4.1     
+ 118 sub          
+ 119 ldc.i4.0     
+ 120 callvirt     ZDO::Set(i4,i4,bool)
+ 125 ret          
+
+== Smelter::OnEmpty(class:2404, class:108, class:3744) -> bool  il_size=34 sha=7ae4b3cd212a
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Smelter::GetProcessedQueueSize()
+   6 ldc.i4.0     
+   7 bgt.s        11
+   9 ldc.i4.0     
+  10 ret          
+  11 ldarg.0      
+  12 ldfld        Smelter::m_nview
+  17 ldstr        "RPC_EmptyProcessed"
+  22 call         System.Array::Empty<T>
+  27 callvirt     ZNetView::InvokeRPC(string,object[])
+  32 ldc.i4.1     
+  33 ret          
+
+== Smelter::RPC_EmptyProcessed(i8) -> void  il_size=21 sha=67d2bd494993
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 call         Smelter::SpawnProcessed()
+  20 ret          
+
+== Smelter::OnAddFuel(class:2404, class:108, class:3744) -> bool  il_size=270 sha=61b6c3093984
+   locals_sig=null
+   0 ldarg.3      
+   1 brfalse.s    59
+   3 ldarg.3      
+   4 ldfld        ItemDrop+ItemData::m_shared
+   9 ldfld        ItemDrop+ItemData+SharedData::m_name
+  14 ldarg.0      
+  15 ldfld        Smelter::m_fuelItem
+  20 ldfld        ItemDrop::m_itemData
+  25 ldfld        ItemDrop+ItemData::m_shared
+  30 ldfld        ItemDrop+ItemData+SharedData::m_name
+  35 call         System.String::op_Inequality
+  40 brfalse.s    59
+  42 ldarg.2      
+  43 ldc.i4.2     
+  44 ldstr        "$msg_wrongitem"
+  49 ldc.i4.0     
+  50 ldnull       
+  51 ldc.i4.0     
+  52 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  57 ldc.i4.0     
+  58 ret          
+  59 ldarg.0      
+  60 call         Smelter::GetFuel()
+  65 ldarg.0      
+  66 ldfld        Smelter::m_maxFuel
+  71 ldc.i4.1     
+  72 sub          
+  73 conv.r4      
+  74 ble.un.s     93
+  76 ldarg.2      
+  77 ldc.i4.2     
+  78 ldstr        "$msg_itsfull"
+  83 ldc.i4.0     
+  84 ldnull       
+  85 ldc.i4.0     
+  86 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  91 ldc.i4.0     
+  92 ret          
+  93 ldarg.2      
+  94 callvirt     Humanoid::GetInventory()
+  99 ldarg.0      
+ 100 ldfld        Smelter::m_fuelItem
+ 105 ldfld        ItemDrop::m_itemData
+ 110 ldfld        ItemDrop+ItemData::m_shared
+ 115 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 120 ldc.i4.1     
+ 121 callvirt     Inventory::HaveItem(string,bool)
+ 126 brtrue.s     171
+ 128 ldarg.2      
+ 129 ldc.i4.2     
+ 130 ldstr        "$msg_donthaveany "
+ 135 ldarg.0      
+ 136 ldfld        Smelter::m_fuelItem
+ 141 ldfld        ItemDrop::m_itemData
+ 146 ldfld        ItemDrop+ItemData::m_shared
+ 151 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 156 call         System.String::Concat
+ 161 ldc.i4.0     
+ 162 ldnull       
+ 163 ldc.i4.0     
+ 164 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 169 ldc.i4.0     
+ 170 ret          
+ 171 ldarg.2      
+ 172 ldc.i4.2     
+ 173 ldstr        "$msg_added "
+ 178 ldarg.0      
+ 179 ldfld        Smelter::m_fuelItem
+ 184 ldfld        ItemDrop::m_itemData
+ 189 ldfld        ItemDrop+ItemData::m_shared
+ 194 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 199 call         System.String::Concat
+ 204 ldc.i4.0     
+ 205 ldnull       
+ 206 ldc.i4.0     
+ 207 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 212 ldarg.2      
+ 213 callvirt     Humanoid::GetInventory()
+ 218 ldarg.0      
+ 219 ldfld        Smelter::m_fuelItem
+ 224 ldfld        ItemDrop::m_itemData
+ 229 ldfld        ItemDrop+ItemData::m_shared
+ 234 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 239 ldc.i4.1     
+ 240 ldc.i4.m1    
+ 241 ldc.i4.1     
+ 242 callvirt     Inventory::RemoveItem(string,i4,i4,bool)
+ 247 ldarg.0      
+ 248 ldfld        Smelter::m_nview
+ 253 ldstr        "RPC_AddFuel"
+ 258 call         System.Array::Empty<T>
+ 263 callvirt     ZNetView::InvokeRPC(string,object[])
+ 268 ldc.i4.1     
+ 269 ret          
+
+== Smelter::RPC_AddFuel(i8) -> void  il_size=90 sha=2d210c59760e
+   locals_sig=0x1100018d
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 call         Smelter::GetFuel()
+  20 stloc.0      
+  21 ldarg.0      
+  22 ldloc.0      
+  23 ldc.r4       1
+  28 add          
+  29 call         Smelter::SetFuel(r4)
+  34 ldarg.0      
+  35 ldfld        Smelter::m_fuelAddedEffects
+  40 ldarg.0      
+  41 call         UnityEngine.Component::get_transform
+  46 callvirt     UnityEngine.Transform::get_position
+  51 ldarg.0      
+  52 call         UnityEngine.Component::get_transform
+  57 callvirt     UnityEngine.Transform::get_rotation
+  62 ldarg.0      
+  63 call         UnityEngine.Component::get_transform
+  68 ldc.r4       1
+  73 ldc.i4.m1    
+  74 ldloca.s     1
+  76 initobj      ZDOID
+  82 ldloc.1      
+  83 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+  88 pop          
+  89 ret          
+
+== Smelter::GetDeltaTime() -> r8  il_size=90 sha=52446a29e203
+   locals_sig=0x11000683
+   0 call         ZNet::get_instance()
+   5 callvirt     ZNet::GetTime()
+  10 stloc.0      
+  11 ldloca.s     1
+  13 ldarg.0      
+  14 ldfld        Smelter::m_nview
+  19 callvirt     ZNetView::GetZDO()
+  24 ldsfld       ZDOVars::s_startTime
+  29 ldloca.s     0
+  31 call         System.DateTime::get_Ticks
+  36 callvirt     ZDO::GetLong(i4,i8)
+  41 call         System.DateTime::.ctor
+  46 ldloc.0      
+  47 ldloc.1      
+  48 call         System.DateTime::op_Subtraction
+  53 stloc.2      
+  54 ldloca.s     2
+  56 call         System.TimeSpan::get_TotalSeconds
+  61 ldarg.0      
+  62 ldfld        Smelter::m_nview
+  67 callvirt     ZNetView::GetZDO()
+  72 ldsfld       ZDOVars::s_startTime
+  77 ldloca.s     0
+  79 call         System.DateTime::get_Ticks
+  84 callvirt     ZDO::Set(i4,i8)
+  89 ret          
+
+== Smelter::GetAccumulator() -> r4  il_size=46 sha=83cb373cd050
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     19
+  13 ldc.r4       0
+  18 ret          
+  19 ldarg.0      
+  20 ldfld        Smelter::m_nview
+  25 callvirt     ZNetView::GetZDO()
+  30 ldsfld       ZDOVars::s_accTime
+  35 ldc.r4       0
+  40 callvirt     ZDO::GetFloat(i4,r4)
+  45 ret          
+
+== Smelter::SetAccumulator(r4) -> void  il_size=37 sha=3c216b6942e6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smelter::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_accTime
+  30 ldarg.1      
+  31 callvirt     ZDO::Set(i4,r4)
+  36 ret          
+
+== Smelter::UpdateRoof() -> void  il_size=31 sha=60ef02dec56a
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_requiresRoof
+   6 brfalse.s    30
+   8 ldarg.0      
+   9 ldarg.0      
+  10 ldfld        Smelter::m_roofCheckPoint
+  15 callvirt     UnityEngine.Transform::get_position
+  20 call         Cover::IsUnderRoof
+  25 stfld        Smelter::m_haveRoof
+  30 ret          
+
+== Smelter::UpdateSmoke() -> void  il_size=40 sha=28122f9ad247
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_smokeSpawner
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brfalse.s    32
+  14 ldarg.0      
+  15 ldarg.0      
+  16 ldfld        Smelter::m_smokeSpawner
+  21 callvirt     SmokeSpawner::IsBlocked()
+  26 stfld        Smelter::m_blockedSmoke
+  31 ret          
+  32 ldarg.0      
+  33 ldc.i4.0     
+  34 stfld        Smelter::m_blockedSmoke
+  39 ret          
+
+== Smelter::UpdateSmelter() -> void  il_size=417 sha=4775996ce83c
+   locals_sig=0x11000798
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 call         Smelter::UpdateRoof()
+  20 ldarg.0      
+  21 call         Smelter::UpdateSmoke()
+  26 ldarg.0      
+  27 call         Smelter::UpdateState()
+  32 ldarg.0      
+  33 ldfld        Smelter::m_nview
+  38 callvirt     ZNetView::IsOwner()
+  43 brtrue.s     46
+  45 ret          
+  46 ldarg.0      
+  47 call         Smelter::GetDeltaTime()
+  52 stloc.0      
+  53 ldarg.0      
+  54 call         Smelter::GetAccumulator()
+  59 stloc.1      
+  60 ldloc.1      
+  61 ldloc.0      
+  62 conv.r4      
+  63 add          
+  64 stloc.1      
+  65 ldloc.1      
+  66 ldc.r4       3600
+  71 ble.un.s     79
+  73 ldc.r4       3600
+  78 stloc.1      
+  79 ldarg.0      
+  80 ldfld        Smelter::m_windmill
+  85 call         UnityEngine.Object::op_Implicit
+  90 brtrue.s     99
+  92 ldc.r4       1
+  97 br.s         110
+  99 ldarg.0      
+ 100 ldfld        Smelter::m_windmill
+ 105 callvirt     Windmill::GetPowerOutput()
+ 110 stloc.2      
+ 111 br           347
+ 116 ldloc.1      
+ 117 ldc.r4       1
+ 122 sub          
+ 123 stloc.1      
+ 124 ldarg.0      
+ 125 call         Smelter::GetFuel()
+ 130 stloc.3      
+ 131 ldarg.0      
+ 132 call         Smelter::GetQueuedOre()
+ 137 stloc.s      4
+ 139 ldarg.0      
+ 140 ldfld        Smelter::m_maxFuel
+ 145 brfalse.s    158
+ 147 ldloc.3      
+ 148 ldc.r4       0
+ 153 ble.un       347
+ 158 ldarg.0      
+ 159 ldfld        Smelter::m_maxOre
+ 164 brfalse.s    183
+ 166 ldloc.s      4
+ 168 ldstr        ""
+ 173 call         System.String::op_Inequality
+ 178 brfalse      347
+ 183 ldarg.0      
+ 184 ldfld        Smelter::m_secPerProduct
+ 189 ldc.r4       0
+ 194 ble.un       347
+ 199 ldarg.0      
+ 200 ldfld        Smelter::m_requiresRoof
+ 205 brfalse.s    218
+ 207 ldarg.0      
+ 208 ldfld        Smelter::m_haveRoof
+ 213 brfalse      347
+ 218 ldarg.0      
+ 219 ldfld        Smelter::m_blockedSmoke
+ 224 brtrue.s     347
+ 226 ldc.r4       1
+ 231 ldloc.2      
+ 232 mul          
+ 233 stloc.s      5
+ 235 ldarg.0      
+ 236 ldfld        Smelter::m_maxFuel
+ 241 ldc.i4.0     
+ 242 ble.s        289
+ 244 ldarg.0      
+ 245 ldfld        Smelter::m_secPerProduct
+ 250 ldarg.0      
+ 251 ldfld        Smelter::m_fuelPerProduct
+ 256 conv.r4      
+ 257 div          
+ 258 stloc.s      6
+ 260 ldloc.3      
+ 261 ldloc.s      5
+ 263 ldloc.s      6
+ 265 div          
+ 266 sub          
+ 267 stloc.3      
+ 268 ldloc.3      
+ 269 ldc.r4       0.00009999999747378752
+ 274 bge.un.s     282
+ 276 ldc.r4       0
+ 281 stloc.3      
+ 282 ldarg.0      
+ 283 ldloc.3      
+ 284 call         Smelter::SetFuel(r4)
+ 289 ldarg.0      
+ 290 call         Smelter::GetBakeTimer()
+ 295 stloc.s      7
+ 297 ldloc.s      7
+ 299 ldloc.s      5
+ 301 add          
+ 302 stloc.s      7
+ 304 ldarg.0      
+ 305 ldloc.s      7
+ 307 call         Smelter::SetBakeTimer(r4)
+ 312 ldloc.s      7
+ 314 ldarg.0      
+ 315 ldfld        Smelter::m_secPerProduct
+ 320 blt.un.s     347
+ 322 ldarg.0      
+ 323 ldc.r4       0
+ 328 call         Smelter::SetBakeTimer(r4)
+ 333 ldarg.0      
+ 334 call         Smelter::RemoveOneOre()
+ 339 ldarg.0      
+ 340 ldloc.s      4
+ 342 call         Smelter::QueueProcessed(string)
+ 347 ldloc.1      
+ 348 ldc.r4       1
+ 353 bge          116
+ 358 ldarg.0      
+ 359 call         Smelter::GetQueuedOre()
+ 364 ldstr        ""
+ 369 call         System.String::op_Equality
+ 374 brtrue.s     403
+ 376 ldarg.0      
+ 377 ldfld        Smelter::m_maxFuel
+ 382 conv.r4      
+ 383 ldc.r4       0
+ 388 ble.un.s     409
+ 390 ldarg.0      
+ 391 call         Smelter::GetFuel()
+ 396 ldc.r4       0
+ 401 bne.un.s     409
+ 403 ldarg.0      
+ 404 call         Smelter::SpawnProcessed()
+ 409 ldarg.0      
+ 410 ldloc.1      
+ 411 call         Smelter::SetAccumulator(r4)
+ 416 ret          
+
+== Smelter::QueueProcessed(string) -> void  il_size=329 sha=1e30ed3a415a
+   locals_sig=0x11000799
+   0 ldarg.0      
+   1 ldfld        Smelter::m_spawnStack
+   6 brtrue.s     17
+   8 ldarg.0      
+   9 ldarg.1      
+  10 ldc.i4.1     
+  11 call         Smelter::Spawn(string,i4)
+  16 ret          
+  17 ldarg.0      
+  18 ldfld        Smelter::m_nview
+  23 callvirt     ZNetView::IsValid()
+  28 brtrue.s     31
+  30 ret          
+  31 ldarg.0      
+  32 ldfld        Smelter::m_nview
+  37 callvirt     ZNetView::GetZDO()
+  42 ldsfld       ZDOVars::s_spawnOre
+  47 ldstr        ""
+  52 callvirt     ZDO::GetString(i4,string)
+  57 stloc.0      
+  58 ldarg.0      
+  59 ldfld        Smelter::m_nview
+  64 callvirt     ZNetView::GetZDO()
+  69 ldsfld       ZDOVars::s_spawnAmount
+  74 ldc.i4.0     
+  75 callvirt     ZDO::GetInt(i4,i4)
+  80 stloc.1      
+  81 ldloc.0      
+  82 callvirt     System.String::get_Length
+  87 ldc.i4.0     
+  88 bgt.s        101
+  90 ldarg.0      
+  91 ldfld        Smelter::m_noSourceConversion
+  96 brfalse      283
+ 101 ldloc.0      
+ 102 ldarg.1      
+ 103 call         System.String::op_Inequality
+ 108 brfalse.s    162
+ 110 ldarg.0      
+ 111 call         Smelter::SpawnProcessed()
+ 116 ldarg.0      
+ 117 ldfld        Smelter::m_nview
+ 122 callvirt     ZNetView::GetZDO()
+ 127 ldsfld       ZDOVars::s_spawnOre
+ 132 ldarg.1      
+ 133 callvirt     ZDO::Set(i4,string)
+ 138 ldarg.0      
+ 139 ldfld        Smelter::m_nview
+ 144 callvirt     ZNetView::GetZDO()
+ 149 ldsfld       ZDOVars::s_spawnAmount
+ 154 ldc.i4.1     
+ 155 ldc.i4.0     
+ 156 callvirt     ZDO::Set(i4,i4,bool)
+ 161 ret          
+ 162 ldloc.1      
+ 163 ldc.i4.1     
+ 164 add          
+ 165 stloc.1      
+ 166 ldarg.0      
+ 167 ldarg.1      
+ 168 call         Smelter::GetItemConversion(string)
+ 173 stloc.2      
+ 174 ldloc.2      
+ 175 brfalse.s    201
+ 177 ldloc.1      
+ 178 ldloc.2      
+ 179 ldfld        Smelter+ItemConversion::m_to
+ 184 ldfld        ItemDrop::m_itemData
+ 189 ldfld        ItemDrop+ItemData::m_shared
+ 194 ldfld        ItemDrop+ItemData+SharedData::m_maxStackSize
+ 199 blt.s        259
+ 201 ldarg.0      
+ 202 ldarg.1      
+ 203 ldloc.1      
+ 204 call         Smelter::Spawn(string,i4)
+ 209 ldarg.0      
+ 210 ldfld        Smelter::m_nview
+ 215 callvirt     ZNetView::GetZDO()
+ 220 ldsfld       ZDOVars::s_spawnOre
+ 225 ldstr        ""
+ 230 callvirt     ZDO::Set(i4,string)
+ 235 ldarg.0      
+ 236 ldfld        Smelter::m_nview
+ 241 callvirt     ZNetView::GetZDO()
+ 246 ldsfld       ZDOVars::s_spawnAmount
+ 251 ldc.i4.0     
+ 252 ldc.i4.0     
+ 253 callvirt     ZDO::Set(i4,i4,bool)
+ 258 ret          
+ 259 ldarg.0      
+ 260 ldfld        Smelter::m_nview
+ 265 callvirt     ZNetView::GetZDO()
+ 270 ldsfld       ZDOVars::s_spawnAmount
+ 275 ldloc.1      
+ 276 ldc.i4.0     
+ 277 callvirt     ZDO::Set(i4,i4,bool)
+ 282 ret          
+ 283 ldarg.0      
+ 284 ldfld        Smelter::m_nview
+ 289 callvirt     ZNetView::GetZDO()
+ 294 ldsfld       ZDOVars::s_spawnOre
+ 299 ldarg.1      
+ 300 callvirt     ZDO::Set(i4,string)
+ 305 ldarg.0      
+ 306 ldfld        Smelter::m_nview
+ 311 callvirt     ZNetView::GetZDO()
+ 316 ldsfld       ZDOVars::s_spawnAmount
+ 321 ldc.i4.1     
+ 322 ldc.i4.0     
+ 323 callvirt     ZDO::Set(i4,i4,bool)
+ 328 ret          
+
+== Smelter::SpawnProcessed() -> void  il_size=126 sha=29b73f04d1e8
+   locals_sig=0x110000d8
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smelter::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_spawnAmount
+  30 ldc.i4.0     
+  31 callvirt     ZDO::GetInt(i4,i4)
+  36 stloc.0      
+  37 ldloc.0      
+  38 ldc.i4.0     
+  39 ble.s        125
+  41 ldarg.0      
+  42 ldfld        Smelter::m_nview
+  47 callvirt     ZNetView::GetZDO()
+  52 ldsfld       ZDOVars::s_spawnOre
+  57 ldstr        ""
+  62 callvirt     ZDO::GetString(i4,string)
+  67 stloc.1      
+  68 ldarg.0      
+  69 ldloc.1      
+  70 ldloc.0      
+  71 call         Smelter::Spawn(string,i4)
+  76 ldarg.0      
+  77 ldfld        Smelter::m_nview
+  82 callvirt     ZNetView::GetZDO()
+  87 ldsfld       ZDOVars::s_spawnOre
+  92 ldstr        ""
+  97 callvirt     ZDO::Set(i4,string)
+ 102 ldarg.0      
+ 103 ldfld        Smelter::m_nview
+ 108 callvirt     ZNetView::GetZDO()
+ 113 ldsfld       ZDOVars::s_spawnAmount
+ 118 ldc.i4.0     
+ 119 ldc.i4.0     
+ 120 callvirt     ZDO::Set(i4,i4,bool)
+ 125 ret          
+
+== Smelter::GetProcessedQueueSize() -> i4  il_size=38 sha=d652fc98737c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     15
+  13 ldc.i4.0     
+  14 ret          
+  15 ldarg.0      
+  16 ldfld        Smelter::m_nview
+  21 callvirt     ZNetView::GetZDO()
+  26 ldsfld       ZDOVars::s_spawnAmount
+  31 ldc.i4.0     
+  32 callvirt     ZDO::GetInt(i4,i4)
+  37 ret          
+
+== Smelter::Spawn(string, i4) -> void  il_size=198 sha=a1b1d762eb8a
+   locals_sig=0x1100079a
+   0 ldarg.0      
+   1 ldarg.1      
+   2 call         Smelter::GetItemConversion(string)
+   7 stloc.0      
+   8 ldloc.0      
+   9 brfalse      197
+  14 ldloc.0      
+  15 ldfld        Smelter+ItemConversion::m_to
+  20 ldnull       
+  21 call         UnityEngine.Object::op_Inequality
+  26 brfalse      197
+  31 ldarg.0      
+  32 ldfld        Smelter::m_produceEffects
+  37 ldarg.0      
+  38 call         UnityEngine.Component::get_transform
+  43 callvirt     UnityEngine.Transform::get_position
+  48 ldarg.0      
+  49 call         UnityEngine.Component::get_transform
+  54 callvirt     UnityEngine.Transform::get_rotation
+  59 ldnull       
+  60 ldc.r4       1
+  65 ldc.i4.m1    
+  66 ldloca.s     2
+  68 initobj      ZDOID
+  74 ldloc.2      
+  75 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+  80 pop          
+  81 ldloc.0      
+  82 ldfld        Smelter+ItemConversion::m_to
+  87 callvirt     UnityEngine.Component::get_gameObject
+  92 ldarg.0      
+  93 ldfld        Smelter::m_outputPoint
+  98 callvirt     UnityEngine.Transform::get_position
+ 103 ldarg.0      
+ 104 ldfld        Smelter::m_outputPoint
+ 109 callvirt     UnityEngine.Transform::get_rotation
+ 114 call         UnityEngine.Object::Instantiate<T>
+ 119 callvirt     UnityEngine.GameObject::GetComponent<T>
+ 124 dup          
+ 125 ldfld        ItemDrop::m_itemData
+ 130 ldarg.2      
+ 131 stfld        ItemDrop+ItemData::m_stack
+ 136 ldarg.0      
+ 137 ldfld        Smelter::m_nview
+ 142 callvirt     ZNetView::GetZDO()
+ 147 ldsfld       ZDOVars::s_cheatedQueued
+ 152 ldc.i4.0     
+ 153 callvirt     ZDO::GetBool(i4,bool)
+ 158 brtrue.s     178
+ 160 ldarg.0      
+ 161 ldfld        Smelter::m_nview
+ 166 callvirt     ZNetView::GetZDO()
+ 171 call         CheatUtils::IsCheated(class:1164)
+ 176 br.s         179
+ 178 ldc.i4.1     
+ 179 stloc.1      
+ 180 ldloc.1      
+ 181 call         PlayerProfile::get_s_bypassCheatChecks()
+ 186 ldc.i4.0     
+ 187 ceq          
+ 189 and          
+ 190 stloc.1      
+ 191 ldloc.1      
+ 192 call         ItemDrop::OnCreateNew(class:1060,bool)
+ 197 ret          
+
+== Smelter::GetItemConversion(string) -> class:4772  il_size=93 sha=86d3f366fea4
+   locals_sig=0x1100079b
+   0 ldarg.0      
+   1 ldfld        Smelter::m_conversion
+   6 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  11 stloc.0      
+  12 br.s         64
+  14 ldloca.s     0
+  16 call         Enumerator::get_Current
+  21 stloc.1      
+  22 ldloc.1      
+  23 ldfld        Smelter+ItemConversion::m_from
+  28 ldnull       
+  29 call         UnityEngine.Object::op_Equality
+  34 brtrue.s     60
+  36 ldloc.1      
+  37 ldfld        Smelter+ItemConversion::m_from
+  42 callvirt     UnityEngine.Component::get_gameObject
+  47 callvirt     UnityEngine.Object::get_name
+  52 ldarg.1      
+  53 call         System.String::op_Equality
+  58 brfalse.s    64
+  60 ldloc.1      
+  61 stloc.2      
+  62 leave.s      91
+  64 ldloca.s     0
+  66 call         Enumerator::MoveNext
+  71 brtrue.s     14
+  73 leave.s      89
+  75 ldloca.s     0
+  77 constrained. 0x1b000448
+  83 callvirt     System.IDisposable::Dispose
+  88 endfinally   
+  89 ldnull       
+  90 ret          
+  91 ldloc.2      
+  92 ret          
+
+== Smelter::UpdateState() -> void  il_size=193 sha=5f96a2b86062
+   locals_sig=0x11000091
+   0 ldarg.0      
+   1 call         Smelter::IsActive()
+   6 stloc.0      
+   7 ldarg.0      
+   8 ldfld        Smelter::m_enabledObject
+  13 ldloc.0      
+  14 callvirt     UnityEngine.GameObject::SetActive
+  19 ldarg.0      
+  20 ldfld        Smelter::m_disabledObject
+  25 call         UnityEngine.Object::op_Implicit
+  30 brfalse.s    47
+  32 ldarg.0      
+  33 ldfld        Smelter::m_disabledObject
+  38 ldloc.0      
+  39 ldc.i4.0     
+  40 ceq          
+  42 callvirt     UnityEngine.GameObject::SetActive
+  47 ldarg.0      
+  48 ldfld        Smelter::m_haveFuelObject
+  53 call         UnityEngine.Object::op_Implicit
+  58 brfalse.s    84
+  60 ldarg.0      
+  61 ldfld        Smelter::m_haveFuelObject
+  66 ldarg.0      
+  67 call         Smelter::GetFuel()
+  72 ldc.r4       0
+  77 cgt          
+  79 callvirt     UnityEngine.GameObject::SetActive
+  84 ldarg.0      
+  85 ldfld        Smelter::m_haveOreObject
+  90 call         UnityEngine.Object::op_Implicit
+  95 brfalse.s    117
+  97 ldarg.0      
+  98 ldfld        Smelter::m_haveOreObject
+ 103 ldarg.0      
+ 104 call         Smelter::GetQueueSize()
+ 109 ldc.i4.0     
+ 110 cgt          
+ 112 callvirt     UnityEngine.GameObject::SetActive
+ 117 ldarg.0      
+ 118 ldfld        Smelter::m_noOreObject
+ 123 call         UnityEngine.Object::op_Implicit
+ 128 brfalse.s    150
+ 130 ldarg.0      
+ 131 ldfld        Smelter::m_noOreObject
+ 136 ldarg.0      
+ 137 call         Smelter::GetQueueSize()
+ 142 ldc.i4.0     
+ 143 ceq          
+ 145 callvirt     UnityEngine.GameObject::SetActive
+ 150 ldarg.0      
+ 151 ldfld        Smelter::m_addOreAnimationDuration
+ 156 ldc.r4       0
+ 161 ble.un.s     185
+ 163 call         UnityEngine.Time::get_time
+ 168 ldarg.0      
+ 169 ldfld        Smelter::m_addedOreTime
+ 174 sub          
+ 175 ldarg.0      
+ 176 ldfld        Smelter::m_addOreAnimationDuration
+ 181 bge.un.s     185
+ 183 ldc.i4.1     
+ 184 stloc.0      
+ 185 ldarg.0      
+ 186 ldloc.0      
+ 187 call         Smelter::SetAnimation(bool)
+ 192 ret          
+
+== Smelter::SetAnimation(bool) -> void  il_size=77 sha=a4526484e928
+   locals_sig=0x1100079c
+   0 ldarg.0      
+   1 ldfld        Smelter::m_animators
+   6 stloc.0      
+   7 ldc.i4.0     
+   8 stloc.1      
+   9 br.s         70
+  11 ldloc.0      
+  12 ldloc.1      
+  13 ldelem.ref   
+  14 stloc.2      
+  15 ldloc.2      
+  16 callvirt     UnityEngine.Component::get_gameObject
+  21 callvirt     UnityEngine.GameObject::get_activeInHierarchy
+  26 brfalse.s    66
+  28 ldloc.2      
+  29 ldstr        "active"
+  34 ldarg.1      
+  35 callvirt     UnityEngine.Animator::SetBool
+  40 ldloc.2      
+  41 ldstr        "activef"
+  46 ldarg.1      
+  47 brtrue.s     56
+  49 ldc.r4       0
+  54 br.s         61
+  56 ldc.r4       1
+  61 callvirt     UnityEngine.Animator::SetFloat
+  66 ldloc.1      
+  67 ldc.i4.1     
+  68 add          
+  69 stloc.1      
+  70 ldloc.1      
+  71 ldloc.0      
+  72 ldlen        
+  73 conv.i4      
+  74 blt.s        11
+  76 ret          
+
+== Smelter::IsActive() -> bool  il_size=66 sha=3b043fe222a3
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smelter::m_maxFuel
+   6 brfalse.s    21
+   8 ldarg.0      
+   9 call         Smelter::GetFuel()
+  14 ldc.r4       0
+  19 ble.un.s     64
+  21 ldarg.0      
+  22 ldfld        Smelter::m_maxOre
+  27 brfalse.s    38
+  29 ldarg.0      
+  30 call         Smelter::GetQueueSize()
+  35 ldc.i4.0     
+  36 ble.s        64
+  38 ldarg.0      
+  39 ldfld        Smelter::m_requiresRoof
+  44 brfalse.s    54
+  46 ldarg.0      
+  47 ldfld        Smelter::m_haveRoof
+  52 brfalse.s    64
+  54 ldarg.0      
+  55 ldfld        Smelter::m_blockedSmoke
+  60 ldc.i4.0     
+  61 ceq          
+  63 ret          
+  64 ldc.i4.0     
+  65 ret          
+
+== Smelter::OnHoverAddFuel() -> string  il_size=119 sha=4faa09ddbd6e
+   locals_sig=0x11000016
+   0 ldarg.0      
+   1 call         Smelter::GetFuel()
+   6 stloc.0      
+   7 call         Localization::get_instance
+  12 ldstr        "{0} ({1} {2}/{3})\n[<color=yellow><b>$KEY_Use</b></color>] $piece_smelter_add {4}"
+  17 ldc.i4.5     
+  18 newarr       0x01000007
+  23 dup          
+  24 ldc.i4.0     
+  25 ldarg.0      
+  26 ldfld        Smelter::m_name
+  31 stelem.ref   
+  32 dup          
+  33 ldc.i4.1     
+  34 ldarg.0      
+  35 ldfld        Smelter::m_fuelItem
+  40 ldfld        ItemDrop::m_itemData
+  45 ldfld        ItemDrop+ItemData::m_shared
+  50 ldfld        ItemDrop+ItemData+SharedData::m_name
+  55 stelem.ref   
+  56 dup          
+  57 ldc.i4.2     
+  58 ldloc.0      
+  59 call         UnityEngine.Mathf::Ceil
+  64 box          0x010001ed
+  69 stelem.ref   
+  70 dup          
+  71 ldc.i4.3     
+  72 ldarg.0      
+  73 ldfld        Smelter::m_maxFuel
+  78 box          0x010001f3
+  83 stelem.ref   
+  84 dup          
+  85 ldc.i4.4     
+  86 ldarg.0      
+  87 ldfld        Smelter::m_fuelItem
+  92 ldfld        ItemDrop::m_itemData
+  97 ldfld        ItemDrop+ItemData::m_shared
+ 102 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 107 stelem.ref   
+ 108 call         System.String::Format
+ 113 callvirt     Localization::Localize
+ 118 ret          
+
+== Smelter::OnHoverEmptyOre() -> string  il_size=46 sha=f9555797357e
+   locals_sig=0x1100000a
+   0 ldarg.0      
+   1 call         Smelter::GetProcessedQueueSize()
+   6 stloc.0      
+   7 call         Localization::get_instance
+  12 ldstr        "{0} ({1} $piece_smelter_ready) \n[<color=yellow><b>$KEY_Use</b></color>] {2}"
+  17 ldarg.0      
+  18 ldfld        Smelter::m_name
+  23 ldloc.0      
+  24 box          0x010001f3
+  29 ldarg.0      
+  30 ldfld        Smelter::m_emptyOreTooltip
+  35 call         System.String::Format
+  40 callvirt     Localization::Localize
+  45 ret          
+
+== Smelter::OnHoverAddOre() -> string  il_size=170 sha=8cbfe37bba09
+   locals_sig=0x1100000a
+   0 ldarg.0      
+   1 ldfld        Smelter::m_sb
+   6 callvirt     System.Text.StringBuilder::Clear
+  11 pop          
+  12 ldarg.0      
+  13 call         Smelter::GetQueueSize()
+  18 stloc.0      
+  19 ldarg.0      
+  20 ldfld        Smelter::m_sb
+  25 ldstr        "{0} ({1}/{2}) "
+  30 ldarg.0      
+  31 ldfld        Smelter::m_name
+  36 ldloc.0      
+  37 box          0x010001f3
+  42 ldarg.0      
+  43 ldfld        Smelter::m_maxOre
+  48 box          0x010001f3
+  53 call         System.String::Format
+  58 callvirt     System.Text.StringBuilder::Append
+  63 pop          
+  64 ldarg.0      
+  65 ldfld        Smelter::m_requiresRoof
+  70 brfalse.s    120
+  72 ldarg.0      
+  73 ldfld        Smelter::m_haveRoof
+  78 brtrue.s     120
+  80 call         UnityEngine.Time::get_time
+  85 ldc.r4       10
+  90 mul          
+  91 call         UnityEngine.Mathf::Sin
+  96 ldc.r4       0
+ 101 ble.un.s     120
+ 103 ldarg.0      
+ 104 ldfld        Smelter::m_sb
+ 109 ldstr        " <color=yellow>$piece_smelter_reqroof</color>"
+ 114 callvirt     System.Text.StringBuilder::Append
+ 119 pop          
+ 120 ldarg.0      
+ 121 ldfld        Smelter::m_sb
+ 126 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] "
+ 131 ldarg.0      
+ 132 ldfld        Smelter::m_addOreTooltip
+ 137 call         System.String::Concat
+ 142 callvirt     System.Text.StringBuilder::Append
+ 147 pop          
+ 148 call         Localization::get_instance
+ 153 ldarg.0      
+ 154 ldfld        Smelter::m_sb
+ 159 callvirt     System.Object::ToString
+ 164 callvirt     Localization::Localize
+ 169 ret          
+
+== Smelter::TryGetItems(class:144, class:2404, class:165<string>&) -> bool  il_size=129 sha=21da5a03df01
+   locals_sig=null
+   0 ldarg.3      
+   1 newobj       System.Collections.Generic.List`1::.ctor
+   6 stind.ref    
+   7 ldarg.0      
+   8 ldarg.1      
+   9 ldarg.2      
+  10 ldc.i4.1     
+  11 call         Smelter::CanUseItems(class:144,class:2404,bool)
+  16 brtrue.s     20
+  18 ldc.i4.1     
+  19 ret          
+  20 ldarg.2      
+  21 ldarg.0      
+  22 ldfld        Smelter::m_addOreSwitch
+  27 call         UnityEngine.Object::op_Equality
+  32 brfalse.s    85
+  34 ldarg.3      
+  35 ldarg.0      
+  36 ldfld        Smelter::m_conversion
+  41 ldsfld       Smelter+<>c::<>9__37_0
+  46 dup          
+  47 brtrue.s     72
+  49 pop          
+  50 ldsfld       Smelter+<>c::<>9
+  55 ldftn        Smelter+<>c::<TryGetItems>b__37_0(class:4772)
+  61 newobj       System.Func`2::.ctor
+  66 dup          
+  67 stsfld       Smelter+<>c::<>9__37_0
+  72 call         System.Linq.Enumerable::Select<T>
+  77 call         System.Linq.Enumerable::ToList<T>
+  82 stind.ref    
+  83 br.s         127
+  85 ldarg.2      
+  86 ldarg.0      
+  87 ldfld        Smelter::m_addWoodSwitch
+  92 call         UnityEngine.Object::op_Equality
+  97 brfalse.s    127
+  99 ldarg.3      
+ 100 ldind.ref    
+ 101 ldarg.0      
+ 102 ldfld        Smelter::m_fuelItem
+ 107 ldfld        ItemDrop::m_itemData
+ 112 ldfld        ItemDrop+ItemData::m_shared
+ 117 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 122 callvirt     System.Collections.Generic.List`1::Add
+ 127 ldc.i4.1     
+ 128 ret          
+
+== Smelter::CanUseItems(class:144, class:2404, bool) -> bool  il_size=286 sha=6f4e941888bf
+   locals_sig=null
+   0 ldarg.2      
+   1 ldarg.0      
+   2 ldfld        Smelter::m_emptyOreSwitch
+   7 call         UnityEngine.Object::op_Equality
+  12 brfalse.s    16
+  14 ldc.i4.0     
+  15 ret          
+  16 ldarg.2      
+  17 ldarg.0      
+  18 ldfld        Smelter::m_addOreSwitch
+  23 call         UnityEngine.Object::op_Equality
+  28 brfalse.s    150
+  30 ldarg.0      
+  31 call         Smelter::GetQueueSize()
+  36 ldarg.0      
+  37 ldfld        Smelter::m_maxOre
+  42 blt.s        64
+  44 ldarg.3      
+  45 brfalse.s    62
+  47 ldarg.1      
+  48 ldc.i4.2     
+  49 ldstr        "$msg_itsfull"
+  54 ldc.i4.0     
+  55 ldnull       
+  56 ldc.i4.0     
+  57 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  62 ldc.i4.0     
+  63 ret          
+  64 ldarg.1      
+  65 callvirt     Humanoid::GetInventory()
+  70 ldarg.0      
+  71 ldfld        Smelter::m_conversion
+  76 ldsfld       Smelter+<>c::<>9__38_0
+  81 dup          
+  82 brtrue.s     107
+  84 pop          
+  85 ldsfld       Smelter+<>c::<>9
+  90 ldftn        Smelter+<>c::<CanUseItems>b__38_0(class:4772)
+  96 newobj       System.Func`2::.ctor
+ 101 dup          
+ 102 stsfld       Smelter+<>c::<>9__38_0
+ 107 call         System.Linq.Enumerable::Select<T>
+ 112 call         System.Linq.Enumerable::ToArray<T>
+ 117 ldc.i4.m1    
+ 118 ldc.i4.1     
+ 119 ldc.i4.0     
+ 120 callvirt     Inventory::CountItemsByName(string[],i4,bool,bool)
+ 125 ldc.i4.0     
+ 126 ble.s        130
+ 128 ldc.i4.1     
+ 129 ret          
+ 130 ldarg.3      
+ 131 brfalse.s    148
+ 133 ldarg.1      
+ 134 ldc.i4.2     
+ 135 ldstr        "$msg_noprocessableitems"
+ 140 ldc.i4.0     
+ 141 ldnull       
+ 142 ldc.i4.0     
+ 143 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 148 ldc.i4.0     
+ 149 ret          
+ 150 ldarg.2      
+ 151 ldarg.0      
+ 152 ldfld        Smelter::m_addWoodSwitch
+ 157 call         UnityEngine.Object::op_Inequality
+ 162 brfalse.s    166
+ 164 ldc.i4.0     
+ 165 ret          
+ 166 ldarg.0      
+ 167 call         Smelter::GetFuel()
+ 172 ldarg.0      
+ 173 ldfld        Smelter::m_maxFuel
+ 178 ldc.i4.1     
+ 179 sub          
+ 180 conv.r4      
+ 181 ble.un.s     203
+ 183 ldarg.3      
+ 184 brfalse.s    201
+ 186 ldarg.1      
+ 187 ldc.i4.2     
+ 188 ldstr        "$msg_itsfull"
+ 193 ldc.i4.0     
+ 194 ldnull       
+ 195 ldc.i4.0     
+ 196 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 201 ldc.i4.0     
+ 202 ret          
+ 203 ldarg.1      
+ 204 callvirt     Humanoid::GetInventory()
+ 209 ldarg.0      
+ 210 ldfld        Smelter::m_fuelItem
+ 215 ldfld        ItemDrop::m_itemData
+ 220 ldfld        ItemDrop+ItemData::m_shared
+ 225 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 230 ldc.i4.1     
+ 231 callvirt     Inventory::HaveItem(string,bool)
+ 236 brfalse.s    240
+ 238 ldc.i4.1     
+ 239 ret          
+ 240 ldarg.3      
+ 241 brfalse.s    284
+ 243 ldarg.1      
+ 244 ldc.i4.2     
+ 245 ldstr        "$msg_donthaveany "
+ 250 ldarg.0      
+ 251 ldfld        Smelter::m_fuelItem
+ 256 ldfld        ItemDrop::m_itemData
+ 261 ldfld        ItemDrop+ItemData::m_shared
+ 266 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 271 call         System.String::Concat
+ 276 ldc.i4.0     
+ 277 ldnull       
+ 278 ldc.i4.0     
+ 279 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 284 ldc.i4.0     
+ 285 ret          
+
+== Smelter::.ctor() -> void  il_size=140 sha=170134844faa
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        "Smelter"
+   6 stfld        Smelter::m_name
+  11 ldarg.0      
+  12 ldstr        "$piece_smelter_additem"
+  17 stfld        Smelter::m_addOreTooltip
+  22 ldarg.0      
+  23 ldstr        "$piece_smelter_empty"
+  28 stfld        Smelter::m_emptyOreTooltip
+  33 ldarg.0      
+  34 ldc.i4.s     10
+  36 stfld        Smelter::m_maxOre
+  41 ldarg.0      
+  42 ldc.i4.s     10
+  44 stfld        Smelter::m_maxFuel
+  49 ldarg.0      
+  50 ldc.i4.4     
+  51 stfld        Smelter::m_fuelPerProduct
+  56 ldarg.0      
+  57 ldc.r4       10
+  62 stfld        Smelter::m_secPerProduct
+  67 ldarg.0      
+  68 newobj       System.Collections.Generic.List`1::.ctor
+  73 stfld        Smelter::m_conversion
+  78 ldarg.0      
+  79 newobj       EffectList::.ctor()
+  84 stfld        Smelter::m_oreAddedEffects
+  89 ldarg.0      
+  90 newobj       EffectList::.ctor()
+  95 stfld        Smelter::m_fuelAddedEffects
+ 100 ldarg.0      
+ 101 newobj       EffectList::.ctor()
+ 106 stfld        Smelter::m_produceEffects
+ 111 ldarg.0      
+ 112 ldc.r4       -1000
+ 117 stfld        Smelter::m_addedOreTime
+ 122 ldarg.0      
+ 123 newobj       System.Text.StringBuilder::.ctor
+ 128 stfld        Smelter::m_sb
+ 133 ldarg.0      
+ 134 call         UnityEngine.MonoBehaviour::.ctor
+ 139 ret          

@@ -30,35 +30,59 @@ def _mat(id_, name, tier, kind, display, quality=1):
 
 
 MATERIALS = [
+    # noms = noms francais EXACTS de Valheim (localization.txt, colonne French) ; 012 les reecrit de toute facon depuis les prefabs.
+    # kind « smelted » : metal de Valheim, obtenu UNIQUEMENT par la fonderie / le haut fourneau (minerai des filons) : jamais en butin.
     _mat(9200001, "Bois", 1, "base", 7375),
     _mat(9200002, "Pierre", 1, "base", 4714),
     _mat(9200003, "Silex", 1, "base", 18107),
     _mat(9200004, "Résine", 1, "base", 8283),
     _mat(9200005, "Peau de cerf", 1, "base", 6687),
-    _mat(9200006, "Chutes de cuir", 1, "base", 7400),
-    _mat(9200009, "Andouiller", 1, "passage", 7999, 2),
-    _mat(9200011, "Bois fin", 2, "base", 7290),
-    _mat(9200012, "Bois de cœur", 2, "base", 13458),
-    _mat(9200013, "Cuivre", 2, "base", 4681),
-    _mat(9200014, "Étain", 2, "base", 4690),
+    _mat(9200006, "Bouts de cuir", 1, "base", 7400),
+    _mat(9200009, "Bois dur", 1, "passage", 7999, 2),
+    _mat(9200011, "Bois précieux", 2, "base", 7290),
+    _mat(9200012, "Bois robuste", 2, "base", 13458),
+    _mat(9200013, "Cuivre", 2, "smelted", 4681),
+    _mat(9200014, "Étain", 2, "smelted", 4690),
     _mat(9200015, "Bronze", 2, "crafted", 7390),
     _mat(9200016, "Peau de troll", 2, "base", 6684),
-    _mat(9200019, "Œil de gréling", 2, "passage", 7394, 2),
-    _mat(9200021, "Fer", 3, "base", 4689),
+    _mat(9200019, "Œil de naingris", 2, "passage", 7394, 2),
+    _mat(9200021, "Fer", 3, "smelted", 4689),
     _mat(9200022, "Écorce ancienne", 3, "base", 7149),
     _mat(9200023, "Fragments d'os", 3, "base", 7350),
     _mat(9200024, "Entrailles", 3, "base", 1116),
-    _mat(9200029, "Noyau de Surtling", 3, "passage", 8560, 2),
-    _mat(9200031, "Argent", 4, "base", 7355),
+    _mat(9200029, "Cœur de surtling", 3, "passage", 8560, 2),
+    _mat(9200031, "Argent", 4, "smelted", 7355),
     _mat(9200032, "Obsidienne", 4, "base", 20769),
-    _mat(9200033, "Fourrure de loup", 4, "base", 7294),
+    _mat(9200033, "Peau de loup", 4, "base", 7294),
     _mat(9200034, "Cristal", 4, "base", 6546),
-    _mat(9200039, "Glande de gel", 4, "passage", 4045, 2),
-    _mat(9200041, "Métal noir", 5, "base", 20658),
+    _mat(9200039, "Glande gelée", 4, "passage", 4045, 2),
+    _mat(9200041, "Sombracier", 5, "smelted", 20658),
     _mat(9200042, "Lin", 5, "base", 7383),
-    _mat(9200043, "Fil de lin", 5, "base", 4752),
-    _mat(9200044, "Peau de lox", 5, "base", 6698),
+    _mat(9200043, "Toile de lin", 5, "crafted", 4752),       # Valheim : rouet (40 Lin -> Toile de lin), jamais en butin
+    _mat(9200044, "Peau de Lox", 5, "base", 6698),
     _mat(9200049, "Noyau noir", 5, "passage", 17922, 2),
+    # materiaux de Valheim ajoutes pour les pieces du marteau (tools/valheim/gen_server_sql.py, 012 : noms et icones de Valheim ;
+    # display ci-dessous = repli WoW si 012 n'est pas applique). Fabriques = recettes de Valheim dans 012.
+    _mat(9200051, "Charbon", 2, "base", 7340),            # aussi : four a charbon
+    _mat(9200052, "Chaîne", 3, "base", 13692),            # Valheim : butin des spectres et cryptes du marais (pas de recette)
+    _mat(9200053, "Clous en bronze", 2, "crafted", 7390),
+    _mat(9200054, "Clous en fer", 3, "crafted", 7376),
+    _mat(9200055, "Plumes", 1, "base", 28877),
+    _mat(9200056, "Roue à aiguiser", 3, "crafted", 24673),
+    _mat(9200057, "Goudron", 5, "base", 17957),
+    _mat(9200070, "Framboises", 1, "base", 6410),
+    _mat(9200071, "Pissenlit", 1, "base", 7396),
+    _mat(9200072, "Myrtilles", 2, "base", 7341),
+    _mat(9200073, "Chardon", 2, "base", 7241),
+    _mat(9200074, "Carotte", 2, "base", 6402),
+    _mat(9200075, "Viscosité", 3, "base", 2637),
+    _mat(9200076, "Poche de sang", 3, "base", 7045),
+    _mat(9200077, "Griffes de Fenris", 4, "base", 2460),
+    _mat(9200078, "Larme de dragon", 4, "passage", 20977, 2),
+    _mat(9200079, "Plaquebières", 5, "base", 18087),
+    _mat(9200080, "Orge", 5, "base", 6661),
+    _mat(9200081, "Morceau de sombracier", 5, "base", 20658),   # Valheim BlackMetalScrap : a fondre au haut fourneau
+    _mat(9200082, "Champignon", 1, "pickable", 7341),     # Valheim : Pickable_Mushroom (ramassable seulement)
 ]
 MAT = {m["id"]: m for m in MATERIALS}
 STACK = 100          # taille de pile des materiaux
@@ -68,58 +92,32 @@ BUY_FACTOR = 10      # prix chez le vendeur = revente x 10 (« prix eleve » : v
 
 def sell_price(m):
     p = SELL_BASE * 3 ** (m["tier"] - 1)
-    return {"base": p, "passage": p * 5, "crafted": p * 2}[m["kind"]]
+    return {"base": p, "passage": p * 5, "crafted": p * 2, "smelted": p * 2, "pickable": p}[m["kind"]]
 
 
 def buy_price(m):
-    """0 = non vendu par les PNJ (passage, fabrique)."""
+    """Prix d'achat theorique (item_template.BuyPrice). AUCUN PNJ ne vend de materiau Wowlheim (006 vide : Valheim n'en vend pas)."""
     return sell_price(m) * BUY_FACTOR if m["kind"] == "base" else 0
 
 
-# ------------------------------------------------------------------ outils (armes a faibles degats, classe 2 sous-classe 14 « Divers » comme le Pic de mineur : aucune maitrise d'arme requise)
-# id = 9201000 + palier*10 + (1 hache | 2 pic)
-TOOLS = []
-_tool_names = {
-    1: ("Hache en silex", "Pic en andouiller"),
-    2: ("Hache de bronze", "Pic de bronze"),
-    3: ("Hache de fer", "Pic de fer"),
-    4: ("Hache d'argent", "Pic d'argent"),
-    5: ("Hache de métal noir", "Pic de métal noir"),
-}
-_tool_dmg = {1: (1, 3), 2: (2, 5), 3: (4, 8), 4: (6, 12), 5: (8, 16)}
-_tool_req = {1: 1, 2: 15, 3: 28, 4: 40, 5: 52}
-# modeles : axe = « Monster - Axe, Stone Basic » / « Metal Basic » ; pic = « Mining Pick » / « Monster - Item, Pick »
-_tool_disp = {
-    ("hache", 1): 7429, ("hache", 2): 7428, ("hache", 3): 7428, ("hache", 4): 7426, ("hache", 5): 7427,
-    ("pic", 1): 7493, ("pic", 2): 6568, ("pic", 3): 6568, ("pic", 4): 14039, ("pic", 5): 14039,
-}
-for _t in range(1, 6):
-    for _i, _k in enumerate(("hache", "pic")):
-        TOOLS.append(dict(id=9201000 + _t * 10 + 1 + _i, kind=_k, tier=_t, name=_tool_names[_t][_i],
-                          display=_tool_disp[(_k, _t)], dmg=_tool_dmg[_t], req=_tool_req[_t]))
-
-# Recettes PROPOSEES (non implementees : la table de recettes vivra dans le code serveur). (station, [(id, qte)])
-TOOL_RECIPES = {
-    9201011: ("Établi", [(9200001, 4), (9200003, 3), (9200004, 1)]),
-    9201012: ("Établi", [(9200001, 4), (9200009, 2), (9200006, 2)]),
-    9201021: ("Forge", [(9200011, 4), (9200015, 5), (9200012, 1), (9200004, 2)]),
-    9201022: ("Forge", [(9200011, 3), (9200015, 6), (9200019, 2), (9200016, 2)]),
-    9201031: ("Forge", [(9200012, 4), (9200021, 6), (9200022, 2), (9200006, 2)]),
-    9201032: ("Forge", [(9200012, 3), (9200021, 8), (9200029, 2), (9200023, 2)]),
-    9201041: ("Forge", [(9200012, 4), (9200031, 6), (9200033, 2), (9200034, 2)]),
-    9201042: ("Forge", [(9200012, 3), (9200031, 8), (9200039, 2), (9200032, 2)]),
-    9201051: ("Forge", [(9200012, 4), (9200041, 6), (9200043, 3), (9200044, 2)]),
-    9201052: ("Forge", [(9200012, 3), (9200041, 8), (9200049, 2), (9200044, 2)]),
-}
-# Conversions PROPOSEES (source de secours, non implementees ; station -> code serveur)
-CONVERSIONS = [
-    ("Forge", [(9200013, 2), (9200014, 1)], (9200015, 2), "Bronze (seul moyen d'en obtenir : il n'y a pas de butin)"),
-    ("Établi", [(9200042, 2)], (9200043, 1), "Fil de lin depuis le lin"),
-    ("Établi", [(9200001, 5)], (9200011, 1), "Bois fin depuis le bois (secours palier 1 -> 2)"),
-    ("Établi", [(9200011, 5)], (9200012, 1), "Bois de cœur depuis le bois fin"),
-    ("Forge", [(9200002, 6)], (9200003, 2), "Silex depuis la pierre (secours)"),
-    ("Établi", [(9200005, 3)], (9200006, 4), "Chutes de cuir depuis la peau de cerf"),
+# ------------------------------------------------------------------ outils : UNIQUEMENT ceux de Valheim
+# (classe 2 sous-classe 14 « Divers » comme le Pic de mineur : aucune maitrise d'arme requise). Id 9201000 + palier*10 + (1 hache | 2 pic).
+# Noms, palier d'outil (m_toolTier), degats de coupe/minage et durabilite (m_maxDurability) : prefabs de Valheim ; 012 (gen_server_sql.py)
+# reecrit nom, durabilite et table wowlheim_tool depuis valheim_data.json. Hache en pierre (9201010, Valheim AxeStone) : creee par 012.
+# Pas d'outil d'argent (n'existe pas dans Valheim) ; pas de pioche en sombracier (recette de Valheim en bois d'Yggdrasil, biome absent).
+# Aucun niveau requis (Valheim n'en a pas : la progression passe par les materiaux).
+TOOLS = [
+    dict(id=9201011, kind="hache", tier=1, name="Hache en silex", display=7429, dmg=(1, 3), req=0, prefab="AxeFlint", durability=100),
+    dict(id=9201012, kind="pic", tier=1, name="Pioche de bois de cerf", display=7493, dmg=(1, 3), req=0, prefab="PickaxeAntler", durability=100),
+    dict(id=9201021, kind="hache", tier=2, name="Hache en bronze", display=7428, dmg=(2, 5), req=0, prefab="AxeBronze", durability=125),
+    dict(id=9201022, kind="pic", tier=2, name="Pioche en bronze", display=6568, dmg=(2, 5), req=0, prefab="PickaxeBronze", durability=120),
+    dict(id=9201031, kind="hache", tier=3, name="Hache en fer", display=7428, dmg=(4, 8), req=0, prefab="AxeIron", durability=175),
+    dict(id=9201032, kind="pic", tier=3, name="Pioche en fer", display=6568, dmg=(4, 8), req=0, prefab="PickaxeIron", durability=150),
+    dict(id=9201051, kind="hache", tier=5, name="Hache en sombracier", display=7427, dmg=(8, 16), req=0, prefab="AxeBlackMetal", durability=175),
 ]
+# Recettes : UNIQUEMENT les Recipe_* de Valheim, generees par tools/valheim/gen_server_sql.py (012). Les recettes et conversions
+# « proposees » de la premiere version (hache/pic d'argent, bois precieux/robuste, silex, bouts de cuir, fil de lin a l'etabli) sont supprimees.
+CONVERSIONS = []
 
 # ------------------------------------------------------------------ categories de creatures
 # Categorie principale determinee par (CreatureType, Family, nom) dans classify.py ; heritage pour les regles ci-dessous.
@@ -127,85 +125,147 @@ CAT_PARENT = {
     "MINER": "HUMANOID", "LOGGER": "HUMANOID", "BRUTE": "HUMANOID",
     "BEAST_MAMMAL": "BEAST", "BEAST_OTHER": "BEAST", "BEAST_SPIDER": "BEAST", "BEAST_BASILISK": "BEAST_OTHER",
     "ELEM_ROCK": "ELEMENTAL", "ELEM_PLANT": "ELEMENTAL", "ELEM_OTHER": "ELEMENTAL",
+    "BEAST_BIRD": "BEAST_OTHER",
+    # materiaux animaux de Valheim (2026-10-26) : sous-categories par MODELE (classify.py) ; rattachees a BEAST (pas a BEAST_MAMMAL) pour
+    # ne pas heriter des Bouts de cuir : dans Valheim, cerf, loup et lox ne lachent pas de chutes de cuir (seuls sanglier et chauve-souris)
+    "BEAST_DEER": "BEAST", "BEAST_WOLF": "BEAST", "BEAST_BOAR": "BEAST", "BEAST_LOX": "BEAST",
+    "TROLL": "BRUTE", "OGRE": "BRUTE", "HARPY": "HUMANOID",
 }
 ALL_CATS = ["HUMANOID", "MINER", "LOGGER", "BRUTE", "BEAST", "BEAST_MAMMAL", "BEAST_OTHER", "BEAST_SPIDER", "BEAST_BASILISK",
-            "UNDEAD", "ELEMENTAL", "ELEM_ROCK", "ELEM_PLANT", "ELEM_OTHER", "GIANT", "MECH", "DRAGONKIN", "DEMON", "OTHER"]
+            "UNDEAD", "ELEMENTAL", "ELEM_ROCK", "ELEM_PLANT", "ELEM_OTHER", "GIANT", "MECH", "DRAGONKIN", "DEMON", "OTHER", "BEAST_BIRD",
+            "BEAST_DEER", "BEAST_WOLF", "BEAST_BOAR", "BEAST_LOX", "TROLL", "OGRE", "HARPY"]   # ajout en fin : les id de reference existants ne bougent pas
 # categories attribuables a une creature (feuilles ; HUMANOID/BEAST/ELEMENTAL generiques sont aussi des categories finales)
 ASSIGNABLE = ["HUMANOID", "MINER", "LOGGER", "BRUTE", "BEAST_MAMMAL", "BEAST_OTHER", "BEAST_SPIDER", "BEAST_BASILISK",
-              "UNDEAD", "ELEM_ROCK", "ELEM_PLANT", "ELEM_OTHER", "GIANT", "MECH", "DRAGONKIN", "DEMON", "OTHER"]
+              "UNDEAD", "ELEM_ROCK", "ELEM_PLANT", "ELEM_OTHER", "GIANT", "MECH", "DRAGONKIN", "DEMON", "OTHER", "BEAST_BIRD",
+              "BEAST_DEER", "BEAST_WOLF", "BEAST_BOAR", "BEAST_LOX", "TROLL", "OGRE", "HARPY"]
 
-# Regles de butin : item -> [(categorie, chance %, min, max)]. Palier de la creature = palier de l'objet (ou palier+1 : retour en arriere).
+# Regles de butin : item -> [(categorie, chance %, min, max)].
+# Valheim : les metaux (cuivre, etain, fer, argent, sombracier) et la toile de lin ne tombent JAMAIS des monstres : minerai des filons ->
+# fonderie / haut fourneau, lin -> rouet. Leurs anciennes regles sont supprimees (2026-10-26). Palier de la creature = palier de l'objet (ou palier+1 : retour en arriere).
+# 2026-10-26 (demande de Robin : construction iso Valheim, materiaux ANIMAUX credibles) :
+#   - Bois (9200001) et Pierre (9200002) : AUCUNE regle de butin. Comme dans Valheim pour le joueur, ils ne viennent que des arbres, rochers et
+#     ramassables (PLACEMENTS ci-dessous : abattage, minage, cueillette). Aucun vendeur non plus (006 vide). Voir NODE_ONLY.
+#   - materiaux animaux selon la CREATURE (modele 3D / famille, classify.py), d'apres les CharacterDrop de Valheim :
+#     Peau de cerf = cervides seulement ; Bouts de cuir = sangliers et betes generiques (ours, felins, hyenes, gorilles, chauves-souris) ;
+#     Peau de loup + Griffes de Fenris = loups/worgs ; Peau de Lox = grands herbivores (kodos, lezards-tonnerre, dimetrodons, girafes) ;
+#     (poules et cerfs « critters » sans butin dans WoW : classify.CRITTER_GAME_MODELS, LootId = Entry par 004)
+#     Peau de troll = trolls, ogres (trolls du folklore nordique), geants ; Plumes = oiseaux, poules et harpies ; Fragments d'os = morts-vivants
+#     (squelettes) et betes ; Entrailles = betes et morts-vivants (draugr).
+#   - plus de baies / carottes / plaquebieres sur les betes, plus de peau / glande sur des betes « au hasard », plus de cuir ni d'os
+#     sur les humanoides generiques.
+NODE_ONLY = {9200001, 9200002}   # materiaux de base sans aucun butin de monstre (arbres / rochers / ramassables uniquement)
 DROP_RULES = {
-    9200001: [("LOGGER", 50, 1, 3), ("ELEM_PLANT", 50, 1, 3), ("GIANT", 25, 1, 2), ("HUMANOID", 20, 1, 2)],
-    9200002: [("MINER", 50, 1, 3), ("ELEM_ROCK", 50, 1, 3), ("GIANT", 40, 1, 3), ("MECH", 30, 1, 2), ("HUMANOID", 15, 1, 2)],
     9200003: [("MINER", 40, 1, 2), ("BRUTE", 30, 1, 2), ("ELEM_ROCK", 30, 1, 2), ("HUMANOID", 25, 1, 2)],
     9200004: [("ELEM_PLANT", 45, 1, 2), ("BEAST_SPIDER", 30, 1, 2), ("HUMANOID", 10, 1, 1)],
-    9200005: [("BEAST_MAMMAL", 50, 1, 2), ("BEAST_OTHER", 20, 1, 1)],
-    9200006: [("BRUTE", 45, 1, 3), ("HUMANOID", 45, 1, 3), ("BEAST_MAMMAL", 30, 1, 2), ("UNDEAD", 25, 1, 2)],
-    9200009: [("BEAST_MAMMAL", 8, 1, 1), ("BEAST_OTHER", 3, 1, 1), ("HUMANOID", 3, 1, 1)],
+    9200005: [("BEAST_DEER", 55, 1, 2), ("BEAST_LOX", 35, 1, 2)],                          # Peau de cerf : Valheim Deer ; cervides etendus, jeunes kodos
+    9200006: [("BEAST_BOAR", 50, 1, 3), ("BEAST_MAMMAL", 40, 1, 2), ("BEAST_LOX", 30, 1, 2)],  # Bouts de cuir : Valheim Boar (et Bat) ; jeunes kodos
+    9200009: [("BEAST_DEER", 12, 1, 1), ("BEAST_LOX", 8, 1, 1)],                           # Bois dur (andouiller) : Eikthyr = cerf ; cornes de jeunes kodos
     9200011: [("LOGGER", 50, 1, 3), ("ELEM_PLANT", 50, 1, 3), ("GIANT", 25, 1, 2), ("HUMANOID", 20, 1, 2)],
     9200012: [("ELEM_PLANT", 35, 1, 2), ("LOGGER", 30, 1, 2), ("GIANT", 30, 1, 2), ("HUMANOID", 8, 1, 1)],
-    9200013: [("MINER", 45, 1, 3), ("ELEM_ROCK", 40, 1, 2), ("MECH", 30, 1, 2), ("HUMANOID", 15, 1, 2)],
-    9200014: [("MINER", 40, 1, 2), ("ELEM_ROCK", 35, 1, 2), ("MECH", 25, 1, 2), ("HUMANOID", 12, 1, 1)],
-    9200016: [("GIANT", 50, 1, 2), ("BRUTE", 45, 1, 2), ("BEAST_MAMMAL", 25, 1, 1)],
+    9200016: [("TROLL", 50, 1, 2), ("GIANT", 50, 1, 2), ("OGRE", 45, 1, 2)],               # Peau de troll : Valheim Troll
     9200019: [("ELEM_PLANT", 10, 1, 1), ("BEAST_SPIDER", 6, 1, 1), ("BRUTE", 6, 1, 1), ("HUMANOID", 3, 1, 1)],
-    9200021: [("MINER", 45, 1, 3), ("ELEM_ROCK", 40, 1, 2), ("MECH", 35, 1, 2), ("GIANT", 20, 1, 2), ("HUMANOID", 12, 1, 2)],
     9200022: [("ELEM_PLANT", 45, 1, 3), ("LOGGER", 35, 1, 2), ("GIANT", 30, 1, 2), ("OTHER", 15, 1, 2), ("HUMANOID", 10, 1, 1)],
-    9200023: [("UNDEAD", 50, 1, 3), ("BEAST", 20, 1, 2), ("HUMANOID", 12, 1, 2)],
-    9200024: [("BEAST", 45, 1, 2), ("OTHER", 20, 1, 2)],
+    9200023: [("UNDEAD", 50, 1, 3), ("BEAST", 20, 1, 2)],                                   # Fragments d'os : Valheim Skeleton
+    9200024: [("BEAST", 45, 1, 2), ("UNDEAD", 30, 1, 2)],                                   # Entrailles : Valheim Draugr ; betes videes
     9200029: [("ELEM_OTHER", 10, 1, 1), ("DEMON", 10, 1, 1), ("ELEM_ROCK", 8, 1, 1), ("UNDEAD", 4, 1, 1)],
-    9200031: [("MINER", 40, 1, 2), ("ELEM_ROCK", 35, 1, 2), ("MECH", 30, 1, 2), ("DRAGONKIN", 20, 1, 2), ("HUMANOID", 10, 1, 1)],
     9200032: [("ELEM_ROCK", 40, 1, 2), ("DRAGONKIN", 35, 1, 2), ("GIANT", 30, 1, 2), ("MINER", 25, 1, 2), ("DEMON", 20, 1, 2)],
-    9200033: [("BEAST_MAMMAL", 50, 1, 2)],
+    9200033: [("BEAST_WOLF", 50, 1, 2)],                                                    # Peau de loup : Valheim Wolf
     9200034: [("BEAST_BASILISK", 40, 1, 2), ("ELEM_ROCK", 30, 1, 2), ("GIANT", 20, 1, 2), ("DRAGONKIN", 15, 1, 2), ("ELEM_OTHER", 15, 1, 2)],
-    9200039: [("DRAGONKIN", 10, 1, 1), ("ELEM_OTHER", 8, 1, 1), ("BEAST_MAMMAL", 7, 1, 1)],
-    9200041: [("MINER", 40, 1, 2), ("ELEM_ROCK", 35, 1, 2), ("MECH", 35, 1, 2), ("DEMON", 25, 1, 2), ("GIANT", 20, 1, 2), ("HUMANOID", 12, 1, 1)],
+    9200039: [("DRAGONKIN", 10, 1, 1), ("ELEM_OTHER", 8, 1, 1)],                            # Glande gelee : Valheim Drake (dragonnet)
     9200042: [("ELEM_PLANT", 40, 1, 3), ("HUMANOID", 25, 1, 3), ("UNDEAD", 15, 1, 2)],
-    9200043: [("HUMANOID", 35, 1, 3), ("ELEM_PLANT", 25, 1, 2), ("UNDEAD", 25, 1, 2)],
-    9200044: [("BEAST_MAMMAL", 50, 1, 2), ("BEAST_OTHER", 25, 1, 2)],
+    9200044: [("BEAST_LOX", 50, 1, 2)],                                                     # Peau de Lox : Valheim Lox
     9200049: [("DRAGONKIN", 10, 1, 1), ("DEMON", 10, 1, 1), ("ELEM_ROCK", 8, 1, 1), ("MECH", 8, 1, 1), ("UNDEAD", 5, 1, 1)],
+    # materiaux de Valheim des pieces du marteau (sources : docs/VALHEIM_ASSETS.md, « Materiaux des pieces »)
+    9200051: [("MINER", 35, 1, 3), ("ELEM_OTHER", 30, 1, 2), ("DEMON", 15, 1, 2)],          # Charbon : mineurs, elementaires de feu
+    9200052: [("UNDEAD", 35, 1, 2), ("MECH", 25, 1, 2), ("BRUTE", 20, 1, 2)],                # Chaine : spectres (Valheim), golems, ogres
+    9200055: [("BEAST_BIRD", 55, 1, 3), ("HARPY", 45, 1, 2)],                               # Plumes : oiseaux (Valheim Seagal/Crow), harpies
+    9200057: [("OTHER", 45, 1, 3), ("ELEM_OTHER", 30, 1, 2), ("ELEM_PLANT", 30, 1, 2)],     # Goudron : limons, betes de goudron d'Un'Goro
+    9200070: [("ELEM_PLANT", 45, 1, 3)],                                                    # Framboises : plantes (et buissons ramassables)
+    9200071: [("ELEM_PLANT", 40, 1, 3), ("HUMANOID", 10, 1, 1)],                            # Pissenlit : cueilleurs
+    9200072: [("ELEM_PLANT", 45, 1, 3)],                                                    # Myrtilles
+    9200073: [("ELEM_PLANT", 40, 1, 3), ("HUMANOID", 12, 1, 2)],                            # Chardon : cueilleurs
+    9200074: [("ELEM_PLANT", 30, 1, 2)],                                                    # Carotte
+    9200075: [("OTHER", 50, 1, 3), ("ELEM_PLANT", 25, 1, 2)],                               # Viscosite : limons, vases (Valheim Blob)
+    9200076: [("BEAST_OTHER", 35, 1, 2), ("UNDEAD", 15, 1, 1)],                             # Poche de sang : crocilisques, reptiles des marais (Valheim Leech)
+    9200077: [("BEAST_WOLF", 35, 1, 2)],                                                    # Griffes de Fenris : loups, worgs (Valheim Fenring)
+    9200078: [("DRAGONKIN", 10, 1, 1), ("ELEM_OTHER", 4, 1, 1)],                            # Larme de dragon (passage : table d'artisan)
+    9200079: [("ELEM_PLANT", 40, 1, 3)],                                                    # Plaquebieres
+    9200080: [("ELEM_PLANT", 35, 1, 3), ("HUMANOID", 15, 1, 2)],                            # Orge
+    # Morceau de sombracier (ferraille de metal noir) : Valheim = butin des Fulings (gobelins des plaines, camps) -> humanoides (gobelins, ogres), golems, mineurs
+    9200081: [("HUMANOID", 35, 1, 3), ("MECH", 30, 1, 2), ("BRUTE", 30, 1, 2), ("MINER", 30, 1, 2)],
 }
+# ------------------------------------------------------------------ gibier ajoute aux zones de depart qui n'en ont pas (004)
+# Le Bois dur (pioche de bois de cerf -> cuivre) et la Peau de cerf doivent exister au palier 1 dans la zone de depart de CHAQUE race. Dun Morogh,
+# Clairieres de Tirisfal et Durotar n'ont aucune bete a bois/cornes attaquable : on y ajoute des apparitions de gibier EXISTANT (critters de WoW,
+# meme modele, meme niveau) aux positions de critters deja presents (lapins / rats : sol valide, hors villes et interieurs).
+# Idem Plumes a Dun Morogh (aucun oiseau ; une seule poule) : poules (critter 620) dans les fermes et villages (Amberstill, Brewnall, Kharanos).
+# (carte, zone, entree posee, entrees dont on reprend les positions, nombre max, aires imposees (regex) ou None = hors villes)
+GAME_SPAWNS = [
+    (0, 1, 2098, (721,), 30, None),       # Dun Morogh : Belier (Ram, critter de Loch Modan / Les Paluns)
+    (0, 85, 883, (721, 4075), 30, None),  # Clairieres de Tirisfal : Cerf (Deer, critter d'Elwynn / Teldrassil)
+    (1, 14, 4166, (5951,), 30, None),     # Durotar : Gazelle (critter des Tarides) aux positions des lievres (Hare)
+    (0, 1, 620, (721,), 12, r"Amberstill|Brewnall|Kharanos"),   # Dun Morogh : Poules (Chicken) dans les fermes / villages
+]
+GAME_SPAWN_GUID = (9700001, 9700999)
+GAME_SPAWN_EXCLUDE_AREAS = r"Brill|Kharanos|Gnomeregan|Ruins of Lordaeron|Undercity|Razor Hill|Orgrimmar|Sen'jin|Amberstill|Steelgrill|Brewnall|Thunder Ridge"
+GAME_SPAWN_MIN_DIST = 30.0
+# departs de race (carte, zone) : controle check.py §6 (chaque materiau de palier 1 trouvable dans la zone de depart)
+START_ZONES = [(0, 12, "Elwynn (Comte du Nord)"), (0, 1, "Dun Morogh (Coldridge)"), (1, 14, "Durotar (Vallee des epreuves)"),
+               (1, 215, "Mulgore (Camp Narache)"), (1, 141, "Teldrassil (Shadowglen)"), (0, 85, "Tirisfal (Deathknell)")]
+
 BACK_FACTOR = 0.35   # retour en arriere : un monstre de palier t lache aussi les materiaux de BASE du palier t-1 a 35 % du taux
 BACK_MIN = 8         # (plancher en %)
 ELITE_REPEAT = 2     # elites normales : la reference est tiree 2 fois
 
-# ------------------------------------------------------------------ noeuds de ressources (gameobject_template, type 3 CHEST)
-# displays : GameObjectDisplayInfo.dbc (verifie par generation : l'id doit exister dans le DBC extrait) ; size copie des filons vanilla (0.5)
-def _node(entry, name, tier, kind, display, size, loot, respawn):
-    return dict(entry=entry, name=name, tier=tier, kind=kind, display=display, size=size, loot=loot, respawn=respawn)
+# ------------------------------------------------------------------ placement du monde, iso Valheim (2026-10-26)
+# Plus AUCUN GameObject-noeud aux modeles WoW (anciens 9101001-9101045 : supprimes par 003/005/008). Le monde est peuple d'objets de
+# Valheim : « creature » = arbre / roche / filon frappe a la hache ou a la pioche (TreeMgr) ; « pickable » = ramassable de Valheim
+# (composant Pickable) = GameObject coffre sans verrou, un clic sans outil.
+# POSITIONS : tools/resources/place_resources.py -> C:\Wowlheim\data\wl_terrain\placements.json (d'apres le terrain du client :
+# arbres Valheim pres des arbres WoW, rochers pres des rochers/falaises, silex/chardon/etain sur les berges, cuivre en amas, rien sur
+# routes/villes/eau ; palier = palier de la ZONE ; docs/RESOURCES_PLACEMENT.md). Les « kinds » de ce fichier sont les cles ci-dessous.
+# tiers = paliers ou le type est autorise (controle : jamais de type d'un palier superieur dans une zone de palier inferieur) ;
+# prefabs = [(prefab Valheim, poids)] ; gives = materiaux obtenus (controle par gen_server_sql.py contre les DropTable de Valheim).
+def _pl(key, tiers, kind, prefabs, gives):
+    return dict(key=key, tiers=tiers, tier=min(tiers), kind=kind, prefabs=prefabs, gives=gives)
 
 
-WOOD_RESPAWN = (120, 180)
-STONE_RESPAWN = (150, 210)
-ORE_RESPAWN = (300, 420)
-CACHE_RESPAWN = (900, 1200)
-
-NODES = [
-    _node(9101001, "Arbre de la prairie", 1, "bois", 5975, 1.0, [(9200001, 100, 2, 4), (9200004, 25, 1, 2)], WOOD_RESPAWN),
-    _node(9101002, "Arbre de la forêt noire", 2, "bois", 927, 1.0, [(9200011, 100, 2, 4), (9200012, 30, 1, 2), (9200004, 20, 1, 2)], WOOD_RESPAWN),
-    _node(9101003, "Vieille souche du marais", 3, "bois", 2474, 1.0, [(9200022, 100, 1, 3), (9200012, 50, 1, 2)], WOOD_RESPAWN),
-    _node(9101004, "Pin de montagne", 4, "bois", 6158, 1.0, [(9200012, 100, 2, 4), (9200004, 20, 1, 2)], WOOD_RESPAWN),
-    _node(9101005, "Arbre des plaines", 5, "bois", 967, 1.0, [(9200012, 100, 2, 4), (9200004, 20, 1, 2)], WOOD_RESPAWN),
-    _node(9101011, "Rocher de la prairie", 1, "pierre", 4315, 1.0, [(9200002, 100, 2, 4), (9200003, 40, 1, 2)], STONE_RESPAWN),
-    _node(9101012, "Rocher moussu", 2, "pierre", 248, 1.0, [(9200002, 100, 2, 4), (9200003, 30, 1, 2)], STONE_RESPAWN),
-    _node(9101013, "Rocher du marais", 3, "pierre", 3992, 1.0, [(9200002, 100, 2, 4)], STONE_RESPAWN),
-    _node(9101014, "Rocher de montagne", 4, "pierre", 5737, 1.0, [(9200002, 100, 2, 4)], STONE_RESPAWN),
-    _node(9101015, "Rocher des plaines", 5, "pierre", 4320, 1.0, [(9200002, 100, 2, 4)], STONE_RESPAWN),
-    _node(9101021, "Filon de cuivre", 2, "minerai", 310, 0.5, [(9200013, 100, 2, 4)], ORE_RESPAWN),
-    _node(9101022, "Filon d'étain", 2, "minerai", 315, 0.5, [(9200014, 100, 2, 4)], ORE_RESPAWN),
-    _node(9101023, "Gisement de fer", 3, "minerai", 312, 0.5, [(9200021, 100, 2, 4)], ORE_RESPAWN),
-    _node(9101024, "Filon d'argent", 4, "minerai", 314, 0.5, [(9200031, 100, 2, 4)], ORE_RESPAWN),
-    _node(9101025, "Filon de métal noir", 5, "minerai", 3951, 0.5, [(9200041, 100, 2, 4)], ORE_RESPAWN),
-    _node(9101026, "Gisement d'obsidienne", 4, "minerai", 6650, 0.5, [(9200032, 100, 2, 3)], ORE_RESPAWN),
-    _node(9101027, "Formation de cristal", 4, "minerai", 2971, 1.0, [(9200034, 100, 2, 3)], ORE_RESPAWN),
-    _node(9101031, "Plant de lin", 5, "plante", 2315, 0.6, [(9200042, 100, 2, 4)], WOOD_RESPAWN),
-    _node(9101041, "Ossements de cerf", 1, "passage", 6328, 1.0, [(9200009, 100, 1, 2)], CACHE_RESPAWN),
-    _node(9101042, "Racines de gréling", 2, "passage", 148, 1.0, [(9200019, 100, 1, 2)], CACHE_RESPAWN),
-    _node(9101043, "Roche de Surtling", 3, "passage", 3711, 1.0, [(9200029, 100, 1, 2)], CACHE_RESPAWN),
-    _node(9101044, "Cristal de givre", 4, "passage", 2975, 1.0, [(9200039, 100, 1, 2)], CACHE_RESPAWN),
-    _node(9101045, "Amas de noyaux noirs", 5, "passage", 2571, 1.0, [(9200049, 100, 1, 2)], CACHE_RESPAWN),
+PLACEMENTS = [
+    # arbres (essence = biome de Valheim du palier de zone ; bouleau/chene : hache en bronze, « trop durs » au debut comme dans Valheim)
+    _pl("beech", (1, 2), "creature", [("Beech1", 1)], [9200001, 9200004]),
+    _pl("birch", (1, 5), "creature", [("Birch1", 1)], [9200001, 9200011]),
+    _pl("oak", (1, 5), "creature", [("Oak1", 1)], [9200001, 9200011]),
+    _pl("fir", (1, 2, 4), "creature", [("FirTree", 1)], [9200001]),
+    _pl("pine", (2,), "creature", [("Pinetree_01", 1)], [9200001, 9200012]),
+    _pl("swamp", (3,), "creature", [("SwampTree1", 1)], [9200001, 9200022]),
+    # roches et filons (pioche ; palier de pioche de Valheim)
+    _pl("rock", (1, 2, 3, 4, 5), "creature", [("MineRock_Stone", 1), ("Rock_4", 1)], [9200002]),
+    _pl("copper", (2,), "creature", [("MineRock_Copper", 1)], [9200060]),
+    _pl("tin", (2,), "creature", [("MineRock_Tin", 1)], [9200061]),
+    _pl("iron", (3,), "creature", [("MineRock_Iron", 1)], [9200062]),   # tas de boue (mudpile) : Ferraille
+    _pl("silver", (4,), "creature", [("silvervein", 1)], [9200063, 9200002]),
+    _pl("obsidian", (4,), "creature", [("MineRock_Obsidian", 1)], [9200032]),
+    # ramassables (un clic, sans outil)
+    _pl("branch", (1, 2), "pickable", [("Pickable_Branch", 1)], [9200001]),
+    _pl("stone", (1, 2), "pickable", [("Pickable_Stone", 1)], [9200002]),
+    _pl("flint", (1, 2), "pickable", [("Pickable_Flint", 1)], [9200003]),
+    _pl("raspberry", (1,), "pickable", [("RaspberryBush", 1)], [9200070]),
+    _pl("mushroom", (1, 2), "pickable", [("Pickable_Mushroom", 1)], [9200082]),
+    _pl("dandelion", (1,), "pickable", [("Pickable_Dandelion", 1)], [9200071]),
+    _pl("blueberry", (2,), "pickable", [("BlueberryBush", 1)], [9200072]),
+    # chardon : Foret noire et Marais (KINDS de place_resources.py) ; palier 1 = seulement sur la berge la plus proche de chaque
+    # depart de race (place_resources.start_pass, controle start_check.py), demande de Robin du 2026-10-26
+    _pl("thistle", (1, 2, 3), "pickable", [("Pickable_Thistle", 1)], [9200073]),
+    _pl("crystal", (4,), "pickable", [("Pickable_MountainCaveCrystal", 1)], [9200034]),
+    _pl("flax", (5,), "pickable", [("Pickable_Flax_Wild", 1)], [9200042]),
+    _pl("barley", (5,), "pickable", [("Pickable_Barley_Wild", 1)], [9200080]),
+    _pl("cloudberry", (5,), "pickable", [("CloudberryBush", 1)], [9200079]),
+    _pl("tar", (5,), "pickable", [("Pickable_TarBig", 1)], [9200057]),
 ]
-NODE = {n["entry"]: n for n in NODES}
+PLACEMENT = {p["key"]: p for p in PLACEMENTS}
+PLACEMENTS_JSON = r"C:\Wowlheim\data\wl_terrain\placements.json"
+# anciens noeuds GameObject aux modeles WoW : plage supprimee (templates, butin, apparitions) par 003/005/008
+OLD_NODE_ENTRY_MIN, OLD_NODE_ENTRY_MAX = 9101001, 9101999
 NODE_GUID_BASE = 9500001
 NODE_GUID_MAX = 9599999
 

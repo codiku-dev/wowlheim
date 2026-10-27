@@ -257,7 +257,7 @@ def mouse_move(hwnd, cx, cy):
 def click(hwnd, cx, cy, button='left', double=False):
     mouse_move(hwnd, cx, cy)
     time.sleep(0.15)
-    d, u = (0x0002, 0x0004) if button == 'left' else (0x0008, 0x0010)
+    d, u = {'left': (0x0002, 0x0004), 'right': (0x0008, 0x0010), 'middle': (0x0020, 0x0040)}[button]
     for _ in range(2 if double else 1):
         i1 = INPUT(); i1.type = 0; i1.u.mi = MOUSEINPUT(0, 0, 0, d, 0, 0)
         i2 = INPUT(); i2.type = 0; i2.u.mi = MOUSEINPUT(0, 0, 0, u, 0, 0)
@@ -326,3 +326,32 @@ def ensure_fg(hwnd, tries=8):
         foreground(hwnd)
         time.sleep(0.2)
     return user32.GetForegroundWindow() == hwnd
+
+
+def set_clipboard(text):
+    """Met du texte (Unicode) dans le presse-papiers Windows."""
+    k32 = ctypes.windll.kernel32
+    k32.GlobalAlloc.restype = ctypes.c_void_p; k32.GlobalLock.restype = ctypes.c_void_p
+    k32.GlobalLock.argtypes = [ctypes.c_void_p]; k32.GlobalUnlock.argtypes = [ctypes.c_void_p]
+    user32.SetClipboardData.argtypes = [ctypes.c_uint, ctypes.c_void_p]
+    data = (text + "\0").encode("utf-16-le")
+    for _ in range(10):
+        if user32.OpenClipboard(None):
+            break
+        time.sleep(0.05)
+    try:
+        user32.EmptyClipboard()
+        h = k32.GlobalAlloc(0x0042, len(data))
+        p = k32.GlobalLock(h)
+        ctypes.memmove(p, data, len(data))
+        k32.GlobalUnlock(h)
+        user32.SetClipboardData(13, h)          # CF_UNICODETEXT
+    finally:
+        user32.CloseClipboard()
+
+
+def paste_text(text):
+    """Colle le texte d'un coup (Ctrl+V) au lieu de le taper lettre par lettre."""
+    set_clipboard(text)
+    _send(_kb(0x11)); _send(_kb(0x56)); time.sleep(0.05); _send(_kb(0x56, True)); _send(_kb(0x11, True))
+    time.sleep(0.1)

@@ -1,0 +1,444 @@
+== Bed::Awake() -> void  il_size=55 sha=83950c9f307e
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        Bed::m_nview
+  12 ldarg.0      
+  13 ldfld        Bed::m_nview
+  18 callvirt     ZNetView::GetZDO()
+  23 brtrue.s     26
+  25 ret          
+  26 ldarg.0      
+  27 ldfld        Bed::m_nview
+  32 ldstr        "SetOwner"
+  37 ldarg.0      
+  38 ldftn        Bed::RPC_SetOwner(i8,i8,string)
+  44 newobj       System.Action`3::.ctor
+  49 callvirt     ZNetView::Register<T>
+  54 ret          
+
+== Bed::GetHoverText() -> string  il_size=120 sha=695058f4158f
+   locals_sig=0x110000c4
+   0 ldarg.0      
+   1 call         Bed::GetOwnerName()
+   6 stloc.0      
+   7 ldloc.0      
+   8 ldstr        ""
+  13 call         System.String::op_Equality
+  18 brfalse.s    36
+  20 call         Localization::get_instance
+  25 ldstr        "$piece_bed_unclaimed\n[<color=yellow><b>$KEY_Use</b></color>] $piece_bed_claim"
+  30 callvirt     Localization::Localize
+  35 ret          
+  36 ldloc.0      
+  37 ldstr        "'s $piece_bed"
+  42 call         System.String::Concat
+  47 stloc.1      
+  48 ldarg.0      
+  49 call         Bed::IsMine()
+  54 brfalse.s    108
+  56 ldarg.0      
+  57 call         Bed::IsCurrent()
+  62 brfalse.s    86
+  64 call         Localization::get_instance
+  69 ldloc.1      
+  70 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] $piece_bed_sleep"
+  75 call         System.String::Concat
+  80 callvirt     Localization::Localize
+  85 ret          
+  86 call         Localization::get_instance
+  91 ldloc.1      
+  92 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] $piece_bed_setspawn"
+  97 call         System.String::Concat
+ 102 callvirt     Localization::Localize
+ 107 ret          
+ 108 call         Localization::get_instance
+ 113 ldloc.1      
+ 114 callvirt     Localization::Localize
+ 119 ret          
+
+== Bed::GetHoverName() -> string  il_size=16 sha=4fa60a92a4ca
+   locals_sig=null
+   0 call         Localization::get_instance
+   5 ldstr        "$piece_bed"
+  10 callvirt     Localization::Localize
+  15 ret          
+
+== Bed::Interact(class:108, bool, bool) -> bool  il_size=350 sha=6d8b8e89ebb5
+   locals_sig=0x1100065c
+   0 ldarg.2      
+   1 brfalse.s    5
+   3 ldc.i4.0     
+   4 ret          
+   5 ldarg.0      
+   6 ldfld        Bed::m_nview
+  11 callvirt     ZNetView::GetZDO()
+  16 brtrue.s     20
+  18 ldc.i4.0     
+  19 ret          
+  20 call         Game::get_instance()
+  25 callvirt     Game::GetPlayerProfile()
+  30 callvirt     PlayerProfile::GetPlayerID()
+  35 stloc.0      
+  36 ldarg.0      
+  37 call         Bed::GetOwner()
+  42 ldarg.1      
+  43 isinst       Player
+  48 stloc.1      
+  49 brtrue.s     135
+  51 ldstr        "Has no creator"
+  56 call         ZLog::Log
+  61 ldarg.0      
+  62 ldloc.1      
+  63 call         Bed::CheckExposure(class:144)
+  68 brtrue.s     72
+  70 ldc.i4.0     
+  71 ret          
+  72 ldarg.0      
+  73 ldloc.0      
+  74 call         Game::get_instance()
+  79 callvirt     Game::GetPlayerProfile()
+  84 callvirt     PlayerProfile::GetName()
+  89 call         Bed::SetOwner(i8,string)
+  94 call         Game::get_instance()
+  99 callvirt     Game::GetPlayerProfile()
+ 104 ldarg.0      
+ 105 call         Bed::GetSpawnPoint()
+ 110 callvirt     PlayerProfile::SetCustomSpawnPoint(valuetype:81)
+ 115 ldarg.1      
+ 116 ldc.i4.2     
+ 117 ldstr        "$msg_spawnpointset"
+ 122 ldc.i4.0     
+ 123 ldnull       
+ 124 ldc.i4.0     
+ 125 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 130 br           348
+ 135 ldarg.0      
+ 136 call         Bed::IsMine()
+ 141 brfalse      348
+ 146 ldstr        "Is mine"
+ 151 call         ZLog::Log
+ 156 ldarg.0      
+ 157 call         Bed::IsCurrent()
+ 162 brfalse.s    291
+ 164 ldstr        "is current spawnpoint"
+ 169 call         ZLog::Log
+ 174 call         EnvMan::CanSleep()
+ 179 brtrue.s     198
+ 181 ldarg.1      
+ 182 ldc.i4.2     
+ 183 ldstr        "$msg_cantsleep"
+ 188 ldc.i4.0     
+ 189 ldnull       
+ 190 ldc.i4.0     
+ 191 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 196 ldc.i4.0     
+ 197 ret          
+ 198 ldarg.0      
+ 199 ldloc.1      
+ 200 call         Bed::CheckEnemies(class:144)
+ 205 brtrue.s     209
+ 207 ldc.i4.0     
+ 208 ret          
+ 209 ldarg.0      
+ 210 ldloc.1      
+ 211 call         Bed::CheckExposure(class:144)
+ 216 brtrue.s     220
+ 218 ldc.i4.0     
+ 219 ret          
+ 220 ldarg.0      
+ 221 ldloc.1      
+ 222 call         Bed::CheckFire(class:144)
+ 227 brtrue.s     231
+ 229 ldc.i4.0     
+ 230 ret          
+ 231 ldarg.0      
+ 232 ldloc.1      
+ 233 call         Bed::CheckWet(class:144)
+ 238 brtrue.s     242
+ 240 ldc.i4.0     
+ 241 ret          
+ 242 ldarg.1      
+ 243 ldarg.0      
+ 244 ldfld        Bed::m_spawnPoint
+ 249 ldarg.0      
+ 250 call         UnityEngine.Component::get_gameObject
+ 255 ldc.i4.1     
+ 256 ldc.i4.1     
+ 257 ldc.i4.0     
+ 258 ldstr        "attach_bed"
+ 263 ldc.r4       0
+ 268 ldc.r4       0.5
+ 273 ldc.r4       0
+ 278 newobj       UnityEngine.Vector3::.ctor
+ 283 ldnull       
+ 284 callvirt     Character::AttachStart(class:73,class:133,bool,bool,bool,string,valuetype:81,class:73)
+ 289 ldc.i4.0     
+ 290 ret          
+ 291 ldstr        "Not current spawn point"
+ 296 call         ZLog::Log
+ 301 ldarg.0      
+ 302 ldloc.1      
+ 303 call         Bed::CheckExposure(class:144)
+ 308 brtrue.s     312
+ 310 ldc.i4.0     
+ 311 ret          
+ 312 call         Game::get_instance()
+ 317 callvirt     Game::GetPlayerProfile()
+ 322 ldarg.0      
+ 323 call         Bed::GetSpawnPoint()
+ 328 callvirt     PlayerProfile::SetCustomSpawnPoint(valuetype:81)
+ 333 ldarg.1      
+ 334 ldc.i4.2     
+ 335 ldstr        "$msg_spawnpointset"
+ 340 ldc.i4.0     
+ 341 ldnull       
+ 342 ldc.i4.0     
+ 343 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 348 ldc.i4.0     
+ 349 ret          
+
+== Bed::CheckWet(class:144) -> bool  il_size=37 sha=ba429aebe537
+   locals_sig=null
+   0 ldarg.1      
+   1 callvirt     Character::GetSEMan()
+   6 ldsfld       SEMan::s_statusEffectWet
+  11 callvirt     SEMan::HaveStatusEffect(i4)
+  16 brfalse.s    35
+  18 ldarg.1      
+  19 ldc.i4.2     
+  20 ldstr        "$msg_bedwet"
+  25 ldc.i4.0     
+  26 ldnull       
+  27 ldc.i4.0     
+  28 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  33 ldc.i4.0     
+  34 ret          
+  35 ldc.i4.1     
+  36 ret          
+
+== Bed::CheckEnemies(class:144) -> bool  il_size=27 sha=073da869dfa7
+   locals_sig=null
+   0 ldarg.1      
+   1 callvirt     Player::IsSensed()
+   6 brfalse.s    25
+   8 ldarg.1      
+   9 ldc.i4.2     
+  10 ldstr        "$msg_bedenemiesnearby"
+  15 ldc.i4.0     
+  16 ldnull       
+  17 ldc.i4.0     
+  18 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  23 ldc.i4.0     
+  24 ret          
+  25 ldc.i4.1     
+  26 ret          
+
+== Bed::CheckExposure(class:144) -> bool  il_size=101 sha=924f5bce6c81
+   locals_sig=0x11000054
+   0 ldarg.0      
+   1 call         Bed::GetSpawnPoint()
+   6 ldloca.s     0
+   8 ldloca.s     1
+  10 ldc.r4       0.5
+  15 call         Cover::GetCoverForPoint
+  20 ldloc.1      
+  21 brtrue.s     40
+  23 ldarg.1      
+  24 ldc.i4.2     
+  25 ldstr        "$msg_bedneedroof"
+  30 ldc.i4.0     
+  31 ldnull       
+  32 ldc.i4.0     
+  33 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  38 ldc.i4.0     
+  39 ret          
+  40 ldloc.0      
+  41 ldc.r4       0.800000011920929
+  46 bge.un.s     65
+  48 ldarg.1      
+  49 ldc.i4.2     
+  50 ldstr        "$msg_bedtooexposed"
+  55 ldc.i4.0     
+  56 ldnull       
+  57 ldc.i4.0     
+  58 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  63 ldc.i4.0     
+  64 ret          
+  65 ldstr        "exporeusre check "
+  70 ldloca.s     0
+  72 call         System.Single::ToString
+  77 ldstr        "  "
+  82 ldloca.s     1
+  84 call         System.Boolean::ToString
+  89 call         System.String::Concat
+  94 call         ZLog::Log
+  99 ldc.i4.1     
+ 100 ret          
+
+== Bed::CheckFire(class:144) -> bool  il_size=48 sha=8c9d4a3723bd
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 ldc.i4.1     
+  12 ldc.r4       0
+  17 call         EffectArea::IsPointInsideArea(valuetype:81,valuetype:4560,r4)
+  22 call         UnityEngine.Object::op_Implicit
+  27 brtrue.s     46
+  29 ldarg.1      
+  30 ldc.i4.2     
+  31 ldstr        "$msg_bednofire"
+  36 ldc.i4.0     
+  37 ldnull       
+  38 ldc.i4.0     
+  39 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  44 ldc.i4.0     
+  45 ret          
+  46 ldc.i4.1     
+  47 ret          
+
+== Bed::UseItem(class:108, class:3744) -> bool  il_size=2 sha=84a0936ff1fb
+   locals_sig=null
+   0 ldc.i4.0     
+   1 ret          
+
+== Bed::IsCurrent() -> bool  il_size=44 sha=4edb4ad5c362
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Bed::IsMine()
+   6 brtrue.s     10
+   8 ldc.i4.0     
+   9 ret          
+  10 ldarg.0      
+  11 call         Bed::GetSpawnPoint()
+  16 call         Game::get_instance()
+  21 callvirt     Game::GetPlayerProfile()
+  26 callvirt     PlayerProfile::GetCustomSpawnPoint()
+  31 call         UnityEngine.Vector3::Distance
+  36 ldc.r4       1
+  41 clt          
+  43 ret          
+
+== Bed::GetSpawnPoint() -> valuetype:81  il_size=12 sha=0a1828f139ac
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_spawnPoint
+   6 callvirt     UnityEngine.Transform::get_position
+  11 ret          
+
+== Bed::IsMine() -> bool  il_size=26 sha=a7eb2ff78f71
+   locals_sig=0x11000118
+   0 call         Game::get_instance()
+   5 callvirt     Game::GetPlayerProfile()
+  10 callvirt     PlayerProfile::GetPlayerID()
+  15 ldarg.0      
+  16 call         Bed::GetOwner()
+  21 stloc.0      
+  22 ldloc.0      
+  23 ceq          
+  25 ret          
+
+== Bed::SetOwner(i8, string) -> void  il_size=36 sha=4c6738a05e05
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_nview
+   6 ldstr        "SetOwner"
+  11 ldc.i4.2     
+  12 newarr       0x01000007
+  17 dup          
+  18 ldc.i4.0     
+  19 ldarg.1      
+  20 box          0x0100020f
+  25 stelem.ref   
+  26 dup          
+  27 ldc.i4.1     
+  28 ldarg.2      
+  29 stelem.ref   
+  30 callvirt     ZNetView::InvokeRPC(string,object[])
+  35 ret          
+
+== Bed::RPC_SetOwner(i8, i8, string) -> void  il_size=59 sha=7650c00e15a5
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Bed::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 ldsfld       ZDOVars::s_owner
+  30 ldarg.2      
+  31 callvirt     ZDO::Set(i4,i8)
+  36 ldarg.0      
+  37 ldfld        Bed::m_nview
+  42 callvirt     ZNetView::GetZDO()
+  47 ldsfld       ZDOVars::s_ownerName
+  52 ldarg.3      
+  53 callvirt     ZDO::Set(i4,string)
+  58 ret          
+
+== Bed::GetOwner() -> i8  il_size=40 sha=e1063fdb8292
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_nview
+   6 callvirt     ZNetView::GetZDO()
+  11 brtrue.s     16
+  13 ldc.i4.0     
+  14 conv.i8      
+  15 ret          
+  16 ldarg.0      
+  17 ldfld        Bed::m_nview
+  22 callvirt     ZNetView::GetZDO()
+  27 ldsfld       ZDOVars::s_owner
+  32 ldc.i4.0     
+  33 conv.i8      
+  34 callvirt     ZDO::GetLong(i4,i8)
+  39 ret          
+
+== Bed::GetOwnerName() -> string  il_size=93 sha=593c4d578dba
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_nview
+   6 callvirt     ZNetView::GetZDO()
+  11 brtrue.s     19
+  13 ldstr        ""
+  18 ret          
+  19 ldarg.0      
+  20 call         Bed::IsMine()
+  25 brtrue.s     66
+  27 ldarg.0      
+  28 ldfld        Bed::m_nview
+  33 callvirt     ZNetView::GetZDO()
+  38 ldsfld       ZDOVars::s_ownerName
+  43 ldstr        ""
+  48 callvirt     ZDO::GetString(i4,string)
+  53 ldc.i4.2     
+  54 ldarg.0      
+  55 call         Bed::GetOwner()
+  60 call         CensorShittyWords::FilterUGC(string,valuetype:1472,i8)
+  65 ret          
+  66 ldarg.0      
+  67 ldfld        Bed::m_nview
+  72 callvirt     ZNetView::GetZDO()
+  77 ldsfld       ZDOVars::s_ownerName
+  82 ldstr        ""
+  87 callvirt     ZDO::GetString(i4,string)
+  92 ret          
+
+== Bed::GetHoverOffset() -> r4  il_size=7 sha=db2b2bc1c896
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Bed::m_hoverOffset
+   6 ret          
+
+== Bed::.ctor() -> void  il_size=18 sha=da72cb68aa39
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       20
+   6 stfld        Bed::m_monsterCheckRadius
+  11 ldarg.0      
+  12 call         UnityEngine.MonoBehaviour::.ctor
+  17 ret          

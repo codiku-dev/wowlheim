@@ -1,0 +1,433 @@
+== Smoke::Awake() -> void  il_size=117 sha=5fb4ac6869c8
+   locals_sig=null
+   0 ldsfld       Smoke::s_smoke
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Add
+  11 ldarg.0      
+  12 ldc.i4.1     
+  13 stfld        Smoke::m_added
+  18 ldarg.0      
+  19 ldarg.0      
+  20 call         UnityEngine.Component::GetComponent<T>
+  25 stfld        Smoke::m_body
+  30 ldarg.0      
+  31 ldfld        Smoke::m_body
+  36 ldc.r4       1
+  41 callvirt     UnityEngine.Rigidbody::set_maxDepenetrationVelocity
+  46 ldarg.0      
+  47 call         UnityEngine.Vector3::get_up
+  52 ldc.r4       0
+  57 ldc.i4.0     
+  58 ldc.i4       360
+  63 call         UnityEngine.Random::Range
+  68 conv.r4      
+  69 ldc.r4       0
+  74 call         UnityEngine.Quaternion::Euler
+  79 call         UnityEngine.Vector3::get_forward
+  84 call         UnityEngine.Quaternion::op_Multiply
+  89 ldarg.0      
+  90 ldfld        Smoke::m_randomVel
+  95 call         UnityEngine.Vector3::op_Multiply
+ 100 call         UnityEngine.Vector3::op_Addition
+ 105 stfld        Smoke::m_vel
+ 110 ldarg.0      
+ 111 call         Smoke::SetupParticle()
+ 116 ret          
+
+== Smoke::SetupParticle() -> void  il_size=199 sha=0ed337a7744e
+   locals_sig=0x110001d2
+   0 ldc.r4       0
+   5 ldc.r4       360
+  10 call         UnityEngine.Random::Range
+  15 stloc.0      
+  16 ldarg.0      
+  17 ldloca.s     1
+  19 initobj      0x01000095
+  25 ldloca.s     1
+  27 ldc.r4       0
+  32 call         Particle::set_angularVelocity
+  37 ldloca.s     1
+  39 call         UnityEngine.Vector3::get_zero
+  44 call         Particle::set_angularVelocity3D
+  49 ldloca.s     1
+  51 ldc.r4       0
+  56 ldc.r4       0
+  61 ldc.r4       1
+  66 newobj       UnityEngine.Vector3::.ctor
+  71 call         Particle::set_axisOfRotation
+  76 ldloca.s     1
+  78 ldarg.0      
+  79 call         UnityEngine.Component::get_transform
+  84 callvirt     UnityEngine.Transform::get_position
+  89 call         Particle::set_position
+  94 ldloca.s     1
+  96 ldc.i4       -2147483648
+ 101 ldc.i4       2147483647
+ 106 call         UnityEngine.Random::Range
+ 111 call         Particle::set_randomSeed
+ 116 ldloca.s     1
+ 118 ldarg.0      
+ 119 ldfld        Smoke::m_ttl
+ 124 ldarg.0      
+ 125 ldfld        Smoke::m_fadetime
+ 130 add          
+ 131 call         Particle::set_remainingLifetime
+ 136 ldloca.s     1
+ 138 ldarg.0      
+ 139 ldfld        Smoke::m_ttl
+ 144 call         Particle::set_startLifetime
+ 149 ldloca.s     1
+ 151 ldloc.0      
+ 152 call         Particle::set_rotation
+ 157 ldloca.s     1
+ 159 ldc.r4       0
+ 164 ldc.r4       0
+ 169 ldloc.0      
+ 170 newobj       UnityEngine.Vector3::.ctor
+ 175 call         Particle::set_rotation3D
+ 180 ldloca.s     1
+ 182 call         UnityEngine.Vector3::get_zero
+ 187 call         Particle::set_velocity
+ 192 ldloc.1      
+ 193 stfld        Smoke::m_renderParticle
+ 198 ret          
+
+== Smoke::GetParticleValues() -> valuetype:597  il_size=92 sha=9a0a69d1b60c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smoke::m_fadeTimer
+   6 ldc.r4       0
+  11 bge.un.s     39
+  13 ldarg.0      
+  14 ldflda       Smoke::m_renderParticle
+  19 ldarg.0      
+  20 ldfld        Smoke::m_ttl
+  25 ldarg.0      
+  26 ldfld        Smoke::m_time
+  31 sub          
+  32 call         Particle::set_remainingLifetime
+  37 br.s         63
+  39 ldarg.0      
+  40 ldflda       Smoke::m_renderParticle
+  45 ldarg.0      
+  46 ldfld        Smoke::m_fadetime
+  51 ldarg.0      
+  52 ldfld        Smoke::m_fadeTimer
+  57 sub          
+  58 call         Particle::set_remainingLifetime
+  63 ldarg.0      
+  64 ldflda       Smoke::m_renderParticle
+  69 ldarg.0      
+  70 call         UnityEngine.Component::get_transform
+  75 callvirt     UnityEngine.Transform::get_position
+  80 call         Particle::set_position
+  85 ldarg.0      
+  86 ldfld        Smoke::m_renderParticle
+  91 ret          
+
+== Smoke::GetAlpha() -> r4  il_size=79 sha=779947cd6c93
+   locals_sig=0x11000016
+   0 ldc.r4       0
+   5 ldc.r4       1
+  10 ldarg.0      
+  11 ldfld        Smoke::m_time
+  16 ldc.r4       2
+  21 div          
+  22 call         UnityEngine.Mathf::Clamp01
+  27 call         Utils::SmoothStep
+  32 ldc.r4       0
+  37 ldc.r4       1
+  42 ldc.r4       1
+  47 ldarg.0      
+  48 ldfld        Smoke::m_fadeTimer
+  53 ldarg.0      
+  54 ldfld        Smoke::m_fadetime
+  59 div          
+  60 call         UnityEngine.Mathf::Clamp01
+  65 sub          
+  66 call         Utils::SmoothStep
+  71 stloc.0      
+  72 ldloc.0      
+  73 call         UnityEngine.Mathf::Min
+  78 ret          
+
+== Smoke::OnEnable() -> void  il_size=23 sha=2a8b9cac3e93
+   locals_sig=null
+   0 call         Smoke::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Add
+  11 ldsfld       SmokeRenderer::Instance
+  16 ldarg.0      
+  17 callvirt     SmokeRenderer::RegisterSmoke(class:484)
+  22 ret          
+
+== Smoke::OnDisable() -> void  il_size=24 sha=68c11e4ce30c
+   locals_sig=null
+   0 ldsfld       SmokeRenderer::Instance
+   5 ldarg.0      
+   6 callvirt     SmokeRenderer::UnregisterSmoke(class:484)
+  11 call         Smoke::get_Instances()
+  16 ldarg.0      
+  17 callvirt     System.Collections.Generic.List`1::Remove
+  22 pop          
+  23 ret          
+
+== Smoke::OnDestroy() -> void  il_size=28 sha=73be216c0a21
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smoke::m_added
+   6 brfalse.s    27
+   8 ldsfld       Smoke::s_smoke
+  13 ldarg.0      
+  14 callvirt     System.Collections.Generic.List`1::Remove
+  19 pop          
+  20 ldarg.0      
+  21 ldc.i4.0     
+  22 stfld        Smoke::m_added
+  27 ret          
+
+== Smoke::StartFadeOut() -> void  il_size=77 sha=54a90ef6a7f9
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smoke::m_fadeTimer
+   6 ldc.r4       0
+  11 blt.un.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Smoke::m_added
+  20 brfalse.s    41
+  22 ldsfld       Smoke::s_smoke
+  27 ldarg.0      
+  28 callvirt     System.Collections.Generic.List`1::Remove
+  33 pop          
+  34 ldarg.0      
+  35 ldc.i4.0     
+  36 stfld        Smoke::m_added
+  41 ldarg.0      
+  42 ldflda       Smoke::m_renderParticle
+  47 ldarg.0      
+  48 ldfld        Smoke::m_time
+  53 ldarg.0      
+  54 ldfld        Smoke::m_fadetime
+  59 add          
+  60 call         Particle::set_startLifetime
+  65 ldarg.0      
+  66 ldc.r4       0
+  71 stfld        Smoke::m_fadeTimer
+  76 ret          
+
+== Smoke::GetTotalSmoke() -> i4  il_size=11 sha=3a3449860de3
+   locals_sig=null
+   0 ldsfld       Smoke::s_smoke
+   5 callvirt     System.Collections.Generic.List`1::get_Count
+  10 ret          
+
+== Smoke::FadeOldest() -> void  il_size=30 sha=c3663c4b204b
+   locals_sig=null
+   0 ldsfld       Smoke::s_smoke
+   5 callvirt     System.Collections.Generic.List`1::get_Count
+  10 brtrue.s     13
+  12 ret          
+  13 ldsfld       Smoke::s_smoke
+  18 ldc.i4.0     
+  19 callvirt     System.Collections.Generic.List`1::get_Item
+  24 callvirt     Smoke::StartFadeOut()
+  29 ret          
+
+== Smoke::FadeMostDistant() -> void  il_size=136 sha=82a74bf13fee
+   locals_sig=0x110001d3
+   0 ldsfld       Smoke::s_smoke
+   5 callvirt     System.Collections.Generic.List`1::get_Count
+  10 brtrue.s     13
+  12 ret          
+  13 call         Utils::GetMainCamera
+  18 stloc.0      
+  19 ldloc.0      
+  20 ldnull       
+  21 call         UnityEngine.Object::op_Equality
+  26 brfalse.s    29
+  28 ret          
+  29 ldloc.0      
+  30 callvirt     UnityEngine.Component::get_transform
+  35 callvirt     UnityEngine.Transform::get_position
+  40 stloc.1      
+  41 ldc.i4.m1    
+  42 stloc.2      
+  43 ldc.r4       0
+  48 stloc.3      
+  49 ldc.i4.0     
+  50 stloc.s      4
+  52 br.s         101
+  54 ldsfld       Smoke::s_smoke
+  59 ldloc.s      4
+  61 callvirt     System.Collections.Generic.List`1::get_Item
+  66 callvirt     UnityEngine.Component::get_transform
+  71 callvirt     UnityEngine.Transform::get_position
+  76 ldloc.1      
+  77 call         UnityEngine.Vector3::Distance
+  82 stloc.s      5
+  84 ldloc.s      5
+  86 ldloc.3      
+  87 ble.un.s     95
+  89 ldloc.s      4
+  91 stloc.2      
+  92 ldloc.s      5
+  94 stloc.3      
+  95 ldloc.s      4
+  97 ldc.i4.1     
+  98 add          
+  99 stloc.s      4
+ 101 ldloc.s      4
+ 103 ldsfld       Smoke::s_smoke
+ 108 callvirt     System.Collections.Generic.List`1::get_Count
+ 113 blt.s        54
+ 115 ldloc.2      
+ 116 ldc.i4.m1    
+ 117 beq.s        135
+ 119 ldsfld       Smoke::s_smoke
+ 124 ldloc.2      
+ 125 callvirt     System.Collections.Generic.List`1::get_Item
+ 130 callvirt     Smoke::StartFadeOut()
+ 135 ret          
+
+== Smoke::CustomUpdate(r4, r4) -> void  il_size=223 sha=599ccf81cf03
+   locals_sig=0x1100013c
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        Smoke::m_time
+   7 ldarg.1      
+   8 add          
+   9 stfld        Smoke::m_time
+  14 ldarg.0      
+  15 ldfld        Smoke::m_time
+  20 ldarg.0      
+  21 ldfld        Smoke::m_ttl
+  26 ble.un.s     47
+  28 ldarg.0      
+  29 ldfld        Smoke::m_fadeTimer
+  34 ldc.r4       0
+  39 bge.un.s     47
+  41 ldarg.0      
+  42 call         Smoke::StartFadeOut()
+  47 ldc.r4       1
+  52 ldarg.0      
+  53 ldfld        Smoke::m_time
+  58 ldarg.0      
+  59 ldfld        Smoke::m_ttl
+  64 div          
+  65 call         UnityEngine.Mathf::Clamp01
+  70 sub          
+  71 stloc.0      
+  72 ldarg.0      
+  73 ldfld        Smoke::m_body
+  78 ldloc.0      
+  79 ldloc.0      
+  80 mul          
+  81 callvirt     UnityEngine.Rigidbody::set_mass
+  86 ldarg.0      
+  87 ldfld        Smoke::m_body
+  92 callvirt     UnityEngine.Rigidbody::get_linearVelocity
+  97 stloc.1      
+  98 ldarg.0      
+  99 ldfld        Smoke::m_vel
+ 104 stloc.2      
+ 105 ldloca.s     2
+ 107 ldflda       UnityEngine.Vector3::y
+ 112 dup          
+ 113 ldind.r4     
+ 114 ldloc.0      
+ 115 mul          
+ 116 stind.r4     
+ 117 ldloc.2      
+ 118 ldloc.1      
+ 119 call         UnityEngine.Vector3::op_Subtraction
+ 124 stloc.3      
+ 125 ldarg.0      
+ 126 ldfld        Smoke::m_body
+ 131 ldloc.3      
+ 132 ldarg.0      
+ 133 ldfld        Smoke::m_force
+ 138 ldarg.1      
+ 139 mul          
+ 140 call         UnityEngine.Vector3::op_Multiply
+ 145 ldc.i4.2     
+ 146 callvirt     UnityEngine.Rigidbody::AddForce
+ 151 ldarg.0      
+ 152 ldfld        Smoke::m_fadeTimer
+ 157 ldc.r4       0
+ 162 blt.un.s     222
+ 164 ldarg.0      
+ 165 ldarg.0      
+ 166 ldfld        Smoke::m_fadeTimer
+ 171 ldarg.1      
+ 172 add          
+ 173 stfld        Smoke::m_fadeTimer
+ 178 ldarg.0      
+ 179 ldfld        Smoke::m_fadeTimer
+ 184 ldarg.0      
+ 185 ldfld        Smoke::m_fadetime
+ 190 div          
+ 191 call         UnityEngine.Mathf::Clamp01
+ 196 pop          
+ 197 ldarg.0      
+ 198 ldfld        Smoke::m_fadeTimer
+ 203 ldarg.0      
+ 204 ldfld        Smoke::m_fadetime
+ 209 blt.un.s     222
+ 211 ldarg.0      
+ 212 call         UnityEngine.Component::get_gameObject
+ 217 call         UnityEngine.Object::Destroy
+ 222 ret          
+
+== Smoke::get_RenderChunk() -> valuetype:661  il_size=7 sha=763bef309122
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Smoke::<RenderChunk>k__BackingField
+   6 ret          
+
+== Smoke::set_RenderChunk(valuetype:661) -> void  il_size=8 sha=07fca3db2a83
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.1      
+   2 stfld        Smoke::<RenderChunk>k__BackingField
+   7 ret          
+
+== Smoke::get_Instances() -> class:165<class:1116>  il_size=6 sha=fed4d4126322
+   locals_sig=null
+   0 ldsfld       Smoke::<Instances>k__BackingField
+   5 ret          
+
+== Smoke::.ctor() -> void  il_size=84 sha=64ef15fd7ba1
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Vector3::get_up
+   6 stfld        Smoke::m_vel
+  11 ldarg.0      
+  12 ldc.r4       0.10000000149011612
+  17 stfld        Smoke::m_randomVel
+  22 ldarg.0      
+  23 ldc.r4       0.10000000149011612
+  28 stfld        Smoke::m_force
+  33 ldarg.0      
+  34 ldc.r4       10
+  39 stfld        Smoke::m_ttl
+  44 ldarg.0      
+  45 ldc.r4       3
+  50 stfld        Smoke::m_fadetime
+  55 ldarg.0      
+  56 ldc.r4       -1
+  61 stfld        Smoke::m_fadeTimer
+  66 ldarg.0      
+  67 call         UnityEngine.Vector3Int::get_zero
+  72 stfld        Smoke::<RenderChunk>k__BackingField
+  77 ldarg.0      
+  78 call         UnityEngine.MonoBehaviour::.ctor
+  83 ret          
+
+== Smoke::.cctor() -> void  il_size=21 sha=53969fc2545e
+   locals_sig=null
+   0 newobj       System.Collections.Generic.List`1::.ctor
+   5 stsfld       Smoke::s_smoke
+  10 newobj       System.Collections.Generic.List`1::.ctor
+  15 stsfld       Smoke::<Instances>k__BackingField
+  20 ret          

@@ -156,6 +156,118 @@ Fonctionnement interne :
   de chaque fonction appelée (table `g_sigs`) ; un seul écart ⇒ API fantôme non enregistrée, `WowlheimPing`
   inchangé.
 
+### 2bis. Marqueurs fixes : cercle de portée des stations (2026-10-26)
+
+Valheim montre, marteau en main, le **marqueur de zone** de chaque station (`CraftingStation.m_areaMarker`, enfant
+`AreaMarker` de `piece_workbench` : `CircleProjector` de 80 segments, `m_prefab` = `station_marker/Circle_section.prefab`,
+un cube à l'échelle 0,15 × 0,10 × 1,0 en `Unlit/Color` gris 0,8 ; lu dans les bundles avec `tools/valheim/vh_lib.py`).
+
+**Approche retenue : marqueurs côté client** (pas de GameObject serveur : il serait visible de tous et coûterait des
+objets réseau). Trois éléments :
+
+1. **Serveur** — `.build api stations [rayon=40]` (`server/Wowlheim/BuildCommands.cpp`, `Wowlheim_StationsCommand`) :
+   au plus 6 stations (pièces dont le kind est exigé par une pièce du catalogue) à moins de 40 m, de la plus proche à la plus
+   lointaine. Pour chacune `ST|guid|kind|x|y|z|portée|dedans|n` puis `SG|guid|premier|x,y,z,o;…` (6 points par ligne) :
+   le **contour exact** de la zone que teste la pose — `BuildingMgr::STATION_RANGE` = **10 m mesurés depuis le bord** de la
+   boîte de la station (`DistToPiece2D`, `CheckStation` sur la position du **joueur**), donc un rectangle arrondi (presque
+   un cercle pour une station de 1–2 m). Points espacés de ~1,57 m comme Valheim (24 à 96 par station), `o` = tangente,
+   `z` = sol sous le point (`Map::GetHeight`, terrain + WMO ; plancher posé s'il couvre le point) + 5 cm.
+   `dedans` = joueur dans la zone (même test que la pose). N.B. : le prefab de Valheim a `m_rangeBuild = 20` (+4 m par
+   extension, `m_extraRangePerLevel`) ; le serveur garde 10 m depuis le bord, c'est lui qui décide.
+2. **Modèles** — `tools/valheim/build_markers.py` : `World\Wowlheim\wl_station_ring{,_in,_out}.m2` (pavé 1 m × 0,15 ×
+   0,10, non éclairé, gris Valheim / vert / rouge, texture unie 8×8), écrits dans `C:\Wowlheim\wl_assets\mpq` puis mis
+   dans `patch-3.MPQ` par `gen_client_patch.py` (DBC inchangés : ce sont des modèles affichés par la DLL, sans entrée DBC).
+3. **DLL** — deux API (trampolines 10 et 11, cave 2) ; **aucune adresse nouvelle** : mêmes fonctions que le fantôme
+   (`0x6707c0` création, `0x670d40`, `0x6709a0` placement, `0x670d50` libération, `0x7bdca0` échelle).
+
+| Fonction Lua | Effet |
+|---|---|
+| `WowlheimMarkerShow(id, chemin, x, y, z [, orientation [, échelle]])` | `id` 0..255. Pose (ou déplace / change de modèle) le marqueur. Créé tout de suite dans l'appel Lua si une image du monde a été vue depuis le chargement de la carte (le fantôme natif est lui aussi créé depuis Lua, par le lancement du sort `0x6e4b60 → 0x6e518f`), sinon à la prochaine image. Rappeler avec les mêmes valeurs ne fait rien. Renvoie `1` ou `nil`. |
+| `WowlheimMarkerHide(id)` / `WowlheimMarkerHide()` | Libère un marqueur / tous. |
+
+Chaque image (hook du lancer de rayon), les marqueurs en attente sont créés et 16 marqueurs déjà posés sont replacés
+(`0x6709a0`, comme le fantôme natif replacé à chaque image : rattachement aux chunks). Tous sont libérés avant le
+déchargement de la carte (hooks `0x697ac0`) et à chaque réinitialisation Lua ; exceptions interceptées (aperçu désactivé).
+
+**Addon** (`WowlheimCore.lua` : `RingsOnMessage`, `RingMarkers`, `StationRangeWarning` ; `Wowlheim.lua` : `UpdateRings`,
+`ApplyRings`) : marteau équipé **et** mode construction ⇒ `.build api stations` silencieux toutes les 1,5 s (une seule
+en attente), un segment par point, vert si le joueur est dans la zone, rouge sinon ; masqué dès que le marteau est rangé
+ou en mode Démolir / Réparer. Le bandeau de pose ajoute « Hors de portée de la table de fabrication » (ou « Hors de
+portée : Forge »…) quand la pièce choisie exige une station dont le joueur n'est dans aucune zone. Sans la DLL, seul
+l'avertissement fonctionne. Les lignes `ST|`/`SG|` ne sont attribuées qu'à la commande `stations` : un `M|`/`E|` reçu
+pendant l'interrogation va à la commande suivante ou à personne (`C.CHANNEL_STRUCTURED`).
+
+**Non vérifié en jeu** : affichage des segments (couleur non éclairée, enfoncement sur les pentes), tenue des modèles
+quand le joueur s'éloigne (chunks déchargés/rechargés — d'où le replacement tournant), coût de 250 modèles, retard de
+couleur (≤ 1,5 s + latence).
+
+### 2ter. Objet sous le curseur, apparition instantanée, préchargement (2026-10-26)
+
+Trois API de plus (trampolines 12 à 14, cave 2 désormais pleine) : `WowlheimGetMouseoverObject()`,
+`WowlheimSetInstantFade(...)`, `WowlheimPreloadModel([chemin])`, et 5 nouveaux sites de `CALL` (`0x4812c1`, `0x5f7c6b`,
+`0x5fb956`, `0x5f7e83`, `0x5fbd67`). Preuves et conception des contrôles : **`docs/BUILD_CONTROLS.md`** §3–4.
+
+### 2quater. Rotation et couleur du fantôme natif (2026-10-26)
+
+Valheim : la molette tourne le fantôme par pas de 22,5° (`m_placeRotation`) et `SetPlacementGhostValid` le montre normal si
+la pose est possible, rouge sinon. **Aucune API nouvelle** (les deux caves sont pleines, 14/14 trampolines) : les fonctions
+existantes prennent des arguments de plus ; 2 motifs ajoutés au groupe « natif » de `g_sigs` (`verify_addrs.py` : tout passe).
+
+| Ajout | Effet |
+|---|---|
+| `WowlheimSetPlaceFacing(radians, 1)` | **Décalage relatif** : `Hook_NativeFacing` renvoie `orientationNative + radians` (normalisée dans [0, 2π)) à chaque image. L'orientation native de l'effet 76 est celle du personnage, et le serveur pose avec `orientation du personnage + rot × π/8` (`BuildingMgr::PlaceOrientation`, utilisée par `PlaceFromSpell` et `canplace`) : l'addon passe `rot × π/8`, le fantôme montre donc l'orientation exacte de la pièce posée, y compris quand le personnage tourne pendant le ciblage. Sans 2ᵉ argument : orientation absolue (inchangé). |
+| `WowlheimGhostSetColor(r, g, b, a, lueur, 1)` | Teinte le **fantôme natif** : à chaque image, dans `Hook_NativeFacing` (appelé par `0x4820f0` juste avant `0x6709a0`), la def `[0xceca8c]` (`0x6e6970` = `MOV EAX,[0xceca8c] ; RET`, résultat passé à `0x6709a0` via ESI) reçoit alpha / diffus / émissif dans son `CM2Model` (mêmes champs que §2). Défauts `a = 1`, `lueur = 0`. `cible = -1` : arrêt (une dernière écriture neutre 1,1,1 / 1 / 0). Remis à zéro à chaque réinitialisation Lua. |
+| `WowlheimGhostGetPos()` → 6ᵉ et 7ᵉ valeurs | `[0x83dc2c]` (0 point de ciblage dans la portée du sort, 1 hors portée, 3 pas encore calculé ; écrit par `0x4820f0`, motif `0x482154 MOV [0x83dc2c],0`) et la dernière orientation donnée au fantôme natif (contrôle en jeu). |
+
+**Serveur** — `.build api canplace <x> <y> <z> [rot]` (`BuildCommands.cpp`, `BuildingMgr::CanPlaceFromSpell`) : mêmes
+contrôles que `PlaceFromSpell` (portée 8 m `InPlaceReach`, zone interdite, extension, station, ressources, accroche,
+`CanPlaceAt` = plafonds + emplacement occupé + gameobject_template, extrait de `Place`) via `TryPlace(..., dryRun = true)`,
+sans poser, sans consommer, sans l'endurance (Valheim ne colore pas selon l'endurance). Réponse `CP|1` ou `CP|0|raison`,
+puis `D|canplace|1`.
+
+**Addon** (`WowlheimCore.lua` : `PlaceFacingOffset`, `GhostCheckCommand`, `GhostCheckOnMessage`, `GhostValid`,
+`GHOST_COLORS` ; `Wowlheim.lua` : `ApplyGhostFacing`, `UpdateGhost`) : décalage posé avant chaque ciblage et à chaque cran de
+molette. Pendant le ciblage de la pose : `canplace` silencieux au plus toutes les **0,25 s** (une seule en attente), seulement
+si le point visé bouge de plus de 0,1 m ou que la pièce / la rotation change, sinon une fois par seconde (4 commandes/s au
+plus : l'anti-flood du chat, `ChatFlood.MessageCount = 10` messages dans la même seconde, reste loin). Couleur, dans l'ordre :
+hors portée du sort (DLL) → rouge ; verdict du serveur de moins de 1,5 s pour la même pièce / rotation → il fait foi ; sinon
+contrôles locaux immédiats (ressources des sacs vs coût, zone des stations des lignes `ST|`). Normal = `(1,1,1)` opaque ;
+rouge = `(1, 0,25, 0,2)`, alpha 0,75, lueur 0,45. Hors ciblage : teinte retirée.
+
+Limites : la distance joueur ↔ point (8 m) n'est vérifiée que par le serveur (Lua 1.12 ne donne pas la position monde du
+joueur ; la DLL n'expose pas l'objet joueur) ; retard de couleur ≤ 0,25 s + latence. L'orientation suppose que le serveur
+connaît l'orientation courante du personnage (paquets de mouvement : tourner au clavier envoie l'orientation à l'arrêt ; le
+clic droit, qui tourne à la souris, annule le ciblage). Accroche : voir §2quinquies.
+
+### 2quinquies. Fantôme accroché (2026-10-26)
+
+**Valheim** : `Player.UpdatePlacementGhost` place le fantôme APRÈS `FindClosestSnapPoints` : la pièce saute sur le point
+d'accroche voisin, verte ou rouge. **Choix retenu** : le fantôme natif ne peut pas être déplacé (sa position est calculée
+par `0x4820f0` puis passée directement à `0x6709a0` ; seul l'appel d'orientation `0x6e6980` est accroché). Quand le serveur
+a accroché la pièce, l'addon rend le fantôme natif **invisible** (`WowlheimGhostSetColor(1,1,1,0,0,1)`, alpha 0 — il sert
+toujours au ciblage, le clic part toujours du point sous la souris) et montre le **fantôme DLL** (même modèle
+`World\Wowlheim\<prefab>.m2`, lignes `MD|`) au point accroché ; sinon le fantôme natif teinté, comme avant.
+
+| API (nouvelle, 16ᵉ trampoline) | |
+|---|---|
+| `WowlheimGhostPlace(x, y, z)` | Le fantôme DLL est posé à ce point au lieu du point sous la souris (créé même si la souris n'a pas encore touché le monde). `WowlheimGhostPlace()` : retour à la souris. Remis à zéro par `WowlheimGhostHide`, le déchargement de la carte et la réinitialisation Lua. `WowlheimGhostGetPos` renvoie toujours le point sous la souris. |
+
+**Serveur** : `canplace` répond `CP|1|x|y|z|o|a` ou `CP|0|x|y|z|o|a|raison` (`x y z o` = position et orientation après
+`BuildingMgr::Snap`, `a` = 1 si un point d'accroche a été pris ; `CanPlaceFromSpell(..., WLPlacePreview*)`, même `Snap` que la
+pose, la position accrochée est calculée même si la pose est refusée). L'addon accepte encore l'ancien `CP|1` / `CP|0|raison`.
+
+**Addon** (`Core.GhostSnapPos`, `WL.UpdateGhost`, `WL.SnapGhostReady`, `WL.HideSnapGhost`) : position accrochée du dernier
+verdict (même pièce / rotation, moins de 1,5 s) tant que le point visé reste à moins de **0,75 m** du point interrogé ; au-delà
+(ou `a = 0`), fantôme natif à la souris jusqu'au verdict suivant (≤ 0,25 s). Orientation : 7ᵉ valeur de `WowlheimGhostGetPos`
+(orientation du fantôme natif, donc personnage + rotation, à jour à chaque image), sinon `o` du serveur. Modèles demandés
+(`.build api models`) si l'addon ne les a pas encore. Sans `WowlheimGhostPlace` (ancienne DLL) ou sans modèle : comportement
+précédent (fantôme natif au point visé).
+
+**À vérifier en jeu** : alpha 0 cache bien le fantôme natif ; le fantôme DLL a la même échelle / hauteur que la pièce posée
+(gameobject `size` 1) ; pas de clignotement natif ↔ DLL quand la souris glisse le long d'un point d'accroche.
+**Non vérifié en jeu** : rendu de la teinte et de l'alpha sur le fantôme natif, valeur réelle de `[0x83dc2c]` pendant le
+ciblage du sort 40001.
+
 ---
 
 ## 3. Adresses, preuves et confiance

@@ -1,4 +1,4 @@
-// Commandes de construction Wowlheim : .build list|place|remove|count|support|station|recipes|craft|nocost|bulk|near|perf|rain|grace|dump|stats
+// Commandes de construction Wowlheim : .build list|place|remove|count|support|station|recipes|craft|nocost|bulk|near|perf|rain|grace|dump|stats|api stations|api skills|api removeguid|api use|api models|api canplace|api pieceinfo
 #include "Chat/Chat.h"
 #include "Entities/GameObject.h"
 #include "Entities/Item.h"
@@ -11,10 +11,16 @@
 #include "Server/WorldSession.h"
 #include "Wowlheim/BuildingMgr.h"
 #include "Wowlheim/TreeMgr.h"
+#include "Wowlheim/Smelter.h"
+#include "Wowlheim/Pieces.h"
+#include "Wowlheim/Knowledge.h"
+#include "Wowlheim/ValheimSkills.h"
 #include "Entities/Creature.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstdarg>
+#include <cctype>
 #include <cstdlib>
 
 namespace
@@ -209,7 +215,8 @@ bool ChatHandler::HandleBuildSelectCommand(char* args)
     hs.pieceId = tpl->id;
     hs.rot = int32(rot % 16);
     hs.mode = "build";
-    PSendSysMessage("%s choisi (rotation %u°).", tpl->name.c_str(), uint32(hs.rot) * 45 / 2);
+    // accord : « pièce choisie » quel que soit le genre du nom (l'addon envoie select en silencieux : son bandeau suffit)
+    PSendSysMessage("Pièce choisie : %s (rotation %g°).", tpl->name.c_str(), double(hs.rot) * 22.5);
     return true;
 }
 
@@ -363,6 +370,10 @@ bool ChatHandler::HandleBuildPerfCommand(char* /*args*/)
 {
     PSendSysMessage("Diff tick (600 derniers) : moyenne %u ms, max %u ms, %u pièces.", sBuildingMgr.AverageDiff(), sBuildingMgr.MaxDiff(),
                     uint32(sBuildingMgr.Pieces().size()));
+    BuildingMgr::WorldCheckStats const& ws = sBuildingMgr.WorldStats();
+    PSendSysMessage("Chevauchement du décor WoW (VMaps) : %llu tests, %llu bloqués, %.1f rayons/test, moyenne %.1f us, max %.1f us.",
+                    (unsigned long long)ws.calls, (unsigned long long)ws.blocked, ws.calls ? double(ws.rays) / double(ws.calls) : 0.0,
+                    ws.calls ? ws.totalUs / double(ws.calls) : 0.0, ws.maxUs);
     return true;
 }
 
@@ -385,23 +396,33 @@ bool ChatHandler::HandleBuildSupportCommand(char* /*args*/)
     return true;
 }
 
-// .build station : établi le plus proche à portée, abri et couverture
+// .build station : stations de fabrication à portée (établi, forge, tailleur de pierre, table d'artisan) : abri, couverture, niveau.
+// API : une ligne S|guid|utilisable|couverture%|niveau|type par type de station à portée.
 bool ChatHandler::HandleBuildStationCommand(char* /*args*/)
 {
     Player* player = m_session ? m_session->GetPlayer() : nullptr;
     if (!player)
         return false;
-    WLPiece const* st = sBuildingMgr.FindStationInRange(player->GetMap(), player->GetPositionX(), player->GetPositionY(), "workbench", BuildingMgr::STATION_RANGE);
-    if (!st)
+    static char const* const kinds[] = { "workbench", "forge", "stonecutter", "artisan" };
+    bool any = false;
+    for (char const* kind : kinds)
     {
-        WLSendText("Aucun établi à moins de 10 m.");
-        return true;
+        WLPiece const* st = sBuildingMgr.FindStationInRange(player->GetMap(), player->GetPositionX(), player->GetPositionY(), kind, BuildingMgr::STATION_RANGE);
+        if (!st)
+            continue;
+        any = true;
+        float pct = 0.0f;
+        bool usable = sBuildingMgr.StationUsable(*st, pct);
+        uint32 level = sBuildingMgr.StationLevel(*st);
+        WLRaw(this, "S|" + std::to_string(st->guid) + "|" + (usable ? "1" : "0") + "|" + std::to_string(int(pct * 100.0f)) + "|" + std::to_string(level) + "|" + kind);
+        WLPieceTemplate const* t = sBuildingMgr.FindTemplate(st->pieceId);
+        if (!strcmp(kind, "workbench"))
+            PSendSysMessage("Établi %u : niveau %u, couverture %.0f %% (seuil 70 %%), %s.", st->guid, level, pct * 100.0f, usable ? "utilisable (à l'abri)" : "inutilisable : exposé");
+        else
+            PSendSysMessage("%s %u : niveau %u, couverture %.0f %%, %s.", t ? t->name.c_str() : kind, st->guid, level, pct * 100.0f, usable ? "utilisable (à l'abri)" : "inutilisable : exposé");
     }
-    float pct = 0.0f;
-    bool usable = sBuildingMgr.StationUsable(*st, pct);
-    uint32 level = sBuildingMgr.StationLevel(*st);
-    WLRaw(this, "S|" + std::to_string(st->guid) + "|" + (usable ? "1" : "0") + "|" + std::to_string(int(pct * 100.0f)) + "|" + std::to_string(level));
-    PSendSysMessage("Établi %u : niveau %u, couverture %.0f %% (seuil 70 %%), %s.", st->guid, level, pct * 100.0f, usable ? "utilisable (à l'abri)" : "inutilisable : exposé");
+    if (!any)
+        WLSendText("Aucune station de fabrication à moins de 20 m.");
     return true;
 }
 
@@ -444,7 +465,7 @@ bool ChatHandler::HandleBuildCraftCommand(char* args)
     WLPiece const* st = r->station.empty() ? nullptr : sBuildingMgr.FindStationInRange(player->GetMap(), player->GetPositionX(), player->GetPositionY(), r->station, BuildingMgr::STATION_RANGE);
     if (!st && !r->station.empty())
     {
-        PSendSysMessage("Il faut une station (%s) à moins de 10 m.", r->station.c_str());
+        PSendSysMessage("Il faut une station (%s) à moins de 20 m.", r->station.c_str());
         SetSentErrorMessage(true);
         return false;
     }
@@ -452,7 +473,8 @@ bool ChatHandler::HandleBuildCraftCommand(char* args)
     // CraftingStation.CheckUsable : l'abri n'est exigé que des stations qui le demandent (m_craftRequireRoof) ; le four à charbon n'en a pas
     if (st && r->station != "charcoal_kiln" && !sBuildingMgr.StationUsable(*st, pct))
     {
-        PSendSysMessage("Cet établi est exposé (couverture %.0f %%, il faut un toit et au moins 70 %%).", pct * 100.0f);
+        // même texte que le refus de réparation (Knowledge.cpp, PrepareRepair) : l'addon dédoublonne les textes identiques
+        PSendSysMessage("Station exposée (couverture %.0f %%, il faut un toit et au moins 70 %%).", pct * 100.0f);
         SetSentErrorMessage(true);
         return false;
     }
@@ -471,9 +493,13 @@ bool ChatHandler::HandleBuildCraftCommand(char* args)
         SetSentErrorMessage(true);
         return false;
     }
+    if (st)
+        sKnowledgeMgr.LearnStation(player, *st);         // fabriquer = être à la station -> connue (UpdateStations)
     sBuildingMgr.ConsumeItems(player, r->ingredients);
     std::vector<WLItemCount> out{ WLItemCount{ r->outputItem, r->outputCount } };
     uint32 mailed = sBuildingMgr.GiveItems(player, player->GetObjectGuid().GetCounter(), out, "Fabrication");
+    if (st)                                              // InventoryGui.DoCrafting IL 1761–1818 : station.m_craftingSkill (Fabrication) +1
+        sWLSkillMgr.Raise(player, WL_SKILL_CRAFTING, 1.0f);
     PSendSysMessage("Fabriqué : %u x %s%s.", r->outputCount, ItemName(r->outputItem).c_str(), mailed ? " (sac plein : envoyé par courrier)" : "");
     return true;
 }
@@ -654,6 +680,357 @@ bool ChatHandler::HandleBuildTreesCommand(char* args)
     return true;
 }
 
+namespace
+{
+    // Point du contour de la zone de construction d'une station, dans le repère local de sa boîte (centre, sans rotation)
+    struct WLOutlinePoint { float x, y, o; };
+
+    // Contour de la zone « distance horizontale au bord de la boîte < R » (BuildingMgr::DistToPiece2D, FindStationInRange) :
+    // rectangle de demi-côtés (hx, hy) agrandi de R = 4 côtés droits + 4 quarts de cercle. Pour une station de 1-2 m, c'est
+    // presque le cercle de Valheim. Échantillonné en n points régulièrement espacés (milieux des segments), avec la tangente.
+    // Valheim (CircleProjector de piece_workbench, lu dans le bundle) : 80 segments sur un cercle de 20 m, soit un pas de 1,57 m.
+    void StationOutline(float hx, float hy, float R, std::vector<WLOutlinePoint>& out)
+    {
+        float const PI = 3.14159265f;
+        float const arc = 0.5f * PI * R;
+        float const len[8] = { 2 * hy, arc, 2 * hx, arc, 2 * hy, arc, 2 * hx, arc };
+        float total = 0.0f;
+        for (float l : len)
+            total += l;
+        int n = int(total / 1.57f + 0.5f);
+        n = std::max(24, std::min(n, 96));
+        out.clear();
+        for (int i = 0; i < n; ++i)
+        {
+            float s = (i + 0.5f) * total / n;
+            int k = 0;
+            while (k < 7 && s > len[k])
+            {
+                s -= len[k];
+                ++k;
+            }
+            WLOutlinePoint p{};
+            switch (k)
+            {
+                case 0: p = { hx + R, -hy + s, 0.5f * PI }; break;         // côté +x, vers +y
+                case 2: p = { hx - s, hy + R, PI }; break;                 // côté +y, vers -x
+                case 4: p = { -hx - R, hy - s, 1.5f * PI }; break;         // côté -x, vers -y
+                case 6: p = { -hx + s, -hy - R, 0.0f }; break;             // côté -y, vers +x
+                default:                                                   // coins : quart de cercle de centre (±hx, ±hy)
+                {
+                    float cx = (k == 1 || k == 7) ? hx : -hx;
+                    float cy = (k == 1 || k == 3) ? hy : -hy;
+                    float a = (k - 1) * 0.25f * PI + (R > 0 ? s / R : 0.0f);   // k=1 : 0..π/2, 3 : π/2..π, 5 : π..3π/2, 7 : 3π/2..2π
+                    p = { cx + R * std::cos(a), cy + R * std::sin(a), a + 0.5f * PI };
+                    break;
+                }
+            }
+            out.push_back(p);
+        }
+    }
+
+    // .build api stations [rayon=40] : stations de fabrication proches et contour de leur zone de construction, pour le
+    // cercle de portée affiché par l'addon quand le marteau est en mode construction (Valheim : CraftingStation.m_areaMarker).
+    //   ST|guid|kind|x|y|z|portée|dedans|n      dedans = 1 si le JOUEUR est dans la zone (c'est sa position que CheckStation teste)
+    //   SG|guid|premier|x,y,z,o;x,y,z,o;...      n points du contour (sol sous le point), par lignes de 6
+    // Les stations sont les pièces dont le kind est exigé par au moins une pièce du catalogue (Piece.m_craftingStation).
+    // .build api models : prefab Valheim de chaque pièce du catalogue (modèle World\Wowlheim\<prefab>.m2 du patch client),
+    // pour le préchargement des modèles par l'addon (WowlheimPreloadModel, docs/BUILD_CONTROLS.md §4.2).
+    // Réponse : MD|id:prefab,id:prefab,... (lignes de 200 caractères au plus, concaténées par l'addon), puis D|models|1.
+    bool Wowlheim_ModelsCommand(ChatHandler* h)
+    {
+        std::string line;
+        for (auto const& kv : sBuildingMgr.Templates())
+        {
+            if (kv.second.prefab.empty())
+                continue;
+            std::string item = std::to_string(kv.first) + ":" + kv.second.prefab;
+            if (!line.empty() && line.size() + item.size() + 1 > 200)
+            {
+                WLRaw(h, "MD|" + line);
+                line.clear();
+            }
+            line += (line.empty() ? "" : ",") + item;
+        }
+        if (!line.empty())
+            WLRaw(h, "MD|" + line);
+        return true;
+    }
+
+    // .build api removeguid <guidHex> : clic milieu en mode construction (Valheim : bouton Remove → Player.RemovePiece),
+    // pièce visée sous la souris (WowlheimGetMouseoverObject, docs/BUILD_CONTROLS.md §3, §5). Réponse M|<nom> démolie. ou E|<raison>,
+    // puis D|removeguid|1/0 (ajouté par HandleBuildApiCommand). Le mode du marteau n'est pas changé.
+    // Premier mot de args : GUID hexadécimal (16 chiffres au plus, préfixe 0x accepté) ; false si invalide
+    bool WLParseGuidHex(char* args, ObjectGuid& guid)
+    {
+        std::string hex;
+        for (char const* c = args ? args : ""; *c; ++c)       // premier mot (sans strtok : non réentrant)
+        {
+            if (*c == ' ' || *c == '	')
+            {
+                if (hex.empty())
+                    continue;
+                break;
+            }
+            hex += *c;
+        }
+        if (hex.size() > 2 && hex[0] == '0' && (hex[1] == 'x' || hex[1] == 'X'))
+            hex = hex.substr(2);
+        bool valid = !hex.empty() && hex.size() <= 16;
+        for (char c : hex)
+            valid = valid && std::isxdigit(static_cast<unsigned char>(c));
+        if (valid)
+            guid = ObjectGuid(uint64(std::strtoull(hex.c_str(), nullptr, 16)));
+        return valid;
+    }
+
+    bool Wowlheim_RemoveGuidCommand(ChatHandler* h, Player* player, char* args)
+    {
+        if (!player)
+            return false;
+        ObjectGuid guid;
+        if (!WLParseGuidHex(args, guid))
+        {
+            WLRaw(h, "E|GUID invalide.");
+            return false;
+        }
+        uint32 entry = guid.GetEntry();
+        if (!guid.IsGameObject() || entry < 9110000 || entry > 9119999)
+        {
+            WLRaw(h, "E|Rien à démolir.");
+            return false;
+        }
+        auto const& pieces = sBuildingMgr.Pieces();
+        auto it = pieces.find(guid.GetCounter());
+        WLPieceTemplate const* tpl = it != pieces.end() ? sBuildingMgr.FindTemplate(it->second.pieceId) : nullptr;
+        if (it == pieces.end() || !tpl || tpl->goEntry != entry)
+        {
+            WLRaw(h, "E|Rien à démolir.");
+            return false;
+        }
+        if (!sBuildingMgr.IsHammerEquipped(player))
+        {
+            WLRaw(h, "E|Équipez le marteau.");
+            return false;
+        }
+        WLPiece const& piece = it->second;
+        // Valheim : point visé à moins de m_maxPlaceDistance (5 m) ; ici distance horizontale au bord de la pièce et écart
+        // vertical entre la boîte de la pièce [z, z + hauteur] et le personnage (pieds .. tête) <= 5 m
+        float px = player->GetPositionX(), py = player->GetPositionY();
+        if (piece.map != player->GetMapId() || sBuildingMgr.DistToPiece2D(piece, px, py) > BuildingMgr::REMOVE_DISTANCE
+            || sBuildingMgr.VerticalGap(piece, player->GetPositionZ()) > BuildingMgr::REMOVE_DISTANCE)
+        {
+            WLRaw(h, "E|Trop loin.");
+            return false;
+        }
+        std::string err, name;
+        if (!sBuildingMgr.TryRemoveByPlayer(player, piece.guid, err, name))
+        {
+            WLRaw(h, "E|" + err);
+            return false;
+        }
+        WLRaw(h, "M|Démoli : " + name + ".");
+        return true;
+    }
+
+    // .build api use <guidHex> : clic droit sur une pièce que le client 1.12 refuse (« You are too far away. » : il mesure 5 m
+    // depuis le CENTRE de l'objet, trop court pour une fonderie ou une forge de plusieurs mètres). L'addon renvoie alors la pièce
+    // sous la souris (WowlheimGetMouseoverObject) ; même vérification que HandleGameObjectUseOpcode (USE_DISTANCE du bord de la
+    // boîte, BuildingMgr::InUseRange) puis même chemin que CMSG_GAMEOBJ_USE : GameObject::Use -> Wowlheim_OnPieceUse (SM| de
+    // la fonderie, OPEN|craft de l'établi, démolir / réparer selon le mode du marteau). D|use|1/0 ajouté par HandleBuildApiCommand.
+    bool Wowlheim_UseGuidCommand(ChatHandler* h, Player* player, char* args)
+    {
+        if (!player)
+            return false;
+        ObjectGuid guid;
+        if (!WLParseGuidHex(args, guid))
+        {
+            WLRaw(h, "E|GUID invalide.");
+            return false;
+        }
+        uint32 entry = guid.GetEntry();
+        auto const& pieces = sBuildingMgr.Pieces();
+        auto it = guid.IsGameObject() && entry >= 9110000 && entry <= 9119999 ? pieces.find(guid.GetCounter()) : pieces.end();
+        WLPieceTemplate const* tpl = it != pieces.end() ? sBuildingMgr.FindTemplate(it->second.pieceId) : nullptr;
+        GameObject* go = tpl && tpl->goEntry == entry && player->IsInWorld() ? player->GetMap()->GetGameObject(guid) : nullptr;
+        if (!go || !go->IsSpawned())
+        {
+            WLRaw(h, "E|Rien à utiliser.");
+            return false;
+        }
+        if (player->IsBeingTeleported() || !player->IsSelfMover())
+            return false;
+        if (!sBuildingMgr.InUseRange(player, it->second))
+        {
+            WLRaw(h, "E|Vous êtes trop loin.");
+            return false;
+        }
+        if (go->HasFlag(GAMEOBJECT_FLAGS, GO_FLAG_IN_USE | GO_FLAG_NO_INTERACT) || !go->CanUseNow(player))
+            return false;
+        go->Use(player);
+        return true;
+    }
+
+    // .build api canplace <x> <y> <z> [rot 0-15] : couleur du fantôme (Valheim : SetPlacementGhostValid). Mêmes contrôles que
+    // la pose par le sort du marteau (BuildingMgr::CanPlaceFromSpell, accroche comprise), sans rien poser. Réponse :
+    // CP|1|x|y|z|o|accroche  ou  CP|0|x|y|z|o|accroche|raison, puis D|canplace|1 : x, y, z, o = position et orientation de la
+    // pièce APRÈS accroche (Valheim : le fantôme est montré au point accroché), accroche = 1 si un point d'accroche a été pris.
+    // Appelée par l'addon au plus toutes les 0,25 s pendant le ciblage (docs/GHOST_PREVIEW.md, fantôme accroché).
+    bool Wowlheim_CanPlaceCommand(ChatHandler* h, Player* player, char* args)
+    {
+        if (!player || !args)
+            return false;
+        float x, y, z;
+        int rot = -1;
+        if (std::sscanf(args, "%f %f %f %d", &x, &y, &z, &rot) < 3)
+            return false;
+        if (rot < 0)
+            rot = sBuildingMgr.Hammer(player->GetObjectGuid().GetCounter()).rot;
+        std::string err;
+        WLPlacePreview pv;
+        pv.x = x; pv.y = y; pv.z = z;
+        bool ok = sBuildingMgr.CanPlaceFromSpell(player, x, y, z, int32(rot % 16), err, &pv);
+        char buf[96];
+        snprintf(buf, sizeof(buf), "|%.2f|%.2f|%.2f|%.3f|%d", pv.x, pv.y, pv.z, pv.o, pv.snapped ? 1 : 0);
+        WLRaw(h, ok ? std::string("CP|1") + buf : std::string("CP|0") + buf + "|" + err);
+        return true;
+    }
+
+    // .build api pieceinfo <guidHex> : état de la pièce sous la souris (Valheim, marteau en main : WearNTear.Highlight colore
+    // la pièce selon GetSupportColorValue, le Hud affiche sa santé). Réponse PI|guidHex|pv|pvmax|support|nom, support =
+    // SupportColorValue (-1 complet, 0..1 sinon), puis D|pieceinfo|1 ; E|Rien à inspecter. si ce n'est pas une pièce.
+    bool Wowlheim_PieceInfoCommand(ChatHandler* h, Player* player, char* args)
+    {
+        if (!player)
+            return false;
+        ObjectGuid guid;
+        if (!WLParseGuidHex(args, guid))
+        {
+            WLRaw(h, "E|GUID invalide.");
+            return false;
+        }
+        uint32 entry = guid.GetEntry();
+        auto const& pieces = sBuildingMgr.Pieces();
+        auto it = guid.IsGameObject() && entry >= 9110000 && entry <= 9119999 ? pieces.find(guid.GetCounter()) : pieces.end();
+        WLPieceTemplate const* tpl = it != pieces.end() ? sBuildingMgr.FindTemplate(it->second.pieceId) : nullptr;
+        if (!tpl || tpl->goEntry != entry || it->second.map != player->GetMapId())
+        {
+            WLRaw(h, "E|Rien à inspecter.");
+            return false;
+        }
+        WLPiece const& p = it->second;
+        char buf[160];
+        snprintf(buf, sizeof(buf), "PI|%016llX|%u|%u|%.3f|", (unsigned long long)guid.GetRawValue(), p.health,
+                 tpl->maxHealth ? tpl->maxHealth : p.health, sBuildingMgr.SupportColorValue(p));
+        WLRaw(h, std::string(buf) + tpl->name);
+        return true;
+    }
+
+    bool Wowlheim_StationsCommand(ChatHandler* h, Player* player, char* args)
+    {
+        if (!player)
+            return false;
+        float radius = 40.0f;
+        if (args && *args)
+        {
+            float r = float(std::atof(args));
+            if (r > 0.0f)
+                radius = std::min(r, 100.0f);
+        }
+        std::set<std::string> kinds;
+        for (auto const& kv : sBuildingMgr.Templates())
+            if (!kv.second.station.empty())
+                kinds.insert(kv.second.station);
+
+        Map* map = player->GetMap();
+        float const px = player->GetPositionX(), py = player->GetPositionY();
+        float const R = BuildingMgr::STATION_RANGE;
+        std::vector<std::pair<float, WLPiece const*>> found;
+        for (auto const& kv : sBuildingMgr.Pieces())
+        {
+            WLPiece const& p = kv.second;
+            if (p.map != map->GetId())
+                continue;
+            WLPieceTemplate const* t = sBuildingMgr.FindTemplate(p.pieceId);
+            if (!t || !kinds.count(t->kind))
+                continue;
+            float dx = p.x - px, dy = p.y - py;
+            float d = std::sqrt(dx * dx + dy * dy);
+            if (d <= radius)
+                found.push_back({ d, &p });
+        }
+        std::sort(found.begin(), found.end(), [](auto const& a, auto const& b) { return a.first < b.first; });
+        if (found.size() > 6)                       // l'addon affiche au plus 256 segments (DLL : WowlheimMarkerShow)
+            found.resize(6);
+
+        std::vector<WLOutlinePoint> outline;
+        for (auto const& fd : found)
+        {
+            WLPiece const& st = *fd.second;
+            WLPieceTemplate const* t = sBuildingMgr.FindTemplate(st.pieceId);
+            WLBox b = sBuildingMgr.BoxOf(st);
+            bool inside = sBuildingMgr.DistToPiece2D(st, px, py) < R;
+            StationOutline(b.hx, b.hy, R, outline);
+            char buf[256];
+            snprintf(buf, sizeof(buf), "ST|%u|%s|%.2f|%.2f|%.2f|%.1f|%d|%u", st.guid, t->kind.c_str(), st.x, st.y, st.z, R, inside ? 1 : 0,
+                     uint32(outline.size()));
+            WLRaw(h, buf);
+
+            // planchers proches : le contour passe dessus plutôt que sur le terrain qu'ils recouvrent
+            std::vector<WLPiece const*> floors;
+            for (auto const& kv : sBuildingMgr.Pieces())
+            {
+                WLPiece const& f = kv.second;
+                if (f.map != st.map)
+                    continue;
+                WLPieceTemplate const* ft = sBuildingMgr.FindTemplate(f.pieceId);
+                if (!ft || ft->kind != "floor" || ft->sz > 0.6f)
+                    continue;
+                float dx = f.x - st.x, dy = f.y - st.y;
+                if (dx * dx + dy * dy < (R + 12.0f) * (R + 12.0f))
+                    floors.push_back(&f);
+            }
+
+            float const c = std::cos(st.o), s = std::sin(st.o);
+            float const twoPi = 6.28318531f;
+            std::string line;
+            uint32 first = 0, inLine = 0;
+            for (uint32 i = 0; i < outline.size(); ++i)
+            {
+                WLOutlinePoint const& lp = outline[i];
+                float wx = st.x + c * lp.x - s * lp.y;
+                float wy = st.y + s * lp.x + c * lp.y;
+                float wo = std::fmod(lp.o + st.o, twoPi);
+                if (wo < 0)
+                    wo += twoPi;
+                // sol sous le point (terrain + WMO), cherché à partir d'un peu au-dessus de la station ; sinon plus haut (colline)
+                float wz = map->GetHeight(wx, wy, st.z + 4.0f);
+                if (wz <= INVALID_HEIGHT)
+                    wz = map->GetHeight(wx, wy, st.z + 60.0f);
+                if (wz <= INVALID_HEIGHT)
+                    wz = st.z;
+                for (WLPiece const* f : floors)
+                {
+                    float top = f->z + sBuildingMgr.FindTemplate(f->pieceId)->sz;
+                    if (top > wz && top < st.z + 4.0f && sBuildingMgr.DistToPiece2D(*f, wx, wy) <= 0.01f)
+                        wz = top;
+                }
+                char pt[64];
+                snprintf(pt, sizeof(pt), "%s%.1f,%.1f,%.2f,%.2f", inLine ? ";" : "", wx, wy, wz + 0.05f, wo);
+                line += pt;
+                if (++inLine == 6 || i + 1 == outline.size())
+                {
+                    WLRaw(h, "SG|" + std::to_string(st.guid) + "|" + std::to_string(first) + "|" + line);
+                    line.clear();
+                    inLine = 0;
+                    first = i + 1;
+                }
+            }
+        }
+        return true;
+    }
+}
+
 // .build api <commande> [args] : exécute la commande avec des réponses structurées préfixées [WL] (canal de l'addon client)
 bool ChatHandler::HandleBuildApiCommand(char* args)
 {
@@ -666,6 +1043,9 @@ bool ChatHandler::HandleBuildApiCommand(char* args)
     if (cmd == "list") ok = HandleBuildListCommand(args);
     else if (cmd == "place") ok = HandleBuildPlaceCommand(args);
     else if (cmd == "remove") ok = HandleBuildRemoveCommand(args);
+    else if (cmd == "models") ok = Wowlheim_ModelsCommand(this);
+    else if (cmd == "removeguid") ok = Wowlheim_RemoveGuidCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "use") ok = Wowlheim_UseGuidCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
     else if (cmd == "count") ok = HandleBuildCountCommand(args);
     else if (cmd == "support") ok = HandleBuildSupportCommand(args);
     else if (cmd == "station") ok = HandleBuildStationCommand(args);
@@ -677,6 +1057,17 @@ bool ChatHandler::HandleBuildApiCommand(char* args)
     else if (cmd == "mode") ok = HandleBuildModeCommand(args);
     else if (cmd == "placeat") ok = HandleBuildPlaceAtCommand(args);
     else if (cmd == "trees") ok = HandleBuildTreesCommand(args);
+    else if (cmd == "canplace") ok = Wowlheim_CanPlaceCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "pieceinfo") ok = Wowlheim_PieceInfoCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "stations") ok = Wowlheim_StationsCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "known") ok = Wowlheim_KnownCommand(this, m_session ? m_session->GetPlayer() : nullptr);
+    else if (cmd == "repairitems") ok = Wowlheim_RepairItemsCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "repairable") ok = Wowlheim_RepairableCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "wear") ok = Wowlheim_WearCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "skills") ok = Wowlheim_SkillsCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "smelter") ok = Wowlheim_SmelterCommand(this, m_session ? m_session->GetPlayer() : nullptr, args, true);
+    else if (cmd == "chest") ok = Wowlheim_ChestCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
+    else if (cmd == "piece") ok = Wowlheim_PieceCommand(this, m_session ? m_session->GetPlayer() : nullptr, args);
     else
     {
         WLRaw(this, "E|commande inconnue");

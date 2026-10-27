@@ -1,5 +1,8 @@
 """Niveaux de station : le niveau d'une forge = 1 + extensions à moins de 5 m ; une recette exige un niveau minimum.
-(docs/VALHEIM_RULES.md 8 ; niveaux de recettes = proposition de conception, docs 8.9.) python level_test.py <compte> <mdp>"""
+(docs/VALHEIM_RULES.md 8 ; niveaux de recettes = Recipe.m_minStationLevel de Valheim, table wowlheim_recipe.)
+Hache en fer (105, Recipe_AxeIron : forge niveau 2), Hache en sombracier (109, Recipe_AxeBlackMetal : forge niveau 4) ;
+extensions de forge de Valheim : Soufflet de forge (forge_ext1), Enclumes (forge_ext2), Meule (forge_ext3).
+python level_test.py <compte> <mdp>"""
 import sys, time, re
 from wlclient import Session, login_char, goto_test_spot
 
@@ -19,6 +22,11 @@ def check(name, cond, detail=''):
     print(('[OK]   ' if cond else '[ÉCHEC]'), name, detail)
 
 
+# sac vidé des matériaux Wowlheim des tests précédents + sacs de voyage (beaucoup de matériaux différents ici)
+for it in (9200001, 9200002, 9200003, 9200005, 9200006, 9200012, 9200013, 9200015, 9200021, 9200031, 9200033, 9200034, 9200052, 9200011, 9200014, 9200041, 9200043, 9200056, 9201011):
+    say(f'.additem {it} -999', 0.3)
+for _ in range(2):
+    say('.additem 4500 1', 0.8); time.sleep(0.4); s.equip_item(4500); time.sleep(0.6)
 say('.build nocost on')
 say('.build place Plancher 5 0 0 0')
 # murs de Valheim : étendus le long de l'axe local Y
@@ -46,17 +54,23 @@ check('soufflet de forge posé contre la forge (5 Bois, 5 Peau de cerf, 4 Chaîn
 time.sleep(0.5)
 r = ' '.join(say('.build craft 105'))
 check('forge niveau 2 : la hache de fer est fabriquée', 'Fabriqué' in r, r)
-# second soufflet + enclumes (forge_ext2 : 5 Bois, 2 Bronze) + hache d'argent (recette Wowlheim 107, niveau 3)
-for it, n in ((9200001, 10), (9200005, 5), (9200052, 4), (9200015, 2), (9200012, 4), (9200031, 6), (9200033, 2), (9200034, 2)):
+# second soufflet + enclumes (forge_ext2 : 5 Bois, 2 Bronze) + meule (forge_ext3 : 25 Bois, 1 Roue à aiguiser)
+# + hache en sombracier (Recipe_AxeBlackMetal : 6 Bois précieux, 20 Sombracier, 5 Toile de lin ; forge niveau 4)
+for it, n in ((9200001, 35), (9200005, 5), (9200052, 4), (9200015, 2), (9200056, 1), (9200011, 6), (9200041, 20), (9200043, 5)):
     say(f'.additem {it} {n}', 0.5)
 time.sleep(1)
 r = ' '.join(say('.build place Soufflet 5 0 0.2 0'))
 check('un second soufflet (même type) se pose', 'posée' in r, r)
-r = ' '.join(say('.build craft 107'))
-check('deux soufflets = une seule extension comptée : niveau 2, la hache en argent (niveau 3) reste refusée', 'insuffisant (2, il faut 3)' in r, r)
-r = ' '.join(say('.build place Enclume 5 1 0.2 0'))
-check('une enclume (autre type extension) se pose', 'posée' in r, r)
-r = ' '.join(say('.build craft 107'))
-check('forge niveau 3 : la hache en argent est fabriquée', 'Fabriqué' in r, r)
+r = ' '.join(say('.build craft 109'))
+check('deux soufflets = une seule extension comptée : niveau 2, la hache en sombracier (niveau 4) reste refusée', 'insuffisant (2, il faut 4)' in r, r)
+r = ' '.join(say('.build place Enclumes 5 1 0.2 0'))
+check("des enclumes (autre type d'extension) se posent", 'posée' in r, r)
+r = ' '.join(say('.build craft 109'))
+check('forge niveau 3 : la hache en sombracier reste refusée', 'insuffisant (3, il faut 4)' in r, r)
+r = ' '.join(say('.build place Meule 4.5 0.5 0.2 0'))
+check("une meule (troisième type d'extension) se pose", 'posée' in r, r)
+time.sleep(0.5)
+r = ' '.join(say('.build craft 109'))
+check('forge niveau 4 : la hache en sombracier est fabriquée', 'Fabriqué' in r, r)
 s.close()
 print('RÉSULTAT :', 'OK' if ok else 'ÉCHEC')

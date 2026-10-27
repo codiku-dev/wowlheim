@@ -81,6 +81,13 @@ struct WLPiece
     float age = 1.0e9f;          // secondes depuis la pose (les pièces rechargées sont « anciennes »)
 };
 
+// `.build api canplace` : position / orientation de la pièce après accroche (Snap), snapped = un point d'accroche a été pris
+struct WLPlacePreview
+{
+    float x = 0, y = 0, z = 0, o = 0;
+    bool snapped = false;
+};
+
 struct WLBox                     // boîte orientée (rotation autour de z)
 {
     float cx, cy, cz, hx, hy, hz, yaw;
@@ -109,6 +116,14 @@ class BuildingMgr
 
         // Retourne le guid du GameObject créé, 0 en cas d'échec (err rempli).
         uint32 Place(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid, float x, float y, float z, float o, std::string& err);
+        // Contrôles de Place (plafonds, emplacement occupé, gameobject_template) sans rien créer
+        bool CanPlaceAt(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid, float x, float y, float z, std::string& err) const;
+        // Piece.IsOverlapping (Physics.OverlapBox contre les collisions solides) : la boîte de la pièce, réduite de 10 %, coupe-t-elle
+        // la géométrie statique de WoW (WMO, doodads M2 avec collision, VMaps) ? Le terrain n'est pas dans les VMaps. Geometry.cpp.
+        bool OverlapsWorld(Map* map, WLPieceTemplate const& tpl, float x, float y, float z, float o) const;
+        // coût mesuré de OverlapsWorld (`.build perf`)
+        struct WorldCheckStats { uint64 calls = 0, blocked = 0, rays = 0; double totalUs = 0, maxUs = 0; };
+        WorldCheckStats const& WorldStats() const { return m_worldStats; }
         // refund : les ressources de la pièce sont rendues (docs/VALHEIM_RULES.md 4.2) au joueur donné (sac, sinon courrier),
         // ou, si refundTo est nul et refundByMail vrai, par courrier au propriétaire (effondrement).
         bool Remove(uint32 guid, Map* map, std::string& err, bool refundByMail = false, Player* refundTo = nullptr);
@@ -124,9 +139,14 @@ class BuildingMgr
         uint32 GiveItems(Player* player, uint32 receiverGuid, std::vector<WLItemCount> const& items, std::string const& mailSubject) const;
         bool IsNoCost(uint32 playerGuid) const { return m_noCost.count(playerGuid) != 0; }
         void SetNoCost(uint32 playerGuid, bool on) { if (on) m_noCost.insert(playerGuid); else m_noCost.erase(playerGuid); }
-        // Établi : cherche une station du type donné à moins de `range` (distance horizontale, comme Valheim)
-        WLPiece const* FindStationInRange(Map* map, float x, float y, std::string const& kind, float range) const;
-        static constexpr float STATION_RANGE = 10.0f;     // CraftingStation.m_rangeBuild (valeur du constructeur, docs 3.4)
+        // Établi : cherche une station du type donné à moins de `range` (distance horizontale 2D, comme Valheim).
+        // fromEdge = true : mesurée jusqu'au bord de l'emprise de la station (adaptation, voir Geometry.cpp) ; false : centre à centre.
+        WLPiece const* FindStationInRange(Map* map, float x, float y, std::string const& kind, float range, bool fromEdge = true) const;
+        // Distance horizontale d'un point au bord de la boîte orientée de la pièce (0 à l'intérieur)
+        float DistToPiece2D(WLPiece const& p, float x, float y) const;
+        static constexpr float STATION_RANGE = 20.0f;     // CraftingStation.m_rangeBuild des prefabs (établi, forge, tailleur de pierre : 20 ; le constructeur dit 10)
+        static constexpr float ARTISAN_RANGE = 40.0f;     // piece_artisanstation.m_rangeBuild
+        static float StationRange(std::string const& kind) { return kind == "artisan" ? ARTISAN_RANGE : STATION_RANGE; }
         // Abri (Cover.GetCoverForPoint) : 17 rayons, 30 m ; renvoie la fraction de rayons bloqués par des pièces
         void GetCover(uint32 mapId, float x, float y, float z, float& coverPct, bool& underRoof, uint32 ignoreGuid = 0) const;
         // CraftingStation.GetLevel : 1 + extensions comptées (distance 3D < m_maxStationDistance de l'extension, une par type sauf m_stack)
@@ -141,12 +161,39 @@ class BuildingMgr
         static constexpr float SNAP_SEARCH = 10.0f;                  // pièces voisines examinées (même source)
         WLHammerState& Hammer(uint32 playerGuid) { return m_hammer[playerGuid]; }
         // Contrôles de pose (zone, station, extension, ressources) + accroche + pose + consommation. msg : texte pour le joueur.
-        uint32 TryPlace(Player* player, WLPieceTemplate const& tpl, float x, float y, float z, float o, bool snap, std::string& msg);
+        // dryRun : mêmes contrôles (accroche comprise), sans poser ni consommer ; renvoie 1 si la pose serait acceptée.
+        uint32 TryPlace(Player* player, WLPieceTemplate const& tpl, float x, float y, float z, float o, bool snap, std::string& msg, bool dryRun = false);
+        // Orientation de la pièce posée par le sort du marteau : orientation du personnage + rot × 22,5°, dans [0, 2π)
+        // (le fantôme natif du client affiche la même : DLL WowlheimSetPlaceFacing(rot × π/8, 1))
+        static float PlaceOrientation(float playerOrientation, int32 rot);
+        // Portée de pose (point visé à REMOVE_DISTANCE en horizontal et en vertical du personnage)
+        static bool InPlaceReach(Player* player, float x, float y, float z);
+        // `.build api canplace` : la pose de la pièce choisie au point (x, y, z), rotation rot, serait-elle acceptée ?
+        // Mêmes contrôles que PlaceFromSpell (portée, zone, station, ressources, accroche, emplacement), sans l'endurance
+        // (Valheim ne colore pas le fantôme selon l'endurance). err : raison du refus. preview (facultatif) : position et
+        // orientation de la pièce APRÈS accroche (Valheim montre le fantôme là), même si la pose est refusée.
+        bool CanPlaceFromSpell(Player* player, float x, float y, float z, int32 rot, std::string& err, WLPlacePreview* preview = nullptr);
         // Accroche Valheim : déplace (x,y,z) pour superposer le point d'accroche le plus proche d'une pièce voisine
+        bool OccupiedByIdentical(uint32 mapId, uint32 pieceId, float x, float y, float z) const;
         bool Snap(uint32 mapId, WLPieceTemplate const& tpl, float& x, float& y, float& z, float o) const;
         bool CheckStation(Player* player, WLPieceTemplate const& tpl, std::string& err) const;
         // Clic droit sur une pièce (GameObject::Use) : démolir / réparer selon le mode du marteau ; true si traité
         bool OnPieceUse(Player* player, uint32 goGuid);
+        // Démolition par le joueur (Player.RemovePiece) : endurance, propriétaire (sauf MJ), station requise (CheckCanRemovePiece),
+        // Remove avec remboursement, puis endurance / dette de démolition / usure du marteau. name : nom de la pièce.
+        // Partagée par OnPieceUse (mode Démolir) et `.build api removeguid` (clic milieu) ; portée et marteau vérifiés par l'appelant.
+        bool TryRemoveByPlayer(Player* player, uint32 goGuid, std::string& err, std::string& name);
+        // Player.m_maxPlaceDistance de Valheim (5 m depuis l'œil, caméra à l'épaule) ; WoW place la caméra plus loin derrière le
+        // personnage, donc 8 m : même portée pour poser et pour démolir (docs/BUILD_CONTROLS.md §5)
+        static constexpr float REMOVE_DISTANCE = 8.0f;
+        // Écart vertical entre la boîte de la pièce [z, z + hauteur] et le personnage (pieds pz .. tête pz + 2 m) ; 0 s'ils se chevauchent
+        float VerticalGap(WLPiece const& p, float pz) const;
+        // Utilisation d'une pièce (clic droit : fonderie, établi, forge...). Valheim : Interactable visé à ~2–3 m de sa surface
+        // (Player.m_maxInteractDistance depuis le point visé) ; le client 1.12 et CMaNGOS mesurent depuis le CENTRE de l'objet
+        // (5 m), trop court pour les grandes pièces : on accepte aussi si le joueur est à USE_DISTANCE au plus du BORD de la boîte
+        // (distance horizontale DistToPiece2D et écart vertical VerticalGap). Voir HandleGameObjectUseOpcode et `.build api use`.
+        static constexpr float USE_DISTANCE = 3.0f;
+        bool InUseRange(Player* player, WLPiece const& p) const;
         // Spell::cast du sort de pose : pose la pièce choisie au point visé
         void PlaceFromSpell(Player* player, float x, float y, float z);
         bool IsHammerEquipped(Player* player) const;
@@ -165,6 +212,8 @@ class BuildingMgr
         // Recalcule le support de toutes les pièces d'une carte ; renvoie le nombre de pièces sous le minimum.
         uint32 RecomputeSupport(Map* map);
         float GetSupportOf(uint32 guid) const;
+        // WearNTear.GetSupportColorValue : -1 si support >= maxSupport du matériau, sinon clamp01((support - min) / (max/2 - min))
+        float SupportColorValue(WLPiece const& p) const;
         float GraceSeconds() const { return m_grace; }
         void SetGraceSeconds(float seconds) { m_grace = seconds; }
         float RainPeriod() const { return m_rainPeriod; }
@@ -191,6 +240,7 @@ class BuildingMgr
         std::map<uint32, Tool> m_tools;
         std::map<uint32, Node> m_nodes;
         std::deque<uint32> m_diffs;
+        mutable WorldCheckStats m_worldStats;
         bool m_dirty = false;
         uint32 m_simTimerMs = 0;
         float m_rainPeriod = 60.0f;   // Valheim : 60 s (WearNTear.UpdateWear IL 266)
@@ -206,5 +256,7 @@ class BuildingMgr
 // Accroches appelées depuis le cœur (Spell::cast, GameObject::Use)
 void Wowlheim_PlaceFromSpell(Player* player, float x, float y, float z);
 bool Wowlheim_OnPieceUse(Player* player, uint32 goGuid);
+// HandleGameObjectUseOpcode : pièce Wowlheim (entrée 9110000–9119999) à USE_DISTANCE de son bord -> utilisation acceptée
+bool Wowlheim_PieceInUseRange(Player* player, uint32 goEntry, uint32 goGuid);
 
 #endif

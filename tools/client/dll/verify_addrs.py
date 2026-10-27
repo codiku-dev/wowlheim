@@ -23,6 +23,13 @@ HOOKS = {
     0x6920cc: 0x697ac0,  # CMap::Unload-like
     0x4821c5: 0x6e6980,  # orientation du fantome natif
     0x540740: 0x54ffd0,  # (controle) CALL WowClientDB<SpellRec>::Load apres MOV ECX,0xc0d780
+    0x4812c1: 0x481050,  # masque de selection du lancer de rayon (survol des gameobjects)
+    0x5f7c6b: 0x613af0,  # fondu d'apparition : CGGameObject_C
+    0x5fb956: 0x613af0,  # fondu d'apparition : CGUnit_C
+    0x5f7e83: 0x614640,  # fondu de reapparition : CGGameObject_C
+    0x5fbd67: 0x614640,  # fondu de reapparition : CGUnit_C
+    0x614603: 0x672df0,  # fondu de sortie du modele (SWModelFadeout) : CGObject_C::Disappear
+    0x5fbf30: 0x672df0,  # fondu de sortie du modele : CGUnit_C
 }
 
 
@@ -48,7 +55,7 @@ def load_pe(path):
 
 def main():
     src = open(os.path.join(HERE, "wowlheim_client.cpp"), encoding="utf-8").read()
-    sigs = re.findall(r'\{\s*0x([0-9a-fA-F]+),\s*"([0-9a-fA-F ]*)",\s*([012])\s*\}', src)
+    sigs = re.findall(r'\{\s*0x([0-9a-fA-F]+),\s*"([0-9a-fA-F ]*)",\s*([0-9])\s*\}', src)
     d, v2o = load_pe(EXE)
     bad = 0
     print("fichier:", EXE)
@@ -59,7 +66,7 @@ def main():
         got = d[o:o + len(want)] if o is not None else b""
         ok = got == want
         bad += not ok
-        print("%-4s 0x%06x %-6s attendu %s%s" % ("OK" if ok else "FAUX", va, {"0": "base", "1": "ghost", "2": "natif"}[ghost],
+        print("%-4s 0x%06x %-6s attendu %s%s" % ("OK" if ok else "FAUX", va, {"0": "base", "1": "ghost", "2": "natif", "3": "survol", "4": "fondu", "5": "precha", "6": "dispar", "7": "surbri", "8": "marteau"}[ghost],
                                                want.hex(), "" if ok else "  lu " + got.hex()))
     for site, target in sorted(HOOKS.items()):
         o = v2o(site)
@@ -77,6 +84,21 @@ def main():
         ok = pat in body
         bad += not ok
         print("%-4s Spell.dbc %s dans 0x54ffd0" % ("OK" if ok else "FAUX", what))
+    # WowlheimUseHammer : [0xcf4dc4] ne doit etre lu que par 0x77e430, et 0x77e430 n'etre appele que par CanPerformAction
+    # (0x494a50) : forcer ce drapeau n'a pas d'autre effet. Balayage des references absolues et des CALL rel32 de .text.
+    t0, t1 = v2o(0x401000), v2o(0x7fedac)
+    text = d[t0:t1]
+    refs = []
+    i = text.find(struct.pack("<I", 0xcf4dc4))
+    while i >= 0:
+        refs.append(0x401000 + i)
+        i = text.find(struct.pack("<I", 0xcf4dc4), i + 1)
+    calls = [0x401000 + m.start() for m in re.finditer(b"\xe8", text)
+             if (0x401000 + m.start() + 5 + struct.unpack_from("<i", text, m.start() + 1)[0]) & 0xFFFFFFFF == 0x77e430]
+    # references attendues : 0x77b43a (MOV [..],1), 0x77b45b (MOV [..],0), 0x77e431 (lecture)
+    ok = refs == [0x77b43a, 0x77b45b, 0x77e431] and calls == [0x494a92, 0x494b1a]
+    bad += not ok
+    print("%-4s [0xcf4dc4] refs %s ; CALL 0x77e430 depuis %s" % ("OK" if ok else "FAUX", [hex(r) for r in refs], [hex(c) for c in calls]))
     print("RESULTAT:", "toutes les verifications passent" if not bad else "%d echec(s)" % bad)
     return 1 if bad else 0
 

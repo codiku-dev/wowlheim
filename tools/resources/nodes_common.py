@@ -6,41 +6,19 @@ import os, re, math, collections, statistics
 from common import sql, REPO, zone_of, read_dbc, area_table
 import rules
 
-GUID_MIN, GUID_MAX = 9510001, 9599999         # plage de production (9500001-9500999 = validation 005, intouchee)
-NODE_ENTRY_MIN, NODE_ENTRY_MAX = 9101001, 9101999
-TOTAL_CAP = 6000                              # plafond dur de noeuds de production
-TOTAL_TARGET = 4600                           # cible de generation (marge sous le plafond)
-BLOCK_SIZE = 1000.0                           # bloc de 1 km x 1 km (coordonnees monde) pour le plafond de densite
-GRID_CAP = 32                                 # noeuds de production max par grille serveur de 533,33 m (unite de chargement des GameObjects)
-GRID_SIZE = 533.33333
-BLOCK_CAP = 45                                # noeuds de production max par bloc de 1 km2
-REGION_DENSITY_CAP = 30.0                     # noeuds / km2 max par (zone, palier)
-NODE_EXCL_RADIUS = 100.0                      # rayon d'exclusion autour des points de 010 (010 : 70 m ; 100 m cote noeuds)
+GUID_MIN, GUID_MAX = 9510001, 9599999         # ancienne plage de 008 (noeuds WoW, supprimes)
+NODE_ENTRY_MIN, NODE_ENTRY_MAX = rules.OLD_NODE_ENTRY_MIN, rules.OLD_NODE_ENTRY_MAX
+# Budget de charge du monde Valheim (place_resources.py : TREE_RATIO / TIER_DENSITY / KINDS) : creatures-ressources + ramassables
+TOTAL_CAP = 20000
+PICKABLE_GUID_MIN, PICKABLE_GUID_MAX = 9501001, 9514664   # ramassables (GameObjects) : sous les pieces posees, 13 664 places
+NODE_EXCL_RADIUS = 100.0                      # rayon d'exclusion autour des points de 010 (010 : 70 m ; 100 m cote ressources)
 NPC_EXCL_RADIUS = 50.0                        # rayon autour de toute creature a drapeaux PNJ / civile / garde
-SPACING_ANY = 12.0                            # espacement minimal entre deux noeuds quelconques (inclut ceux de 005)
-SPACING_SAME = {"bois": 40.0, "pierre": 40.0, "plante": 40.0, "minerai": 60.0, "passage": 150.0}
-Z_TOL_DOWN, Z_TOL_UP = -1.0, 1.5              # ecart admis entre le z de la creature et le terrain statique (m)
-WATER_MARGIN = 6.0                            # pas d'eau a moins de 6 m
-LOCAL_CELL = 200.0                            # cellule de lissage du niveau local (m) ; bloc 3 x 3 cellules
-LOCAL_MIN_SAMPLES = 5
-POCKET_MIN = 25                               # candidats minimum pour qu'un palier voisin du palier de la zone soit autorise
-CELL_AREA = 250.0                             # cellule de 250 m : la surface « couverte » d une region = nb de cellules contenant >= 1 candidat
-MIN_AREA = 0.75                               # km2 : une region plus petite n'est retenue que si elle est necessaire a la couverture (3 zones / faction)
-MIN_COUNTED = 4                               # un noeud-type compte pour une zone s'il y en a >= 4 dans la zone (couverture)
+MIN_COUNTED = 4                               # un type compte pour une zone s'il y en a >= 4 dans la zone (couverture)
 MIN_ZONES = 3                                 # zones par continent et par faction
 CITY_FLAGS = 0x100 | 0x200 | 0x08 | 0x20 | 0x80   # AREA_FLAG_CAPITAL|CITY|SLAVE_CAPITAL(2)|ARENA (comme BuildingMgr.cpp)
 NPC_FLAG_GUARD_EXTRA = 0x400 | 0x10000        # ExtraFlags garde / civil (comme classify.py)
-
-# repartition des types de noeuds par palier (somme = 1)
-TIER_WEIGHTS = {
-    1: {9101001: .46, 9101011: .46, 9101041: .08},
-    2: {9101002: .30, 9101012: .22, 9101021: .21, 9101022: .21, 9101042: .06},
-    3: {9101003: .30, 9101013: .24, 9101023: .40, 9101043: .06},
-    4: {9101004: .21, 9101014: .15, 9101024: .28, 9101026: .15, 9101027: .15, 9101044: .06},
-    5: {9101005: .24, 9101015: .18, 9101025: .28, 9101031: .24, 9101045: .06},
-}
-TIER_DENSITY_MULT = {1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0}
-MIN_PER_TYPE = 5                              # minimum par (zone, palier, type) quand la region est assez grande
+LOCAL_CELL = 200.0                            # cellule de lissage du niveau local (m) ; bloc 3 x 3 cellules
+LOCAL_MIN_SAMPLES = 5
 
 INDOOR = re.compile(rules.INDOOR_AREA_RE, re.I)
 
@@ -120,8 +98,16 @@ def faction_zones_ok(f, fac):
 
 
 def node_resources():
-    """{entree de noeud : [(item, chance %)]} : tout ce que le noeud peut donner (rules.NODES)."""
-    return {n["entry"]: [(it, ch) for it, ch, _mn, _mx in n["loot"]] for n in rules.NODES}
+    """{type de placement : [(item, 100)]} : materiaux que le type donne (rules.PLACEMENTS, gives)."""
+    return {p["key"]: [(it, 100) for it in p["gives"]] for p in rules.PLACEMENTS}
+
+
+def read_placements(path=None):
+    """placements.json (place_resources.py) -> [dict(key, map, zone, tier, x, y, z, o, anchor)] ; key = « kind » = cle de rules.PLACEMENT."""
+    import json
+    d = json.load(open(path or rules.PLACEMENTS_JSON, encoding="utf8"))
+    return [dict(key=it["kind"], map=int(it["map"]), zone=int(it["zone"]), tier=int(it["tier"]), x=float(it["x"]), y=float(it["y"]),
+                 z=float(it["z"]), o=float(it["o"]), anchor=it.get("anchor", "")) for it in d["items"]]
 
 
 def coverage(nodes, min_counted=MIN_COUNTED):
@@ -147,6 +133,65 @@ def coverage(nodes, min_counted=MIN_COUNTED):
                 if faction_zones_ok(rules.zone_faction(z), fac):
                     by_res[(m, fac, it)].add(z)
     return by_type, by_res
+
+
+TREE_KEYS = ("beech", "birch", "oak", "fir", "pine", "swamp")
+MIN_WOW_TREES = 10        # un type d'arbre n'est exigible que dans une zone ou WoW a au moins 10 arbres (non exotiques)
+# Paliers ou un type est place PARTOUT (densite de zone) ; rules.PLACEMENTS peut en autoriser davantage (chardon au palier 1 :
+# berge du depart seulement), ces paliers-la ne rendent pas une zone exigible.
+COVERAGE_TIERS = {"thistle": (2, 3)}
+
+
+def wow_tree_zones():
+    """{(map, zone) : nombre d'arbres WoW non exotiques} d'apres wl_terrain/{m}_trees.json (zone = aire ADT du point)."""
+    import json
+    import terrain_grid as tg
+    import numpy as np
+    exotic = re.compile(r"palm|cactus|bamboo|jungle|stranglethorn|ungoro|tanaris|silithus|kalidartree0[67]|mushroomtree|\\armor\\|armorhelm", re.I)
+    by_id, _ = area_table()
+    out = collections.Counter()
+    for m in (0, 1):
+        tr = json.load(open(os.path.join(tg.OUT, "%d_trees.json" % m)))
+        g = tg.Grid(m)
+        keep = [t for t in tr["items"] if not exotic.search(tr["models"][t[4]])]
+        if not keep:
+            continue
+        aids = g.area_at(np.array([t[0] for t in keep]), np.array([t[1] for t in keep]))
+        for a in aids:
+            a = int(a)
+            z = by_id.get(a, {}).get("zone") or a
+            out[(m, z)] += 1
+        del g
+    return out
+
+
+def coverage_report(pls, zone_tiers, wow_trees=None):
+    """Couverture continent x faction x type. Une zone est EXIGIBLE pour un type si elle est accessible a la faction, que son palier
+    est un palier ou le type est place partout (COVERAGE_TIERS sinon rules.PLACEMENTS) et, pour un arbre, que WoW y a >= MIN_WOW_TREES
+    arbres. Exige : min(MIN_ZONES, zones exigibles) zones avec >= MIN_COUNTED placements, ET chaque zone exigible couverte quand il y a
+    moins de MIN_ZONES zones exigibles (on ne peut pas faire mieux que toutes).
+    -> (gaps, structurels) : listes de (map, faction, type, couvertes, exigibles, noms)."""
+    by_id, _ = area_table()
+    by_type, _r = coverage((p["map"], p["zone"], p["key"]) for p in pls)
+    if wow_trees is None:
+        wow_trees = wow_tree_zones()
+    gaps, structural = [], []
+    for m in (0, 1):
+        for fac in "AH":
+            for pl in rules.PLACEMENTS:
+                k = pl["key"]
+                tiers = COVERAGE_TIERS.get(k, pl["tiers"])
+                elig = {z for (mm, z), t in zone_tiers.items() if mm == m and z and t[0] in tiers and faction_zones_ok(rules.zone_faction(z), fac)
+                        and (k not in TREE_KEYS or wow_trees.get((m, z), 0) >= MIN_WOW_TREES)}
+                cov = by_type.get((m, fac, k), set()) & elig
+                need = min(MIN_ZONES, len(elig))
+                name = lambda zs: sorted(by_id.get(z, {}).get("name", str(z)) for z in zs)
+                row = (m, fac, k, name(cov), name(elig))
+                if len(cov) < need:
+                    gaps.append(row)
+                elif len(elig) < MIN_ZONES:
+                    structural.append(row)
+    return gaps, structural
 
 
 def disc_index(samples, cell=300.0):

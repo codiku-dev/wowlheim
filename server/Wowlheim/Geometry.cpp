@@ -1,9 +1,13 @@
 // Géométrie logique des pièces : boîtes orientées, rayons, abri (Cover), stations.
 // Remplace les raycasts Unity de Valheim (docs/VALHEIM_RULES.md 2.2–2.4) par des tests rayon/boîte sur les pièces posées.
 #include "Wowlheim/BuildingMgr.h"
+#include "Wowlheim/Pieces.h"
 
 #include "Maps/Map.h"
+#include "vmap/VMapFactory.h"
 
+#include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <set>
 
@@ -73,7 +77,9 @@ void BuildingMgr::GetCover(uint32 mapId, float x, float y, float z, float& cover
         float dx = p.x - x, dy = p.y - y;
         if (dx * dx + dy * dy > 40.0f * 40.0f)
             continue;
-        boxes.push_back(BoxOf(p));
+        WLBox b = BoxOf(p);
+        Wowlheim_OpenDoorBox(p, b);                // porte ouverte : battant tourné de 90° (Pieces.cpp), la baie ne couvre plus
+        boxes.push_back(b);
     }
     for (int i = 0; i < 17; ++i)
     {
@@ -116,7 +122,21 @@ bool BuildingMgr::HaveRoofAbove(WLPiece const& piece) const
     return false;
 }
 
-WLPiece const* BuildingMgr::FindStationInRange(Map* map, float x, float y, std::string const& kind, float range) const
+// Distance horizontale (2D) d'un point au bord de la boîte orientée de la pièce (0 si le point est dans l'emprise).
+float BuildingMgr::DistToPiece2D(WLPiece const& p, float x, float y) const
+{
+    WLBox b = BoxOf(p);
+    float dx = x - b.cx, dy = y - b.cy;
+    float c = std::cos(-b.yaw), s = std::sin(-b.yaw);
+    float lx = std::fabs(dx * c - dy * s), ly = std::fabs(dx * s + dy * c);
+    float ex = std::max(0.0f, lx - b.hx), ey = std::max(0.0f, ly - b.hy);
+    return std::sqrt(ex * ex + ey * ey);
+}
+
+// fromEdge (défaut) : distance du joueur au bord de l'emprise de la station (adaptation : Valheim mesure depuis le transform de la
+// station, rayon m_rangeBuild 10 m ; ici les stations sont des boîtes de plusieurs mètres, on mesure depuis leur bord pour que
+// « à côté de la station » suffise). fromEdge = false : distance centre à centre (extensions, m_maxStationDistance).
+WLPiece const* BuildingMgr::FindStationInRange(Map* map, float x, float y, std::string const& kind, float range, bool fromEdge) const
 {
     WLPiece const* best = nullptr;
     float bestD = range;
@@ -129,7 +149,7 @@ WLPiece const* BuildingMgr::FindStationInRange(Map* map, float x, float y, std::
         if (!t || t->kind != kind)
             continue;
         float dx = p.x - x, dy = p.y - y;
-        float d = std::sqrt(dx * dx + dy * dy);               // distance horizontale (docs 3.4)
+        float d = fromEdge ? DistToPiece2D(p, x, y) : std::sqrt(dx * dx + dy * dy);   // distance horizontale (docs 3.4)
         if (d < bestD)
         {
             bestD = d;
@@ -175,4 +195,108 @@ uint32 BuildingMgr::StationLevel(WLPiece const& station) const
         ++level;
     }
     return level;
+}
+
+// Piece.IsOverlapping de Valheim (Physics.OverlapBox de la boîte de la pièce contre les collisions solides, docs/VALHEIM_RULES.md 3.2)
+// transposé à la géométrie statique de WoW, les VMaps (WMO et doodads M2 avec collision ; le terrain n'y est pas) :
+//  1. segments horizontaux dans la boîte réduite de 10 % (tolère les contacts), à plusieurs hauteurs : grille de lignes espacées
+//     d'au plus 0,5 m dans chaque axe local + 2 diagonales ; le niveau bas est à 0,3 m au-dessus de la base (ou à mi-hauteur
+//     pour les pièces plates comme le plancher) ;
+//  2. arêtes verticales (4 coins + centre) entre le niveau bas et le haut de la boîte ;
+//  3. boîte entièrement DANS une coque fermée (chariot, rocher : aucun segment ne coupe de paroi) : toit à moins de 6 m au-dessus
+//     et parois dans les 8 directions à moins de 4 m du bord de la boîte. Pas dans un bâtiment WMO (getAreaInfo : sol de WMO
+//     sous la pièce) où une pièce intérieure est permise.
+// Les pièces Wowlheim sont des GameObjects (arbre dynamique), pas dans les VMaps : elles ne se bloquent pas entre elles.
+// Coût mesuré (sonde VMaps hors serveur, Comté du Nord) : 11 à 41 rayons, 2 à 5 µs en moyenne, 36 µs au plus ; `.build perf`.
+bool BuildingMgr::OverlapsWorld(Map* map, WLPieceTemplate const& tpl, float x, float y, float z, float o) const
+{
+    if (!map)
+        return false;
+    auto t0 = std::chrono::steady_clock::now();
+    VMAP::IVMapManager* vm = VMAP::VMapFactory::createOrGetVMapManager();
+    uint32 const mapId = map->GetId();
+    uint32 rays = 0;
+    auto hit = [&](float ax, float ay, float az, float bx, float by, float bz)
+    {
+        ++rays;
+        return !vm->isInLineOfSight(mapId, ax, ay, az, bx, by, bz, false);
+    };
+
+    auto run = [&]() -> bool
+    {
+        float const hx = tpl.sx * 0.45f, hy = tpl.sy * 0.45f, sz = tpl.sz;
+        float const zb = z + std::max(std::min(0.3f, sz * 0.5f), sz * 0.05f);
+        float const zt = std::max(zb, z + sz * 0.95f);
+        std::vector<float> levels{ zb };
+        if (zt - zb > 0.25f)
+        {
+            int n = int(std::ceil((zt - zb) / 1.0f));
+            for (int i = 1; i <= n; ++i)
+                levels.push_back(zb + (zt - zb) * float(i) / float(n));
+        }
+        float const c = std::cos(o), s = std::sin(o);
+        auto world = [&](float lx, float ly, float& wx, float& wy) { wx = x + lx * c - ly * s; wy = y + lx * s + ly * c; };
+        int const nx = std::max(2, std::min(9, int(std::ceil(2.0f * hx / 0.5f)) + 1));
+        int const ny = std::max(2, std::min(9, int(std::ceil(2.0f * hy / 0.5f)) + 1));
+        float ax, ay, bx, by;
+        for (float lz : levels)
+        {
+            for (int i = 0; i < ny; ++i)
+            {
+                float ly = -hy + 2.0f * hy * float(i) / float(ny - 1);
+                world(-hx, ly, ax, ay); world(hx, ly, bx, by);
+                if (hit(ax, ay, lz, bx, by, lz))
+                    return true;
+            }
+            for (int i = 0; i < nx; ++i)
+            {
+                float lx = -hx + 2.0f * hx * float(i) / float(nx - 1);
+                world(lx, -hy, ax, ay); world(lx, hy, bx, by);
+                if (hit(ax, ay, lz, bx, by, lz))
+                    return true;
+            }
+            world(-hx, -hy, ax, ay); world(hx, hy, bx, by);
+            if (hit(ax, ay, lz, bx, by, lz))
+                return true;
+            world(-hx, hy, ax, ay); world(hx, -hy, bx, by);
+            if (hit(ax, ay, lz, bx, by, lz))
+                return true;
+        }
+        if (zt > zb + 0.1f)
+        {
+            float const corners[5][2] = { { -hx, -hy }, { hx, -hy }, { hx, hy }, { -hx, hy }, { 0.0f, 0.0f } };
+            for (auto const& p : corners)
+            {
+                world(p[0], p[1], ax, ay);
+                if (hit(ax, ay, zb, ax, ay, zt))
+                    return true;
+            }
+        }
+        // 3. coque fermée
+        float wz = zb;
+        uint32 flags; int32 adtId, rootId, groupId;
+        if (vm->getAreaInfo(mapId, x, y, wz, flags, adtId, rootId, groupId) && wz <= zb + 0.5f && wz > zb - 10.0f)
+            return false;
+        if (!hit(x, y, zb, x, y, zb + 6.0f))
+            return false;
+        for (int k = 0; k < 8; ++k)
+        {
+            float const a = float(k) * 3.14159265f / 4.0f, dx = std::cos(a), dy = std::sin(a);
+            float const reach = std::min(std::fabs(dx) > 1e-4f ? hx / std::fabs(dx) : 1e9f, std::fabs(dy) > 1e-4f ? hy / std::fabs(dy) : 1e9f) + 4.0f;
+            world(dx * reach, dy * reach, bx, by);
+            if (!hit(x, y, zb, bx, by, zb))
+                return false;
+        }
+        return true;
+    };
+
+    bool const blocked = run();
+    double const us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+    ++m_worldStats.calls;
+    m_worldStats.rays += rays;
+    m_worldStats.totalUs += us;
+    m_worldStats.maxUs = std::max(m_worldStats.maxUs, us);
+    if (blocked)
+        ++m_worldStats.blocked;
+    return blocked;
 }

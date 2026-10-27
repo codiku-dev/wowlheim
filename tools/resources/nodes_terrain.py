@@ -139,3 +139,17 @@ def has_water(mapid, x, y):
 def near_water(mapid, x, y, r=6.0):
     """Eau au point ou a r metres (N/S/E/O)."""
     return any(has_water(mapid, x + dx, y + dy) for dx, dy in ((0, 0), (r, 0), (-r, 0), (0, r), (0, -r)))
+
+
+def water_distance(mapid, x, y, r=15.0, step=3.0):
+    """Distance approchee (pas de 3 m, 8 directions) a la plus proche eau du terrain jusqu'a r metres ; None si aucune.
+    Liquide du terrain (.map) seulement : l'eau des modeles (WMO) n'est pas vue ; le type de liquide (eau / magma / slime) n'est pas distingue."""
+    if has_water(mapid, x, y):
+        return 0.0
+    d = step
+    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1), (0.7071, 0.7071), (0.7071, -0.7071), (-0.7071, 0.7071), (-0.7071, -0.7071)]
+    while d <= r + 1e-6:
+        if any(has_water(mapid, x + dx * d, y + dy * d) for dx, dy in dirs):
+            return d
+        d += step
+    return None

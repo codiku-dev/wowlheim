@@ -1,6 +1,8 @@
 <Bindings>
-	<!-- Charge automatiquement par le client (fichier Bindings.xml du dossier de l'addon). Aucune touche par defaut :
-	     a lier dans Menu > Raccourcis (section Wowlheim). Libelles : BINDING_* dans Wowlheim.lua. -->
+	<!-- Charge automatiquement par le client (fichier Bindings.xml du dossier de l'addon). Libelles : BINDING_* dans Wowlheim.lua.
+	     Touches par defaut (Y menu, I fabrication, J fonderie, Alt+A / Alt+E et Ctrl+molette rotation, Maj+K competences) posees UNE fois au
+	     premier chargement par Wowlheim.ApplyDefaultBindings, seulement si la touche est libre (WowlheimCore.DEFAULT_KEYS).
+	     Modifiables dans Menu > Raccourcis (section Wowlheim). -->
 	<Binding name="WOWLHEIM_TOGGLE" header="WOWLHEIM">
 		Wowlheim.Toggle();
 	</Binding>
@@ -9,5 +11,19 @@
 	</Binding>
 	<Binding name="WOWLHEIM_ROTATE_RIGHT">
 		Wowlheim.Rotate(1);
+	</Binding>
+	<Binding name="WOWLHEIM_CRAFT">
+		Wowlheim.Craft.Toggle();
+	</Binding>
+	<Binding name="WOWLHEIM_SMELT">
+		Wowlheim.Smelt.Toggle();
+	</Binding>
+	<Binding name="WOWLHEIM_SKILLS">
+		Wowlheim.Skills.Toggle();
+	</Binding>
+	<!-- Clic milieu en mode construction : liaison TEMPORAIRE BUTTON3 (SetBinding sans SaveBindings, marteau equipe en
+	     construction ; docs/BUILD_CONTROLS.md). La molette (MOUSEWHEELUP/DOWN) est liee de meme a WOWLHEIM_ROTATE_RIGHT/LEFT. -->
+	<Binding name="WOWLHEIM_REMOVE">
+		Wowlheim.RemoveUnderMouse();
 	</Binding>
 </Bindings>

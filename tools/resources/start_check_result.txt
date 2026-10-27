@@ -1,0 +1,117 @@
+Controle des departs : source db (classicmangos), 16361 ressources
+
+=== Comte du Nord (Northshire) : races [1], carte 0 (-8950.0, -132.5), zone Elwynn Forest (palier 1)
+   premiere eau atteignable sans danger : 113 m de marche (-9021, -216)
+   [OK] branches < 150 m          22 valides (minimum 15) a moins de 150 m de marche (22 a vol d'oiseau) ; plus proche 43 m
+   [OK] pierres < 150 m           13 valides (minimum 8) a moins de 150 m de marche (13 a vol d'oiseau) ; plus proche 41 m
+   [OK] hetres < 300 m            21 valides (minimum 5) a moins de 300 m de marche (26 a vol d'oiseau) ; plus proche 36 m ; ecartes : chemin > 300 m 1, danger (creature >= niv 6 a < 40 m) 4
+   [OK] arbres palier 0 < 300 m   21 valides (minimum 10) a moins de 300 m de marche (26 a vol d'oiseau) ; plus proche 36 m ; ecartes : chemin > 300 m 1, danger (creature >= niv 6 a < 40 m) 4
+   [OK] rochers < 300 m            5 valides (minimum 3) a moins de 300 m de marche (5 a vol d'oiseau) ; plus proche 162 m
+   [OK] silex berge < 400 m       12 valides (minimum 6) a moins de 400 m de marche (12 a vol d'oiseau) ; plus proche 98 m
+   [OK] chardon berge < 500 m      5 valides (minimum 3) a moins de 500 m de marche (5 a vol d'oiseau) ; plus proche 100 m
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 1696 m a vol d'oiseau (Duskwood, palier 2), 1766 m de marche
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 1258 m a vol d'oiseau (Duskwood, palier 2), 1346 m de marche
+   => DEPART OK
+
+=== Vallee des epreuves (Durotar) : races [2, 8], carte 1 (-618.5, -4251.7), zone Durotar (palier 1)
+   premiere eau atteignable sans danger : 94 m de marche (-694, -4298)
+   [OK] branches < 150 m          22 valides (minimum 15) a moins de 150 m de marche (22 a vol d'oiseau) ; plus proche 80 m
+   [OK] pierres < 150 m           12 valides (minimum 8) a moins de 150 m de marche (12 a vol d'oiseau) ; plus proche 87 m
+   [OK] hetres < 300 m            12 valides (minimum 5) a moins de 300 m de marche (12 a vol d'oiseau) ; plus proche 138 m
+   [OK] arbres palier 0 < 300 m   12 valides (minimum 10) a moins de 300 m de marche (12 a vol d'oiseau) ; plus proche 138 m
+   [OK] rochers < 300 m            7 valides (minimum 3) a moins de 300 m de marche (8 a vol d'oiseau) ; plus proche 84 m ; ecartes : chemin > 300 m 1
+   [OK] silex berge < 400 m       10 valides (minimum 6) a moins de 400 m de marche (16 a vol d'oiseau) ; plus proche 80 m ; ecartes : chemin > 400 m 3, danger (creature >= niv 6 a < 40 m) 3
+   [OK] chardon berge < 500 m      6 valides (minimum 3) a moins de 500 m de marche (10 a vol d'oiseau) ; plus proche 82 m ; ecartes : danger (creature >= niv 6 a < 40 m) 3, chemin > 500 m 1
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 1107 m a vol d'oiseau (The Barrens, palier 2), 1200 m de marche
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 1122 m a vol d'oiseau (The Barrens, palier 2), 1444 m de marche
+   => DEPART OK
+
+=== Coldridge (Dun Morogh) : races [3, 7], carte 0 (-6240.3, 331.0), zone Dun Morogh (palier 1)
+   premiere eau atteignable sans danger : 1119 m de marche (-5253, 44)
+   [OK] branches < 150 m          22 valides (minimum 15) a moins de 150 m de marche (23 a vol d'oiseau) ; plus proche 38 m ; ecartes : chemin > 150 m 1
+   [OK] pierres < 150 m           14 valides (minimum 8) a moins de 150 m de marche (14 a vol d'oiseau) ; plus proche 53 m
+   [OK] hetres < 300 m            16 valides (minimum 5) a moins de 300 m de marche (16 a vol d'oiseau) ; plus proche 60 m
+   [OK] arbres palier 0 < 300 m   25 valides (minimum 10) a moins de 300 m de marche (28 a vol d'oiseau) ; plus proche 33 m ; ecartes : danger (creature >= niv 6 a < 40 m) 1, chemin > 300 m 2
+   [OK] rochers < 300 m            5 valides (minimum 3) a moins de 300 m de marche (5 a vol d'oiseau) ; plus proche 141 m
+   [OK] silex berge < 400 m       15 valides (minimum 6) a moins de 1369 m de marche (15 a vol d'oiseau) ; plus proche 1103 m
+   [OK] chardon berge < 500 m      5 valides (minimum 3) a moins de 1469 m de marche (5 a vol d'oiseau) ; plus proche 1104 m
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 3648 m a vol d'oiseau (Wetlands, palier 2), pas de chemin a moins de 1600 m
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 2391 m a vol d'oiseau (Wetlands, palier 2), pas de chemin a moins de 1600 m
+   => DEPART OK
+
+=== Shadowglen (Teldrassil) : races [4], carte 1 (10311.3, 831.5), zone Teldrassil (palier 1)
+   premiere eau atteignable sans danger : 224 m de marche (10532, 840)
+   [OK] branches < 150 m          22 valides (minimum 15) a moins de 150 m de marche (22 a vol d'oiseau) ; plus proche 57 m
+   [OK] pierres < 150 m           12 valides (minimum 8) a moins de 150 m de marche (12 a vol d'oiseau) ; plus proche 61 m
+   [OK] hetres < 300 m            13 valides (minimum 5) a moins de 300 m de marche (13 a vol d'oiseau) ; plus proche 70 m
+   [OK] arbres palier 0 < 300 m   13 valides (minimum 10) a moins de 300 m de marche (13 a vol d'oiseau) ; plus proche 70 m
+   [OK] rochers < 300 m           10 valides (minimum 3) a moins de 300 m de marche (11 a vol d'oiseau) ; plus proche 88 m ; ecartes : chemin > 300 m 1
+   [OK] silex berge < 400 m       14 valides (minimum 6) a moins de 474 m de marche (14 a vol d'oiseau) ; plus proche 216 m
+   [OK] chardon berge < 500 m      5 valides (minimum 3) a moins de 574 m de marche (5 a vol d'oiseau) ; plus proche 217 m
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 6206 m a vol d'oiseau (Ashenvale, palier 2), pas de chemin a moins de 1600 m
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 6101 m a vol d'oiseau (Ashenvale, palier 2), pas de chemin a moins de 1600 m
+   => DEPART OK
+
+=== Deathknell (Tirisfal) : races [5], carte 0 (1676.3, 1677.5), zone Tirisfal Glades (palier 1)
+   premiere eau atteignable sans danger : 656 m de marche (1268, 2090)
+   [OK] branches < 150 m          23 valides (minimum 15) a moins de 150 m de marche (23 a vol d'oiseau) ; plus proche 42 m
+   [OK] pierres < 150 m           12 valides (minimum 8) a moins de 150 m de marche (12 a vol d'oiseau) ; plus proche 54 m
+   [OK] hetres < 300 m            19 valides (minimum 5) a moins de 300 m de marche (19 a vol d'oiseau) ; plus proche 69 m
+   [OK] arbres palier 0 < 300 m   19 valides (minimum 10) a moins de 300 m de marche (19 a vol d'oiseau) ; plus proche 69 m
+   [OK] rochers < 300 m            9 valides (minimum 3) a moins de 300 m de marche (10 a vol d'oiseau) ; plus proche 64 m ; ecartes : chemin > 300 m 1
+   [OK] silex berge < 400 m       10 valides (minimum 6) a moins de 906 m de marche (21 a vol d'oiseau) ; plus proche 652 m ; ecartes : danger (creature >= niv 6 a < 40 m) 4, chemin > 906 m 7
+   [OK] chardon berge < 500 m      5 valides (minimum 3) a moins de 1006 m de marche (5 a vol d'oiseau) ; plus proche 883 m
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 3377 m a vol d'oiseau (Hillsbrad Foothills, palier 2), pas de chemin a moins de 1600 m
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 3140 m a vol d'oiseau (Hillsbrad Foothills, palier 2), pas de chemin a moins de 1600 m
+   => DEPART OK
+
+=== Camp Narache (Mulgore) : races [6], carte 1 (-2917.6, -258.0), zone Mulgore (palier 1)
+   premiere eau atteignable sans danger : 381 m de marche (-2555, -304)
+   [OK] branches < 150 m          22 valides (minimum 15) a moins de 150 m de marche (22 a vol d'oiseau) ; plus proche 89 m
+   [OK] pierres < 150 m           13 valides (minimum 8) a moins de 150 m de marche (13 a vol d'oiseau) ; plus proche 87 m
+   [OK] hetres < 300 m            19 valides (minimum 5) a moins de 300 m de marche (26 a vol d'oiseau) ; plus proche 85 m ; ecartes : danger (creature >= niv 6 a < 40 m) 7
+   [OK] arbres palier 0 < 300 m   19 valides (minimum 10) a moins de 300 m de marche (26 a vol d'oiseau) ; plus proche 85 m ; ecartes : danger (creature >= niv 6 a < 40 m) 7
+   [OK] rochers < 300 m            8 valides (minimum 3) a moins de 300 m de marche (11 a vol d'oiseau) ; plus proche 143 m ; ecartes : danger (creature >= niv 6 a < 40 m) 2, chemin > 300 m 1
+   [OK] silex berge < 400 m       18 valides (minimum 6) a moins de 631 m de marche (22 a vol d'oiseau) ; plus proche 366 m ; ecartes : chemin > 631 m 2, danger (creature >= niv 6 a < 40 m) 2
+   [OK] chardon berge < 500 m      5 valides (minimum 3) a moins de 731 m de marche (5 a vol d'oiseau) ; plus proche 367 m
+   [OK] cuivre                   0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 2504 m a vol d'oiseau (The Barrens, palier 2), pas de chemin a moins de 1600 m
+   [OK] etain                    0 dans la zone de depart, 0 a moins de 1000 m de marche ; plus proche : 1721 m a vol d'oiseau (The Barrens, palier 2), 1884 m de marche
+   => DEPART OK
+
+=== RESUME (valides : chemin a pied, sans danger, berge pour silex/chardon ; cuivre/etain : distance de marche du plus proche)
+depart                          branch   stone   beech   tree0    rock   flint thistle   eau m cuivre m  etain m  resultat
+Comte du Nord (Northshire)          22      13      21      21       5      12       5     113     1766     1346  OK
+Vallee des epreuves (Durotar)       22      12      12      12       7      10       6      94     1200     1444  OK
+Coldridge (Dun Morogh)              22      14      16      25       5      15       5    1119    >1600    >1600  OK
+Shadowglen (Teldrassil)             22      12      13      13      10      14       5     224    >1600    >1600  OK
+Deathknell (Tirisfal)               23      12      19      19       9      10       5     656    >1600    >1600  OK
+Camp Narache (Mulgore)              22      13      19      19       8      18       5     381    >1600     1884  OK
+minimums : branch 15 (150 m), stone 8 (150 m), beech 5 (300 m), tree0 10 (300 m), rock 3 (300 m), flint 6 (400 m), thistle 3 (500 m) ; silex/chardon : rayon porte a (premiere eau + 250/350 m) si l'eau est plus loin ; cuivre/etain : 0 a moins de 1000 m de marche et hors zone de depart
+0 depart(s) en echec sur 6
+
+=== COUVERTURE (zones par continent x faction x type, >= 4 placements par zone ; exige min(3, zones exigibles))
+   structurel : carte 0 faction H pine       1 zone(s) exigible(s), toutes couvertes : ['Hillsbrad Foothills']
+   structurel : carte 0 faction H copper     1 zone(s) exigible(s), toutes couvertes : ['Hillsbrad Foothills']
+   structurel : carte 0 faction H tin        1 zone(s) exigible(s), toutes couvertes : ['Hillsbrad Foothills']
+   structurel : carte 0 faction H raspberry  2 zone(s) exigible(s), toutes couvertes : ['Silverpine Forest', 'Tirisfal Glades']
+   structurel : carte 0 faction H dandelion  2 zone(s) exigible(s), toutes couvertes : ['Silverpine Forest', 'Tirisfal Glades']
+   structurel : carte 0 faction H blueberry  1 zone(s) exigible(s), toutes couvertes : ['Hillsbrad Foothills']
+   structurel : carte 1 faction A pine       2 zone(s) exigible(s), toutes couvertes : ['Ashenvale', 'Stonetalon Mountains']
+   structurel : carte 1 faction A swamp      2 zone(s) exigible(s), toutes couvertes : ['Desolace', 'Dustwallow Marsh']
+   structurel : carte 1 faction A copper     2 zone(s) exigible(s), toutes couvertes : ['Ashenvale', 'Stonetalon Mountains']
+   structurel : carte 1 faction A tin        2 zone(s) exigible(s), toutes couvertes : ['Ashenvale', 'Stonetalon Mountains']
+   structurel : carte 1 faction A raspberry  2 zone(s) exigible(s), toutes couvertes : ['Darkshore', 'Teldrassil']
+   structurel : carte 1 faction A dandelion  2 zone(s) exigible(s), toutes couvertes : ['Darkshore', 'Teldrassil']
+   structurel : carte 1 faction A blueberry  2 zone(s) exigible(s), toutes couvertes : ['Ashenvale', 'Stonetalon Mountains']
+   structurel : carte 1 faction A flax       2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction A barley     2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction A cloudberry 2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction A tar        2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction H swamp      2 zone(s) exigible(s), toutes couvertes : ['Desolace', 'Dustwallow Marsh']
+   structurel : carte 1 faction H raspberry  2 zone(s) exigible(s), toutes couvertes : ['Durotar', 'Mulgore']
+   structurel : carte 1 faction H dandelion  2 zone(s) exigible(s), toutes couvertes : ['Durotar', 'Mulgore']
+   structurel : carte 1 faction H flax       2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction H barley     2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction H cloudberry 2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+   structurel : carte 1 faction H tar        2 zone(s) exigible(s), toutes couvertes : ['Silithus', 'Winterspring']
+0 manque(s) de couverture

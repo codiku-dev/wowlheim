@@ -1,0 +1,63 @@
+paliers de zone (generate.zone_tiers) : 40 zones
+carte 0 : candidats terrain {'shore': 36803, 'cliff': 77093, 'slope': 61585, 'lowwet': 25200, 'flat': 57519, 'high': 55225}
+depart Comte du Nord (Northshire) (carte 0) : eau sans danger a 113 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+depart Coldridge (Dun Morogh) (carte 0) : eau sans danger a 1119 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+depart Deathknell (Tirisfal) (carte 0) : eau sans danger a 656 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+carte 0 : arbres ignores {"arbre exotique (palmier, jungle...) : pas d'essence Valheim": 2358, 'zone sans palier': 33}
+carte 0 : essences completees {'Dun Morogh fir->birch': 3, 'Dun Morogh fir->oak': 3, 'Silverpine Forest fir->birch': 4, 'Silverpine Forest fir->oak': 3}
+carte 0 : 8379 placements
+  carte 0 palier 1 Dun Morogh                      6.9 km2 : beech 106, birch 4, branch 194, dandelion 55, fir 364, flint 31, mushroom 55, oak 4, raspberry 12, rock 102, stone 150, thistle 5
+  carte 0 palier 1 Elwynn Forest                   3.8 km2 : beech 188, birch 24, branch 117, dandelion 30, fir 2, flint 47, mushroom 30, oak 35, raspberry 38, rock 58, stone 88, thistle 5
+  carte 0 palier 1 Loch Modan                      2.9 km2 : beech 133, birch 32, branch 72, dandelion 23, fir 2, flint 29, mushroom 23, oak 20, raspberry 29, rock 40, stone 57
+  carte 0 palier 1 Silverpine Forest               3.5 km2 : beech 52, birch 4, branch 87, dandelion 28, fir 253, flint 44, mushroom 28, oak 4, raspberry 35, rock 50, stone 69, thistle 5
+  carte 0 palier 1 Tirisfal Glades                 5.8 km2 : beech 377, birch 64, branch 167, dandelion 46, fir 10, flint 58, mushroom 46, oak 66, raspberry 58, rock 84, stone 128
+  carte 0 palier 1 Westfall                        3.3 km2 : beech 73, birch 17, branch 83, dandelion 26, flint 33, mushroom 26, oak 13, raspberry 33, rock 46, stone 66
+  carte 0 palier 2 Duskwood                        2.8 km2 : beech 32, blueberry 15, branch 38, copper 9, fir 97, flint 15, mushroom 12, pine 82, rock 22, stone 31, thistle 12, tin 10
+  carte 0 palier 2 Hillsbrad Foothills             2.9 km2 : beech 19, blueberry 16, branch 40, copper 10, fir 102, flint 16, mushroom 13, pine 78, rock 23, stone 32, thistle 13, tin 9
+  carte 0 palier 2 Redridge Mountains              3.2 km2 : beech 10, blueberry 18, branch 44, copper 9, fir 26, flint 18, mushroom 14, pine 9, rock 25, stone 35, thistle 14, tin 12
+  carte 0 palier 2 Wetlands                       10.3 km2 : beech 11, blueberry 57, branch 142, copper 31, fir 34, flint 57, mushroom 45, pine 18, rock 80, stone 114, thistle 45, tin 39
+  carte 0 palier 3 Alterac Mountains               2.2 km2 : iron 14, rock 25, swamp 219, thistle 14
+  carte 0 palier 3 Arathi Highlands                4.5 km2 : iron 29, rock 50, swamp 27, thistle 29
+  carte 0 palier 3 Badlands                        2.9 km2 : rock 32, swamp 16
+  carte 0 palier 3 Stranglethorn Vale              6.6 km2 : iron 43, rock 74, swamp 84, thistle 43
+  carte 0 palier 4 Blasted Lands                   2.3 km2 : crystal 4, fir 7, obsidian 4, rock 19, silver 4
+  carte 0 palier 4 Searing Gorge                   3.0 km2 : crystal 5, fir 10, obsidian 5, rock 25, silver 5
+  carte 0 palier 4 Swamp of Sorrows                2.8 km2 : crystal 5, fir 45, obsidian 5, rock 23, silver 5
+  carte 0 palier 4 The Hinterlands                 5.0 km2 : crystal 9, fir 198, obsidian 9, rock 42, silver 9
+  carte 0 palier 5 Burning Steppes                 5.1 km2 : barley 41, birch 18, cloudberry 25, flax 54, oak 5, rock 43, tar 14
+  carte 0 palier 5 Deadwind Pass                   0.9 km2 : barley 6, birch 18, cloudberry 4, flax 8, oak 7, rock 8, tar 5
+  carte 0 palier 5 Eastern Plaguelands            10.4 km2 : barley 88, birch 192, cloudberry 50, flax 116, oak 74, rock 87, tar 39
+  carte 0 palier 5 Western Plaguelands             3.4 km2 : barley 29, birch 124, cloudberry 16, flax 36, oak 58, rock 29, tar 12
+carte 0 : rejets (motif : total) {'PNJ/civil/garde (50 m)': 2072, "a moins de 3 m d'un tronc de WoW": 796, 'aire interieure (nom)': 596, 'amas trop petit': 1, 'batiment (WMO + 6 m)': 1179, 'bordure de zone (palier .map different)': 12, 'depart : creature dangereuse a < 40 m': 153, "depart : pas d'eau (.map) a < 12 m": 3, 'eau': 3214, 'espacement du type': 997, 'hors terrain / trou': 20, "minerai a moins de 1100 m d'un depart": 2, 'pente': 5037, 'point 010 (100 m)': 521, 'route': 746, "trop pres d'une autre ressource": 347}
+carte 1 : candidats terrain {'slope': 84155, 'lowwet': 37805, 'flat': 78143, 'shore': 54561, 'cliff': 102204, 'high': 75100}
+depart Vallee des epreuves (Durotar) (carte 1) : eau sans danger a 94 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+depart Shadowglen (Teldrassil) (carte 1) : eau sans danger a 224 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+depart Camp Narache (Mulgore) (carte 1) : eau sans danger a 381 m de marche ; places {'beech': 12, 'rock': 5, 'branch': 22, 'stone': 12, 'flint': 9, 'thistle': 5}
+carte 1 : arbres ignores {"arbre exotique (palmier, jungle...) : pas d'essence Valheim": 3587, 'zone sans palier': 2280}
+carte 1 : essences completees {'Durotar beech->birch': 1, 'Durotar beech->oak': 3}
+carte 1 : 7982 placements
+  carte 1 palier 1 Darkshore                       4.9 km2 : beech 328, birch 61, branch 122, dandelion 39, flint 49, mushroom 39, oak 63, raspberry 49, rock 68, stone 97
+  carte 1 palier 1 Durotar                         4.1 km2 : beech 33, birch 4, branch 124, dandelion 33, flint 50, mushroom 33, oak 4, raspberry 41, rock 62, stone 93, thistle 5
+  carte 1 palier 1 Mulgore                         5.3 km2 : beech 165, birch 20, branch 156, dandelion 43, flint 62, mushroom 43, oak 24, raspberry 4, rock 80, stone 119, thistle 5
+  carte 1 palier 1 Teldrassil                      6.7 km2 : beech 68, birch 8, branch 190, dandelion 54, flint 76, mushroom 54, oak 8, raspberry 67, rock 99, stone 146, thistle 5
+  carte 1 palier 2 Ashenvale                      10.5 km2 : beech 53, blueberry 58, branch 144, copper 35, fir 206, flint 58, mushroom 46, pine 146, rock 81, stone 115, thistle 46, tin 36
+  carte 1 palier 2 Stonetalon Mountains            7.0 km2 : beech 38, blueberry 7, branch 96, copper 26, fir 151, flint 38, mushroom 31, pine 97, rock 54, stone 77, thistle 31, tin 28
+  carte 1 palier 2 The Barrens                    13.2 km2 : beech 18, blueberry 73, branch 181, copper 37, fir 62, flint 73, mushroom 58, pine 42, rock 102, stone 145, thistle 58, tin 43
+  carte 1 palier 3 Desolace                        6.7 km2 : iron 43, rock 75, swamp 116, thistle 43
+  carte 1 palier 3 Dustwallow Marsh                4.8 km2 : iron 31, rock 54, swamp 214, thistle 31
+  carte 1 palier 3 Thousand Needles                4.5 km2 : iron 18, rock 51, thistle 29
+  carte 1 palier 4 Azshara                         7.0 km2 : crystal 13, fir 269, obsidian 13, rock 59, silver 13
+  carte 1 palier 4 Felwood                         4.5 km2 : crystal 8, fir 50, obsidian 8, rock 38, silver 8
+  carte 1 palier 4 Feralas                        10.6 km2 : crystal 19, fir 90, obsidian 19, rock 89, silver 19
+  carte 1 palier 4 Tanaris                        10.5 km2 : crystal 19, obsidian 19, rock 88, silver 19
+  carte 1 palier 4 Un'Goro Crater                  4.8 km2 : crystal 9, fir 12, obsidian 9, rock 40, silver 9
+  carte 1 palier 5 Silithus                       11.2 km2 : barley 95, birch 4, cloudberry 54, flax 115, rock 94, tar 42
+  carte 1 palier 5 Winterspring                    7.8 km2 : barley 61, birch 122, cloudberry 37, flax 81, oak 56, rock 65, tar 29
+carte 1 : rejets (motif : total) {'PNJ/civil/garde (50 m)': 1739, "a moins de 3 m d'un tronc de WoW": 451, 'aire interieure (nom)': 486, 'amas trop petit': 3, 'batiment (WMO + 6 m)': 827, 'bordure de zone (palier .map different)': 6, 'depart : creature dangereuse a < 40 m': 129, "depart : pas d'eau (.map) a < 12 m": 2, 'eau': 1537, 'espacement du type': 938, 'hors terrain / trou': 6, "minerai a moins de 1100 m d'un depart": 28, 'pente': 5966, 'point 010 (100 m)': 360, 'route': 179, "trop pres d'une autre ressource": 229, "ville (drapeaux d'aire)": 2}
+TOTAL 16361 placements : barley 320, beech 1704, birch 716, blueberry 244, branch 1997, cloudberry 186, copper 157, crystal 91, dandelion 377, fir 1990, flax 410, flint 754, iron 178, mushroom 596, oak 441, obsidian 91, pine 472, raspberry 366, rock 2186, silver 91, stone 1562, swamp 676, tar 141, thistle 438, tin 177
+  palier 1 : beech 1523, birch 238, branch 1312, dandelion 377, fir 631, flint 479, mushroom 377, oak 241, raspberry 366, rock 689, stone 1013, thistle 30
+  palier 2 : beech 181, blueberry 244, branch 685, copper 157, fir 678, flint 275, mushroom 219, pine 472, rock 387, stone 549, thistle 219, tin 177
+  palier 3 : iron 178, rock 361, swamp 676, thistle 189
+  palier 4 : crystal 91, fir 681, obsidian 91, rock 423, silver 91
+  palier 5 : barley 320, birch 478, cloudberry 186, flax 410, oak 200, rock 326, tar 141
+duree 33 s

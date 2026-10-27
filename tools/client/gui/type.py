@@ -25,6 +25,8 @@ while i < len(a):
         k, secs = v.split(','); wgui.hold(k, float(secs))
     elif o == '--move':
         x, y = map(int, v.split(',')); wgui.mouse_move(hwnd, x, y)
+    elif o == '--mclick':
+        x, y = map(int, v.split(',')); wgui.click(hwnd, x, y, button='middle')
     elif o == '--rclick':
         x, y = map(int, v.split(',')); wgui.click(hwnd, x, y, button='right')
     elif o == '--wheel':
@@ -35,6 +37,11 @@ while i < len(a):
         for k in v.split('+') if False else [v]:
             wgui.key(k)
     elif o == '--text':
+        if os.environ.get('WL_TYPE') == 'keys':
+            wgui.type_text(v)
+        else:
+            wgui.paste_text(v)               # copier-coller (Ctrl+V) : bien plus rapide que la frappe
+    elif o == '--keys':
         wgui.type_text(v)
     elif o == '--textfile':
         wgui.type_text(open(v, encoding='utf-8').read().strip())

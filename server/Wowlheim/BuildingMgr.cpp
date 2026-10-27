@@ -1,5 +1,7 @@
 #include "Wowlheim/BuildingMgr.h"
 #include "Wowlheim/TreeMgr.h"
+#include "Wowlheim/Smelter.h"
+#include "Wowlheim/Pieces.h"
 
 #include "Database/DatabaseEnv.h"
 #include "Entities/GameObject.h"
@@ -166,6 +168,8 @@ void BuildingMgr::Load()
     }
     sLog.outString(">> Wowlheim: %u pièces posées chargées", uint32(m_pieces.size()));
     sTreeMgr.Load();
+    sSmelterMgr.Load();
+    Wowlheim_PieceUseLoad();           // coffres, portes, lits (Pieces.cpp) : contenu et états des pièces posées
     m_dirty = !m_pieces.empty();       // première évaluation de structure au démarrage
 }
 
@@ -415,22 +419,23 @@ uint32 BuildingMgr::GiveItems(Player* player, uint32 receiverGuid, std::vector<W
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-uint32 BuildingMgr::Place(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid, float x, float y, float z, float o, std::string& err)
+// Contrôles de Place sans rien créer (plafonds, emplacement occupé, gameobject_template) : partagés avec `.build api canplace`
+bool BuildingMgr::CanPlaceAt(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid, float x, float y, float z, std::string& err) const
 {
     if (!map)
     {
         err = "carte indisponible";
-        return 0;
+        return false;
     }
     if (m_pieces.size() >= MAX_PIECES_TOTAL)
     {
         err = "plafond global de pièces atteint";
-        return 0;
+        return false;
     }
     if (CountByOwner(ownerGuid) >= MAX_PIECES_PER_OWNER)
     {
         err = "plafond de pièces par joueur atteint";
-        return 0;
+        return false;
     }
 
     // Emplacement occupé : refuse une pièce de même modèle à moins de MIN_SEPARATION d'une pièce existante
@@ -444,16 +449,23 @@ uint32 BuildingMgr::Place(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid
         if (dx * dx + dy * dy + dz * dz < MIN_SEPARATION * MIN_SEPARATION)
         {
             err = "emplacement déjà occupé par une pièce identique";
-            return 0;
+            return false;
         }
     }
 
-    GameObjectInfo const* info = ObjectMgr::GetGameObjectInfo(tpl.goEntry);
-    if (!info)
+    if (!ObjectMgr::GetGameObjectInfo(tpl.goEntry))
     {
         err = "gameobject_template inconnu";
-        return 0;
+        return false;
     }
+    return true;
+}
+
+uint32 BuildingMgr::Place(Map* map, WLPieceTemplate const& tpl, uint32 ownerGuid, float x, float y, float z, float o, std::string& err)
+{
+    if (!CanPlaceAt(map, tpl, ownerGuid, x, y, z, err))
+        return 0;
+    GameObjectInfo const* info = ObjectMgr::GetGameObjectInfo(tpl.goEntry);
 
     uint32 lowGuid = sObjectMgr.GenerateStaticGameObjectLowGuid();
     if (!lowGuid)
@@ -511,6 +523,11 @@ bool BuildingMgr::Remove(uint32 guid, Map* map, std::string& err, bool refundByM
         if ((refundTo || refundByMail) && !tpl->costs.empty())
             GiveItems(refundTo, it->second.ownerGuid, tpl->costs, "Pièce démolie");
     }
+
+    // fonderie / four à charbon : contenu rendu (Smelter.DropAllItems), avant l'effacement de la pièce
+    sSmelterMgr.OnPieceRemoved(guid, refundTo, it->second.ownerGuid);
+    // coffre : contenu rendu (Container.OnDestroyed -> DropAllItems) ; porte / lit : état effacé (Pieces.cpp)
+    Wowlheim_PieceUseRemoved(guid, refundTo, it->second.ownerGuid);
 
     sLog.outString("Wowlheim: démolition de la pièce %u", guid);
     GameObjectData const* data = sObjectMgr.GetGOData(guid);

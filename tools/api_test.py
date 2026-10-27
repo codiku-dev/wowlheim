@@ -31,10 +31,14 @@ def check(name, cond, detail=""):
 
 s.say(".revive", 0.5)
 L = lines(".build api list")
-check("api list : 7 lignes P puis D|list|1", len([l for l in L if l.startswith("[WL]P|")]) >= 7 and L[-1] == "[WL]D|list|1", str(L[-2:]))
+check("api list : 7 lignes P puis D|list|1", len([l for l in L if l.startswith("[WL]P|")]) >= 7 and "[WL]D|list|1" in L, str(L[-2:]))
 if core:
     parsed = [core.ParseLine(l) for l in L]
-    check("toutes les lignes sont analysables par l'addon", all(p is not None and p["type"] in ("P", "D") for p in parsed))
+    # des lignes poussées par le serveur hors commande (EN| endurance, SK| compétences, K*| connaissances...) peuvent s'intercaler :
+    # elles sont légitimes ; chaque ligne doit être reconnue par l'addon (ParseLine renvoie le type « ? » pour un type inconnu)
+    bad = [l for l, p in zip(L, parsed) if p is None or p["type"] == "?"]
+    check("toutes les lignes sont analysables par l'addon", not bad, str(bad[:3]) + " autres types : " +
+          str(sorted({p["type"] for p in parsed if p is not None and p["type"] not in ("P", "D")})))
     plancher = [p for p in parsed if p["type"] == "P" and p["name"].startswith("Plancher")][0]   # « Plancher 2x2 » (nom de Valheim)
     check("Plancher : coût 2 Bois (9200001:2)", plancher["cost"][1]["item"] == 9200001 and plancher["cost"][1]["count"] == 2)
 L = lines(".build api inv")

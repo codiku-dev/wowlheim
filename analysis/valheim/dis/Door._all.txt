@@ -1,0 +1,604 @@
+== Door::Awake() -> void  il_size=101 sha=b018683ad3be
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 call         UnityEngine.Component::GetComponent<T>
+   7 stfld        Door::m_nview
+  12 ldarg.0      
+  13 ldfld        Door::m_nview
+  18 callvirt     ZNetView::GetZDO()
+  23 brtrue.s     26
+  25 ret          
+  26 ldarg.0      
+  27 ldarg.0      
+  28 call         UnityEngine.Component::GetComponentInChildren<T>
+  33 stfld        Door::m_animator
+  38 ldarg.0      
+  39 ldfld        Door::m_nview
+  44 call         UnityEngine.Object::op_Implicit
+  49 brfalse.s    79
+  51 ldarg.0      
+  52 ldfld        Door::m_nview
+  57 ldstr        "UseDoor"
+  62 ldarg.0      
+  63 ldftn        Door::RPC_UseDoor(i8,bool)
+  69 newobj       System.Action`2::.ctor
+  74 callvirt     ZNetView::Register<T>
+  79 ldarg.0      
+  80 ldstr        "UpdateState"
+  85 ldc.r4       0
+  90 ldc.r4       0.20000000298023224
+  95 call         UnityEngine.MonoBehaviour::InvokeRepeating
+ 100 ret          
+
+== Door::UpdateState() -> void  il_size=79 sha=b36e431207f6
+   locals_sig=0x11000697
+   0 ldarg.0      
+   1 ldfld        Door::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Door::m_nview
+  20 callvirt     ZNetView::GetZDO()
+  25 callvirt     ZDO::get_DataRevision()
+  30 stloc.0      
+  31 ldarg.0      
+  32 ldfld        Door::m_lastDataRevision
+  37 ldloc.0      
+  38 bne.un.s     41
+  40 ret          
+  41 ldarg.0      
+  42 ldloc.0      
+  43 stfld        Door::m_lastDataRevision
+  48 ldarg.0      
+  49 ldfld        Door::m_nview
+  54 callvirt     ZNetView::GetZDO()
+  59 ldsfld       ZDOVars::s_state
+  64 ldc.i4.0     
+  65 callvirt     ZDO::GetInt(i4,i4)
+  70 stloc.1      
+  71 ldarg.0      
+  72 ldloc.1      
+  73 call         Door::SetState(i4)
+  78 ret          
+
+== Door::SetState(i4) -> void  il_size=170 sha=bc901d0f149d
+   locals_sig=0x1100003d
+   0 ldarg.0      
+   1 ldfld        Door::m_animator
+   6 ldstr        "state"
+  11 callvirt     UnityEngine.Animator::GetInteger
+  16 ldarg.1      
+  17 beq.s        141
+  19 ldarg.1      
+  20 brfalse.s    74
+  22 ldarg.0      
+  23 ldfld        Door::m_openEffects
+  28 ldarg.0      
+  29 call         UnityEngine.Component::get_transform
+  34 callvirt     UnityEngine.Transform::get_position
+  39 ldarg.0      
+  40 call         UnityEngine.Component::get_transform
+  45 callvirt     UnityEngine.Transform::get_rotation
+  50 ldnull       
+  51 ldc.r4       1
+  56 ldc.i4.m1    
+  57 ldloca.s     0
+  59 initobj      ZDOID
+  65 ldloc.0      
+  66 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+  71 pop          
+  72 br.s         124
+  74 ldarg.0      
+  75 ldfld        Door::m_closeEffects
+  80 ldarg.0      
+  81 call         UnityEngine.Component::get_transform
+  86 callvirt     UnityEngine.Transform::get_position
+  91 ldarg.0      
+  92 call         UnityEngine.Component::get_transform
+  97 callvirt     UnityEngine.Transform::get_rotation
+ 102 ldnull       
+ 103 ldc.r4       1
+ 108 ldc.i4.m1    
+ 109 ldloca.s     0
+ 111 initobj      ZDOID
+ 117 ldloc.0      
+ 118 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 123 pop          
+ 124 ldarg.0      
+ 125 ldfld        Door::m_animator
+ 130 ldstr        "state"
+ 135 ldarg.1      
+ 136 callvirt     UnityEngine.Animator::SetInteger
+ 141 ldarg.0      
+ 142 ldfld        Door::m_openEnable
+ 147 call         UnityEngine.Object::op_Implicit
+ 152 brfalse.s    169
+ 154 ldarg.0      
+ 155 ldfld        Door::m_openEnable
+ 160 ldarg.1      
+ 161 ldc.i4.0     
+ 162 cgt.un       
+ 164 callvirt     UnityEngine.GameObject::SetActive
+ 169 ret          
+
+== Door::CanInteract() -> bool  il_size=103 sha=48f1afd00f0b
+   locals_sig=0x11000033
+   0 ldarg.0      
+   1 ldfld        Door::m_keyItem
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brtrue.s     22
+  14 ldarg.0      
+  15 ldfld        Door::m_canNotBeClosed
+  20 brfalse.s    48
+  22 ldarg.0      
+  23 ldfld        Door::m_nview
+  28 callvirt     ZNetView::GetZDO()
+  33 ldsfld       ZDOVars::s_state
+  38 ldc.i4.0     
+  39 callvirt     ZDO::GetInt(i4,i4)
+  44 brfalse.s    48
+  46 ldc.i4.0     
+  47 ret          
+  48 ldarg.0      
+  49 ldfld        Door::m_animator
+  54 ldc.i4.0     
+  55 callvirt     UnityEngine.Animator::GetCurrentAnimatorStateInfo
+  60 stloc.0      
+  61 ldloca.s     0
+  63 ldstr        "open"
+  68 call         UnityEngine.AnimatorStateInfo::IsTag
+  73 brtrue.s     101
+  75 ldarg.0      
+  76 ldfld        Door::m_animator
+  81 ldc.i4.0     
+  82 callvirt     UnityEngine.Animator::GetCurrentAnimatorStateInfo
+  87 stloc.0      
+  88 ldloca.s     0
+  90 ldstr        "closed"
+  95 call         UnityEngine.AnimatorStateInfo::IsTag
+ 100 ret          
+ 101 ldc.i4.1     
+ 102 ret          
+
+== Door::GetHoverText() -> string  il_size=244 sha=c582d752f5f7
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Door::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     19
+  13 ldstr        ""
+  18 ret          
+  19 ldarg.0      
+  20 ldfld        Door::m_canNotBeClosed
+  25 brfalse.s    41
+  27 ldarg.0      
+  28 call         Door::CanInteract()
+  33 brtrue.s     41
+  35 ldstr        ""
+  40 ret          
+  41 ldarg.0      
+  42 ldfld        Door::m_checkGuardStone
+  47 brfalse.s    101
+  49 ldarg.0      
+  50 call         UnityEngine.Component::get_transform
+  55 callvirt     UnityEngine.Transform::get_position
+  60 ldc.r4       0
+  65 ldc.i4.0     
+  66 ldc.i4.0     
+  67 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  72 brtrue.s     101
+  74 call         Localization::get_instance
+  79 ldarg.0      
+  80 ldfld        Door::m_name
+  85 ldstr        "\n$piece_noaccess"
+  90 call         System.String::Concat
+  95 callvirt     Localization::Localize
+ 100 ret          
+ 101 ldarg.0      
+ 102 call         Door::CanInteract()
+ 107 brfalse.s    227
+ 109 ldarg.0      
+ 110 ldfld        Door::m_nview
+ 115 callvirt     ZNetView::GetZDO()
+ 120 ldsfld       ZDOVars::s_state
+ 125 ldc.i4.0     
+ 126 callvirt     ZDO::GetInt(i4,i4)
+ 131 brfalse.s    180
+ 133 call         Localization::get_instance
+ 138 ldarg.0      
+ 139 ldfld        Door::m_name
+ 144 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] "
+ 149 ldarg.0      
+ 150 ldfld        Door::m_invertedOpenClosedText
+ 155 brtrue.s     164
+ 157 ldstr        "$piece_door_close"
+ 162 br.s         169
+ 164 ldstr        "$piece_door_open"
+ 169 call         System.String::Concat
+ 174 callvirt     Localization::Localize
+ 179 ret          
+ 180 call         Localization::get_instance
+ 185 ldarg.0      
+ 186 ldfld        Door::m_name
+ 191 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] "
+ 196 ldarg.0      
+ 197 ldfld        Door::m_invertedOpenClosedText
+ 202 brtrue.s     211
+ 204 ldstr        "$piece_door_open"
+ 209 br.s         216
+ 211 ldstr        "$piece_door_close"
+ 216 call         System.String::Concat
+ 221 callvirt     Localization::Localize
+ 226 ret          
+ 227 call         Localization::get_instance
+ 232 ldarg.0      
+ 233 ldfld        Door::m_name
+ 238 callvirt     Localization::Localize
+ 243 ret          
+
+== Door::GetHoverName() -> string  il_size=7 sha=7d402a383a58
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Door::m_name
+   6 ret          
+
+== Door::Interact(class:108, bool, bool) -> bool  il_size=462 sha=8bf223607d25
+   locals_sig=0x11000698
+   0 ldarg.2      
+   1 brfalse.s    5
+   3 ldc.i4.0     
+   4 ret          
+   5 ldarg.0      
+   6 call         Door::CanInteract()
+  11 brtrue.s     15
+  13 ldc.i4.0     
+  14 ret          
+  15 ldarg.0      
+  16 ldfld        Door::m_checkGuardStone
+  21 brfalse.s    50
+  23 ldarg.0      
+  24 call         UnityEngine.Component::get_transform
+  29 callvirt     UnityEngine.Transform::get_position
+  34 ldc.r4       0
+  39 ldc.i4.1     
+  40 ldc.i4.0     
+  41 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  46 brtrue.s     50
+  48 ldc.i4.1     
+  49 ret          
+  50 ldarg.0      
+  51 ldfld        Door::m_keyItem
+  56 ldnull       
+  57 call         UnityEngine.Object::op_Inequality
+  62 brfalse      371
+  67 ldarg.0      
+  68 ldarg.1      
+  69 ldc.i4.1     
+  70 call         Door::HaveKey(class:108,bool)
+  75 brtrue       273
+  80 ldarg.0      
+  81 ldfld        Door::m_lockedEffects
+  86 ldarg.0      
+  87 call         UnityEngine.Component::get_transform
+  92 callvirt     UnityEngine.Transform::get_position
+  97 ldarg.0      
+  98 call         UnityEngine.Component::get_transform
+ 103 callvirt     UnityEngine.Transform::get_rotation
+ 108 ldnull       
+ 109 ldc.r4       1
+ 114 ldc.i4.m1    
+ 115 ldloca.s     1
+ 117 initobj      ZDOID
+ 123 ldloc.1      
+ 124 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 129 pop          
+ 130 ldsfld       Game::m_worldLevel
+ 135 ldc.i4.0     
+ 136 ble.s        216
+ 138 ldarg.0      
+ 139 ldarg.1      
+ 140 ldc.i4.0     
+ 141 call         Door::HaveKey(class:108,bool)
+ 146 brfalse.s    216
+ 148 ldarg.1      
+ 149 ldc.i4.2     
+ 150 call         Localization::get_instance
+ 155 ldstr        "$msg_ng_the_x"
+ 160 callvirt     Localization::Localize
+ 165 ldarg.0      
+ 166 ldfld        Door::m_keyItem
+ 171 ldfld        ItemDrop::m_itemData
+ 176 ldfld        ItemDrop+ItemData::m_shared
+ 181 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 186 call         Localization::get_instance
+ 191 ldstr        "$msg_ng_x_is_too_low"
+ 196 callvirt     Localization::Localize
+ 201 call         System.String::Concat
+ 206 ldc.i4.0     
+ 207 ldnull       
+ 208 ldc.i4.0     
+ 209 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 214 br.s         271
+ 216 ldarg.1      
+ 217 ldc.i4.2     
+ 218 call         Localization::get_instance
+ 223 ldstr        "$msg_door_needkey"
+ 228 ldc.i4.1     
+ 229 newarr       0x010001e8
+ 234 dup          
+ 235 ldc.i4.0     
+ 236 ldarg.0      
+ 237 ldfld        Door::m_keyItem
+ 242 ldfld        ItemDrop::m_itemData
+ 247 ldfld        ItemDrop+ItemData::m_shared
+ 252 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 257 stelem.ref   
+ 258 callvirt     Localization::Localize
+ 263 ldc.i4.0     
+ 264 ldnull       
+ 265 ldc.i4.0     
+ 266 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 271 ldc.i4.1     
+ 272 ret          
+ 273 ldarg.0      
+ 274 ldfld        Door::m_consumeKey
+ 279 brfalse.s    316
+ 281 ldarg.1      
+ 282 callvirt     Humanoid::GetInventory()
+ 287 ldarg.0      
+ 288 ldfld        Door::m_keyItem
+ 293 ldfld        ItemDrop::m_itemData
+ 298 ldfld        ItemDrop+ItemData::m_shared
+ 303 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 308 ldc.i4.1     
+ 309 ldc.i4.m1    
+ 310 ldc.i4.1     
+ 311 callvirt     Inventory::RemoveItem(string,i4,i4,bool)
+ 316 ldarg.1      
+ 317 ldc.i4.2     
+ 318 call         Localization::get_instance
+ 323 ldstr        "$msg_door_usingkey"
+ 328 ldc.i4.1     
+ 329 newarr       0x010001e8
+ 334 dup          
+ 335 ldc.i4.0     
+ 336 ldarg.0      
+ 337 ldfld        Door::m_keyItem
+ 342 ldfld        ItemDrop::m_itemData
+ 347 ldfld        ItemDrop+ItemData::m_shared
+ 352 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 357 stelem.ref   
+ 358 callvirt     Localization::Localize
+ 363 ldc.i4.0     
+ 364 ldnull       
+ 365 ldc.i4.0     
+ 366 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 371 ldarg.1      
+ 372 callvirt     UnityEngine.Component::get_transform
+ 377 callvirt     UnityEngine.Transform::get_position
+ 382 ldarg.0      
+ 383 call         UnityEngine.Component::get_transform
+ 388 callvirt     UnityEngine.Transform::get_position
+ 393 call         UnityEngine.Vector3::op_Subtraction
+ 398 stloc.2      
+ 399 ldloca.s     2
+ 401 call         UnityEngine.Vector3::get_normalized
+ 406 stloc.0      
+ 407 call         Game::get_instance()
+ 412 ldarg.0      
+ 413 ldfld        Door::m_nview
+ 418 callvirt     ZNetView::GetZDO()
+ 423 ldsfld       ZDOVars::s_state
+ 428 ldc.i4.0     
+ 429 callvirt     ZDO::GetInt(i4,i4)
+ 434 brfalse.s    440
+ 436 ldc.i4.s     75
+ 438 br.s         442
+ 440 ldc.i4.s     74
+ 442 ldc.r4       1
+ 447 ldc.i4.0     
+ 448 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+ 453 ldarg.0      
+ 454 ldloc.0      
+ 455 call         Door::Open(valuetype:81)
+ 460 ldc.i4.1     
+ 461 ret          
+
+== Door::Open(valuetype:81) -> void  il_size=57 sha=a46467eb2481
+   locals_sig=0x11000091
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_forward
+  11 ldarg.1      
+  12 call         UnityEngine.Vector3::Dot
+  17 ldc.r4       0
+  22 clt          
+  24 stloc.0      
+  25 ldarg.0      
+  26 ldfld        Door::m_nview
+  31 ldstr        "UseDoor"
+  36 ldc.i4.1     
+  37 newarr       0x01000007
+  42 dup          
+  43 ldc.i4.0     
+  44 ldloc.0      
+  45 box          0x010001f2
+  50 stelem.ref   
+  51 callvirt     ZNetView::InvokeRPC(string,object[])
+  56 ret          
+
+== Door::UseItem(class:108, class:3744) -> bool  il_size=227 sha=ab286abd4d7c
+   locals_sig=0x11000135
+   0 ldarg.0      
+   1 ldfld        Door::m_keyItem
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Inequality
+  12 brfalse      225
+  17 ldarg.0      
+  18 ldfld        Door::m_keyItem
+  23 ldfld        ItemDrop::m_itemData
+  28 ldfld        ItemDrop+ItemData::m_shared
+  33 ldfld        ItemDrop+ItemData+SharedData::m_name
+  38 ldarg.2      
+  39 ldfld        ItemDrop+ItemData::m_shared
+  44 ldfld        ItemDrop+ItemData+SharedData::m_name
+  49 call         System.String::op_Equality
+  54 brfalse      225
+  59 ldarg.0      
+  60 call         Door::CanInteract()
+  65 brtrue.s     69
+  67 ldc.i4.0     
+  68 ret          
+  69 ldarg.0      
+  70 ldfld        Door::m_checkGuardStone
+  75 brfalse.s    104
+  77 ldarg.0      
+  78 call         UnityEngine.Component::get_transform
+  83 callvirt     UnityEngine.Transform::get_position
+  88 ldc.r4       0
+  93 ldc.i4.1     
+  94 ldc.i4.0     
+  95 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+ 100 brtrue.s     104
+ 102 ldc.i4.1     
+ 103 ret          
+ 104 ldarg.1      
+ 105 ldc.i4.2     
+ 106 call         Localization::get_instance
+ 111 ldstr        "$msg_door_usingkey"
+ 116 ldc.i4.1     
+ 117 newarr       0x010001e8
+ 122 dup          
+ 123 ldc.i4.0     
+ 124 ldarg.0      
+ 125 ldfld        Door::m_keyItem
+ 130 ldfld        ItemDrop::m_itemData
+ 135 ldfld        ItemDrop+ItemData::m_shared
+ 140 ldfld        ItemDrop+ItemData+SharedData::m_name
+ 145 stelem.ref   
+ 146 callvirt     Localization::Localize
+ 151 ldc.i4.0     
+ 152 ldnull       
+ 153 ldc.i4.0     
+ 154 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 159 ldarg.0      
+ 160 ldfld        Door::m_consumeKey
+ 165 brfalse.s    180
+ 167 ldarg.1      
+ 168 callvirt     Humanoid::GetInventory()
+ 173 ldarg.2      
+ 174 callvirt     Inventory::RemoveItem(class:3744)
+ 179 pop          
+ 180 ldarg.1      
+ 181 callvirt     UnityEngine.Component::get_transform
+ 186 callvirt     UnityEngine.Transform::get_position
+ 191 ldarg.0      
+ 192 call         UnityEngine.Component::get_transform
+ 197 callvirt     UnityEngine.Transform::get_position
+ 202 call         UnityEngine.Vector3::op_Subtraction
+ 207 stloc.1      
+ 208 ldloca.s     1
+ 210 call         UnityEngine.Vector3::get_normalized
+ 215 stloc.0      
+ 216 ldarg.0      
+ 217 ldloc.0      
+ 218 call         Door::Open(valuetype:81)
+ 223 ldc.i4.1     
+ 224 ret          
+ 225 ldc.i4.0     
+ 226 ret          
+
+== Door::HaveKey(class:108, bool) -> bool  il_size=50 sha=3c94479e9cc4
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Door::m_keyItem
+   6 ldnull       
+   7 call         UnityEngine.Object::op_Equality
+  12 brfalse.s    16
+  14 ldc.i4.1     
+  15 ret          
+  16 ldarg.1      
+  17 callvirt     Humanoid::GetInventory()
+  22 ldarg.0      
+  23 ldfld        Door::m_keyItem
+  28 ldfld        ItemDrop::m_itemData
+  33 ldfld        ItemDrop+ItemData::m_shared
+  38 ldfld        ItemDrop+ItemData+SharedData::m_name
+  43 ldarg.2      
+  44 callvirt     Inventory::HaveItem(string,bool)
+  49 ret          
+
+== Door::RPC_UseDoor(i8, bool) -> void  il_size=116 sha=b43671952d7b
+   locals_sig=null
+   0 ldarg.0      
+   1 call         Door::CanInteract()
+   6 brtrue.s     9
+   8 ret          
+   9 ldarg.0      
+  10 ldfld        Door::m_nview
+  15 callvirt     ZNetView::GetZDO()
+  20 ldsfld       ZDOVars::s_state
+  25 ldc.i4.0     
+  26 callvirt     ZDO::GetInt(i4,i4)
+  31 brtrue.s     86
+  33 ldarg.2      
+  34 brfalse.s    61
+  36 ldarg.0      
+  37 ldfld        Door::m_nview
+  42 callvirt     ZNetView::GetZDO()
+  47 ldsfld       ZDOVars::s_state
+  52 ldc.i4.1     
+  53 ldc.i4.0     
+  54 callvirt     ZDO::Set(i4,i4,bool)
+  59 br.s         109
+  61 ldarg.0      
+  62 ldfld        Door::m_nview
+  67 callvirt     ZNetView::GetZDO()
+  72 ldsfld       ZDOVars::s_state
+  77 ldc.i4.m1    
+  78 ldc.i4.0     
+  79 callvirt     ZDO::Set(i4,i4,bool)
+  84 br.s         109
+  86 ldarg.0      
+  87 ldfld        Door::m_nview
+  92 callvirt     ZNetView::GetZDO()
+  97 ldsfld       ZDOVars::s_state
+ 102 ldc.i4.0     
+ 103 ldc.i4.0     
+ 104 callvirt     ZDO::Set(i4,i4,bool)
+ 109 ldarg.0      
+ 110 call         Door::UpdateState()
+ 115 ret          
+
+== Door::GetHoverOffset() -> r4  il_size=7 sha=c53e9276fb9c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Door::m_hoverOffset
+   6 ret          
+
+== Door::.ctor() -> void  il_size=65 sha=2b22aea4af63
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        "door"
+   6 stfld        Door::m_name
+  11 ldarg.0      
+  12 ldc.i4.1     
+  13 stfld        Door::m_checkGuardStone
+  18 ldarg.0      
+  19 newobj       EffectList::.ctor()
+  24 stfld        Door::m_openEffects
+  29 ldarg.0      
+  30 newobj       EffectList::.ctor()
+  35 stfld        Door::m_closeEffects
+  40 ldarg.0      
+  41 newobj       EffectList::.ctor()
+  46 stfld        Door::m_lockedEffects
+  51 ldarg.0      
+  52 ldc.i4.m1    
+  53 stfld        Door::m_lastDataRevision
+  58 ldarg.0      
+  59 call         UnityEngine.MonoBehaviour::.ctor
+  64 ret          

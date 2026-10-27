@@ -30,9 +30,10 @@ def walk(tr,M,out,skip):
         walk(ch.read(),Mw,out,skip)
 
 SKIP={'Worn','Broken','WET','collider','collider (1)','viewblock','leaf_particles','UpgraderGlow','equiped','trail'}
-def renderers_of(root_go,attach_only=False):
+def renderers_of(root_go,attach_only=False,skinned=False):
     """liste (go, matrice monde) des MeshRenderer a exporter (LOD0, etat neuf).
-    attach_only : seulement le sous-arbre « attach » (modele tenu en main), dans son propre repere."""
+    attach_only : seulement le sous-arbre « attach » (modele tenu en main), dans son propre repere.
+    skinned : accepte aussi les SkinnedMeshRenderer (maillage en pose de liaison ; stations animees de Valheim)."""
     tr=comp(root_go,'Transform')
     if attach_only:
         for ch in tr.m_Children:
@@ -56,7 +57,7 @@ def renderers_of(root_go,attach_only=False):
     for go,M in allg:
         for c in go.m_Component:
             o=c.component.deref()
-            if o.type.name=='MeshRenderer':
+            if o.type.name=='MeshRenderer' or (skinned and o.type.name=='SkinnedMeshRenderer'):
                 if c.component.m_PathID in excl: continue
                 if not o.read().m_Enabled: continue
                 res.append((go,M,o.read()))
@@ -90,18 +91,94 @@ def tex_of(mat):
 
 U2W=np.array([[0,0,1],[-1,0,0],[0,1,0]],float)  # unity(x,y,z) -> wow(x fwd,y left,z up)
 
-def export_prefab(name,path=None,attach_only=False):
+def mat_color(mat):
+    """Couleur _Color d'un materiau (Standard sans texture : barres de metal, vitre de cristal) -> image unie 8x8."""
+    from PIL import Image
+    c=(1,1,1,1)
+    try:
+        for k,v in mat.m_SavedProperties.m_Colors:
+            if k=='_Color': c=(v.r,v.g,v.b,1.0)
+    except Exception: pass
+    return Image.new('RGBA',(8,8),tuple(int(max(0,min(1,x))*255) for x in c))
+
+def mat_tint(mat):
+    """Teinte _Color (RVB) d'un materiau texture, None si blanche (a 2 % pres)."""
+    try:
+        for k,v in mat.m_SavedProperties.m_Colors:
+            if k=='_Color':
+                c=tuple(max(0.0,min(1.0,x)) for x in (v.r,v.g,v.b))
+                return None if min(c)>0.98 else c
+    except Exception: pass
+    return None
+
+def mat_info(mat):
+    """Ce qui decide de l'alpha teste dans Valheim : shader, _Mode (1 = Cutout), mot-cle _ALPHATEST_ON."""
+    info={'shader':None,'mode':0.0,'keywords':[]}
+    try:
+        if mat.m_Shader.m_PathID: info['shader']=mat.m_Shader.read().m_ParsedForm.m_Name
+    except Exception: pass
+    try:
+        for k,v in mat.m_SavedProperties.m_Floats:
+            if k=='_Mode': info['mode']=float(v)
+    except Exception: pass
+    kw=getattr(mat,'m_ShaderKeywords',None) or getattr(mat,'m_ValidKeywords',None) or []
+    info['keywords']=kw.split() if isinstance(kw,str) else list(kw)
+    return info
+
+# Placement de _MainTex selon le shader Valheim (releve des materiaux le 2026-10-26) :
+#  - Standard / Custom/StaticRock (_TriplanarMap 0 partout) : UV0 * _MainTex_ST (tuilage + decalage, TRANSFORM_TEX).
+#    Ignore avant : filon d'argent (x2.5), rocher (x2), rock4_* (x8), silex (x0.2) etiraient la texture.
+#  - Custom/Piece : _MainTex_ST n'y sert PAS au placement (planches : -0.56 x 0.12, rendu juste sans) -> UV0 brutes.
+#  - Custom/Trilinearmap (tas de boue) : projection triplanaire en espace objet, echelle _UVScale (UV0 sans rapport).
+ST_SHADERS={'Standard','Standard (Specular setup)','Custom/StaticRock'}
+TRIPLANAR_SHADERS={'Custom/Trilinearmap'}
+
+def main_st(mat):
+    """(sx, sy, ox, oy) de _MainTex, None si identite."""
+    try:
+        for k,v in mat.m_SavedProperties.m_TexEnvs:
+            if k=='_MainTex':
+                st=(v.m_Scale.x,v.m_Scale.y,v.m_Offset.x,v.m_Offset.y)
+                return None if st==(1.0,1.0,0.0,0.0) else st
+    except Exception: pass
+    return None
+
+def mat_float(mat,name,default=None):
+    try:
+        for k,v in mat.m_SavedProperties.m_Floats:
+            if k==name: return float(v)
+    except Exception: pass
+    return default
+
+def triplanar_uv(P,T,scale):
+    """Projection « boite » par face : axe dominant de la normale de la face, UV = coordonnees des deux autres axes
+    x scale. Sommets dedoubles par face (pas de couture etiree). -> (index des sommets d'origine (3M,), uv (3M,2), tris)."""
+    A,B,C=P[T[:,0]],P[T[:,1]],P[T[:,2]]
+    ax=np.abs(np.cross(B-A,C-A)).argmax(1)
+    idx=T.reshape(-1)
+    Q=P[idx]; axr=np.repeat(ax,3)
+    other=np.array([[1,2],[0,2],[0,1]])[axr]
+    uv=np.stack([Q[np.arange(len(Q)),other[:,0]],Q[np.arange(len(Q)),other[:,1]]],1)*scale
+    return idx,uv,np.arange(len(idx)).reshape(-1,3)
+
+def export_prefab(name,path=None,attach_only=False,skinned=False,flat_color=False):
+    """skinned / flat_color : options (desactivees par defaut, les modeles existants ne changent pas) ;
+    flat_color : un sous-maillage sans _MainTex recoit une texture unie de la couleur _Color du materiau."""
     e=env()
     if path is None:
         cands=[p for p in e.container if p.endswith('/'+name+'.prefab')]
         cands.sort(key=lambda p:(0 if '/GameElements/' in p or '/world/' in p else 1,len(p)))
         path=cands[0]
     go=e.container[path].read()
-    groups={}; textures={}
-    for g,M,mr in renderers_of(go,attach_only):
-        mf=comp(g,'MeshFilter')
-        if not mf or mf.m_Mesh.m_PathID==0: continue
-        mesh=mf.m_Mesh.read()
+    groups={}; textures={}; matinfo={}
+    for g,M,mr in renderers_of(go,attach_only,skinned):
+        if skinned and hasattr(mr,'m_Bones'):
+            if mr.m_Mesh.m_PathID==0: continue
+            mesh=mr.m_Mesh.read()
+        else:
+            mf=comp(g,'MeshFilter')
+            if not mf or mf.m_Mesh.m_PathID==0: continue
+            mesh=mf.m_Mesh.read()
         h=MeshHandler(mesh); h.process()
         V=np.array(h.m_Vertices,float)[:,:3]
         N=np.array(h.m_Normals,float)[:,:3] if h.m_Normals else np.zeros_like(V)
@@ -117,21 +194,44 @@ def export_prefab(name,path=None,attach_only=False):
             mat=mats[min(si,len(mats)-1)].read() if mats else None
             tex=tex_of(mat) if mat else None
             tname=tex.m_Name if tex else '__white'
+            tint=mat_tint(mat) if (tex and mat is not None) else None
+            if tint is not None:
+                tname='%s_c%02x%02x%02x'%((tname,)+tuple(int(round(x*255)) for x in tint))
             if tex and tname not in textures:
-                textures[tname]=tex.image
+                img=tex.image
+                if tint is not None:
+                    # Valheim multiplie _MainTex par _Color (etabli 0.62, ecorce de chene 0.69...) : on cuit la teinte
+                    a=np.array(img.convert('RGBA')).astype(float); a[:,:,:3]*=np.array(tint)
+                    from PIL import Image
+                    img=Image.fromarray(np.clip(np.rint(a),0,255).astype(np.uint8))
+                textures[tname]=img
+                matinfo[tname]=mat_info(mat)
+            if not tex and flat_color and mat is not None:
+                tname='col_'+mat.m_Name
+                if tname not in textures: textures[tname]=mat_color(mat)
             T=np.array(tris,int)
             sm=mesh.m_SubMeshes[si]
             if getattr(sm,'baseVertex',0): T=T+sm.baseVertex
+            G=groups.setdefault(tname,{'pos':[],'nrm':[],'uv':[],'tris':[],'tex':tname,'mat':mat.m_Name if mat else None,'n':0})
+            sh=matinfo.get(tname,{}).get('shader') if tex else None
+            if sh in TRIPLANAR_SHADERS:
+                Po=(np.c_[V,np.ones(len(V))]@M.T)[:,:3]          # espace objet du prefab (Unity, metres)
+                idx,uvt,Tn=triplanar_uv(Po,T,mat_float(mat,'_UVScale',1.0))
+                G['pos'].append(Vw[idx]); G['nrm'].append(Nw[idx]); G['uv'].append(uvt)
+                G['tris'].append(Tn+G['n']); G['n']+=len(idx)
+                continue
             used=np.unique(T)
             remap=-np.ones(len(V),int); remap[used]=np.arange(len(used))
-            G=groups.setdefault(tname,{'pos':[],'nrm':[],'uv':[],'tris':[],'tex':tname,'mat':mat.m_Name if mat else None,'n':0})
-            G['pos'].append(Vw[used]); G['nrm'].append(Nw[used]); G['uv'].append(UV[used])
+            uvs=UV[used]
+            st=main_st(mat) if (tex and sh in ST_SHADERS) else None
+            if st: uvs=uvs*np.array(st[:2])+np.array(st[2:])
+            G['pos'].append(Vw[used]); G['nrm'].append(Nw[used]); G['uv'].append(uvs)
             G['tris'].append(remap[T]+G['n']); G['n']+=len(used)
     out=[]
     for G in groups.values():
         out.append({'pos':np.vstack(G['pos']),'nrm':np.vstack(G['nrm']),'uv':np.vstack(G['uv']),
                     'tris':np.vstack(G['tris']),'tex':G['tex'],'mat':G['mat']})
-    return {'groups':out,'textures':textures,'path':path}
+    return {'groups':out,'textures':textures,'path':path,'matinfo':matinfo}
 
 def write_obj(res,fn):
     with open(fn,'w') as f:

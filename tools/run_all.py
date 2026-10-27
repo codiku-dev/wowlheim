@@ -5,7 +5,7 @@ import os, subprocess, sys, time
 RUN = r"C:\Wowlheim\run"
 MYSQL = r"C:\Program Files\MySQL\MySQL Server 8.4\bin\mysql.exe"
 TOOLS = os.path.dirname(os.path.abspath(__file__))
-TESTS = sys.argv[1:] or ["phase3_acceptance", "station_test", "zone_test", "cost_test", "harvest_test", "craft_test", "api_test", "level_test", "prod_node_test", "tree_test", "hammer_test"]
+TESTS = sys.argv[1:] or ["phase3_acceptance", "station_test", "zone_test", "cost_test", "harvest_test", "craft_test", "api_test", "level_test", "prod_node_test", "tree_test", "hammer_test", "smelter_test", "known_test", "use_range_test", "pieces_test", "blocked_test"]
 PY_LUPA = os.path.join(TOOLS, "client", ".venv", "Scripts", "python.exe")
 pw = [l.split(": ", 1)[1].strip() for l in open(os.path.join(RUN, "test_account.txt"), encoding="utf-8") if l.startswith("password:")][0]
 

@@ -1,185 +1,156 @@
-copie de 6 tables + application de 003_nodes.sql, 005_node_spawns.sql, 010_nobuild_points.sql dans wl_scratch2 (classicmangos non modifiee)
-passe 1 : 008 appliquee sans erreur ; lignes de production = 4664 (guid 9510001-9514664)
-passe 2 : 008 appliquee sans erreur ; lignes de production = 4664 (guid 9510001-9514664)
+copie de 14 tables de classicmangos dans wl_scratch2 (classicmangos non modifiee)
+passe 1 : 001, 002, 003, 005, 006, 007, 008, 010, 011, 012 appliques sans erreur (8 s) ; creatures-ressources 8956, ramassables 7081, anciens noeuds 0
+passe 2 : 001, 002, 003, 005, 006, 007, 008, 010, 011, 012 appliques sans erreur (8 s) ; creatures-ressources 8956, ramassables 7081, anciens noeuds 0
 check_nodes.py code retour : 3 (0 = tout OK, 1 = erreur de forme, 3 = constats de couverture)
 
 
 ====================================================================================================
-0. DONNEES (base : wl_scratch2)
+0. DONNEES : placements.json (16037) ; base wl_scratch2
 ====================================================================================================
-noeuds de production (guid >= 9510001) : 4664 ; noeuds de validation 005 (9500001-9500999, id de noeud ; les pieces de construction posees par le serveur y ont aussi des guid) : 118
+   creatures-ressources 8956, ramassables 7081 ; par type : {'barley': 320, 'beech': 1526, 'birch': 756, 'blueberry': 244, 'branch': 1865, 'cloudberry': 186, 'copper': 157, 'crystal': 91, 'dandelion': 377, 'fir': 2202, 'flax': 411, 'flint': 703, 'iron': 178, 'mushroom': 596, 'oak': 420, 'obsidian': 91, 'pine': 501, 'raspberry': 366, 'rock': 2156, 'silver': 91, 'stone': 1490, 'swamp': 694, 'tar': 24, 'thistle': 408, 'tin': 184}
+   par palier : {1: 6966, 2: 4216, 3: 1422, 4: 1463, 5: 1970}
 
 ====================================================================================================
-1. GUID, PLAFOND, MODELES
+1. ANCIENS NOEUDS GAMEOBJECT AUX MODELES WoW (9101001-9101999) : SUPPRIMES
 ====================================================================================================
-   [OK] au moins un noeud de production (4664)
-   [OK] guid de production dans 9510001-9599999 (min 9510001, max 9514664)
-   [OK] toute ligne gameobject de guid >= 9510001 est un noeud (id 9101001-9101999) 
-   [OK] guid uniques et contigus (generateur) 
-   [OK] plafond total <= 6000 noeuds (4664)
-   [OK] chaque id existe dans gameobject_template (ids absents : [])
-   [OK] chaque id est un modele de noeud de rules.py ([])
-   types de noeuds utilises : 23 / 23
-   [OK] reapparition = celle du type (courte) et spawnMask 1 (0 ecarts)
-   [OK] rotation derivee de l'orientation (0 ecarts)
-   [OK] validation 005 intacte : 118 noeuds, guid 9500001-9500118 
-   max(guid) hors production dans wl_scratch2 : 9500118 (< 9510001 : plage libre)
-   classicmangos : max(guid) = 9500129, 47499 lignes (aucune ligne de production avant application : OUI)
-   [OK] lignes gameobject hors production et hors pieces de construction (id 9100001-9100999, posees en direct par le serveur) identiques a classicmangos (compte + somme crc32) (47488 lignes, somme 102166180056110)
+   [OK] gameobject_template : aucune ligne 9101xxx (0)
+   [OK] gameobject_loot_template : aucune ligne 9101xxx (0)
+   [OK] gameobject : aucune ligne 9101xxx (0)
+   [OK] wowlheim_node vide (plus aucun noeud a outil requis) (0)
 
 ====================================================================================================
-2. EXCLUSIONS (villes, villages, camps)
+2. RAMASSABLES (GameObjects coffre sans verrou, un clic sans outil)
 ====================================================================================================
-points d'exclusion lus dans wl_scratch2.wowlheim_no_build_point : 104 (rayon de la table [70.0] m ; rayon cote noeuds 100 m)
-   [OK] table des points d'exclusion = fichier 010 (104 points) 
-   [OK] aucun noeud a moins de 100 m d'un point d'exclusion (010) (plus proche : 103.7 m de « Zachariah Post »)
-   [OK] aucun noeud dans le rayon 70 m de la table (010) 
-   [OK] aucun noeud a moins de 50 m d'une creature a drapeaux PNJ / civile / garde (5599 creatures) (0 violations)
+   [OK] modeles de ramassables presents (13)
+   [OK] 9130001 Myrtilles : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130001 : displayId 20188 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130002 Plaquebières : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130002 : displayId 20189 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130003 Orge : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130003 : displayId 20190 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130004 Branche : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130004 : displayId 20191 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130005 Pissenlit : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130005 : displayId 20192 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130006 Lin : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130006 : displayId 20193 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130007 Silex : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130007 : displayId 20194 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130008 Cristal : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130008 : displayId 20195 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130009 Champignon : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130009 : displayId 20196 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130010 Pierre : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130010 : displayId 20197 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130011 Goudron : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130011 : displayId 20198 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130012 Chardon : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130012 : displayId 20199 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] 9130013 Framboises : type 3, sans verrou, butin = entree, disparait une fois pris 
+   [OK] 9130013 : displayId 20200 present dans GameObjectDisplayInfo.dbc (patch Valheim) 
+   [OK] chaque ramassable a un butin d'objet existant (Myrtilles x1, Plaquebières x1, Orge x2, Bois x1, Pissenlit x1, Lin x2, Silex x1, Cristal x1, Champignon x1, Pierre x1, Goudron x15, Chardon x1, Framboises x1)
+   [OK] nombre de ramassables en base = placements (7081 / 7081)
+   [OK] guid des ramassables dans 9501001-9514664 (sous les pieces posees) 
+   [OK] reapparition > 0 ([14400, 18000] s)
 
 ====================================================================================================
-3. POSITIONS : PROVENANCE, DOUBLONS, ESPACEMENTS
+3. CREATURES-RESSOURCES (arbres, roches, filons)
 ====================================================================================================
-   [OK] chaque noeud est a la position (x, y), z et orientation d'une creature de `creature` (rien d'invente) (4664 / 4664, 0 sans creature)
-   [OK] creature source : non elite, ni critter ni totem, sans drapeaux PNJ, au sol, ni assistant invisible (niveau <= 1, type 9/10) (0 ecarts)
-   [OK] aucun doublon de position (a 1 cm pres) entre noeuds de production et de validation (0 doublons)
-   [OK] espacement minimal entre deux noeuds quelconques >= 12 m (production et 005) (plus petit : 12.0 m)
-   [OK] espacement minimal entre noeuds de production du meme type (bois/pierre/plante 40 m, minerai 60 m, cache 150 m) (0 paires trop proches ; plus petit par type : {9101001: 40, 9101002: 40, 9101003: 42, 9101004: 42, 9101005: 41, 9101011: 40, 9101012: 43, 9101013: 42, 9101014: 41, 9101015: 48, 9101021: 61, 9101022: 62, 9101023: 61, 9101024: 61, 9101025: 64, 9101026: 63, 9101027: 73, 9101031: 42, 9101041: 151, 9101042: 151, 9101043: 172, 9101044: 167, 9101045: 181})
+   [OK] nombre de creatures-ressources en base = placements (8956 / 8956)
+   [OK] chaque creature-ressource a un modele, une entree wowlheim_tree et un creature_model_info 
+   [OK] positions en base = positions de placements.json (0 ecarts)
 
 ====================================================================================================
-4. TERRAIN, EAU, INTERIEURS (cartes .map du client)
+4. PALIERS : type autorise au palier, palier = palier de la zone (zone recalculee avec les .map du serveur)
 ====================================================================================================
-   [OK] terrain defini sous chaque noeud (pas de trou) (0 trous)
-   [OK] z de la creature a -1.0 / +1.5 m du terrain statique (ecart min -0.93, max 1.47, moyenne 0.08 ; terrain seul : modeles/vmaps non pris en compte)
-   [OK] pas d'eau (6 m autour, test getLiquidStatus sans type) (0 en eau)
-   [OK] aucune aire interieure (nom : Mine, Cave, Abbey, Crypt...) (0)
-   [OK] aucune aire/zone de ville, capitale ou arene (drapeaux AreaTable, comme BuildingMgr.cpp) (0)
+   [OK] chaque type est dans un de ses paliers (rules.PLACEMENTS) (0)
+   palier de placements.json different du palier recalcule (zone .map) : 0 sur 16037 {}
+   [OK] AUCUN type d'un palier superieur dans une zone de palier inferieur (zone .map) (0 : [])
 
 ====================================================================================================
-5. ZONES ET PALIERS
+5. TERRAIN : z, eau, berges
 ====================================================================================================
-   [OK] chaque noeud est dans une zone dotee d'un palier (niveau median >= 30 apparitions) (0 sans)
-   ecart (palier du noeud - palier de la zone) : {-1: 299, 0: 3725, 1: 640}
-   [OK] palier du noeud = palier de la zone ou un palier voisin (poche) (3725 noeuds a l'ecart 0, 939 a +/-1)
-   ecart (palier du noeud - palier du niveau median des creatures a 300 m, controle independant) : {-1: 67, 0: 4543, 1: 54}
-   [OK] palier du noeud a +/-1 du niveau local (rayon 300 m) (4543 exacts sur 4664)
-   noeuds par zone (37 zones) :
-      carte 0 Dun Morogh               faction A palier de zone T1 :  106 noeuds
-      carte 0 Badlands                 faction C palier de zone T3 :   85 noeuds
-      carte 0 Swamp of Sorrows         faction C palier de zone T4 :   80 noeuds
-      carte 0 Duskwood                 faction A palier de zone T2 :   72 noeuds
-      carte 0 Wetlands                 faction A palier de zone T2 :  105 noeuds
-      carte 0 Elwynn Forest            faction A palier de zone T1 :   87 noeuds
-      carte 0 Western Plaguelands      faction C palier de zone T5 :   61 noeuds
-      carte 0 Stranglethorn Vale       faction C palier de zone T3 :  158 noeuds
-      carte 0 Alterac Mountains        faction C palier de zone T3 :   82 noeuds
-      carte 0 Loch Modan               faction A palier de zone T1 :   88 noeuds
-      carte 0 Westfall                 faction A palier de zone T1 :   92 noeuds
-      carte 0 Redridge Mountains       faction A palier de zone T2 :   58 noeuds
-      carte 0 Arathi Highlands         faction C palier de zone T3 :   99 noeuds
-      carte 0 Burning Steppes          faction C palier de zone T5 :   52 noeuds
-      carte 0 The Hinterlands          faction C palier de zone T4 :   73 noeuds
-      carte 0 Searing Gorge            faction C palier de zone T4 :   37 noeuds
-      carte 0 Tirisfal Glades          faction H palier de zone T1 :  122 noeuds
-      carte 0 Silverpine Forest        faction H palier de zone T1 :  106 noeuds
-      carte 0 Eastern Plaguelands      faction C palier de zone T5 :  160 noeuds
-      carte 0 Hillsbrad Foothills      faction C palier de zone T2 :  110 noeuds
-      carte 1 Durotar                  faction H palier de zone T1 :  126 noeuds
-      carte 1 Dustwallow Marsh         faction C palier de zone T3 :  138 noeuds
-      carte 1 Azshara                  faction C palier de zone T4 :  190 noeuds
-      carte 1 The Barrens              faction H palier de zone T2 :  372 noeuds
-      carte 1 Teldrassil               faction A palier de zone T1 :   98 noeuds
-      carte 1 Darkshore                faction A palier de zone T1 :  134 noeuds
-      carte 1 Mulgore                  faction H palier de zone T1 :  146 noeuds
-      carte 1 Ashenvale                faction C palier de zone T2 :  274 noeuds
-      carte 1 Feralas                  faction C palier de zone T4 :  181 noeuds
-      carte 1 Felwood                  faction C palier de zone T4 :  123 noeuds
-      carte 1 Thousand Needles         faction C palier de zone T3 :  110 noeuds
-      carte 1 Desolace                 faction C palier de zone T3 :  179 noeuds
-      carte 1 Stonetalon Mountains     faction C palier de zone T2 :  126 noeuds
-      carte 1 Tanaris                  faction C palier de zone T4 :  233 noeuds
-      carte 1 Un'Goro Crater           faction C palier de zone T4 :  139 noeuds
-      carte 1 Winterspring             faction C palier de zone T5 :  150 noeuds
-      carte 1 Silithus                 faction C palier de zone T5 :  112 noeuds
+   [OK] z a moins de 1,5 m du terrain statique (.map) (0 au-dela sur 16037 ; mediane 0.00 m)
+   [OK] aucun placement dans l'eau (.map) (4)
+   [OK] flint sur les berges : eau a moins de 15 m (.map) (7 sur 703 sans eau a 15 m)
+   [OK] thistle sur les berges : eau a moins de 15 m (.map) (1 sur 408 sans eau a 15 m)
+   [OK] tin sur les berges : eau a moins de 15 m (.map) (3 sur 184 sans eau a 15 m)
 
 ====================================================================================================
-6. DENSITE ET CHARGE
+6. EXCLUSIONS (recalculees depuis classicmangos et 010)
 ====================================================================================================
-   [OK] au plus 45 noeuds de production par bloc de 1 km2 (max 45, moyenne 19.1 sur 244 blocs occupes)
-   [OK] au plus 32 noeuds de production par grille serveur (533 m) (max 23, moyenne 7.3 sur 636 grilles occupees)
-   charge : 52152 GameObjects au total (47488 hors production) ; +9.8 % avec la production
-   par continent : {0: 1833, 1: 2831} ; par palier : {1: 1125, 2: 1080, 3: 732, 4: 984, 5: 743}
-   par type : {9101001: 515, 9101002: 317, 9101003: 216, 9101004: 205, 9101005: 176, 9101011: 515, 9101012: 234, 9101013: 173, 9101014: 145, 9101015: 132, 9101021: 223, 9101022: 223, 9101023: 286, 9101024: 273, 9101025: 207, 9101026: 145, 9101027: 145, 9101031: 176, 9101041: 95, 9101042: 83, 9101043: 57, 9101044: 71, 9101045: 52}
+   [OK] aucun placement a moins de 50 m d'un PNJ/civil/garde (0)
+   [OK] aucun placement a moins de 100 m d'un point 010 (0)
 
 ====================================================================================================
-7. COUVERTURE : >= 3 zones par continent et par faction (une zone compte si >= 4 noeuds du type)
+7. DEPART ET PROGRESSION
 ====================================================================================================
-type de noeud                      pal. Royaumes de l'Est A / H | Kalimdor A / H  (nombre de zones)
-9101001 Arbre de la prairie        T1    4 /  2 |  3 /  4
-9101002 Arbre de la forêt noire    T2    7 /  3 |  4 /  4
-9101003 Vieille souche du marais   T3    6 /  6 |  4 /  4
-9101004 Pin de montagne            T4    5 /  5 |  6 /  6
-9101005 Arbre des plaines          T5    3 /  3 |  5 /  5
-9101011 Rocher de la prairie       T1    4 /  2 |  3 /  4
-9101012 Rocher moussu              T2    7 /  3 |  4 /  4
-9101013 Rocher du marais           T3    6 /  6 |  4 /  4
-9101014 Rocher de montagne         T4    5 /  5 |  6 /  6
-9101015 Rocher des plaines         T5    3 /  3 |  5 /  5
-9101021 Filon de cuivre            T2    7 /  3 |  4 /  4
-9101022 Filon d'étain              T2    7 /  3 |  4 /  4
-9101023 Gisement de fer            T3    6 /  6 |  4 /  4
-9101024 Filon d'argent             T4    5 /  5 |  6 /  6
-9101025 Filon de métal noir        T5    3 /  3 |  5 /  5
-9101026 Gisement d'obsidienne      T4    5 /  5 |  6 /  6
-9101027 Formation de cristal       T4    5 /  5 |  6 /  6
-9101031 Plant de lin               T5    3 /  3 |  5 /  5
-9101041 Ossements de cerf          T1    4 /  2 |  3 /  4
-9101042 Racines de gréling         T2    7 /  3 |  4 /  4
-9101043 Roche de Surtling          T3    6 /  6 |  4 /  4
-9101044 Cristal de givre           T4    5 /  5 |  6 /  6
-9101045 Amas de noyaux noirs       T5    3 /  3 |  5 /  5
+   [OK] kit de depart = le marteau seul ([('9201100', '40')])
+   [OK] aucun vendeur de materiaux/outils Wowlheim (0)
+   [OK] plus d'outils inventes (argent, pioche en sombracier) 
+   [OK] hache en pierre fabricable a la main (sans station) ([('',)])
+   [OK] etabli = 10 Bois ([('9200001', '10')])
+   [OK] recettes : ingredients et sorties existent (14 recettes)
+      99 Marteau                  station (a la main)  niveau 1
+      100 Hache en pierre          station (a la main)  niveau 1
+      101 Hache en silex           station workbench    niveau 1
+      102 Pioche de bois de cerf   station workbench    niveau 1
+      103 Hache en bronze          station forge        niveau 1
+      104 Pioche en bronze         station forge        niveau 1
+      105 Hache en fer             station forge        niveau 2
+      106 Pioche en fer            station forge        niveau 2
+      109 Hache en sombracier      station forge        niveau 4
+      201 Bronze                   station forge        niveau 1
+      202 Bronze x5                station forge        niveau 1
+      210 Clous en bronze x20      station forge        niveau 1
+      211 Clous en fer x10         station forge        niveau 1
+      213 Roue à aiguiser          station stonecutter  niveau 1
+   race 1 : a moins de 600 m du depart : branches 22, pierres 7, hetres 44, silex 6, framboises 5, champignons 6
+   race 2 : a moins de 600 m du depart : branches 15, pierres 22, hetres 3, silex 11, framboises 8, champignons 3
+   race 3 : a moins de 600 m du depart : branches 35, pierres 26, hetres 1, silex 0, framboises 4, champignons 9
+   race 4 : a moins de 600 m du depart : branches 31, pierres 30, hetres 16, silex 5, framboises 12, champignons 14
+   race 5 : a moins de 600 m du depart : branches 23, pierres 23, hetres 35, silex 1, framboises 19, champignons 7
+   race 6 : a moins de 600 m du depart : branches 41, pierres 20, hetres 41, silex 13, framboises 0, champignons 15
+   race 7 : a moins de 600 m du depart : branches 35, pierres 26, hetres 1, silex 0, framboises 4, champignons 9
+   race 8 : a moins de 600 m du depart : branches 15, pierres 22, hetres 3, silex 11, framboises 8, champignons 3
 
-ressource (noeuds a chance >= 20 %) Royaumes de l'Est A / H | Kalimdor A / H
-9200001 Bois                        4 /  2 |  3 /  4
-9200002 Pierre                     18 / 13 | 14 / 15
-9200003 Silex                       9 /  4 |  5 /  6
-9200004 Résine                     17 / 12 | 13 / 14
-9200009 Andouiller                  4 /  2 |  3 /  4
-9200011 Bois fin                    7 /  3 |  4 /  4
-9200012 Bois de cœur               16 / 12 | 13 / 13
-9200013 Cuivre                      7 /  3 |  4 /  4
-9200014 Étain                       7 /  3 |  4 /  4
-9200019 Œil de gréling              7 /  3 |  4 /  4
-9200021 Fer                         6 /  6 |  4 /  4
-9200022 Écorce ancienne             6 /  6 |  4 /  4
-9200029 Noyau de Surtling           6 /  6 |  4 /  4
-9200031 Argent                      5 /  5 |  6 /  6
-9200032 Obsidienne                  5 /  5 |  6 /  6
-9200034 Cristal                     5 /  5 |  6 /  6
-9200039 Glande de gel               5 /  5 |  6 /  6
-9200041 Métal noir                  3 /  3 |  5 /  5
-9200042 Lin                         3 /  3 |  5 /  5
-9200049 Noyau noir                  3 /  3 |  5 /  5
-   [OK] toute ressource de nœud (chance >= 20 %) est couverte quelque part ([])
+====================================================================================================
+8. BASE : lignes `gameobject` hors plages Wowlheim identiques a classicmangos
+====================================================================================================
+   [OK] gameobject hors plages Wowlheim identiques (47370 lignes)
 
-Zones par continent et palier (au moins un type compte) :
-   carte 0 palier T1 : 6 zones : Dun Morogh, Elwynn Forest, Loch Modan, Silverpine Forest, Tirisfal Glades, Westfall
-   carte 0 palier T2 : 8 zones : Alterac Mountains, Duskwood, Hillsbrad Foothills, Loch Modan, Redridge Mountains, Silverpine Forest, Westfall, Wetlands
-   carte 0 palier T3 : 6 zones : Alterac Mountains, Arathi Highlands, Badlands, Hillsbrad Foothills, Stranglethorn Vale, Swamp of Sorrows
-   carte 0 palier T4 : 5 zones : Badlands, Searing Gorge, Stranglethorn Vale, Swamp of Sorrows, The Hinterlands
-   carte 0 palier T5 : 3 zones : Burning Steppes, Eastern Plaguelands, Western Plaguelands
-   carte 1 palier T1 : 6 zones : Darkshore, Durotar, Mulgore, Stonetalon Mountains, Teldrassil, The Barrens
-   carte 1 palier T2 : 5 zones : Ashenvale, Darkshore, Stonetalon Mountains, The Barrens, Thousand Needles
-   carte 1 palier T3 : 4 zones : Ashenvale, Desolace, Dustwallow Marsh, Thousand Needles
-   carte 1 palier T4 : 6 zones : Azshara, Dustwallow Marsh, Felwood, Feralas, Tanaris, Un'Goro Crater
-   carte 1 palier T5 : 5 zones : Azshara, Felwood, Silithus, Un'Goro Crater, Winterspring
+====================================================================================================
+COUVERTURE (constats) : zones par continent x faction x type (>= 4 placements dans la zone)
+====================================================================================================
+   CONSTAT : carte 0 faction A type tar (paliers (5,)) : 1 zone(s) ['Eastern Plaguelands']
+   CONSTAT : carte 0 faction H type beech (paliers (1, 2)) : 1 zone(s) ['Tirisfal Glades']
+   CONSTAT : carte 0 faction H type pine (paliers (2,)) : 1 zone(s) ['Hillsbrad Foothills']
+   CONSTAT : carte 0 faction H type copper (paliers (2,)) : 1 zone(s) ['Hillsbrad Foothills']
+   CONSTAT : carte 0 faction H type tin (paliers (2,)) : 1 zone(s) ['Hillsbrad Foothills']
+   CONSTAT : carte 0 faction H type raspberry (paliers (1,)) : 2 zone(s) ['Silverpine Forest', 'Tirisfal Glades']
+   CONSTAT : carte 0 faction H type dandelion (paliers (1,)) : 2 zone(s) ['Silverpine Forest', 'Tirisfal Glades']
+   CONSTAT : carte 0 faction H type blueberry (paliers (2,)) : 1 zone(s) ['Hillsbrad Foothills']
+   CONSTAT : carte 0 faction H type tar (paliers (5,)) : 1 zone(s) ['Eastern Plaguelands']
+   CONSTAT : carte 1 faction A type pine (paliers (2,)) : 2 zone(s) ['Ashenvale', 'Stonetalon Mountains']
+   CONSTAT : carte 1 faction A type swamp (paliers (3,)) : 2 zone(s) ['Desolace', 'Dustwallow Marsh']
+   CONSTAT : carte 1 faction A type copper (paliers (2,)) : 2 zone(s) ['Ashenvale', 'Stonetalon Mountains']
+   CONSTAT : carte 1 faction A type tin (paliers (2,)) : 2 zone(s) ['Ashenvale', 'Stonetalon Mountains']
+   CONSTAT : carte 1 faction A type raspberry (paliers (1,)) : 2 zone(s) ['Darkshore', 'Teldrassil']
+   CONSTAT : carte 1 faction A type dandelion (paliers (1,)) : 2 zone(s) ['Darkshore', 'Teldrassil']
+   CONSTAT : carte 1 faction A type blueberry (paliers (2,)) : 2 zone(s) ['Ashenvale', 'Stonetalon Mountains']
+   CONSTAT : carte 1 faction A type flax (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction A type barley (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction A type cloudberry (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction A type tar (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction H type swamp (paliers (3,)) : 2 zone(s) ['Desolace', 'Dustwallow Marsh']
+   CONSTAT : carte 1 faction H type raspberry (paliers (1,)) : 2 zone(s) ['Durotar', 'Mulgore']
+   CONSTAT : carte 1 faction H type dandelion (paliers (1,)) : 2 zone(s) ['Durotar', 'Mulgore']
+   CONSTAT : carte 1 faction H type flax (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction H type barley (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction H type cloudberry (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
+   CONSTAT : carte 1 faction H type tar (paliers (5,)) : 2 zone(s) ['Silithus', 'Winterspring']
 
 ====================================================================================================
 RESULTAT
 ====================================================================================================
-COUVERTURE : 5 constat(s) < 3 zones :
-   MANQUE : type 9101001 (Arbre de la prairie) : continent 0, faction H : 2 zone(s)
-   MANQUE : type 9101011 (Rocher de la prairie) : continent 0, faction H : 2 zone(s)
-   MANQUE : type 9101041 (Ossements de cerf) : continent 0, faction H : 2 zone(s)
-   MANQUE : ressource 9200001 (Bois) : continent 0, faction H : 2 zone(s)
-   MANQUE : ressource 9200009 (Andouiller) : continent 0, faction H : 2 zone(s)
-ERREURS DE FORME : 0
+Formes : TOUTES OK ; 27 constat(s) de couverture.

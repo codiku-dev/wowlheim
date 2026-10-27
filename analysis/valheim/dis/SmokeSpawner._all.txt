@@ -1,0 +1,223 @@
+== SmokeSpawner::Awake() -> void  il_size=136 sha=0c68b78e5041
+   locals_sig=0x110001d8
+   0 ldarg.0      
+   1 ldc.r4       0
+   6 ldarg.0      
+   7 ldfld        SmokeSpawner::m_interval
+  12 call         UnityEngine.Random::Range
+  17 stfld        SmokeSpawner::m_time
+  22 ldarg.0      
+  23 ldfld        SmokeSpawner::m_stopFireOnStart
+  28 brfalse.s    135
+  30 ldsfld       Fire::s_fires
+  35 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  40 stloc.0      
+  41 br.s         110
+  43 ldloca.s     0
+  45 call         Enumerator::get_Current
+  50 stloc.1      
+  51 ldloc.1      
+  52 call         UnityEngine.Object::op_Implicit
+  57 brfalse.s    110
+  59 ldloc.1      
+  60 callvirt     UnityEngine.Component::get_transform
+  65 callvirt     UnityEngine.Transform::get_position
+  70 ldarg.0      
+  71 call         UnityEngine.Component::get_transform
+  76 callvirt     UnityEngine.Transform::get_position
+  81 call         UnityEngine.Vector3::Distance
+  86 ldarg.0      
+  87 ldfld        SmokeSpawner::m_spawnRadius
+  92 bge.un.s     110
+  94 call         ZNetScene::get_instance()
+  99 ldloc.1      
+ 100 callvirt     UnityEngine.Component::get_gameObject
+ 105 callvirt     ZNetScene::Destroy(class:133)
+ 110 ldloca.s     0
+ 112 call         Enumerator::MoveNext
+ 117 brtrue.s     43
+ 119 leave.s      135
+ 121 ldloca.s     0
+ 123 constrained. 0x1b000104
+ 129 callvirt     System.IDisposable::Dispose
+ 134 endfinally   
+ 135 ret          
+
+== SmokeSpawner::OnEnable() -> void  il_size=12 sha=2c2d1664f22f
+   locals_sig=null
+   0 call         SmokeSpawner::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Add
+  11 ret          
+
+== SmokeSpawner::OnDisable() -> void  il_size=13 sha=24a63591f294
+   locals_sig=null
+   0 call         SmokeSpawner::get_Instances()
+   5 ldarg.0      
+   6 callvirt     System.Collections.Generic.List`1::Remove
+  11 pop          
+  12 ret          
+
+== SmokeSpawner::CustomUpdate(r4, r4) -> void  il_size=47 sha=8b68ef9fb697
+   locals_sig=null
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        SmokeSpawner::m_time
+   7 ldarg.1      
+   8 add          
+   9 stfld        SmokeSpawner::m_time
+  14 ldarg.0      
+  15 ldfld        SmokeSpawner::m_time
+  20 ldarg.0      
+  21 ldfld        SmokeSpawner::m_interval
+  26 ble.un.s     46
+  28 ldarg.0      
+  29 ldc.r4       0
+  34 stfld        SmokeSpawner::m_time
+  39 ldarg.0      
+  40 ldarg.2      
+  41 call         SmokeSpawner::Spawn(r4)
+  46 ret          
+
+== SmokeSpawner::Spawn(r4) -> void  il_size=202 sha=2ae6452843f9
+   locals_sig=0x110001d9
+   0 ldsfld       Player::m_localPlayer
+   5 stloc.0      
+   6 ldloc.0      
+   7 ldnull       
+   8 call         UnityEngine.Object::op_Equality
+  13 brtrue.s     49
+  15 ldloc.0      
+  16 callvirt     UnityEngine.Component::get_transform
+  21 callvirt     UnityEngine.Transform::get_position
+  26 ldarg.0      
+  27 call         UnityEngine.Component::get_transform
+  32 callvirt     UnityEngine.Transform::get_position
+  37 call         UnityEngine.Vector3::Distance
+  42 ldc.r4       64
+  47 ble.un.s     57
+  49 ldarg.0      
+  50 ldarg.1      
+  51 stfld        SmokeSpawner::m_lastSpawnTime
+  56 ret          
+  57 ldarg.0      
+  58 call         SmokeSpawner::TestBlocked()
+  63 brfalse.s    66
+  65 ret          
+  66 call         Smoke::GetTotalSmoke()
+  71 ldc.i4.s     100
+  73 ble.s        80
+  75 call         Smoke::FadeOldest()
+  80 ldarg.0      
+  81 call         UnityEngine.Component::get_transform
+  86 callvirt     UnityEngine.Transform::get_position
+  91 stloc.1      
+  92 ldarg.0      
+  93 ldfld        SmokeSpawner::m_spawnRadius
+  98 ldc.r4       0
+ 103 ble.un.s     176
+ 105 call         UnityEngine.Random::get_insideUnitCircle
+ 110 stloc.3      
+ 111 ldloca.s     3
+ 113 call         UnityEngine.Vector2::get_normalized
+ 118 ldarg.0      
+ 119 ldfld        SmokeSpawner::m_spawnRadius
+ 124 ldc.r4       2
+ 129 div          
+ 130 ldarg.0      
+ 131 ldfld        SmokeSpawner::m_spawnRadius
+ 136 call         UnityEngine.Random::Range
+ 141 call         UnityEngine.Vector2::op_Multiply
+ 146 stloc.2      
+ 147 ldloc.1      
+ 148 ldloc.2      
+ 149 ldfld        UnityEngine.Vector2::x
+ 154 ldc.r4       0
+ 159 ldloc.2      
+ 160 ldfld        UnityEngine.Vector2::y
+ 165 newobj       UnityEngine.Vector3::.ctor
+ 170 call         UnityEngine.Vector3::op_Addition
+ 175 stloc.1      
+ 176 ldarg.0      
+ 177 ldfld        SmokeSpawner::m_smokePrefab
+ 182 ldloc.1      
+ 183 call         UnityEngine.Random::get_rotation
+ 188 call         UnityEngine.Object::Instantiate<T>
+ 193 pop          
+ 194 ldarg.0      
+ 195 ldarg.1      
+ 196 stfld        SmokeSpawner::m_lastSpawnTime
+ 201 ret          
+
+== SmokeSpawner::TestBlocked() -> bool  il_size=39 sha=51b9e1262a3e
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_transform
+   6 callvirt     UnityEngine.Transform::get_position
+  11 ldarg.0      
+  12 ldfld        SmokeSpawner::m_testRadius
+  17 ldarg.0      
+  18 ldflda       SmokeSpawner::m_testMask
+  23 call         UnityEngine.LayerMask::get_value
+  28 call         UnityEngine.Physics::CheckSphere
+  33 brfalse.s    37
+  35 ldc.i4.1     
+  36 ret          
+  37 ldc.i4.0     
+  38 ret          
+
+== SmokeSpawner::IsBlocked() -> bool  il_size=40 sha=054475b3af8d
+   locals_sig=null
+   0 ldarg.0      
+   1 call         UnityEngine.Component::get_gameObject
+   6 callvirt     UnityEngine.GameObject::get_activeInHierarchy
+  11 brtrue.s     20
+  13 ldarg.0      
+  14 call         SmokeSpawner::TestBlocked()
+  19 ret          
+  20 call         UnityEngine.Time::get_time
+  25 ldarg.0      
+  26 ldfld        SmokeSpawner::m_lastSpawnTime
+  31 sub          
+  32 ldc.r4       4
+  37 cgt          
+  39 ret          
+
+== SmokeSpawner::OnDrawGizmos() -> void  il_size=35 sha=80cbb58fa8ff
+   locals_sig=null
+   0 call         UnityEngine.Color::get_yellow
+   5 call         UnityEngine.Gizmos::set_color
+  10 ldarg.0      
+  11 call         UnityEngine.Component::get_transform
+  16 callvirt     UnityEngine.Transform::get_position
+  21 ldarg.0      
+  22 ldfld        SmokeSpawner::m_spawnRadius
+  27 ldc.i4.s     16
+  29 call         Utils::DrawGizmoCircle
+  34 ret          
+
+== SmokeSpawner::get_Instances() -> class:165<class:1116>  il_size=6 sha=4d922d19e696
+   locals_sig=null
+   0 ldsfld       SmokeSpawner::<Instances>k__BackingField
+   5 ret          
+
+== SmokeSpawner::.ctor() -> void  il_size=29 sha=859b4b566df3
+   locals_sig=null
+   0 ldarg.0      
+   1 ldc.r4       0.5
+   6 stfld        SmokeSpawner::m_interval
+  11 ldarg.0      
+  12 ldc.r4       0.5
+  17 stfld        SmokeSpawner::m_testRadius
+  22 ldarg.0      
+  23 call         UnityEngine.MonoBehaviour::.ctor
+  28 ret          
+
+== SmokeSpawner::.cctor() -> void  il_size=23 sha=5fac090dba80
+   locals_sig=null
+   0 ldc.i4.s     30
+   2 newarr       0x01000013
+   7 stsfld       SmokeSpawner::s_colliders
+  12 newobj       System.Collections.Generic.List`1::.ctor
+  17 stsfld       SmokeSpawner::<Instances>k__BackingField
+  22 ret          

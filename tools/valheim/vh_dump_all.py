@@ -16,8 +16,9 @@ out={'hammer_table':table,'hammer_pieces':pieces,'prefabs':{}}
 trees=['Beech1','Beech_small1','Birch1','Birch2','Oak1','FirTree','FirTree_small','Pinetree_01','Beech_Stub','Birch1_aut','SwampTree1',
  'beech_log','beech_log_half','Birch_log','Birch_log_half','Oak_log','Oak_log_half','FirTree_log','FirTree_log_half','PineTree_log','PineTree_log_half',
  'rock1','rock2','rock3','rock4','Rock_3','Rock_4','Rock_7','MineRock_Copper','MineRock_Tin','rock4_copper','MineRock_Stone',
+ 'rock4_copper_frac','rock4_coast','rock4_coast_frac','mudpile','mudpile_frac','silvervein','silvervein_frac',
  'Hammer','Hoe','Cultivator','AxeStone','AxeFlint','AxeBronze','AxeIron','AxeBlackMetal','AxeJotunBane','PickaxeAntler','PickaxeBronze','PickaxeIron','PickaxeBlackMetal','PickaxeStone',
- 'Wood','FineWood','RoundLog','ElderBark','YggdrasilWood','Stone','Flint','Resin','DeerHide','LeatherScraps','Copper','Tin','Bronze','Iron','BronzeNails','IronNails','TrophyDeer','Coal','Silver','BlackMetal','Obsidian','Crystal','LinenThread','LoxPelt','WolfPelt','TrollHide','Chitin','SurtlingCore','GreydwarfEye','BoneFragments','Guck','Tar','Feathers','HardAntler','Raspberry','Honey','Thistle','Dandelion','Mushroom','AncientSeed']
+ 'Wood','FineWood','RoundLog','CopperOre','TinOre','IronScrap','SilverOre','IronOre','ElderBark','YggdrasilWood','Stone','Flint','Resin','DeerHide','LeatherScraps','Copper','Tin','Bronze','Iron','BronzeNails','IronNails','TrophyDeer','Coal','Silver','BlackMetal','Obsidian','Crystal','LinenThread','LoxPelt','WolfPelt','TrollHide','Chitin','SurtlingCore','GreydwarfEye','BoneFragments','Guck','Tar','Feathers','HardAntler','Raspberry','Honey','Thistle','Dandelion','Mushroom','AncientSeed']
 names=list(dict.fromkeys(pieces+trees))
 for i,n in enumerate(names):
     try: out['prefabs'][n]=D.dump(n)

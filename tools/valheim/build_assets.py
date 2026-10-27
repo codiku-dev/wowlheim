@@ -26,18 +26,50 @@ stone_pillar stone_arch stone_stair piece_workbench piece_workbench_ext1 piece_w
 piece_workbench_ext4 forge forge_ext1 forge_ext2 forge_ext3 forge_ext4 forge_ext5 forge_ext6 piece_stonecutter fire_pit hearth
 bonfire piece_groundtorch_wood piece_walltorch bed piece_bed02 piece_chest_wood piece_chest piece_chair piece_chair02
 piece_bench01 piece_logbench01 piece_table piece_table_round sign itemstand rug_deer rug_wolf piece_banner01 wood_stack
-stone_pile portal_wood guard_stone smelter charcoal_kiln""".split()
-TREES = "FirTree_Stub Pinetree_01_Stub BirchStub OakStub Beech1 Birch1 Oak1 FirTree Pinetree_01 beech_log beech_log_half Birch_log Birch_log_half Oak_log Oak_log_half FirTree_log FirTree_log_half PineTree_log PineTree_log_half Beech_Stub".split()
-ROCKS = "MineRock_Stone Rock_4 MineRock_Copper MineRock_Tin MineRock_Iron MineRock_Obsidian".split()
+stone_pile portal_wood guard_stone smelter charcoal_kiln
+wood_wall_roof_top wood_wall_roof_top_45 wood_log_67 wood_fence_gate stone_fence wood_dragon1
+woodiron_pole woodiron_beam woodiron_beam_26 woodiron_beam_45 woodiron_beam_67
+iron_floor_1x1_v2 iron_floor_2x2 iron_wall_1x1 iron_wall_2x2 iron_grate crystal_wall_1x1
+darkwood_decowall darkwood_pole darkwood_pole4 darkwood_beam darkwood_beam4x4 darkwood_beam_26 darkwood_beam_45 darkwood_arch
+darkwood_roof darkwood_roof_45 darkwood_roof_icorner darkwood_roof_icorner_45 darkwood_roof_ocorner darkwood_roof_ocorner_45
+darkwood_roof_top darkwood_roof_top_45 darkwood_gate darkwood_raven darkwood_wolf
+piece_artisanstation piece_spinningwheel blastfurnace
+piece_throne01 piece_throne02 piece_chair03 piece_table_oak piece_chest_private piece_chest_blackmetal ArmorStand itemstandh
+piece_groundtorch piece_groundtorch_blue piece_groundtorch_green piece_brazierfloor01 piece_brazierfloor02 piece_brazierceiling01
+rug_fur rug_straw piece_banner02 piece_banner03 piece_banner04 piece_banner05 piece_banner06 piece_banner07 piece_banner08
+piece_banner09 piece_banner10 piece_banner11 piece_CelebrationGarland piece_FairylightGarland piece_ArcheryTarget
+wood_fine_stack wood_core_stack flint_pile bar_tin_stack bar_copper_stack bar_bronze_stack bar_iron_stack bar_silver_stack
+bar_blackmetal_stack coal_pile bone_stack""".split()
+# Pieces de la table du marteau de Valheim (398) NON importees et pourquoi : docs/VALHEIM_ASSETS.md, « Catalogue du marteau ».
+TREES = "FirTree_Stub Pinetree_01_Stub BirchStub OakStub Beech1 Birch1 Oak1 FirTree Pinetree_01 beech_log beech_log_half Birch_log Birch_log_half Oak_log Oak_log_half FirTree_log FirTree_log_half PineTree_log PineTree_log_half Beech_Stub SwampTree1 SwampTree1_log SwampTree1_Stub".split()
+ROCKS = "MineRock_Stone Rock_4 MineRock_Copper MineRock_Tin MineRock_Iron MineRock_Obsidian silvervein".split()
+# ramassables de Valheim (composant Pickable : clic sans outil) -> GameObjects (tools/resources/rules.py PLACEMENTS, gen_server_sql.py)
+PICKABLES = """Pickable_Branch Pickable_Stone Pickable_Flint RaspberryBush Pickable_Mushroom Pickable_Dandelion BlueberryBush
+Pickable_Thistle Pickable_MountainCaveCrystal Pickable_Flax_Wild Pickable_Barley_Wild CloudberryBush Pickable_TarBig""".split()
 TOOLS = "Hammer AxeStone AxeFlint AxeBronze AxeIron PickaxeAntler PickaxeBronze PickaxeIron Hoe".split()
 
-CUTOUT = re.compile(r"leaf|leaves|needle|branch|twig|straw|feather|web|grass|fern|plant|hair|fur", re.I)
+# stations animees (SkinnedMeshRenderer, maillage pris en pose de liaison) et pieces aux materiaux sans texture (couleur unie)
+SKINNED = {"piece_artisanstation", "piece_spinningwheel", "blastfurnace"}
+FLAT_COLOR = {"crystal_wall_1x1", "Pickable_MountainCaveCrystal", "Pickable_TarBig", "bar_tin_stack", "bar_copper_stack", "bar_bronze_stack", "bar_silver_stack"}
 
-def is_alpha_tex(img, name=""):
-    """Transparence decoupee (alpha teste) : feuillage, chaume... Les autres textures de Valheim (roches, metaux) se servent
-    du canal alpha pour la brillance ou la mousse : elles restent opaques."""
+CUTOUT = re.compile(r"leaf|leaves|needle|branch|twig|straw|feather|web|grass|fern|plant|(?<!c)hair|fur", re.I)
+# shaders de Valheim a alpha teste (feuillage, herbe, tapis/fourrures, bannieres) ; ecorces exclues (alpha = mousse)
+CUTOUT_SHADERS = {"Custom/Vegetation", "Custom/Grass", "Custom/Rug"}
+OPAQUE_NAMES = re.compile(r"bark|trunk|_log|stump", re.I)
+
+def is_alpha_tex(img, name="", info=None):
+    """Transparence decoupee (alpha teste) : feuillage, chaume, sapins, buissons, bannieres, tapis... Decide d'abord par
+    le materiau Valheim (info : vh_mesh.mat_info) : shader de vegetation / herbe / tapis, _Mode 1 (Cutout) ou mot-cle
+    _ALPHATEST_ON ; a defaut, par le nom (CUTOUT). Les autres textures (roches, metaux, ecorces) se servent du canal alpha
+    pour la brillance ou la mousse : elles restent opaques. Avant le 2026-10-26, seul le nom comptait : sapins (Pine_tree*),
+    buissons, bannieres, lin, orge, pissenlit... sortaient en plaques opaques, et « DarkWoodChair » etait decoupe (« hair »)."""
     a = np.array(img.convert("RGBA"))[:, :, 3]
-    return (a < 128).mean() > 0.05 and bool(CUTOUT.search(name))
+    if (a < 128).mean() <= 0.05: return False
+    if CUTOUT.search(name): return True
+    if not info or OPAQUE_NAMES.search(name): return False
+    if info.get('shader') in CUTOUT_SHADERS: return True
+    if "_ALPHATEST_ON" in info.get('keywords', []): return True
+    return abs(info.get('mode', 0.0) - 1.0) < 0.01
 
 def fix_winding(g):
     P, N, T = g['pos'], g['nrm'], g['tris']
@@ -78,12 +110,39 @@ def lay_down(res):
     zmin = min(g['pos'][:, 2].min() for g in res['groups'])
     for g in res['groups']: g['pos'][:, 2] -= zmin
 
+# Apparence des filons : le prefab de jeu (PV, zones, butin lus par gen_server_sql.py) garde son nom, mais son modele
+# vient du prefab que Valheim place reellement dans le monde. MineRock_Copper / MineRock_Iron / MineRock_Stone sont des
+# prototypes inutilises de Valheim (24 galets « default », texture 64 px ocre/vert ou orange) : ce sont eux qui
+# ressortaient en aplats pastel en jeu (texture claire et saturee, etiree sur de gros galets). Valheim montre :
+#  - cuivre : rock4_copper (roche grise, veines cuivre/vert-de-gris, copper_ore_big_d tuilee x8) ;
+#  - pierre : rock4_coast (meme roche, gouacherock_big) ;
+#  - fer : mudpile (tas de boue des cryptes, boue en projection triplanaire + ferraille, boucliers, ossements).
+# (prefab source, echelle uniforme, coupe : triangles entierement sous z = coupe retires apres mise a l'echelle).
+# rock4_* mesure 24 x 28 m pour 4 m hors sol (17 m enterres) : ramene a ~9 x 11 m, 1,6 m de haut, jupe de 1 m sous le sol.
+VISUAL = {"MineRock_Copper": ("rock4_copper", 0.4, -1.0), "MineRock_Stone": ("rock4_coast", 0.4, -1.0),
+          "MineRock_Iron": ("mudpile", 1.0, None)}
+
+def apply_visual(res, scale, zclip):
+    for g in res['groups']:
+        g['pos'] = g['pos'] * scale
+        if zclip is None: continue
+        T = g['tris']
+        T = T[g['pos'][T][:, :, 2].max(1) >= zclip]
+        used = np.unique(T); remap = -np.ones(len(g['pos']), int); remap[used] = np.arange(len(used))
+        for k in ('pos', 'nrm', 'uv'): g[k] = g[k][used]
+        g['tris'] = remap[T]
+    res['groups'] = [g for g in res['groups'] if len(g['tris'])]
+
 def build(name, kind, manifest, texcache):
-    res = export_prefab(name, attach_only=(kind == 'tool'))
+    src, vscale, zclip = VISUAL.get(name, (name, 1.0, None))
+    res = export_prefab(src, attach_only=(kind == 'tool'), skinned=name in SKINNED, flat_color=name in FLAT_COLOR)
     if not res['groups']:
         print("  (vide)", name); return
+    if src != name: apply_visual(res, vscale, zclip)
     if kind == 'tool': tool_space(res, name)
-    if name.endswith(('_log', '_log_half')): lay_down(res)
+    # buches tombees des arbres seulement : les pieces wood_pole_log / wood_wall_log restent debout (avant le
+    # 2026-10-26 tout « *_log » etait couche, poteau en rondin construit allonge le long de X)
+    if kind == 'tree' and name.endswith(('_log', '_log_half')): lay_down(res)
     offset = [0.0, 0.0, 0.0]
     snaps = []
     if kind == 'piece':
@@ -104,7 +163,7 @@ def build(name, kind, manifest, texcache):
                 sub = "Item\\ObjectComponents\\Weapon" if kind == 'tool' else "World\\Wowlheim\\Textures"
                 rel = sub + "\\" + ("WL_" if kind == 'tool' else "") + tn.replace(" ", "_") + ".blp"
                 fn = os.path.join(MPQ_ROOT, *rel.split("\\")); os.makedirs(os.path.dirname(fn), exist_ok=True)
-                cut = is_alpha_tex(img, tn)
+                cut = is_alpha_tex(img, tn, res.get('matinfo', {}).get(tn))
                 wowfmt.write_blp(fn, img, max_size=256 if kind == 'tool' else 512, alpha=cut)
                 texcache[tn] = (rel, cut)
         if texcache[tn] is None: continue
@@ -137,7 +196,9 @@ def build(name, kind, manifest, texcache):
         seqs, rot, scl = rock_anims()
     if kind == 'tool':
         rel = "Item\\ObjectComponents\\Weapon\\WL_" + name + ".m2"
-        texpaths_m2 = [""] * len(texpaths)   # texture fournie par ItemDisplayInfo (type 2)
+        # Chemin fixe (type 0) comme les autres modeles. Avant le 2026-10-26 : nom vide ici avec type 0 (pas de type 2 ni de
+        # ModelTexture dans ItemDisplayInfo) -> aucun fichier charge, outils tenus en main tout BLANCS en jeu.
+        texpaths_m2 = texpaths
     else:
         rel = "World\\Wowlheim\\" + name + ".m2"
         texpaths_m2 = texpaths
@@ -189,7 +250,7 @@ if __name__ == "__main__":
     mf_path = os.path.join(OUT, "manifest.json")
     manifest = json.load(open(mf_path)) if os.path.exists(mf_path) else {}
     texcache = {}
-    todo = [(n, 'piece') for n in PIECES] + [(n, 'tree') for n in TREES] + [(n, 'rock') for n in ROCKS] + [(n, 'tool') for n in TOOLS]
+    todo = [(n, 'piece') for n in PIECES] + [(n, 'tree') for n in TREES] + [(n, 'rock') for n in ROCKS] + [(n, 'tool') for n in TOOLS] + [(n, 'pickable') for n in PICKABLES]
     if len(sys.argv) > 1:
         todo = [t for t in todo if t[0] in sys.argv[1:]]
     for n, k in todo:

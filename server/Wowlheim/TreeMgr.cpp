@@ -1,5 +1,6 @@
 #include "Wowlheim/TreeMgr.h"
 #include "Wowlheim/BuildingMgr.h"
+#include "Wowlheim/ValheimSkills.h"
 
 #include "Database/DatabaseEnv.h"
 #include "Entities/Creature.h"
@@ -85,33 +86,109 @@ void TreeMgr::Warn(Player* p, char const* text)
     p->GetSession()->SendNotification("%s", text);
 }
 
+namespace
+{
+    // Coup refusé (Valheim : Attack.Start renvoie false, aucune attaque) : le coup automatique de WoW devient un raté
+    void MakeMiss(CalcDamageInfo* info)
+    {
+        for (auto& sub : info->subDamage)
+        {
+            sub.damage = 0;
+            sub.absorb = 0;
+            sub.resist = 0;
+        }
+        info->totalDamage = 0;
+        info->cleanDamage = 0;
+        info->blocked_amount = 0;
+        info->absorb = 0;
+        info->hitOutCome = MELEE_HIT_MISS;
+        info->TargetState = VICTIMSTATE_UNAFFECTED;
+        info->HitInfo = HITINFO_MISS;
+        info->procEx = PROC_EX_MISS;
+    }
+}
+
 void TreeMgr::AdjustMelee(Unit* attacker, Unit* victim, CalcDamageInfo* info)
 {
-    WLTreeInfo const* tree = victim && victim->GetTypeId() == TYPEID_UNIT ? Find(victim->GetEntry()) : nullptr;
-    if (!tree || info->hitOutCome == MELEE_HIT_EVADE)
+    if (!attacker || !victim || info->hitOutCome == MELEE_HIT_EVADE)
         return;
+    WLTreeInfo const* tree = victim->GetTypeId() == TYPEID_UNIT ? Find(victim->GetEntry()) : nullptr;
+    Player* p = attacker->GetTypeId() == TYPEID_PLAYER ? static_cast<Player*>(attacker) : nullptr;
+
+    // Outil Valheim en main droite (hache / pioche) : endurance « outils » (docs/VALHEIM_SKILLS.md §2.4)
+    Item* main = p && info->attackType == BASE_ATTACK ? p->GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_MAINHAND) : nullptr;
+    std::string kind;
+    uint8 tier = 0;
+    float chop = 0.0f;
+    bool isTool = main && sBuildingMgr.GetTool(main->GetEntry(), kind, tier, chop) && (kind == "axe" || kind == "pick");
+    bool broken = isTool && WLSkillMgr::IsBroken(main);          // Humanoid.EquipItem : un outil cassé ne s'équipe pas
+    uint16 weaponSkill = kind == "axe" ? WL_SKILL_AXES : WL_SKILL_PICKAXES;   // ItemData.m_shared.m_skillType
+    float cost = isTool && !broken ? sWLSkillMgr.AttackStamina(p, main->GetEntry(), weaponSkill) : 0.0f;
+
+    if (!tree)
+    {
+        // Combat avec un outil Valheim : chaque coup coûte de l'endurance (Attack.Update IL 92–120), refusé si elle manque
+        // (Attack.Start IL 564–613) ; une hache qui touche une créature monte Haches de 1,5 (DoMeleeAttack IL 3274–3343)
+        if (!p || !isTool || broken)
+            return;
+        if (!sWLSkillMgr.HaveStamina(p, cost + 0.1f))
+        {
+            MakeMiss(info);
+            Warn(p, "Vous êtes trop fatigué.");
+            sWLSkillMgr.SendStamina(p, true);
+            return;
+        }
+        sWLSkillMgr.UseStamina(p, cost);
+        bool hit = info->hitOutCome != MELEE_HIT_MISS && info->hitOutCome != MELEE_HIT_DODGE && info->hitOutCome != MELEE_HIT_PARRY;
+        if (hit)
+        {
+            if (kind == "axe")
+                sWLSkillMgr.Raise(p, WL_SKILL_AXES, 1.5f);      // m_raiseSkillAmount (1) × 1,5 : un Character a été touché
+            sBuildingMgr.ConsumeToolDurability(p);              // usure : m_useDurabilityDrain (1) si un objet est touché
+        }
+        sWLSkillMgr.SendStamina(p, false);
+        return;
+    }
 
     uint32 damage = 0;
-    if (attacker->GetTypeId() == TYPEID_PLAYER)
+    if (p)
     {
-        Player* p = static_cast<Player*>(attacker);
-        Item* main = p->GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_MAINHAND);
-        std::string kind;
-        uint8 tier = 0;
-        float chop = 0.0f;
         bool pick = tree->tool == "pick";
-        if (!main || !sBuildingMgr.GetTool(main->GetEntry(), kind, tier, chop) || kind != tree->tool)
+        if (!isTool)
             Warn(p, pick ? "Il faut une pioche pour miner cette roche." : "Il faut une hache pour abattre un arbre.");
-        else if (tier < tree->minTier)
-            Warn(p, pick ? "Trop dur : il faut une meilleure pioche." : "Trop dur : il faut une meilleure hache.");   // Valheim : « $msg_toohard »
+        else if (broken)
+            Warn(p, "Votre outil est cassé : faites-le réparer à une station.");
+        else if (!sWLSkillMgr.HaveStamina(p, cost + 0.1f))
+        {
+            // Valheim : pas d'attaque, la barre d'endurance clignote (Hud.StaminaBarEmptyFlash)
+            Warn(p, "Vous êtes trop fatigué.");
+            sWLSkillMgr.SendStamina(p, true);
+        }
         else
         {
-            // Skills.GetRandomSkillRange (IL 0-53) : centre = Lerp(0,4 ; 1 ; compétence), plage ±0,15 bornée à [0,1].
-            // Compétence de bûcheronnage non suivie : niveau 0 (début de partie Valheim).
-            float const skill = 0.0f;
-            float mid = 0.4f + 0.6f * skill;
-            float lo = std::max(0.0f, mid - 0.15f), hi = std::min(1.0f, mid + 0.15f);
-            damage = std::max<uint32>(1, uint32(std::lround(chop * frand(lo, hi))));
+            sWLSkillMgr.UseStamina(p, cost);
+            if (kind != tree->tool)
+                // mauvais outil : le coup a lieu (endurance), mais ni gain ni usure (DestructibleType & m_skillHitType = 0)
+                Warn(p, pick ? "Il faut une pioche pour miner cette roche." : "Il faut une hache pour abattre un arbre.");
+            else
+            {
+                // hache sur un arbre : m_specialHitSkill = Couper du bois ; pioche sur la roche : Pioches. Gain et usure même
+                // si le palier est trop faible (l'ensemble des compétences est rempli avant IDestructible.Damage).
+                uint16 skill = pick ? WL_SKILL_PICKAXES : WL_SKILL_WOODCUTTING;
+                sWLSkillMgr.Raise(p, skill, 1.0f);
+                sBuildingMgr.ConsumeToolDurability(p);
+                if (tier < tree->minTier)
+                    Warn(p, pick ? "Trop dur : il faut une meilleure pioche." : "Trop dur : il faut une meilleure hache.");   // « $msg_toohard »
+                else
+                {
+                    // Skills.GetRandomSkillRange (IL 0-53) : centre = Lerp(0,4 ; 1 ; compétence), plage ±0,15 bornée à [0,1].
+                    float const f = sWLSkillMgr.GetFactor(p, skill);
+                    float mid = 0.4f + 0.6f * f;
+                    float lo = std::max(0.0f, mid - 0.15f), hi = std::min(1.0f, mid + 0.15f);
+                    damage = std::max<uint32>(1, uint32(std::lround(chop * frand(lo, hi))));
+                }
+            }
+            sWLSkillMgr.SendStamina(p, false);
         }
     }
 
@@ -139,6 +216,8 @@ bool TreeMgr::AllowDamage(Unit* /*dealer*/, Unit* victim, bool melee) const
 
 void TreeMgr::OnKill(Unit* killer, Unit* victim)
 {
+    if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+        sWLSkillMgr.OnDeath(static_cast<Player*>(victim));    // Player.OnDeath : perte de 5 % des compétences (HardDeath)
     WLTreeInfo const* tree = victim && victim->GetTypeId() == TYPEID_UNIT ? Find(victim->GetEntry()) : nullptr;
     if (!tree || !tree->nextEntry && !tree->dropItem && !tree->stumpGo && tree->drops.empty())
         return;
@@ -166,6 +245,7 @@ void TreeMgr::OnKill(Unit* killer, Unit* victim)
 
 void TreeMgr::Update(uint32 diffMs)
 {
+    sWLSkillMgr.Update(diffMs);                                // écriture périodique des accumulateurs de compétence
     std::vector<Pending> due;
     {
         std::lock_guard<std::mutex> guard(m_lock);
@@ -210,6 +290,10 @@ void TreeMgr::Update(uint32 diffMs)
             uint32 lowGuid = map->GenerateLocalLowGuid(HIGHGUID_GAMEOBJECT);
             if (stump->Create(lowGuid, lowGuid, tree->stumpGo, map, p.x, p.y, p.z, p.angle))
             {
+                // objet temporaire : visible tout de suite, supprimé à l'échéance (GameObject::Update, branche « despawn timer »).
+                // Sans SetSpellId (m_spawnedByDefault = false), IsSpawned() est faux tant que le délai court : la souche
+                // restait invisible pendant stumpSeconds puis apparaissait pour de bon (GameObject.h IsSpawned).
+                stump->SetSpellId(0);
                 stump->SetRespawnTime(tree->stumpSeconds);
                 map->Add(stump);
             }
@@ -253,8 +337,8 @@ void TreeMgr::Update(uint32 diffMs)
                     sBuildingMgr.GiveItems(killer, killer->GetObjectGuid().GetCounter(), items, "Minage");
             }
 
-        // l'arbre couché disparaît, remplacé par la bûche ; la roche brisée disparaît (délai de réapparition normal)
-        if (tree->kind == "tree" || tree->kind == "log" || tree->kind == "rock")
+        // arbre couché remplacé par le tronc ; tronc, bûche et roche brisés disparaissent (Valheim : le bois tombe et est ramassé)
+        if (tree->kind == "tree" || tree->kind == "log" || tree->kind == "rock" || tree->kind == "half")
             corpse->ForcedDespawn();
     }
 }

@@ -1,63 +1,7 @@
 -- GENERE par tools/resources/generate.py : NE PAS EDITER A LA MAIN. Rejouable (idempotent).
 SET NAMES utf8mb4;
--- 003 : noeuds de ressources (type 3 CHEST, data0=0 : AUCUN verrou, data1=table de butin, data3=1 : disparait une fois pille).
--- Le controle de l'outil requis n'est PAS ici : il doit etre fait par le code serveur (sinon recoltable a la main).
--- Modeles : GameObjectDisplayInfo.dbc (voir docs/RESOURCES.md).
+-- 003 : SUPPRESSION des anciens modeles de noeuds GameObject aux modeles WoW (9101001-9101999) et de leur butin.
+-- Remplaces par les arbres, roches, filons (creatures) et ramassables (GameObjects 9130001+) de Valheim, ecrits dans
+-- 012_valheim_content.sql (tools/valheim/gen_server_sql.py, positions : C:\Wowlheim\data\wl_terrain\placements.json).
 DELETE FROM `gameobject_template` WHERE `entry` BETWEEN 9101001 AND 9101999;
 DELETE FROM `gameobject_loot_template` WHERE `entry` BETWEEN 9101001 AND 9101999;
-INSERT INTO `gameobject_template` (`entry`,`type`,`displayId`,`name`,`faction`,`flags`,`size`,`data0`,`data1`,`data2`,`data3`,`data4`,`data5`) VALUES
-(9101001,3,5975,'Arbre de la prairie',0,0,1.0,0,9101001,0,1,0,0),
-(9101002,3,927,'Arbre de la forêt noire',0,0,1.0,0,9101002,0,1,0,0),
-(9101003,3,2474,'Vieille souche du marais',0,0,1.0,0,9101003,0,1,0,0),
-(9101004,3,6158,'Pin de montagne',0,0,1.0,0,9101004,0,1,0,0),
-(9101005,3,967,'Arbre des plaines',0,0,1.0,0,9101005,0,1,0,0),
-(9101011,3,4315,'Rocher de la prairie',0,0,1.0,0,9101011,0,1,0,0),
-(9101012,3,248,'Rocher moussu',0,0,1.0,0,9101012,0,1,0,0),
-(9101013,3,3992,'Rocher du marais',0,0,1.0,0,9101013,0,1,0,0),
-(9101014,3,5737,'Rocher de montagne',0,0,1.0,0,9101014,0,1,0,0),
-(9101015,3,4320,'Rocher des plaines',0,0,1.0,0,9101015,0,1,0,0),
-(9101021,3,310,'Filon de cuivre',0,0,0.5,0,9101021,0,1,0,0),
-(9101022,3,315,'Filon d''étain',0,0,0.5,0,9101022,0,1,0,0),
-(9101023,3,312,'Gisement de fer',0,0,0.5,0,9101023,0,1,0,0),
-(9101024,3,314,'Filon d''argent',0,0,0.5,0,9101024,0,1,0,0),
-(9101025,3,3951,'Filon de métal noir',0,0,0.5,0,9101025,0,1,0,0),
-(9101026,3,6650,'Gisement d''obsidienne',0,0,0.5,0,9101026,0,1,0,0),
-(9101027,3,2971,'Formation de cristal',0,0,1.0,0,9101027,0,1,0,0),
-(9101031,3,2315,'Plant de lin',0,0,0.6,0,9101031,0,1,0,0),
-(9101041,3,6328,'Ossements de cerf',0,0,1.0,0,9101041,0,1,0,0),
-(9101042,3,148,'Racines de gréling',0,0,1.0,0,9101042,0,1,0,0),
-(9101043,3,3711,'Roche de Surtling',0,0,1.0,0,9101043,0,1,0,0),
-(9101044,3,2975,'Cristal de givre',0,0,1.0,0,9101044,0,1,0,0),
-(9101045,3,2571,'Amas de noyaux noirs',0,0,1.0,0,9101045,0,1,0,0);
-INSERT INTO `gameobject_loot_template` (`entry`,`item`,`ChanceOrQuestChance`,`groupid`,`mincountOrRef`,`maxcount`,`condition_id`,`comments`) VALUES
-(9101001,9200001,100,0,2,4,0,'Bois'),
-(9101001,9200004,25,0,1,2,0,'Résine'),
-(9101002,9200011,100,0,2,4,0,'Bois fin'),
-(9101002,9200012,30,0,1,2,0,'Bois de cœur'),
-(9101002,9200004,20,0,1,2,0,'Résine'),
-(9101003,9200022,100,0,1,3,0,'Écorce ancienne'),
-(9101003,9200012,50,0,1,2,0,'Bois de cœur'),
-(9101004,9200012,100,0,2,4,0,'Bois de cœur'),
-(9101004,9200004,20,0,1,2,0,'Résine'),
-(9101005,9200012,100,0,2,4,0,'Bois de cœur'),
-(9101005,9200004,20,0,1,2,0,'Résine'),
-(9101011,9200002,100,0,2,4,0,'Pierre'),
-(9101011,9200003,40,0,1,2,0,'Silex'),
-(9101012,9200002,100,0,2,4,0,'Pierre'),
-(9101012,9200003,30,0,1,2,0,'Silex'),
-(9101013,9200002,100,0,2,4,0,'Pierre'),
-(9101014,9200002,100,0,2,4,0,'Pierre'),
-(9101015,9200002,100,0,2,4,0,'Pierre'),
-(9101021,9200013,100,0,2,4,0,'Cuivre'),
-(9101022,9200014,100,0,2,4,0,'Étain'),
-(9101023,9200021,100,0,2,4,0,'Fer'),
-(9101024,9200031,100,0,2,4,0,'Argent'),
-(9101025,9200041,100,0,2,4,0,'Métal noir'),
-(9101026,9200032,100,0,2,3,0,'Obsidienne'),
-(9101027,9200034,100,0,2,3,0,'Cristal'),
-(9101031,9200042,100,0,2,4,0,'Lin'),
-(9101041,9200009,100,0,1,2,0,'Andouiller'),
-(9101042,9200019,100,0,1,2,0,'Œil de gréling'),
-(9101043,9200029,100,0,1,2,0,'Noyau de Surtling'),
-(9101044,9200039,100,0,1,2,0,'Glande de gel'),
-(9101045,9200049,100,0,1,2,0,'Noyau noir');

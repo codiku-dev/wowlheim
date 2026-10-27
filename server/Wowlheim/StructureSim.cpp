@@ -2,6 +2,8 @@
 // Adaptation WoW : pas de physique, voisinage par distance entre centres ; sol = hauteur de terrain serveur.
 #include "Wowlheim/BuildingMgr.h"
 #include "Wowlheim/TreeMgr.h"
+#include "Wowlheim/Smelter.h"
+#include "Wowlheim/Knowledge.h"
 
 #include "Database/DatabaseEnv.h"
 #include "Globals/ObjectMgr.h"
@@ -76,6 +78,19 @@ float BuildingMgr::GetSupportOf(uint32 guid) const
 {
     auto it = m_pieces.find(guid);
     return it == m_pieces.end() ? -1.0f : it->second.support;
+}
+
+// WearNTear::GetSupportColorValue (IL 0–51) : support >= maxSupport -> -1 (surbrillance bleu clair) ;
+// sinon Clamp01((support - minSupport) / (maxSupport * 0,5 - minSupport)). Lu par `.build api pieceinfo`.
+float BuildingMgr::SupportColorValue(WLPiece const& p) const
+{
+    WLPieceTemplate const* t = FindTemplate(p.pieceId);
+    Material const& m = MaterialOf(t ? t->material : 0);
+    if (!(p.support < m.maxSupport))
+        return -1.0f;
+    float den = m.maxSupport * 0.5f - m.minSupport;
+    float v = den != 0.0f ? (p.support - m.minSupport) / den : 0.0f;
+    return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
 }
 
 // WearNTear::UpdateSupport (docs §1.2), résolu par relaxation jusqu'à convergence.
@@ -277,6 +292,8 @@ void BuildingMgr::Update(uint32 diffMs)
     try
     {
         sTreeMgr.Update(diffMs);
+        sSmelterMgr.Update(diffMs);
+        sKnowledgeMgr.Update(diffMs);
         UpdateInner(diffMs);
     }
     catch (std::exception const& e)

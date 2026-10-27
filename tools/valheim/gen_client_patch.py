@@ -25,14 +25,21 @@ ITEM_PREFAB = {
     9200001: "Wood", 9200002: "Stone", 9200003: "Flint", 9200004: "Resin", 9200005: "DeerHide",
     9200006: "LeatherScraps", 9200009: "HardAntler", 9200011: "FineWood", 9200012: "RoundLog", 9200013: "Copper",
     9200014: "Tin", 9200015: "Bronze", 9200016: "TrollHide", 9200019: "GreydwarfEye", 9200021: "Iron",
-    9200022: "ElderBark", 9200023: "BoneFragments", 9200024: "Guck", 9200029: "SurtlingCore", 9200031: "Silver",
+    9200022: "ElderBark", 9200023: "BoneFragments", 9200024: "Entrails", 9200029: "SurtlingCore", 9200031: "Silver",
     9200032: "Obsidian", 9200033: "WolfPelt", 9200034: "Crystal", 9200041: "BlackMetal", 9200043: "LinenThread",
-    9200044: "LoxPelt",
+    9200044: "LoxPelt", 9200042: "Flax", 9200039: "FreezeGland", 9200049: "BlackCore",
+    9200082: "Mushroom",   # ramassable de la prairie (Pickable_Mushroom)
+    # materiaux des pieces du marteau ajoutees (gen_server_sql.py ITEM, tools/resources/rules.py)
+    9200070: "Raspberry", 9200071: "Dandelion", 9200072: "Blueberries", 9200073: "Thistle", 9200074: "Carrot",
+    9200075: "Guck", 9200076: "Bloodbag", 9200077: "WolfClaw", 9200078: "DragonTear", 9200079: "Cloudberry",
+    9200080: "Barley", 9200081: "BlackMetalScrap",
     9201100: "Hammer", 9201011: "AxeFlint", 9201012: "PickaxeAntler", 9201021: "AxeBronze", 9201022: "PickaxeBronze",
-    9201031: "AxeIron", 9201032: "PickaxeIron", 9201041: "AxeIron", 9201042: "PickaxeIron", 9201051: "AxeBlackMetal",
-    9201052: "PickaxeBlackMetal", 9201010: "AxeStone",
+    9201031: "AxeIron", 9201032: "PickaxeIron", 9201051: "AxeBlackMetal", 9201010: "AxeStone",
+    # 9201041/9201042 (« argent ») et 9201052 (pioche en sombracier : recette Valheim en bois d'Yggdrasil, absent) supprimes
     9200051: "Coal", 9200052: "Chain", 9200053: "BronzeNails", 9200054: "IronNails", 9200055: "Feathers",
     9200056: "SharpeningStone", 9200057: "Tar",
+    # minerais a fondre a la fonderie (Smelter de Valheim)
+    9200060: "CopperOre", 9200061: "TinOre", 9200062: "IronScrap", 9200063: "SilverOre", 9200064: "IronOre",
 }
 
 def load_ids():
@@ -59,7 +66,7 @@ def main(install):
     tpl_go = go.rows[0]; tpl_cmd = cmd.find(1); tpl_cdi = cdi.find(4); tpl_idi = idi.find(8568)
 
     for name, m in sorted(man.items()):
-        if m["kind"] in ("piece", "tree", "rock"):
+        if m["kind"] in ("piece", "tree", "rock", "pickable"):
             gid = alloc(ids["go"], name, 20000)
             r = bytearray(tpl_go)
             go.set(r, 0, gid); go.set(r, 1, go.add_string(m["m2"][:-3] + ".mdx"))

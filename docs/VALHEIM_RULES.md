@@ -374,3 +374,174 @@ bool CanRepair(StationInst const& cur, Recipe const& r) {     // après contrôl
 3. `m_upgrader` / `m_showBasicRecipies` / toit / feu par prefab de station.
 4. Sémantique du niveau de monde dans `CanRepair` (IL 195–206).
 5. Taille des zones de feu (`Burning`) des prefabs.
+
+## 9. Fonderie et four à charbon (`Smelter`) — 2026-10-26
+
+Sources : prefabs `smelter` et `charcoal_kiln` (composant `Smelter`, typetrees des bundles, `C:\Wowlheim\valheim_extract\valheim_data.json`),
+enfants des prefabs (Transform + `SmokeSpawner`, lus par script UnityPy), CIL de `Smelter` et `SmokeSpawner`
+(`analysis/valheim/dis/Smelter._all.txt`, `SmokeSpawner._all.txt`, extraits par `node analysis/rea.cjs dis Smelter '*'`).
+Mise en œuvre : `server/Wowlheim/Smelter.{h,cpp}`, tables `wowlheim_smelter(_conversion)` (générées par `gen_server_sql.py`, `build_smelters`)
+et `wowlheim_smelter_state` (`server/sql/characters/002_wowlheim_smelter.sql`).
+
+### 9.1 Valeurs des prefabs [PROUVÉ, données]
+| Champ | `smelter` (Fonderie) | `charcoal_kiln` (Four à charbon) |
+|---|---|---|
+| `m_fuelItem` | `Coal` (Charbon) | aucun |
+| `m_maxOre` | 10 | 25 |
+| `m_maxFuel` | 20 | 0 |
+| `m_fuelPerProduct` | 2 | 0 |
+| `m_secPerProduct` | 30,0 | 15,0 |
+| `m_spawnStack` | 0 | 0 |
+| `m_requiresRoof` | 0 | 0 |
+| `m_windmill` | nul | nul |
+| `m_conversion` (ordre du prefab) | CopperOre→Copper, IronOre→Iron, IronScrap→Iron, BronzeScrap→Bronze, TinOre→Tin, SilverOre→Silver, CopperScrap→Copper | Wood→Coal, FineWood→Coal, RoundLog→Coal |
+| `SmokeSpawner` (enfant `_enabled/SmokeSpawner`) | position locale (0 ; 4,58 ; 0), `m_testRadius` 0,75, `m_testMask` = couche 31 | (0 ; 3,48 ; 0), 0,75, couche 31 |
+| `Piece.m_resources` / station | 20 Pierre, 5 Noyau de Surtling ; établi | 20 Pierre, 5 Noyau de Surtling ; établi |
+| Interrupteurs | `add_ore`, `add_wood` (`Switch.m_holdRepeatInterval` 0,2 s) | `add_ore` seulement (pas de `m_addWoodSwitch`) |
+
+Haut fourneau et rouet (même composant, même code serveur ; kinds `blastfurnace` et `spinningwheel`, lus par `vh_dump.py` le 2026-10-26) :
+
+| Champ | `blastfurnace` (Haut fourneau) | `piece_spinningwheel` (Roue / rouet) |
+|---|---|---|
+| `m_fuelItem` | `Coal` (Charbon) | aucun |
+| `m_maxOre` / `m_maxFuel` / `m_fuelPerProduct` | 10 / 20 / 2 | 40 / 0 / 0 |
+| `m_secPerProduct` | 30,0 | 30,0 |
+| `m_requiresRoof` / `m_spawnStack` | 0 / 0 | **1** / 0 |
+| `m_conversion` | FlametalOreNew→FlametalNew, BlackMetalScrap→BlackMetal, FlametalOreNew→FlametalNew, GoldOre→Gold | Flax→LinenThread |
+| `SmokeSpawner` | `_enabled/SmokeSpawner` (0 ; 5,318 ; 0,652), `m_testRadius` 0,75 | aucun (`m_smokeSpawner` nul : jamais bloqué) |
+| `Piece.m_resources` / station | 20 Pierre, 5 Noyau de Surtling, 10 Fer, 20 Bois fin ; table d'artisan | 20 Bois fin, 10 Clous en fer, 5 Chutes de cuir ; table d'artisan |
+
+Serveur : seule BlackMetalScrap→BlackMetal est gardée (Flametal, Gold absents). `BlackMetalScrap` = objet 9200081 « Morceau de sombracier »
+(nom français de Valheim, comme « Sombracier » pour 9200041) ; sources : butin (rules.py : humanoïdes 35 %, mécaniques/brutes/mineurs 30 %, palier 5).
+Lin (9200042) : nœud « Plant de lin » 9101031 et butin. Position du SmokeSpawner : Unity → WoW par `vh_mesh.U2W` (x = z Unity, y = −x Unity, z = y Unity) + recentrage du modèle.
+
+La couche 31 est celle du prefab `SmokeBall` (boule de fumée physique, `SphereCollider` + `Rigidbody`) ; les pièces sont en couche 10.
+Objets (ItemDrop) : Minerai de cuivre, Minerai d'étain, Ferraille, Minerai d'argent, Minerai de fer : `m_maxStackSize` 30 ; Charbon 50.
+Interaction : `Player.m_maxInteractDistance` = 5 (`Player::.ctor` IL 41–47 ; valeur du constructeur, le prefab joueur peut la changer [NON VÉRIFIÉ]).
+
+### 9.2 Ajout de minerai — `Smelter::OnAddOre` (IL 0–257) [PROUVÉ]
+1. Sans objet choisi : `FindCookableItem` = premier `m_from` de `m_conversion` (ordre de la liste) présent dans l'inventaire ; aucun → « Vous n'avez rien à transformer » (`$msg_noprocessableitems`).
+2. `IsItemAllowed(nom)` faux → « Cela ne marchera pas » (`$msg_wontwork`).
+3. `GetQueueSize() >= m_maxOre` → « C'est plein » (`$msg_itsfull`).
+4. Sinon « Ajouté <objet> », **une** unité retirée de l'inventaire, `RPC_AddOre` → `QueueOre` : ajout en fin de file (`item<N>`, `s_queued` + 1).
+
+### 9.3 Ajout de combustible — `OnAddFuel` (IL 0–269), `RPC_AddFuel` [PROUVÉ]
+Mauvais objet → « Objet inadéquat » ; `GetFuel() > m_maxFuel − 1` → « C'est plein » ; pas de combustible → « Vous n'avez pas de <objet> » ;
+sinon une unité retirée et `fuel += 1`. Le combustible est un **réel** (consommé par fractions).
+
+### 9.4 Simulation — `UpdateSmelter` (IL 0–416), appelée chaque seconde (`Awake` : `InvokeRepeating("UpdateSmelter", 1, 1)`) [PROUVÉ]
+- `UpdateRoof` (si `m_requiresRoof` : `Cover.IsUnderRoof(m_roofCheckPoint)`) et `UpdateSmoke` (`m_blockedSmoke = SmokeSpawner.IsBlocked()`) une fois par appel.
+- `accumulateur += GetDeltaTime()` (temps réel écoulé depuis la dernière mise à jour, `s_startTime`), **plafonné à 3600 s** (IL 65–78).
+- Tant que `accumulateur >= 1` : `accumulateur −= 1` puis, si (`m_maxFuel` = 0 ou `fuel > 0`) et (`m_maxOre` = 0 ou file non vide) et `m_secPerProduct > 0`
+  et (pas de toit exigé ou toit) et fumée non bloquée :
+  - si `m_maxFuel > 0` : `fuel −= 1 / (m_secPerProduct / m_fuelPerProduct)` ; `fuel < 0,0001` → 0 (IL 235–284) ;
+  - `bakeTimer += 1` ; si `bakeTimer >= m_secPerProduct` : `bakeTimer = 0`, `RemoveOneOre` (retire le **premier** de la file), `QueueProcessed(minerai)`.
+- `m_spawnStack` = 0 → `QueueProcessed` appelle `Spawn(minerai, 1)` : la conversion `m_to` est instanciée au point `output` (objet au sol), une unité à la fois.
+- Conséquences : fonderie = 1 lingot / 30 s pour 2 Charbon (1 Charbon / 15 s, consommé seconde par seconde, seulement s'il y a du minerai) ;
+  four = 1 Charbon / 15 s par Bois, sans combustible. La minuterie n'est pas remise à zéro quand la station s'arrête.
+- `IsActive` (IL 0–65) : mêmes conditions (sert aux effets visuels).
+
+### 9.5 Fumée — `SmokeSpawner::IsBlocked` / `TestBlocked` [PROUVÉ]
+Station inactive : `Physics.CheckSphere(position, m_testRadius, m_testMask)` ; active : bloquée si aucune fumée n'a pu être émise depuis plus de 4 s
+(l'émission teste la même sphère). Le masque (couche 31) ne voit que les **boules de fumée** : la station s'arrête quand la fumée qu'elle émet
+s'accumule autour de la cheminée (pièce fermée sans évent).
+
+### 9.6 Destruction — `DropAllItems` (IL 0–318) [PROUVÉ]
+Produits en attente (`SpawnProcessed`), puis `(int)fuel` unités de combustible, puis chaque minerai encore en file : tout tombe au sol.
+
+### 9.7 Adaptations à WoW (écarts assumés)
+- **Sortie** : Valheim fait tomber chaque produit au sol ; ici les produits restent dans la station et le joueur les récupère (clic ou `take`) ; ce qui ne rentre pas dans le sac reste dans la station. À la démolition, contenu rendu au démolisseur (sac, puis courrier) ou par courrier au propriétaire (effondrement, ou démolition en mode « sans coût »).
+- **Interaction** : un clic sur la station sans marteau = récupérer les produits et ouvrir le panneau ; le minerai et le combustible s'ajoutent depuis le panneau, une unité par clic comme les interrupteurs `add_ore` / `add_wood` (Maj+clic : remplir selon les règles 9.2/9.3 jusqu'au refus). Utilisation acceptée à 3 m du bord de la pièce (`.build api use`, repli de l'addon sur « You are too far away. »). Commandes : `.build api smelter status|add <ore|fuel|id> [n] [guid]|take [guid]` (lignes `[WL]SM|guid|type|nom|file|maxOre|combustible|maxFuel|objetCombustible|minuterie|secParProduit|actif|raison|file id:n,...|produits id:n,...`, `[WL]A|n` ajoutés, `[WL]E|...`). Station la plus proche à 5 m (distance au centre de la pièce, pas au collider comme Valheim).
+- **Fumée** : les boules de fumée (physique) ne sont pas simulées ; la cheminée est jugée bloquée quand une pièce posée occupe la sphère de test (rayon 0,75 m autour du point du `SmokeSpawner`). L'accumulation de fumée sous un toit fermé **n'est pas reproduite** (une fonderie dans une maison sans évent fonctionne ici). Les autres fours et fonderies ne comptent pas comme obstacle : leur boîte pleine déborderait de leur forme réelle (dôme du four à charbon).
+- **Temps** : les stations tournent tant que le serveur tourne (pas de zones déchargées) ; après un arrêt du serveur, rattrapage du temps écoulé plafonné à 3600 s comme `GetDeltaTime`. État sauvegardé toutes les 10 s et à chaque interaction.
+- **Conversions** : BronzeScrap et CopperScrap n'existent pas sur le serveur → conversions omises. Les roches donnent le butin de Valheim : gisement de cuivre → Minerai de cuivre (+ Pierre), étain → Minerai d'étain, tas de boue (`mudpile`) → Ferraille, veine d'argent → Minerai d'argent (+ Pierre) ; détail §13.
+- **Toit** : `m_requiresRoof` = 0 pour les deux stations ; s'il était vrai, le serveur utiliserait `BuildingMgr::HaveRoofAbove` (rayon vertical) au lieu de `Cover.IsUnderRoof`.
+
+## 10. Connaissance : matériaux, stations, pièces et recettes connues (`Player`) — 2026-10-26 [PROUVÉ, CIL d'`assembly_valheim.dll`]
+Extraction : `cd analysis && node rea.cjs dis Player <méthode> --stdout` (et `CraftingStation`). Une pièce du marteau ou une recette n'apparaît dans les menus que si le joueur la **connaît** ; la connaissance est définitive (ensembles enregistrés dans le profil).
+- **Matériau connu** — `Player.OnInventoryChanged` (IL 50–52) appelle `AddKnownItem(item)` pour **chaque objet de l'inventaire** à chaque changement ; `AddKnownItem` (IL 22–66) ajoute `m_shared.m_name` à `m_knownMaterial` s'il n'y est pas, affiche `$msg_newmaterial` (type Material) / `$msg_newtrophy` / `$msg_newitem` (IL 86–196), puis `UpdateKnownRecipesList()` (IL 230). Posséder une fois suffit ; perdre l'objet ne l'oublie pas.
+- **Station connue** — `Player.UpdateStations` (IL 0–39) : toutes les **1 s** (`m_stationDiscoverTimer > 1`), `CraftingStation.UpdateKnownStationsInRange(player)` : pour chaque station posée, si `Vector3.Distance(joueur, station) < m_discoverRange` (IL 33–60) → `Player.AddKnownStation(station)`. `m_discoverRange` = **4 m** (constructeur `CraftingStation..ctor` IL 12–17 ; même valeur dans les prefabs workbench, forge, stonecutter, artisanstation, blackforge… de `valheim_data.json`). `AddKnownStation` (IL 0–176) mémorise `m_knownStations[m_name] = GetLevel(true)` et ne met à jour que si le niveau est **supérieur** (IL 29–46), puis `UpdateKnownRecipesList()`.
+- **Pièce connue** — `UpdateKnownRecipesList` (IL 180–351) parcourt les pièces des tables possédées (marteau) et appelle `HaveRequirements(piece, RequirementMode.IsKnown)` (IL 337–341 ; `RequirementMode` : CanBuild = 0, **IsKnown = 1**, CanAlmostBuild = 2). `HaveRequirements(Piece, mode)` en mode 1 : si `m_craftingStation` non nul, `m_knownStations.ContainsKey(station.m_name)` (IL 13–46, niveau indifférent) ; puis pour chaque ressource avec `m_amount > 0`, `m_knownMaterial.Contains(resItem.m_name)` (IL 201–240). Les quantités ne comptent pas.
+- **Recette connue** — même méthode, IL 14–147 : pour chaque recette activée non encore connue, `HaveRequirements(recipe, discover = true, 0, 1)` : `KnowStationLevel(station.m_name, m_minStationLevel)` (IL 0–42 ; `m_knownStations[nom] >= niveau`, `KnowStationLevel` IL 0–23) puis `HaveRequirementItems(recipe, discover = true)` : chaque ingrédient (`m_amount > 0`) dans `m_knownMaterial` (IL 90–187 ; avec `m_requireOnlyOneIngredient`, un seul suffit). Connue → `AddKnownRecipe` (définitif).
+- **Menus** — `UpdateAvailablePiecesList` (IL 0–51) : `PieceTable.UpdateAvailable(m_knownRecipes, …, m_noPlacementCost || clé globale 26)` → le marteau ne propose que les pièces connues, sauf triche « sans coût » (tout). Le panneau de fabrication ne liste que les recettes connues.
+- **Pose / fabrication** : pas d'autre contrôle de connaissance dans Valheim : on ne choisit que ce que le menu propose, et la pose / fabrication exigent déjà les ressources en sac (donc connues) et une station à portée (celle où l'on fabrique est forcément à < 4 m, donc connue à son niveau). **Wowlheim ne bloque donc pas côté serveur** ; le filtrage est fait par l'addon avec `.build api known`. Équivalent sauf cas limite (pose à 4–10 m d'une station jamais approchée à 4 m, acceptée par le serveur).
+
+**Wowlheim** (`server/Wowlheim/Knowledge.*`, tables `wowlheim_known_item` / `wowlheim_known_station`, `server/sql/characters/003_wowlheim_known.sql`) :
+- toutes les secondes, depuis `BuildingMgr::Update`, balayage de l'équipement + sac à dos + sacs de chaque joueur connecté : tout objet 9200000–9299999 (matériaux et outils) devient connu (au lieu d'`OnInventoryChanged`, sans toucher au cœur) ; chaque `.build api known` balaie d'abord le sac ;
+- stations (workbench, forge, stonecutter, artisan + les `station` du catalogue ; fonderies/fours = `Smelter`, exclus) : connues au niveau actuel (`StationLevel`) quand le joueur est à **< 4 m du bord** de l'emprise et à < 4 m verticalement (adaptation : Valheim mesure au centre ; la collision WoW tient le joueur hors de la boîte), quand il **pose** une station, l'**utilise** (clic) ou y **fabrique** ;
+- `.build api known` : `[WL]K|item:<id>,<id>,...`, `[WL]KS|<kind>:<niveau>,...`, `[WL]KP|<pièce>,...` (règle IsKnown ; toutes en mode sans coût), `[WL]KR|<recette>,...` (règle discover) ; chaque liste est découpée en lignes d'au plus ~200 caractères qui répètent le préfixe (au moins une ligne, éventuellement vide) ; puis `[WL]D|known|1`. Nouveautés poussées sans demande : `[WL]KN|item|<id>` et `[WL]KN|station|<kind>|<niveau>` (équivalent de `MessageHud.QueueUnlockMsg`).
+
+## 11. Réparation des objets à la station (`InventoryGui`) — 2026-10-26 [PROUVÉ]
+- `InventoryGui.CanRepair(item)` (IL 0–234) : faux si `!m_shared.m_canBeReparied` ; **vrai** si `Player.NoCostCheat()` ; faux sans station courante ; `recipe = ObjectDB.GetRecipe(item)`, faux si nulle ou sans `m_craftingStation` ni `m_repairStation` ; accepté si `m_repairStation.m_name == station.m_name` **ou** `m_craftingStation.m_name == station.m_name` (IL 119–193), à condition que `Mathf.Min(station.GetLevel(), 4) >= recipe.m_minStationLevel` (IL 208–232) ; sinon faux (la branche `m_worldLevel` ne concerne que les objets d'anciens niveaux de monde).
+- `InventoryGui.RepairOneItem()` (IL 0–332) : station courante obligatoire (sauf triche) et `CraftingStation.CheckUsable(player, false)` (abri, IL 47–69) ; parcourt `Inventory.GetWornItems` (objets usés, équipés ou non) et répare **le premier** réparable : `m_durability = GetMaxDurability()` (IL 170–177), **gratuitement**, message `$msg_repaired`, puis s'arrête (`leave`, IL 283) — un objet par clic ; sinon « No more item to repair ». `HaveRepairableItems` (IL 0–168) applique le même filtre (bouton actif).
+- Données (`valheim_data.json`) : Marteau, Hache en pierre, Massue : `m_craftingStation` nul, `m_repairStation` = piece_workbench ; Hache en silex, Pioche de bois de cerf : workbench ; outils en bronze, fer… : forge.
+
+**Wowlheim** (`Knowledge.cpp`) : réparables = objets Wowlheim (9200000–9299999) à `MaxDurability` > 0 et durabilité < max, dont la première recette `wowlheim_recipe` (par id) a `station` = type de la station, ou `station` vide et station = workbench (pas de colonne `repair_station` en base ; à ajouter dans `tools/valheim/gen_server_sql.py` pour une fidélité complète) ; `min(StationLevel, 4) >= min_station_level` ; station abritée (`StationUsable`). Station = celle du guid donné (à 10 m) ou la station de fabrication la plus proche à 10 m. Sans coût : tout objet Wowlheim usé, même sans station.
+- `.build api repairable [guid]` → `[WL]RS|<guid station>|<kind>|<niveau>` puis `[WL]RI|<objet>|<durabilité>|<max>` par objet usé réparable, `[WL]D|repairable|1` ; erreur : `[WL]E|...` puis `[WL]D|repairable|0`.
+- `.build api repairitems [guid]` → répare d'un coup **tous** ces objets (adaptation : Valheim, un par clic) par `Player::DurabilityRepair(pos, false)` sans coût ; `[WL]R|<objet>,<objet>,...` (vide si rien), `[WL]M|Réparé : …` ou `[WL]M|Aucun objet à réparer.`, `[WL]D|repairitems|1`.
+
+## 12. Clic sur une station de fabrication — 2026-10-26
+Valheim : `CraftingStation.Interact` → `InventoryGui.Show(station)` (panneau de fabrication). Wowlheim : `BuildingMgr::OnPieceUse` (appelé par `GameObject::Use` pour les entrées 9110000–9119999 ; les stations sont des `gameobject_template` type 10 goober, flags 0, data 0 : déjà cliquables, rien à changer dans `gen_server_sql.py`). Sans marteau, ou marteau en mode construction : fonderie / four / rouet / haut fourneau → échange `Smelter` inchangé ; station de fabrication → lignes `[WL]S|guid|utilisable|couverture%|niveau|kind` des stations à 10 m (format de `.build api station`), puis **en dernier** `[WL]OPEN|craft|<guid>|<kind>` ; la station devient connue. Marteau en mode démolir / réparer : démolition / réparation de la pièce, pas d'OPEN. Avant ce correctif, le clic sur une table ne renvoyait rien au client (le « il ne se passe absolument rien » de Robin).
+
+## 13. Roches et filons : stats des prefabs que Valheim place réellement — 2026-10-26
+Le visuel des roches vient du prefab **placé dans le monde** par Valheim (`build_assets.py`, table `VISUAL`) ; les stats viennent désormais du **même** prefab (`gen_server_sql.py`, table `ROCK_SOURCE`, fonction `build_rocks`). Les anciens `MineRock_Copper` / `MineRock_Stone` / `MineRock_Iron` (composant `MineRock`, 20–40 PV) sont des prototypes inutilisés du jeu : ils ne servent plus que de clé (entrée de créature, nom affiché `ROCK_NAMES`, type de placement de `rules.py`).
+
+**Chaîne de Valheim** [PROUVÉ, données des prefabs] : le prefab du monde est un `Destructible` (`m_health` 1, `m_spawnWhenDestroyed` = `*_frac`) qui se brise au premier coup en un `MineRock5`. Chaque **zone** du `MineRock5` a `m_health` PV, exige `m_minToolTier`, et tire à sa destruction **sa propre** `m_dropItems` (`DropTable.GetDropList` : avec la probabilité `m_dropChance`, `Random.Range(m_dropMin, m_dropMax + 1)` tirages pondérés par `m_weight`). Zones = **colliders actifs** du prefab `*_frac` (`MineRock5.Awake` : une `HitArea` par `Collider` de `GetComponentsInChildren<Collider>()` ; les renderers « extra » enfants d'un collider ne comptent pas).
+
+**Règle des zones atteignables** (2026-10-26, demande de la coordination : fidélité à l'expérience de jeu) : on ne compte que les zones dont le **haut dépasse le sol**. Pour chaque collider, `vh_dump.hit_areas` calcule le point le plus haut de son maillage de collision (Unity y, racine du prefab à l'origine = sol où Valheim pose le prefab) → champ `hit_area_tops` de `valheim_data.json` ; `gen_server_sql.reachable_areas` garde les zones de haut > 0. Le M2 posé ici a la même origine au sol (racine du modèle = position de la créature) et une échelle uniforme (`VISUAL` : 0,4 pour `rock4_*`, coupe à −1 m ; 1 pour `mudpile`, `silvervein`) : le signe de la hauteur, donc le test, est le même. Une zone en partie enterrée mais qui dépasse est comptée ; une zone entièrement sous le sol (atteignable dans Valheim seulement en creusant, impossible sur le terrain WoW) ne l'est pas. Jamais d'après les sommets du visuel.
+
+| Créature (nom affiché) | Prefab du monde → fracture | Zones hors sol / total | PV / zone (`m_health`) | Palier Valheim → serveur (`m_minToolTier` + 1) | DropTable par zone (`m_dropItems`) |
+|---|---|---|---|---|---|
+| `MineRock_Stone` (Rocher) | `rock4_coast` → `rock4_coast_frac` | 69 / 130 | 50 | 0 → 1 | 4–8 tirages, chance 1 : Pierre (poids 0, seule entrée) |
+| `MineRock_Copper` (Gisement de cuivre) | `rock4_copper` → `rock4_copper_frac` | 69 / 130 | 50 | 0 → 1 | 2–4 tirages, chance 1 : Pierre 1 / Minerai de cuivre 0,5 |
+| `MineRock_Iron` (Tas de boue) | `mudpile` → `mudpile_frac` | 20 / 20 | 5 | 0 → 1 | 1 tirage, **chance 0,3** : Ferraille 1 / Os desséché 0,01 |
+| `silvervein` (Veine d'argent) | `silvervein` → `silvervein_frac` | 89 / 100 | 50 | 2 → 3 | 2–3 tirages, chance 1 : Pierre 1 / Minerai d'argent 0,5 |
+
+Hauteur du haut des zones de `rock4_*_frac` (Unity, m) : de −10,28 à 3,97 ; 69 au-dessus de 0, 64 au-dessus de 0,5, 54 au-dessus de 1 (le seuil exact compte peu). `mudpile_frac` : toutes entre 0,34 et 1,33. `silvervein_frac` : de −0,68 à 2,03.
+
+Les autres roches (`Rock_4`, `MineRock_Tin`, `MineRock_Obsidian`) sont des `Destructible` + `DropOnDestroyed` à une seule zone (inchangées).
+
+**Adaptation serveur** (une créature par roche, `creature_template` + `wowlheim_tree` + `wowlheim_tree_drop`) :
+- PV = PV d'une zone × zones comptées / **diviseur** (zones « abattues » par coup ; le butin reste celui de **toutes** les zones comptées) :
+  - **3** pour un `MineRock5` sans soutien (`m_supportCheck` 0 : `mudpile_frac`) : la pioche frappe plusieurs zones par coup (`Attack.m_multiHit`, arc de 120°) — hypothèse **[INFÉRÉ, non mesuré]** ;
+  - **8** pour un `MineRock5` à soutien (`m_supportCheck` 1 : `rock4_coast_frac`, `rock4_copper_frac`, `silvervein_frac`) : multiHit + effondrement des zones qui ne sont plus soutenues. **Calage sur la durée de jeu de Valheim (≈ 60 coups pour un gisement au départ), décision de coordination du 2026-10-26, NON mesuré** dans Valheim ; à remplacer par une mesure si on en fait une.
+- Tirages : `TreeMgr` tire un entier uniforme `[rolls_min, rolls_max]`. Bornes choisies (`total_rolls`) pour avoir la **même moyenne et la même variance** que la somme des zones de Valheim (zone : Bernoulli(`m_dropChance`) × uniforme `[m_dropMin, m_dropMax]`). Une seule zone avec chance 1 : bornes = `[m_dropMin, m_dropMax]` exactement.
+- Poids total nul (`rock4_coast_frac`, Pierre poids 0) : dans Valheim `Random.Range(0, 0)` = 0 ≤ 0, la première entrée est toujours tirée ; le serveur ne tire rien sur un total nul → poids 1 écrit sur la première entrée (même résultat).
+- Objets absents du serveur (Os desséché / `WitheredBone`) : entrée omise, son poids (1 %) revient à la Ferraille.
+
+| Roche | Avant (SQL après le seul changement de visuel) | Toutes les zones, ÷ 3 | Zones hors sol, ÷ 3 | **Retenu : zones hors sol, ÷ 8 si soutien** |
+|---|---|---|---|---|
+| Rocher (9300104) | 1 zone, 20 PV, palier 1, 1–2 Pierre (avant le visuel : 24 zones, 160 PV, 24–48 Pierre) | 130 zones, 2 166 PV, 753–807 Pierre | 69 zones, 1 150 PV | **69 zones, 431 PV**, palier 1, **394–434 Pierre** (moyenne 414) |
+| Gisement de cuivre (9300101) | 1 zone, 20 PV, palier 1, 1–2 tirages Pierre 1 / Minerai de cuivre 0,5 | 130 zones, 2 166 PV, 374–406 tirages | 69 zones, 1 150 PV | **69 zones, 431 PV**, palier 1, **196–218 tirages** (≈ 138 Pierre + **69 Minerai de cuivre**) |
+| Tas de boue (9300102) | 14 zones (sommets du visuel), 186 PV, palier 2, 14–28 tirages Minerai de fer→Ferraille 0,5 / Pierre 1 | 20 zones, 33 PV, 3–9 Ferraille | idem | **20 zones, 33 PV (÷ 3, pas de soutien)**, **palier 1** (pioche en bois de cerf), **3–9 Ferraille** (moyenne 6), plus de Pierre |
+| Veine d'argent (9300107) | 100 zones, 1 666 PV, palier 3, 200–300 tirages | 100 zones, 1 666 PV, 242–258 tirages | 89 zones, 1 483 PV | **89 zones, 556 PV**, palier 3, **215–230 tirages** (≈ 74 Minerai d'argent) |
+
+**Durée de minage** (dégâts de pioche × [0,25 ; 0,55] au niveau 0, soit ≈ 7 par coup à la pioche en bois de cerf, ≈ 10 en bronze, ≈ 13 en fer) : rocher ou gisement de cuivre ≈ **60 coups** au début (≈ 43 en bronze), veine d'argent ≈ **43 coups** à la pioche en fer, tas de boue ≈ 5 coups. (Avec ÷ 3 : ≈ 160 coups pour un rocher, ce qui était trop long par rapport au jeu.)
+
+Remarques : `rock4_*` mesure 24 × 28 m dont 17 m enterrés ; ici la roche est réduite (×0,4, `VISUAL`) et seules ses 69 zones hors sol sont comptées. Le butin de toutes les zones est remis d'un coup au mineur (`BuildingMgr::GiveItems`, le surplus par courrier) au lieu de tomber zone par zone.
+
+
+## 14. Coffres, portes, lits (`Container`, `Door`, `Bed`) et refus en combat — 2026-10-26
+
+Source : `analysis/valheim/dis/Container._all.txt`, `Door._all.txt`, `Bed._all.txt`, `Piece.CanBeRemoved.txt` (CIL, `node analysis/rea.cjs dis <Type> '*'`). Code : `server/Wowlheim/Pieces.cpp` ; valeurs par pièce : `wowlheim_piece_use` (gen_server_sql.py `build_piece_use`) ; état : `classiccharacters.wowlheim_container`, `wowlheim_piece_state` (`server/sql/characters/005_wowlheim_piece_use.sql`). Test : `tools/pieces_test.py` ; panneau : `tools/client/addon/Wowlheim/WowlheimPieces.lua`.
+
+**Coffres** [PROUVÉ] — prefabs : Coffre (`piece_chest_wood`) 5 × 2, Coffre renforcé (`piece_chest`) 6 × 4, Coffre personnel (`piece_chest_private`) 3 × 2 `m_privacy` 0, Coffre en sombracier (`piece_chest_blackmetal`) 8 × 4 ; les autres `m_privacy` 2, `m_checkGuardStone` 1 (le coffre personnel 0).
+- `Container.Interact` (IL 5–81) : si `m_checkGuardStone`, `PrivateArea.CheckAccess` (balise) ; puis `CheckAccess(joueur)` (IL 0–47) : `m_privacy` 0 (Private) = créateur de la pièce seulement, 1 (Group) = personne, 2 (Public) = tout le monde ; refus : « Ne peut être ouvert » (`$msg_cantopen`).
+- `RPC_RequestOpen` (IL 66–150) : un seul joueur à la fois (`m_inUse`) ; sinon « Utilisé par quelqu'un d’autre » (`$msg_inuse`).
+- `Piece.CanBeRemoved` → `Container.CanBeRemoved` (IL 0–25) : seul un coffre **privé non vide** refuse la démolition (« Ne peut être retiré pour l'instant », `$msg_cantremovenow`, `Player.RemovePiece` IL 283) ; un coffre public se démolit plein.
+- `OnDestroyed` → `DropAllItems` (IL 0–163) : tout le contenu tombe au sol.
+- `TakeAll` (« Prendre tout ») et `StackAll` (« Objets similaires »).
+- **Adaptations** : (1) les balises (`PrivateArea`, `guard_stone`) ne sont pas simulées ; un coffre est traité comme protégé par la balise de son bâtisseur : **propriétaire et MJ seulement**, quel que soit `m_privacy` (un coffre public de Valheim hors balise serait ouvert à tous). (2) Contenu rendu au démolisseur (sacs), le reste par courrier au propriétaire (effondrement : tout par courrier), durabilité et liaison conservées. (3) Interface : panneau de l'addon (grille m_width × m_height), dépôt par clic droit dans les sacs comme à la banque ; pas de vrai conteneur WoW (un GameObject coffre de 1.12 ne sait que donner du butin). (4) Objets refusés (« Objet inadéquat ») : sacs, objets enchantés, temporaires, à charges entamées, avec texte, emballés (le coffre ne garderait pas cet état). (5) Coffre et sacs du joueur enregistrés dans une même transaction (ni perte ni duplication à l'arrêt du serveur). (6) Le coffre se libère quand celui qui l'a ouvert le ferme, s'éloigne (> 5 m du bord) ou se déconnecte.
+
+**Portes** [PROUVÉ] — `wood_door`, `wood_gate`, `wood_window` (volet), `wood_fence_gate`, `iron_grate`, `darkwood_gate` : `m_keyItem` nul, `m_canNotBeClosed` 0, `m_checkGuardStone` 1.
+- `Interact` (IL 0–461) : `CanInteract` (porte à clé ou `m_canNotBeClosed` : plus utilisable une fois ouverte), balise, clé (`HaveKey`, `m_consumeKey`), puis `Open(direction du joueur)` : `RPC_UseDoor` (IL 0–115) bascule `s_state` 0 → **1 si `Dot(forward, joueur − porte) < 0`, −1 sinon** (le battant s'écarte du joueur), sinon → 0. Aucun message.
+- Abri : `Cover` lance ses rayons contre les colliders ; le battant ouvert (enfant animé) ne bouche plus la baie. **Adaptation** : les modèles n'ont pas d'animation ; le GameObject tourne de 90° autour de ses gonds (bout −y local, la largeur de la porte étant sur l'axe local y), pose enregistrée dans `gameobject` ; `BuildingMgr::GetCover` utilise la boîte tournée de la porte ouverte (`Geometry.cpp`), la pièce garde sa pose fermée pour les appuis et l'accroche (comme la racine du prefab dans Valheim). Balises non simulées : tout le monde peut ouvrir une porte.
+
+**Lits** [PROUVÉ] — `bed`, `piece_bed02` (`m_monsterCheckRadius` 20).
+- `Interact` (IL 0–349) : lit sans propriétaire → `CheckExposure`, puis propriétaire = joueur et point d'apparition = lit, « Point de réapparition créé » (`$msg_spawnpointset`) ; lit du joueur, pas encore point d'apparition → `CheckExposure` puis point d'apparition ; lit du joueur déjà point d'apparition → dormir (`EnvMan.CanSleep`, `CheckEnemies`, `CheckExposure`, `CheckFire`, `CheckWet`) ; lit d'un autre → rien.
+- `CheckExposure` (IL 0–100) : `Cover.GetCoverForPoint(spawnPoint)` → pas de toit : « Le lit requiert un toit » ; couverture < 0,8 : « Le lit est trop exposé ». **Le feu (`CheckFire`) n'est exigé que pour dormir**, pas pour le point d'apparition.
+- **Adaptations** : point d'apparition = foyer (homebind, comme une auberge, `SMSG_BINDPOINTUPDATE`) ; dormir n'est pas repris (un lit déjà point d'apparition le redéfinit) ; point testé = centre du lit, 0,5 m au-dessus de sa base (l'enfant `spawnpoint` du prefab n'est pas extrait) ; le lit lui-même est exclu des rayons ; démolir le lit ne rend pas l'ancien foyer.
+
+**Combat** — Valheim n'interdit pas de construire en combat (aucun test dans `UpdatePlacement`, `TryPlacePiece`, `RemovePiece`, `Repair`) : **règle propre à Wowlheim**, pose (dont le fantôme `canplace`), démolition et réparation au marteau refusées si `IsInCombat()` : « Impossible en combat. » (pas de message de Valheim).
+
+**Marteau** [PROUVÉ, prefab `Hammer`] — `m_maxDurability` 100, `m_useDurabilityDrain` 1, `m_placementDurabilityMax` 0,5 : `MaxDurability` 100 dans 012 (gen_server_sql.py vérifie que les constantes du serveur, `WLSkillMgr::WearHammer` et la réparation à −1, correspondent au prefab) ; les marteaux déjà possédés (durabilité 0 enregistrée) sont remis à 100 une seule fois (005). Réparable à l'établi (`Recipe_Hammer` sans station → `m_repairStation` = établi, §11).

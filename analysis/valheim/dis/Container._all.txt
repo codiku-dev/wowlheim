@@ -1,0 +1,1282 @@
+== Container::Awake() -> void  il_size=587 sha=4107ee494aa5
+   locals_sig=0x11000678
+   0 ldarg.0      
+   1 ldarg.0      
+   2 ldfld        Container::m_rootObjectOverride
+   7 call         UnityEngine.Object::op_Implicit
+  12 brtrue.s     22
+  14 ldarg.0      
+  15 call         UnityEngine.Component::GetComponent<T>
+  20 br.s         33
+  22 ldarg.0      
+  23 ldfld        Container::m_rootObjectOverride
+  28 callvirt     UnityEngine.Component::GetComponent<T>
+  33 stfld        Container::m_nview
+  38 ldarg.0      
+  39 ldfld        Container::m_nview
+  44 callvirt     ZNetView::GetZDO()
+  49 brtrue.s     52
+  51 ret          
+  52 ldarg.0      
+  53 ldarg.0      
+  54 ldfld        Container::m_name
+  59 ldarg.0      
+  60 ldfld        Container::m_bkg
+  65 ldarg.0      
+  66 ldfld        Container::m_width
+  71 ldarg.0      
+  72 ldfld        Container::m_height
+  77 newobj       Inventory::.ctor(string,class:217,i4,i4)
+  82 stfld        Container::m_inventory
+  87 ldarg.0      
+  88 ldfld        Container::m_inventory
+  93 dup          
+  94 ldfld        Inventory::m_onChanged
+  99 ldarg.0      
+ 100 ldftn        Container::OnContainerChanged()
+ 106 newobj       System.Action::.ctor
+ 111 call         System.Delegate::Combine
+ 116 castclass    0x01000016
+ 121 stfld        Inventory::m_onChanged
+ 126 ldarg.0      
+ 127 ldarg.0      
+ 128 call         UnityEngine.Component::GetComponent<T>
+ 133 stfld        Container::m_piece
+ 138 ldarg.0      
+ 139 ldfld        Container::m_nview
+ 144 call         UnityEngine.Object::op_Implicit
+ 149 brfalse      350
+ 154 ldarg.0      
+ 155 ldfld        Container::m_nview
+ 160 ldstr        "RPC_RequestOpen"
+ 165 ldarg.0      
+ 166 ldftn        Container::RPC_RequestOpen(i8,i8)
+ 172 newobj       System.Action`2::.ctor
+ 177 callvirt     ZNetView::Register<T>
+ 182 ldarg.0      
+ 183 ldfld        Container::m_nview
+ 188 ldstr        "RPC_OpenResponse"
+ 193 ldarg.0      
+ 194 ldftn        Container::RPC_OpenResponse(i8,bool)
+ 200 newobj       System.Action`2::.ctor
+ 205 callvirt     ZNetView::Register<T>
+ 210 ldarg.0      
+ 211 ldfld        Container::m_nview
+ 216 ldstr        "RPC_RequestStack"
+ 221 ldarg.0      
+ 222 ldftn        Container::RPC_RequestStack(i8,i8)
+ 228 newobj       System.Action`2::.ctor
+ 233 callvirt     ZNetView::Register<T>
+ 238 ldarg.0      
+ 239 ldfld        Container::m_nview
+ 244 ldstr        "RPC_StackResponse"
+ 249 ldarg.0      
+ 250 ldftn        Container::RPC_StackResponse(i8,bool)
+ 256 newobj       System.Action`2::.ctor
+ 261 callvirt     ZNetView::Register<T>
+ 266 ldarg.0      
+ 267 ldfld        Container::m_nview
+ 272 ldstr        "RPC_RequestTakeAll"
+ 277 ldarg.0      
+ 278 ldftn        Container::RPC_RequestTakeAll(i8,i8)
+ 284 newobj       System.Action`2::.ctor
+ 289 callvirt     ZNetView::Register<T>
+ 294 ldarg.0      
+ 295 ldfld        Container::m_nview
+ 300 ldstr        "RPC_TakeAllResponse"
+ 305 ldarg.0      
+ 306 ldftn        Container::RPC_TakeAllResponse(i8,bool)
+ 312 newobj       System.Action`2::.ctor
+ 317 callvirt     ZNetView::Register<T>
+ 322 ldarg.0      
+ 323 ldfld        Container::m_nview
+ 328 ldstr        "RPC_Discovered"
+ 333 ldarg.0      
+ 334 ldftn        Container::RPC_Discovered(i8,i4)
+ 340 newobj       System.Action`2::.ctor
+ 345 callvirt     ZNetView::Register<T>
+ 350 ldarg.0      
+ 351 ldfld        Container::m_rootObjectOverride
+ 356 call         UnityEngine.Object::op_Implicit
+ 361 brtrue.s     371
+ 363 ldarg.0      
+ 364 call         UnityEngine.Component::GetComponent<T>
+ 369 br.s         382
+ 371 ldarg.0      
+ 372 ldfld        Container::m_rootObjectOverride
+ 377 callvirt     UnityEngine.Component::GetComponent<T>
+ 382 stloc.0      
+ 383 ldloc.0      
+ 384 call         UnityEngine.Object::op_Implicit
+ 389 brfalse.s    425
+ 391 ldloc.0      
+ 392 dup          
+ 393 ldfld        WearNTear::m_onDestroyed
+ 398 ldarg.0      
+ 399 ldftn        Container::OnDestroyed()
+ 405 newobj       System.Action::.ctor
+ 410 call         System.Delegate::Combine
+ 415 castclass    0x01000016
+ 420 stfld        WearNTear::m_onDestroyed
+ 425 ldarg.0      
+ 426 ldfld        Container::m_rootObjectOverride
+ 431 call         UnityEngine.Object::op_Implicit
+ 436 brtrue.s     446
+ 438 ldarg.0      
+ 439 call         UnityEngine.Component::GetComponent<T>
+ 444 br.s         457
+ 446 ldarg.0      
+ 447 ldfld        Container::m_rootObjectOverride
+ 452 callvirt     UnityEngine.Component::GetComponent<T>
+ 457 stloc.1      
+ 458 ldloc.1      
+ 459 call         UnityEngine.Object::op_Implicit
+ 464 brfalse.s    500
+ 466 ldloc.1      
+ 467 dup          
+ 468 ldfld        Destructible::m_onDestroyed
+ 473 ldarg.0      
+ 474 ldftn        Container::OnDestroyed()
+ 480 newobj       System.Action::.ctor
+ 485 call         System.Delegate::Combine
+ 490 castclass    0x01000016
+ 495 stfld        Destructible::m_onDestroyed
+ 500 ldarg.0      
+ 501 ldfld        Container::m_nview
+ 506 callvirt     ZNetView::IsOwner()
+ 511 brfalse.s    565
+ 513 ldarg.0      
+ 514 ldfld        Container::m_nview
+ 519 callvirt     ZNetView::GetZDO()
+ 524 ldsfld       ZDOVars::s_addedDefaultItems
+ 529 ldc.i4.0     
+ 530 callvirt     ZDO::GetBool(i4,bool)
+ 535 brtrue.s     565
+ 537 ldarg.0      
+ 538 call         Container::AddDefaultItems()
+ 543 ldarg.0      
+ 544 ldfld        Container::m_nview
+ 549 callvirt     ZNetView::GetZDO()
+ 554 ldsfld       ZDOVars::s_addedDefaultItems
+ 559 ldc.i4.1     
+ 560 callvirt     ZDO::Set(i4,bool)
+ 565 ldarg.0      
+ 566 ldstr        "CheckForChanges"
+ 571 ldc.r4       0
+ 576 ldc.r4       1
+ 581 call         UnityEngine.MonoBehaviour::InvokeRepeating
+ 586 ret          
+
+== Container::AddDefaultItems() -> void  il_size=98 sha=1d7490fcdfff
+   locals_sig=0x1100006a
+   0 ldarg.0      
+   1 ldfld        Container::m_defaultItems
+   6 callvirt     DropTable::GetDropListItems()
+  11 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  16 stloc.0      
+  17 br.s         72
+  19 ldloca.s     0
+  21 call         Enumerator::get_Current
+  26 stloc.1      
+  27 ldarg.0      
+  28 ldfld        Container::m_nview
+  33 callvirt     ZNetView::GetZDO()
+  38 call         CheatUtils::IsCheated(class:1164)
+  43 brfalse.s    59
+  45 call         PlayerProfile::get_s_bypassCheatChecks()
+  50 brtrue.s     59
+  52 ldloc.1      
+  53 ldc.i4.1     
+  54 stfld        ItemDrop+ItemData::m_cheated
+  59 ldarg.0      
+  60 ldfld        Container::m_inventory
+  65 ldloc.1      
+  66 callvirt     Inventory::AddItem(class:3744)
+  71 pop          
+  72 ldloca.s     0
+  74 call         Enumerator::MoveNext
+  79 brtrue.s     19
+  81 leave.s      97
+  83 ldloca.s     0
+  85 constrained. 0x1b00006c
+  91 callvirt     System.IDisposable::Dispose
+  96 endfinally   
+  97 ret          
+
+== Container::DropAllItems(class:133) -> void  il_size=82 sha=abf336a7c020
+   locals_sig=0x11000022
+   0 br.s         67
+   2 ldarg.0      
+   3 call         UnityEngine.Component::get_transform
+   8 callvirt     UnityEngine.Transform::get_position
+  13 call         UnityEngine.Random::get_insideUnitSphere
+  18 ldc.r4       1
+  23 call         UnityEngine.Vector3::op_Multiply
+  28 call         UnityEngine.Vector3::op_Addition
+  33 stloc.0      
+  34 ldarg.1      
+  35 ldloc.0      
+  36 call         UnityEngine.Random::get_rotation
+  41 call         UnityEngine.Object::Instantiate<T>
+  46 callvirt     UnityEngine.GameObject::GetComponent<T>
+  51 callvirt     Container::GetInventory()
+  56 ldarg.0      
+  57 ldfld        Container::m_inventory
+  62 callvirt     Inventory::MoveAll(class:1056)
+  67 ldarg.0      
+  68 ldfld        Container::m_inventory
+  73 callvirt     Inventory::NrOfItems()
+  78 ldc.i4.0     
+  79 bgt.s        2
+  81 ret          
+
+== Container::DropAllItems() -> void  il_size=164 sha=719960195e72
+   locals_sig=0x11000679
+   0 ldarg.0      
+   1 ldfld        Container::m_inventory
+   6 callvirt     Inventory::GetAllItems()
+  11 ldc.i4.1     
+  12 stloc.0      
+  13 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  18 stloc.1      
+  19 br.s         121
+  21 ldloca.s     1
+  23 call         Enumerator::get_Current
+  28 ldarg.0      
+  29 call         UnityEngine.Component::get_transform
+  34 callvirt     UnityEngine.Transform::get_position
+  39 call         UnityEngine.Vector3::get_up
+  44 ldc.r4       0.5
+  49 call         UnityEngine.Vector3::op_Multiply
+  54 call         UnityEngine.Vector3::op_Addition
+  59 call         UnityEngine.Random::get_insideUnitSphere
+  64 ldc.r4       0.30000001192092896
+  69 call         UnityEngine.Vector3::op_Multiply
+  74 call         UnityEngine.Vector3::op_Addition
+  79 stloc.2      
+  80 ldc.r4       0
+  85 ldc.i4.0     
+  86 ldc.i4       360
+  91 call         UnityEngine.Random::Range
+  96 conv.r4      
+  97 ldc.r4       0
+ 102 call         UnityEngine.Quaternion::Euler
+ 107 stloc.3      
+ 108 ldc.i4.0     
+ 109 ldloc.2      
+ 110 ldloc.3      
+ 111 call         ItemDrop::DropItem(class:3744,i4,valuetype:81,valuetype:137)
+ 116 pop          
+ 117 ldloc.0      
+ 118 ldc.i4.1     
+ 119 add          
+ 120 stloc.0      
+ 121 ldloca.s     1
+ 123 call         Enumerator::MoveNext
+ 128 brtrue.s     21
+ 130 leave.s      146
+ 132 ldloca.s     1
+ 134 constrained. 0x1b00006c
+ 140 callvirt     System.IDisposable::Dispose
+ 145 endfinally   
+ 146 ldarg.0      
+ 147 ldfld        Container::m_inventory
+ 152 callvirt     Inventory::RemoveAll()
+ 157 ldarg.0      
+ 158 call         Container::Save()
+ 163 ret          
+
+== Container::OnDestroyed() -> void  il_size=46 sha=1161a879bed6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brfalse.s    45
+  13 ldarg.0      
+  14 ldfld        Container::m_destroyedLootPrefab
+  19 call         UnityEngine.Object::op_Implicit
+  24 brfalse.s    39
+  26 ldarg.0      
+  27 ldarg.0      
+  28 ldfld        Container::m_destroyedLootPrefab
+  33 call         Container::DropAllItems(class:133)
+  38 ret          
+  39 ldarg.0      
+  40 call         Container::DropAllItems()
+  45 ret          
+
+== Container::CheckForChanges() -> void  il_size=83 sha=9b9d4176ed15
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::IsValid()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 call         Container::Load()
+  20 brtrue.s     23
+  22 ret          
+  23 ldarg.0      
+  24 call         Container::UpdateUseVisual()
+  29 ldarg.0      
+  30 ldfld        Container::m_autoDestroyEmpty
+  35 brfalse.s    82
+  37 ldarg.0      
+  38 ldfld        Container::m_nview
+  43 callvirt     ZNetView::IsOwner()
+  48 brfalse.s    82
+  50 ldarg.0      
+  51 call         Container::IsInUse()
+  56 brtrue.s     82
+  58 ldarg.0      
+  59 ldfld        Container::m_inventory
+  64 callvirt     Inventory::NrOfItems()
+  69 brtrue.s     82
+  71 ldarg.0      
+  72 ldfld        Container::m_nview
+  77 callvirt     ZNetView::Destroy()
+  82 ret          
+
+== Container::UpdateUseVisual() -> void  il_size=136 sha=c7e6b1c7bb2b
+   locals_sig=0x11000091
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brfalse.s    56
+  13 ldarg.0      
+  14 ldfld        Container::m_inUse
+  19 stloc.0      
+  20 ldarg.0      
+  21 ldfld        Container::m_nview
+  26 callvirt     ZNetView::GetZDO()
+  31 ldsfld       ZDOVars::s_inUse
+  36 ldarg.0      
+  37 ldfld        Container::m_inUse
+  42 brtrue.s     47
+  44 ldc.i4.0     
+  45 br.s         48
+  47 ldc.i4.1     
+  48 ldc.i4.0     
+  49 callvirt     ZDO::Set(i4,i4,bool)
+  54 br.s         82
+  56 ldarg.0      
+  57 ldfld        Container::m_nview
+  62 callvirt     ZNetView::GetZDO()
+  67 ldsfld       ZDOVars::s_inUse
+  72 ldc.i4.0     
+  73 callvirt     ZDO::GetInt(i4,i4)
+  78 ldc.i4.1     
+  79 ceq          
+  81 stloc.0      
+  82 ldarg.0      
+  83 ldfld        Container::m_open
+  88 call         UnityEngine.Object::op_Implicit
+  93 brfalse.s    107
+  95 ldarg.0      
+  96 ldfld        Container::m_open
+ 101 ldloc.0      
+ 102 callvirt     UnityEngine.GameObject::SetActive
+ 107 ldarg.0      
+ 108 ldfld        Container::m_closed
+ 113 call         UnityEngine.Object::op_Implicit
+ 118 brfalse.s    135
+ 120 ldarg.0      
+ 121 ldfld        Container::m_closed
+ 126 ldloc.0      
+ 127 ldc.i4.0     
+ 128 ceq          
+ 130 callvirt     UnityEngine.GameObject::SetActive
+ 135 ret          
+
+== Container::UpdateRows() -> void  il_size=90 sha=7e0cae6fd0f0
+   locals_sig=0x1100067a
+   0 ldarg.0      
+   1 ldfld        Container::m_height
+   6 stloc.0      
+   7 ldarg.0      
+   8 ldfld        Container::m_inventory
+  13 callvirt     Inventory::GetAllItems()
+  18 callvirt     System.Collections.Generic.List`1::GetEnumerator
+  23 stloc.1      
+  24 br.s         52
+  26 ldloca.s     1
+  28 call         Enumerator::get_Current
+  33 ldflda       ItemDrop+ItemData::m_gridPos
+  38 ldfld        Vector2i::y
+  43 ldc.i4.1     
+  44 add          
+  45 stloc.2      
+  46 ldloc.2      
+  47 ldloc.0      
+  48 ble.s        52
+  50 ldloc.2      
+  51 stloc.0      
+  52 ldloca.s     1
+  54 call         Enumerator::MoveNext
+  59 brtrue.s     26
+  61 leave.s      77
+  63 ldloca.s     1
+  65 constrained. 0x1b00006c
+  71 callvirt     System.IDisposable::Dispose
+  76 endfinally   
+  77 ldarg.0      
+  78 ldfld        Container::m_inventory
+  83 ldloc.0      
+  84 callvirt     Inventory::SetHeight(i4)
+  89 ret          
+
+== Container::GetHoverText() -> string  il_size=123 sha=0cedc27eac93
+   locals_sig=0x11000084
+   0 ldarg.0      
+   1 ldfld        Container::m_checkGuardStone
+   6 brfalse.s    60
+   8 ldarg.0      
+   9 call         UnityEngine.Component::get_transform
+  14 callvirt     UnityEngine.Transform::get_position
+  19 ldc.r4       0
+  24 ldc.i4.0     
+  25 ldc.i4.0     
+  26 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  31 brtrue.s     60
+  33 call         Localization::get_instance
+  38 ldarg.0      
+  39 ldfld        Container::m_name
+  44 ldstr        "\n$piece_noaccess"
+  49 call         System.String::Concat
+  54 callvirt     Localization::Localize
+  59 ret          
+  60 ldarg.0      
+  61 ldfld        Container::m_inventory
+  66 callvirt     Inventory::NrOfItems()
+  71 brtrue.s     92
+  73 ldarg.0      
+  74 ldfld        Container::m_name
+  79 ldstr        " ( $piece_container_empty )"
+  84 call         System.String::Concat
+  89 stloc.0      
+  90 br.s         99
+  92 ldarg.0      
+  93 ldfld        Container::m_name
+  98 stloc.0      
+  99 ldloc.0      
+ 100 ldstr        "\n[<color=yellow><b>$KEY_Use</b></color>] $piece_container_open $msg_stackall_hover"
+ 105 call         System.String::Concat
+ 110 stloc.0      
+ 111 call         Localization::get_instance
+ 116 ldloc.0      
+ 117 callvirt     Localization::Localize
+ 122 ret          
+
+== Container::GetHoverName() -> string  il_size=7 sha=1dedb875dba6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_name
+   6 ret          
+
+== Container::Interact(class:108, bool, bool) -> bool  il_size=227 sha=3618bb935523
+   locals_sig=0x1100067b
+   0 ldarg.2      
+   1 brfalse.s    5
+   3 ldc.i4.0     
+   4 ret          
+   5 ldarg.0      
+   6 ldfld        Container::m_checkGuardStone
+  11 brfalse.s    40
+  13 ldarg.0      
+  14 call         UnityEngine.Component::get_transform
+  19 callvirt     UnityEngine.Transform::get_position
+  24 ldc.r4       0
+  29 ldc.i4.1     
+  30 ldc.i4.0     
+  31 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  36 brtrue.s     40
+  38 ldc.i4.1     
+  39 ret          
+  40 call         Game::get_instance()
+  45 callvirt     Game::GetPlayerProfile()
+  50 callvirt     PlayerProfile::GetPlayerID()
+  55 stloc.0      
+  56 ldarg.0      
+  57 ldloc.0      
+  58 call         Container::CheckAccess(i8)
+  63 brtrue.s     82
+  65 ldarg.1      
+  66 ldc.i4.2     
+  67 ldstr        "$msg_cantopen"
+  72 ldc.i4.0     
+  73 ldnull       
+  74 ldc.i4.0     
+  75 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  80 ldc.i4.1     
+  81 ret          
+  82 ldarg.0      
+  83 ldfld        Container::m_nview
+  88 ldstr        "RPC_RequestOpen"
+  93 ldc.i4.1     
+  94 newarr       0x01000007
+  99 dup          
+ 100 ldc.i4.0     
+ 101 ldloc.0      
+ 102 box          0x0100020f
+ 107 stelem.ref   
+ 108 callvirt     ZNetView::InvokeRPC(string,object[])
+ 113 ldarg.0      
+ 114 ldfld        Container::m_discoverStat
+ 119 ldc.i4       206
+ 124 beq.s        225
+ 126 ldstr        "Discovered_"
+ 131 ldsfld       Player::m_localPlayer
+ 136 callvirt     Player::GetPlayerName()
+ 141 call         System.String::Concat
+ 146 stloc.1      
+ 147 ldarg.0      
+ 148 ldfld        Container::m_nview
+ 153 callvirt     ZNetView::GetZDO()
+ 158 ldloc.1      
+ 159 ldc.i4.0     
+ 160 callvirt     ZDO::GetBool(string,bool)
+ 165 brtrue.s     225
+ 167 call         Game::get_instance()
+ 172 ldarg.0      
+ 173 ldfld        Container::m_discoverStat
+ 178 ldc.r4       1
+ 183 ldc.i4.0     
+ 184 callvirt     Game::IncrementPlayerStat(valuetype:1636,r4,bool)
+ 189 ldarg.0      
+ 190 ldfld        Container::m_nview
+ 195 ldstr        "discovered"
+ 200 ldc.i4.1     
+ 201 newarr       0x01000007
+ 206 dup          
+ 207 ldc.i4.0     
+ 208 ldloc.1      
+ 209 call         StringExtensionMethods::GetStableHashCode
+ 214 box          0x010001f3
+ 219 stelem.ref   
+ 220 callvirt     ZNetView::InvokeRPC(string,object[])
+ 225 ldc.i4.1     
+ 226 ret          
+
+== Container::RPC_Discovered(i8, i4) -> void  il_size=19 sha=82f6f7385082
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::GetZDO()
+  11 ldarg.2      
+  12 ldc.i4.1     
+  13 callvirt     ZDO::Set(i4,bool)
+  18 ret          
+
+== Container::UseItem(class:108, class:3744) -> bool  il_size=2 sha=84a0936ff1fb
+   locals_sig=null
+   0 ldc.i4.0     
+   1 ret          
+
+== Container::CanBeRemoved() -> bool  il_size=26 sha=e26166d62b7c
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_privacy
+   6 brtrue.s     24
+   8 ldarg.0      
+   9 call         Container::GetInventory()
+  14 callvirt     Inventory::NrOfItems()
+  19 ldc.i4.0     
+  20 ble.s        24
+  22 ldc.i4.0     
+  23 ret          
+  24 ldc.i4.1     
+  25 ret          
+
+== Container::CheckAccess(i8) -> bool  il_size=48 sha=73d13e581f8c
+   locals_sig=0x1100067c
+   0 ldarg.0      
+   1 ldfld        Container::m_privacy
+   6 stloc.0      
+   7 ldloc.0      
+   8 switch       [0:29 1:44 2:27]
+  25 br.s         46
+  27 ldc.i4.1     
+  28 ret          
+  29 ldarg.0      
+  30 ldfld        Container::m_piece
+  35 callvirt     Piece::GetCreator()
+  40 ldarg.1      
+  41 ceq          
+  43 ret          
+  44 ldc.i4.0     
+  45 ret          
+  46 ldc.i4.0     
+  47 ret          
+
+== Container::IsOwner() -> bool  il_size=12 sha=ca59d1d821ee
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 ret          
+
+== Container::IsInUse() -> bool  il_size=7 sha=773d99b6dbd6
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_inUse
+   6 ret          
+
+== Container::SetInUse(bool) -> void  il_size=152 sha=b9b845661ce4
+   locals_sig=0x1100003d
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::IsOwner()
+  11 brtrue.s     14
+  13 ret          
+  14 ldarg.0      
+  15 ldfld        Container::m_inUse
+  20 ldarg.1      
+  21 bne.un.s     24
+  23 ret          
+  24 ldarg.0      
+  25 ldarg.1      
+  26 stfld        Container::m_inUse
+  31 ldarg.0      
+  32 call         Container::UpdateUseVisual()
+  37 ldarg.0      
+  38 call         Container::IsOwner()
+  43 brtrue.s     52
+  45 ldsfld       ZDOID::None
+  50 br.s         62
+  52 ldsfld       Player::m_localPlayer
+  57 callvirt     Character::GetZDOID()
+  62 stloc.0      
+  63 ldarg.1      
+  64 brfalse.s    109
+  66 ldarg.0      
+  67 ldfld        Container::m_openEffects
+  72 ldarg.0      
+  73 call         UnityEngine.Component::get_transform
+  78 callvirt     UnityEngine.Transform::get_position
+  83 ldarg.0      
+  84 call         UnityEngine.Component::get_transform
+  89 callvirt     UnityEngine.Transform::get_rotation
+  94 ldnull       
+  95 ldc.r4       1
+ 100 ldc.i4.m1    
+ 101 ldloc.0      
+ 102 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 107 pop          
+ 108 ret          
+ 109 ldarg.0      
+ 110 ldfld        Container::m_closeEffects
+ 115 ldarg.0      
+ 116 call         UnityEngine.Component::get_transform
+ 121 callvirt     UnityEngine.Transform::get_position
+ 126 ldarg.0      
+ 127 call         UnityEngine.Component::get_transform
+ 132 callvirt     UnityEngine.Transform::get_rotation
+ 137 ldnull       
+ 138 ldc.r4       1
+ 143 ldc.i4.m1    
+ 144 ldloc.0      
+ 145 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+ 150 pop          
+ 151 ret          
+
+== Container::GetInventory() -> class:1056  il_size=7 sha=1be51ea04331
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_inventory
+   6 ret          
+
+== Container::RPC_RequestOpen(i8, i8) -> void  il_size=280 sha=8fc917f00d3d
+   locals_sig=null
+   0 ldstr        "Player {0} wants to open {1}   im: {2}"
+   5 ldarg.1      
+   6 box          0x0100020f
+  11 ldarg.0      
+  12 call         UnityEngine.Component::get_gameObject
+  17 callvirt     UnityEngine.Object::get_name
+  22 call         ZDOMan::GetSessionID()
+  27 box          0x0100020f
+  32 call         System.String::Format
+  37 call         ZLog::Log
+  42 ldarg.0      
+  43 ldfld        Container::m_nview
+  48 callvirt     ZNetView::IsOwner()
+  53 brtrue.s     66
+  55 ldstr        "  but im not the owner"
+  60 call         ZLog::Log
+  65 ret          
+  66 ldarg.0      
+  67 call         Container::IsInUse()
+  72 brtrue.s     100
+  74 ldarg.0      
+  75 ldfld        Container::m_wagon
+  80 call         UnityEngine.Object::op_Implicit
+  85 brfalse.s    151
+  87 ldarg.0      
+  88 ldfld        Container::m_wagon
+  93 callvirt     Vagon::InUse()
+  98 brfalse.s    151
+ 100 ldarg.1      
+ 101 call         ZNet::GetUID()
+ 106 beq.s        151
+ 108 ldstr        "  in use"
+ 113 call         ZLog::Log
+ 118 ldarg.0      
+ 119 ldfld        Container::m_nview
+ 124 ldarg.1      
+ 125 ldstr        "RPC_OpenResponse"
+ 130 ldc.i4.1     
+ 131 newarr       0x01000007
+ 136 dup          
+ 137 ldc.i4.0     
+ 138 ldc.i4.0     
+ 139 box          0x010001f2
+ 144 stelem.ref   
+ 145 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 150 ret          
+ 151 ldarg.0      
+ 152 ldarg.2      
+ 153 call         Container::CheckAccess(i8)
+ 158 brtrue.s     203
+ 160 ldstr        "  not yours"
+ 165 call         ZLog::Log
+ 170 ldarg.0      
+ 171 ldfld        Container::m_nview
+ 176 ldarg.1      
+ 177 ldstr        "RPC_OpenResponse"
+ 182 ldc.i4.1     
+ 183 newarr       0x01000007
+ 188 dup          
+ 189 ldc.i4.0     
+ 190 ldc.i4.0     
+ 191 box          0x010001f2
+ 196 stelem.ref   
+ 197 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 202 ret          
+ 203 call         ZDOMan::get_instance()
+ 208 ldarg.1      
+ 209 ldarg.0      
+ 210 ldfld        Container::m_nview
+ 215 callvirt     ZNetView::GetZDO()
+ 220 ldfld        ZDO::m_uid
+ 225 callvirt     ZDOMan::ForceSendZDO(i8,valuetype:1188)
+ 230 ldarg.0      
+ 231 ldfld        Container::m_nview
+ 236 callvirt     ZNetView::GetZDO()
+ 241 ldarg.1      
+ 242 callvirt     ZDO::SetOwner(i8)
+ 247 ldarg.0      
+ 248 ldfld        Container::m_nview
+ 253 ldarg.1      
+ 254 ldstr        "RPC_OpenResponse"
+ 259 ldc.i4.1     
+ 260 newarr       0x01000007
+ 265 dup          
+ 266 ldc.i4.0     
+ 267 ldc.i4.1     
+ 268 box          0x010001f2
+ 273 stelem.ref   
+ 274 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 279 ret          
+
+== Container::RPC_OpenResponse(i8, bool) -> void  il_size=49 sha=ff7387aa3fb4
+   locals_sig=null
+   0 ldsfld       Player::m_localPlayer
+   5 call         UnityEngine.Object::op_Implicit
+  10 brtrue.s     13
+  12 ret          
+  13 ldarg.2      
+  14 brfalse.s    29
+  16 call         InventoryGui::get_instance()
+  21 ldarg.0      
+  22 ldc.i4.1     
+  23 callvirt     InventoryGui::Show(class:2016,i4)
+  28 ret          
+  29 ldsfld       Player::m_localPlayer
+  34 ldc.i4.2     
+  35 ldstr        "$msg_inuse"
+  40 ldc.i4.0     
+  41 ldnull       
+  42 ldc.i4.0     
+  43 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  48 ret          
+
+== Container::StackAll() -> void  il_size=48 sha=6790eb83366f
+   locals_sig=0x11000118
+   0 call         Game::get_instance()
+   5 callvirt     Game::GetPlayerProfile()
+  10 callvirt     PlayerProfile::GetPlayerID()
+  15 stloc.0      
+  16 ldarg.0      
+  17 ldfld        Container::m_nview
+  22 ldstr        "RPC_RequestStack"
+  27 ldc.i4.1     
+  28 newarr       0x01000007
+  33 dup          
+  34 ldc.i4.0     
+  35 ldloc.0      
+  36 box          0x0100020f
+  41 stelem.ref   
+  42 callvirt     ZNetView::InvokeRPC(string,object[])
+  47 ret          
+
+== Container::RPC_RequestStack(i8, i8) -> void  il_size=318 sha=5b44a5147442
+   locals_sig=0x11000118
+   0 ldc.i4.6     
+   1 newarr       0x010001e8
+   6 dup          
+   7 ldc.i4.0     
+   8 ldstr        "Player "
+  13 stelem.ref   
+  14 dup          
+  15 ldc.i4.1     
+  16 ldarga.s     1
+  18 call         System.Int64::ToString
+  23 stelem.ref   
+  24 dup          
+  25 ldc.i4.2     
+  26 ldstr        " wants to stack all in "
+  31 stelem.ref   
+  32 dup          
+  33 ldc.i4.3     
+  34 ldarg.0      
+  35 call         UnityEngine.Component::get_gameObject
+  40 callvirt     UnityEngine.Object::get_name
+  45 stelem.ref   
+  46 dup          
+  47 ldc.i4.4     
+  48 ldstr        "   im: "
+  53 stelem.ref   
+  54 dup          
+  55 ldc.i4.5     
+  56 call         ZDOMan::GetSessionID()
+  61 stloc.0      
+  62 ldloca.s     0
+  64 call         System.Int64::ToString
+  69 stelem.ref   
+  70 call         System.String::Concat
+  75 call         ZLog::Log
+  80 ldarg.0      
+  81 ldfld        Container::m_nview
+  86 callvirt     ZNetView::IsOwner()
+  91 brtrue.s     104
+  93 ldstr        "  but im not the owner"
+  98 call         ZLog::Log
+ 103 ret          
+ 104 ldarg.0      
+ 105 call         Container::IsInUse()
+ 110 brtrue.s     138
+ 112 ldarg.0      
+ 113 ldfld        Container::m_wagon
+ 118 call         UnityEngine.Object::op_Implicit
+ 123 brfalse.s    189
+ 125 ldarg.0      
+ 126 ldfld        Container::m_wagon
+ 131 callvirt     Vagon::InUse()
+ 136 brfalse.s    189
+ 138 ldarg.1      
+ 139 call         ZNet::GetUID()
+ 144 beq.s        189
+ 146 ldstr        "  in use"
+ 151 call         ZLog::Log
+ 156 ldarg.0      
+ 157 ldfld        Container::m_nview
+ 162 ldarg.1      
+ 163 ldstr        "RPC_StackResponse"
+ 168 ldc.i4.1     
+ 169 newarr       0x01000007
+ 174 dup          
+ 175 ldc.i4.0     
+ 176 ldc.i4.0     
+ 177 box          0x010001f2
+ 182 stelem.ref   
+ 183 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 188 ret          
+ 189 ldarg.0      
+ 190 ldarg.2      
+ 191 call         Container::CheckAccess(i8)
+ 196 brtrue.s     241
+ 198 ldstr        "  not yours"
+ 203 call         ZLog::Log
+ 208 ldarg.0      
+ 209 ldfld        Container::m_nview
+ 214 ldarg.1      
+ 215 ldstr        "RPC_StackResponse"
+ 220 ldc.i4.1     
+ 221 newarr       0x01000007
+ 226 dup          
+ 227 ldc.i4.0     
+ 228 ldc.i4.0     
+ 229 box          0x010001f2
+ 234 stelem.ref   
+ 235 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 240 ret          
+ 241 call         ZDOMan::get_instance()
+ 246 ldarg.1      
+ 247 ldarg.0      
+ 248 ldfld        Container::m_nview
+ 253 callvirt     ZNetView::GetZDO()
+ 258 ldfld        ZDO::m_uid
+ 263 callvirt     ZDOMan::ForceSendZDO(i8,valuetype:1188)
+ 268 ldarg.0      
+ 269 ldfld        Container::m_nview
+ 274 callvirt     ZNetView::GetZDO()
+ 279 ldarg.1      
+ 280 callvirt     ZDO::SetOwner(i8)
+ 285 ldarg.0      
+ 286 ldfld        Container::m_nview
+ 291 ldarg.1      
+ 292 ldstr        "RPC_StackResponse"
+ 297 ldc.i4.1     
+ 298 newarr       0x01000007
+ 303 dup          
+ 304 ldc.i4.0     
+ 305 ldc.i4.1     
+ 306 box          0x010001f2
+ 311 stelem.ref   
+ 312 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 317 ret          
+
+== Container::RPC_StackResponse(i8, bool) -> void  il_size=110 sha=0c2de3de88c4
+   locals_sig=0x1100003d
+   0 ldsfld       Player::m_localPlayer
+   5 call         UnityEngine.Object::op_Implicit
+  10 brtrue.s     13
+  12 ret          
+  13 ldarg.2      
+  14 brfalse.s    90
+  16 ldarg.0      
+  17 ldfld        Container::m_inventory
+  22 ldsfld       Player::m_localPlayer
+  27 callvirt     Humanoid::GetInventory()
+  32 ldc.i4.1     
+  33 callvirt     Inventory::StackAll(class:1056,bool)
+  38 ldc.i4.0     
+  39 ble.s        109
+  41 call         InventoryGui::get_instance()
+  46 ldfld        InventoryGui::m_moveItemEffects
+  51 ldarg.0      
+  52 call         UnityEngine.Component::get_transform
+  57 callvirt     UnityEngine.Transform::get_position
+  62 call         UnityEngine.Quaternion::get_identity
+  67 ldnull       
+  68 ldc.r4       1
+  73 ldc.i4.m1    
+  74 ldloca.s     0
+  76 initobj      ZDOID
+  82 ldloc.0      
+  83 callvirt     EffectList::Create(valuetype:81,valuetype:137,class:73,r4,i4,valuetype:1188)
+  88 pop          
+  89 ret          
+  90 ldsfld       Player::m_localPlayer
+  95 ldc.i4.2     
+  96 ldstr        "$msg_inuse"
+ 101 ldc.i4.0     
+ 102 ldnull       
+ 103 ldc.i4.0     
+ 104 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 109 ret          
+
+== Container::TakeAll(class:108) -> bool  il_size=110 sha=be1f66f81ba7
+   locals_sig=0x11000118
+   0 ldarg.0      
+   1 ldfld        Container::m_checkGuardStone
+   6 brfalse.s    35
+   8 ldarg.0      
+   9 call         UnityEngine.Component::get_transform
+  14 callvirt     UnityEngine.Transform::get_position
+  19 ldc.r4       0
+  24 ldc.i4.1     
+  25 ldc.i4.0     
+  26 call         PrivateArea::CheckAccess(valuetype:81,r4,bool,bool)
+  31 brtrue.s     35
+  33 ldc.i4.0     
+  34 ret          
+  35 call         Game::get_instance()
+  40 callvirt     Game::GetPlayerProfile()
+  45 callvirt     PlayerProfile::GetPlayerID()
+  50 stloc.0      
+  51 ldarg.0      
+  52 ldloc.0      
+  53 call         Container::CheckAccess(i8)
+  58 brtrue.s     77
+  60 ldarg.1      
+  61 ldc.i4.2     
+  62 ldstr        "$msg_cantopen"
+  67 ldc.i4.0     
+  68 ldnull       
+  69 ldc.i4.0     
+  70 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+  75 ldc.i4.0     
+  76 ret          
+  77 ldarg.0      
+  78 ldfld        Container::m_nview
+  83 ldstr        "RPC_RequestTakeAll"
+  88 ldc.i4.1     
+  89 newarr       0x01000007
+  94 dup          
+  95 ldc.i4.0     
+  96 ldloc.0      
+  97 box          0x0100020f
+ 102 stelem.ref   
+ 103 callvirt     ZNetView::InvokeRPC(string,object[])
+ 108 ldc.i4.1     
+ 109 ret          
+
+== Container::RPC_RequestTakeAll(i8, i8) -> void  il_size=267 sha=33f72fb71b72
+   locals_sig=null
+   0 ldstr        "Player {0} wants to takeall from {1}   im: {2}"
+   5 ldarg.1      
+   6 box          0x0100020f
+  11 ldarg.0      
+  12 call         UnityEngine.Component::get_gameObject
+  17 callvirt     UnityEngine.Object::get_name
+  22 call         ZDOMan::GetSessionID()
+  27 box          0x0100020f
+  32 call         System.String::Format
+  37 call         ZLog::Log
+  42 ldarg.0      
+  43 ldfld        Container::m_nview
+  48 callvirt     ZNetView::IsOwner()
+  53 brtrue.s     66
+  55 ldstr        "  but im not the owner"
+  60 call         ZLog::Log
+  65 ret          
+  66 ldarg.0      
+  67 call         Container::IsInUse()
+  72 brtrue.s     100
+  74 ldarg.0      
+  75 ldfld        Container::m_wagon
+  80 call         UnityEngine.Object::op_Implicit
+  85 brfalse.s    151
+  87 ldarg.0      
+  88 ldfld        Container::m_wagon
+  93 callvirt     Vagon::InUse()
+  98 brfalse.s    151
+ 100 ldarg.1      
+ 101 call         ZNet::GetUID()
+ 106 beq.s        151
+ 108 ldstr        "  in use"
+ 113 call         ZLog::Log
+ 118 ldarg.0      
+ 119 ldfld        Container::m_nview
+ 124 ldarg.1      
+ 125 ldstr        "RPC_TakeAllResponse"
+ 130 ldc.i4.1     
+ 131 newarr       0x01000007
+ 136 dup          
+ 137 ldc.i4.0     
+ 138 ldc.i4.0     
+ 139 box          0x010001f2
+ 144 stelem.ref   
+ 145 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 150 ret          
+ 151 ldarg.0      
+ 152 ldarg.2      
+ 153 call         Container::CheckAccess(i8)
+ 158 brtrue.s     203
+ 160 ldstr        "  not yours"
+ 165 call         ZLog::Log
+ 170 ldarg.0      
+ 171 ldfld        Container::m_nview
+ 176 ldarg.1      
+ 177 ldstr        "RPC_TakeAllResponse"
+ 182 ldc.i4.1     
+ 183 newarr       0x01000007
+ 188 dup          
+ 189 ldc.i4.0     
+ 190 ldc.i4.0     
+ 191 box          0x010001f2
+ 196 stelem.ref   
+ 197 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 202 ret          
+ 203 call         UnityEngine.Time::get_time
+ 208 ldarg.0      
+ 209 ldfld        Container::m_lastTakeAllTime
+ 214 sub          
+ 215 ldc.r4       2
+ 220 bge.un.s     223
+ 222 ret          
+ 223 ldarg.0      
+ 224 call         UnityEngine.Time::get_time
+ 229 stfld        Container::m_lastTakeAllTime
+ 234 ldarg.0      
+ 235 ldfld        Container::m_nview
+ 240 ldarg.1      
+ 241 ldstr        "RPC_TakeAllResponse"
+ 246 ldc.i4.1     
+ 247 newarr       0x01000007
+ 252 dup          
+ 253 ldc.i4.0     
+ 254 ldc.i4.1     
+ 255 box          0x010001f2
+ 260 stelem.ref   
+ 261 callvirt     ZNetView::InvokeRPC(i8,string,object[])
+ 266 ret          
+
+== Container::RPC_TakeAllResponse(i8, bool) -> void  il_size=115 sha=a6f215097949
+   locals_sig=null
+   0 ldsfld       Player::m_localPlayer
+   5 call         UnityEngine.Object::op_Implicit
+  10 brtrue.s     13
+  12 ret          
+  13 ldarg.2      
+  14 brfalse.s    95
+  16 ldarg.0      
+  17 ldfld        Container::m_nview
+  22 callvirt     ZNetView::ClaimOwnership()
+  27 call         ZDOMan::get_instance()
+  32 ldarg.1      
+  33 ldarg.0      
+  34 ldfld        Container::m_nview
+  39 callvirt     ZNetView::GetZDO()
+  44 ldfld        ZDO::m_uid
+  49 callvirt     ZDOMan::ForceSendZDO(i8,valuetype:1188)
+  54 ldsfld       Player::m_localPlayer
+  59 callvirt     Humanoid::GetInventory()
+  64 ldarg.0      
+  65 ldfld        Container::m_inventory
+  70 callvirt     Inventory::MoveAll(class:1056)
+  75 ldarg.0      
+  76 ldfld        Container::m_onTakeAllSuccess
+  81 brfalse.s    114
+  83 ldarg.0      
+  84 ldfld        Container::m_onTakeAllSuccess
+  89 callvirt     System.Action::Invoke
+  94 ret          
+  95 ldsfld       Player::m_localPlayer
+ 100 ldc.i4.2     
+ 101 ldstr        "$msg_inuse"
+ 106 ldc.i4.0     
+ 107 ldnull       
+ 108 ldc.i4.0     
+ 109 callvirt     Character::Message(valuetype:3532,string,i4,class:217,bool)
+ 114 ret          
+
+== Container::OnContainerChanged() -> void  il_size=25 sha=870f4ea502ae
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_loading
+   6 brfalse.s    9
+   8 ret          
+   9 ldarg.0      
+  10 call         Container::IsOwner()
+  15 brtrue.s     18
+  17 ret          
+  18 ldarg.0      
+  19 call         Container::Save()
+  24 ret          
+
+== Container::Save() -> void  il_size=70 sha=8f7c28002e46
+   locals_sig=0x1100067d
+   0 newobj       ZPackage::.ctor()
+   5 stloc.0      
+   6 ldarg.0      
+   7 ldfld        Container::m_inventory
+  12 ldloc.0      
+  13 callvirt     Inventory::Save(class:1268)
+  18 ldloc.0      
+  19 callvirt     ZPackage::GetArray()
+  24 stloc.1      
+  25 ldarg.0      
+  26 ldfld        Container::m_nview
+  31 callvirt     ZNetView::GetZDO()
+  36 ldsfld       ZDOVars::s_items
+  41 ldloc.1      
+  42 callvirt     ZDO::Set(i4,u1[])
+  47 ldarg.0      
+  48 ldarg.0      
+  49 ldfld        Container::m_nview
+  54 callvirt     ZNetView::GetZDO()
+  59 callvirt     ZDO::get_DataRevision()
+  64 stfld        Container::m_lastRevision
+  69 ret          
+
+== Container::Load() -> bool  il_size=127 sha=c78d612c0d37
+   locals_sig=0x1100067e
+   0 ldarg.0      
+   1 ldfld        Container::m_nview
+   6 callvirt     ZNetView::GetZDO()
+  11 callvirt     ZDO::get_DataRevision()
+  16 ldarg.0      
+  17 ldfld        Container::m_lastRevision
+  22 bne.un.s     26
+  24 ldc.i4.0     
+  25 ret          
+  26 ldarg.0      
+  27 ldfld        Container::m_inUse
+  32 brfalse.s    36
+  34 ldc.i4.0     
+  35 ret          
+  36 ldarg.0      
+  37 ldarg.0      
+  38 ldfld        Container::m_nview
+  43 callvirt     ZNetView::GetZDO()
+  48 callvirt     ZDO::get_DataRevision()
+  53 stfld        Container::m_lastRevision
+  58 ldarg.0      
+  59 ldfld        Container::m_nview
+  64 callvirt     ZNetView::GetZDO()
+  69 ldsfld       ZDOVars::s_items
+  74 ldnull       
+  75 callvirt     ZDO::GetByteArray(i4,u1[])
+  80 stloc.0      
+  81 ldloc.0      
+  82 brtrue.s     86
+  84 ldc.i4.1     
+  85 ret          
+  86 ldloc.0      
+  87 newobj       ZPackage::.ctor(u1[])
+  92 stloc.1      
+  93 ldarg.0      
+  94 ldc.i4.1     
+  95 stfld        Container::m_loading
+ 100 ldarg.0      
+ 101 ldfld        Container::m_inventory
+ 106 ldloc.1      
+ 107 callvirt     Inventory::Load(class:1268)
+ 112 ldarg.0      
+ 113 ldc.i4.0     
+ 114 stfld        Container::m_loading
+ 119 ldarg.0      
+ 120 call         Container::UpdateRows()
+ 125 ldc.i4.1     
+ 126 ret          
+
+== Container::GetHoverOffset() -> r4  il_size=7 sha=357a2fe2371e
+   locals_sig=null
+   0 ldarg.0      
+   1 ldfld        Container::m_hoverOffset
+   6 ret          
+
+== Container::.ctor() -> void  il_size=90 sha=dfecbfe85cbb
+   locals_sig=null
+   0 ldarg.0      
+   1 ldstr        "Container"
+   6 stfld        Container::m_name
+  11 ldarg.0      
+  12 ldc.i4.3     
+  13 stfld        Container::m_width
+  18 ldarg.0      
+  19 ldc.i4.2     
+  20 stfld        Container::m_height
+  25 ldarg.0      
+  26 ldc.i4.2     
+  27 stfld        Container::m_privacy
+  32 ldarg.0      
+  33 newobj       DropTable::.ctor()
+  38 stfld        Container::m_defaultItems
+  43 ldarg.0      
+  44 newobj       EffectList::.ctor()
+  49 stfld        Container::m_openEffects
+  54 ldarg.0      
+  55 newobj       EffectList::.ctor()
+  60 stfld        Container::m_closeEffects
+  65 ldarg.0      
+  66 ldc.i4       206
+  71 stfld        Container::m_discoverStat
+  76 ldarg.0      
+  77 ldc.i4.m1    
+  78 stfld        Container::m_lastRevision
+  83 ldarg.0      
+  84 call         UnityEngine.MonoBehaviour::.ctor
+  89 ret          
